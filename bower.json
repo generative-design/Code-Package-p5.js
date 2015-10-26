@@ -23,19 +23,18 @@
   "homepage": "http://www.generative-gestaltung.de",
   "dependencies": {
     "p5": "git@github.com:processing/p5.js.git#0.4.17",
-    "generativedesign": "git@github.com:generative-design/GenerativeDesignLibrary.js.git"
+    "generative-design-library": "git@github.com:generative-design/generative-design-library.js.git",
+    "chroma-js": "~1.1.1"
   },
-  "install" : {
-    "path" : "libraries",
-    "sources" : {
-      "p5" : [
+  "install": {
+    "path": "libraries",
+    "sources": {
+      "p5": [
         "bower_components/p5/docs/js/p5.js",
         "bower_components/p5/docs/js/p5.dom.js"
       ],
-      "generativedesign" : [
-        "bower_components/generativedesign/generativedesign.js"
-      ]
+      "generative-design-library": "bower_components/generative-design-library/generative-design-library.js",
+      "chroma-js": "bower_components/chroma-js/chroma.js"
     }
   }
-
 }
