@@ -43,5 +43,5 @@ function draw() {
 }
 
 function keyPressed() {
-  if (key=='s' || key=='S') saveCanvas(gd.timestamp(), 'png');
+  if (key == 's' || key == 'S') saveCanvas(gd.timestamp(), 'png');
 }

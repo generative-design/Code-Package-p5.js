@@ -27,6 +27,7 @@
  * KEYS
  * 1-2                 : switch interpolation style
  * s                   : save png
+ * c                   : save color palette
  */
  
 var tileCountX = 2;
@@ -34,6 +35,7 @@ var tileCountY = 10;
 
 var colorsLeft = []
 var colorsRight = [];
+var colors = [];
 
 var interpolateShortest = true;
 
@@ -42,7 +44,6 @@ function setup() {
   colorMode(HSB);
   noStroke();
   shakeColors();
-  console.log(color(0));
 }
 
 function draw() {
@@ -51,6 +52,7 @@ function draw() {
   var tileWidth = width / tileCountX;
   var tileHeight = height / tileCountY;
   var interCol;
+  colors = [];
     
   for (var gridY=0; gridY< tileCountY; gridY++) {
     var col1 = colorsLeft[gridY];
@@ -73,7 +75,10 @@ function draw() {
       
       var posX = tileWidth*gridX;
       var posY = tileHeight*gridY;      
-      rect(posX, posY, tileWidth, tileHeight); 
+      rect(posX, posY, tileWidth, tileHeight);
+
+      // save color for potential ase export
+      colors.push(interCol);
     }
   }
 }
@@ -90,7 +95,8 @@ function mouseReleased() {
 }
 
 function keyPressed() {
-  if (key=='s' || key=='S') saveCanvas(gd.timestamp(), 'png');
+  if (key == 'c' || key == 'C') writeFile([gd.ase.encode( colors )], gd.timestamp(), 'ase');
+  if (key == 's' || key == 'S') saveCanvas(gd.timestamp(), 'png');
   if (key == '1') interpolateShortest = true;
   if (key == '2') interpolateShortest = false;
 }
