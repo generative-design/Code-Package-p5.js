@@ -25,6 +25,7 @@
  * KEYS
  * 0-9                 : creates specific color palettes
  * s                   : save png
+ * c                   : save color palette
  */
  
 var tileCountX = 50;
@@ -80,7 +81,15 @@ function draw() {
 }
 
 function keyPressed() {
-  if (key=='s' || key=='S') saveCanvas(gd.timestamp(), 'png');
+  if (key == 's' || key =='S') saveCanvas(gd.timestamp(), 'png');
+  if (key == 'c' || key == 'C') {
+    // -- save an ase file (adobe swatch export) --
+    var colors = [];
+    for (var i=0; i<hueValues.length; i++) {
+      colors.push(color(hueValues[i],saturationValues[i],brightnessValues[i]));
+    }
+    writeFile([gd.ase.encode( colors )], gd.timestamp(), 'ase');
+  }
 
   if (key == '1') {
     for (var i=0; i<tileCountX; i++) {
