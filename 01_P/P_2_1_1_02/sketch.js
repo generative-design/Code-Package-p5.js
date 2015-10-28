@@ -17,7 +17,7 @@
 // limitations under the License.
 
 /**
- * changing strokeweight and strokecaps on diagonals in a grid
+ * changing strokeweight on diagonals in a grid with colors
  *   
  * MOUSE
  * position x          : left diagonal strokeweight
@@ -25,28 +25,47 @@
  * left click          : new random layout
  * 
  * KEYS
+ * s                   : save png
  * 1                   : round strokecap
  * 2                   : square strokecap
  * 3                   : project strokecap
- * s                   : save png
+ * 4                   : color left diagonal
+ * 5                   : color right diagonal
+ * 6                   : transparency left diagonal
+ * 7                   : transparency right diagonal
+ * 0                   : default
  */
 
 var tileCount = 20;
-var actRandomSeed = 0;
 
-var actStrokeCap = ROUND;
+var colorLeft;
+var colorRight;
 
+var alphaLeft = 100;
+var alphaRight = 100;
+
+var actRandomSeed;
+var actStrokeCap;
 
 function setup() {
   createCanvas(600, 600);
+
+  colorLeft = color(197, 0, 123);
+  colorRight = color(87, 35, 129);
+
+  actRandomSeed = 0;
+  actStrokeCap = ROUND;
+
 }
 
+
 function draw() {
-  background(255);
+  colorMode(HSB, 360, 100, 100, 100);
+  background(0, 0, 360);
   smooth();
   noFill();
   strokeCap(actStrokeCap);
-
+  
   randomSeed(actRandomSeed);
 
   for (var gridY=0; gridY<tileCount; gridY++) {
@@ -58,11 +77,13 @@ function draw() {
       var toggle = int(random(0,2));
 
       if (toggle == 0) {
-        strokeWeight(mouseX/20);
+        stroke(colorLeft, alphaLeft);
+        strokeWeight(mouseX/10);
         line(posX, posY, posX+width/tileCount, posY+height/tileCount);
       }
       if (toggle == 1) {
-        strokeWeight(mouseY/20);
+        stroke(colorRight, alphaRight);
+        strokeWeight(mouseY/10);
         line(posX, posY+width/tileCount, posX+height/tileCount, posY);
       }
     }
@@ -77,13 +98,46 @@ function mousePressed() {
 function keyReleased(){
   if (key == 's' || key == 'S') saveCanvas(gd.timestamp(), 'png');
   
-  if (key == '1'){
+  if (key == '1') actStrokeCap = ROUND;  
+  if (key == '2') actStrokeCap = SQUARE;
+  if (key == '3') actStrokeCap = PROJECT; 
+
+  if (key == '4'){
+    if (colorLeft == color(0, 0, 0)) {
+      colorLeft = color(323, 100, 77);
+    } else {
+      colorLeft = color(0);
+    } 
+  }
+  if (key == '5'){
+    if (colorRight == color(0, 0, 0)) {
+      colorRight = color(273, 73, 51);
+    } else {
+      colorRight = color(0, 0, 0);
+    } 
+  }
+  
+  if (key == '6') {
+    if (alphaLeft == 100) {
+      alphaLeft = 50;
+    } else {
+      alphaLeft = 100;
+    }
+  }
+  if (key == '7') {
+    if (alphaRight == 100) {
+      alphaRight = 50;
+    } else {
+      alphaRight = 100;
+    }
+  }
+    
+  if (key == '0'){
     actStrokeCap = ROUND;
+    colorLeft = color(0 , 0, 0);
+    colorRight = color(0, 0, 0);
+    alphaLeft = 100;
+    alphaRight = 100;
   }
-  if (key == '2'){
-    actStrokeCap = SQUARE;
-  }
-  if (key == '3'){
-    actStrokeCap = PROJECT;
-  }
+
 }
