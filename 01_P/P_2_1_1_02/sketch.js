@@ -1,4 +1,4 @@
-// P_2_0_03.pde
+// P_2_1_1_02.pde
 // 
 // Generative Gestaltung, ISBN: 978-3-87439-759-9
 // First Edition, Hermann Schmidt, Mainz, 2009
@@ -41,17 +41,22 @@ var tileCount = 20;
 var colorLeft;
 var colorRight;
 
-var alphaLeft = 100;
-var alphaRight = 100;
+var alphaLeft;
+var alphaRight;
 
 var actRandomSeed;
 var actStrokeCap;
 
 function setup() {
-  createCanvas(600, 600);
 
-  colorLeft = color(197, 0, 123);
-  colorRight = color(87, 35, 129);
+  createCanvas(600, 600);
+  colorMode(RGB, 255,255,255, 100);
+
+  alphaLeft = 100;
+  alphaRight = 100;
+
+  colorLeft = color(197, 0, 123, alphaLeft);
+  colorRight = color(87, 35, 129, alphaRight);
 
   actRandomSeed = 0;
   actStrokeCap = ROUND;
@@ -60,8 +65,7 @@ function setup() {
 
 
 function draw() {
-  colorMode(HSB, 360, 100, 100, 100);
-  background(0, 0, 360);
+  background(255);
   smooth();
   noFill();
   strokeCap(actStrokeCap);
@@ -77,12 +81,12 @@ function draw() {
       var toggle = int(random(0,2));
 
       if (toggle == 0) {
-        stroke(colorLeft, alphaLeft);
+        stroke(colorLeft);
         strokeWeight(mouseX/10);
         line(posX, posY, posX+width/tileCount, posY+height/tileCount);
       }
       if (toggle == 1) {
-        stroke(colorRight, alphaRight);
+        stroke(colorRight);
         strokeWeight(mouseY/10);
         line(posX, posY+width/tileCount, posX+height/tileCount, posY);
       }
@@ -103,26 +107,27 @@ function keyReleased(){
   if (key == '3') actStrokeCap = PROJECT; 
 
   if (key == '4'){
-    if (colorLeft == color(0, 0, 0)) {
-      colorLeft = color(323, 100, 77);
+    if (colorLeft.toString() == color(0, 0, 0, alphaLeft).toString()) {
+      colorLeft = color(197, 0, 123, alphaLeft);
     } else {
-      colorLeft = color(0);
+      colorLeft = color(0, 0, 0, alphaLeft);
     } 
   }
   if (key == '5'){
-    if (colorRight == color(0, 0, 0)) {
-      colorRight = color(273, 73, 51);
+    if (colorRight.toString() == color(0, 0, 0, alphaRight).toString()) {
+      colorRight = color(87, 35, 129, alphaRight);
     } else {
-      colorRight = color(0, 0, 0);
-    } 
+      colorRight = color(0, 0, 0, alphaRight);
+    }
+    console.info(colorRight);
   }
-  
   if (key == '6') {
     if (alphaLeft == 100) {
       alphaLeft = 50;
     } else {
       alphaLeft = 100;
     }
+    colorLeft = color(colorLeft.getRed(), colorLeft.getGreen(), colorLeft.getBlue(), alphaLeft)
   }
   if (key == '7') {
     if (alphaRight == 100) {
@@ -130,14 +135,15 @@ function keyReleased(){
     } else {
       alphaRight = 100;
     }
+    colorRight = color(colorRight.getRed(), colorRight.getGreen(), colorRight.getBlue(), alphaRight)
   }
     
   if (key == '0'){
     actStrokeCap = ROUND;
-    colorLeft = color(0 , 0, 0);
-    colorRight = color(0, 0, 0);
     alphaLeft = 100;
     alphaRight = 100;
+    colorLeft = color(0 , 0, 0, alphaLeft);
+    colorRight = color(0, 0, 0, alphaRight);
   }
 
 }
