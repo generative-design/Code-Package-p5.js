@@ -34,11 +34,14 @@
 var tileCount = 20;
 var actRandomSeed = 0;
 
-var actStrokeCap = ROUND;
+var actStrokeCap;
 
 
 function setup() {
   createCanvas(600, 600);
+  
+  actStrokeCap = ROUND;
+
 }
 
 function draw() {

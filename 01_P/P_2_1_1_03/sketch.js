@@ -26,7 +26,6 @@
  * 
  * KEYS
  * s                   : save png
- * p                   : save pdf
  * 1                   : color left diagonal
  * 2                   : color right diagonal
  * 3                   : switch transparency left diagonal on/off
@@ -34,24 +33,32 @@
  * 0                   : default
  */
 
-color colorBack = color(255);
-color colorLeft = color(0);
-color colorRight = color(0);
+var colorBack;
+var colorLeft;
+var colorRight;
 
-float tileCount = 1;
-boolean transparentLeft = false;
-boolean transparentRight = false;
-float alphaLeft = 100;
-float alphaRight = 100;
+var tileCount = 1;
+var transparentLeft = false;
+var transparentRight = false;
+var alphaLeft = 0;
+var alphaRight = 100;
 
-int actRandomSeed = 0;
+var actRandomSeed = 0;
 
 
 function setup() {
-  size(600, 600);
+  createCanvas(600, 600);
+
+  colorBack = color(255);
 
   colorMode(HSB, 360, 100, 100, 100);
-  colorLeft = color(323, 100, 77);
+
+  colorRight = color(0, 0, 0, alphaRight);
+  colorLeft = color(323, 100, 77, alphaLeft);
+
+  console.info(colorLeft);
+  console.info(colorRight);
+
 }
 
 
@@ -65,27 +72,31 @@ function draw() {
 
   tileCount = mouseY/15;
 
-  for (int gridY=0; gridY<tileCount; gridY++) {
-    for (int gridX=0; gridX<tileCount; gridX++) {
+  for (var gridY=0; gridY<=tileCount; gridY++) {
+    for (var gridX=0; gridX<tileCount; gridX++) {
 
-      float posX = width/tileCount*gridX;
-      float posY = height/tileCount*gridY;
+      var posX = width/tileCount*gridX;
+      var posY = height/tileCount*gridY;
 
-      if (transparentLeft == true) alphaLeft = gridY*10; 
-      else alphaLeft = 100;
+      if (transparentLeft == true) alphaLeft = gridY*2;
+      else alphaLeft = 0;
+
+      colorLeft = color(colorLeft.getHue(), colorLeft.getSaturation(), colorLeft.getBrightness(), alphaLeft)
 
       if (transparentRight == true) alphaRight = 100-gridY*10; 
       else alphaRight = 100;
 
-      int toggle = (int) random(0,2);
+      colorRight = color(colorRight.getHue(), colorRight.getSaturation(), colorRight.getBrightness(), alphaRight )
+
+      var toggle = int(random(0,2));
 
       if (toggle == 0) {
-        stroke(colorLeft, alphaLeft);
+        stroke(colorLeft);
         line(posX, posY, posX+(width/tileCount)/2, posY+height/tileCount);
         line(posX+(width/tileCount)/2, posY, posX+(width/tileCount), posY+height/tileCount);
       }
       if (toggle == 1) {
-        stroke(colorRight, alphaRight);
+        stroke(colorRight);
         line(posX, posY+width/tileCount, posX+(height/tileCount)/2, posY);
         line(posX+(height/tileCount)/2, posY+width/tileCount, posX+(height/tileCount), posY);
       }
@@ -96,32 +107,31 @@ function draw() {
 
 
 function mousePressed() {
-  actRandomSeed = (int) random(100000);
+  actRandomSeed = int(random(100000));
 }
 
 
 function keyReleased(){
   if (key == 's' || key == 'S') saveCanvas(gd.timestamp(), 'png');
-  if (key == 'p' || key == 'P') savePDF = true;
 
   if (key == '1'){
-    if (colorLeft == color(273, 73, 51)) {
-      colorLeft = color(323, 100, 77);
+    if (colorLeft.toString() == color(273, 73, 51, alphaLeft).toString()) {
+      colorLeft = color(323, 100, 77, alphaLeft);
     } 
     else {
-      colorLeft = color(273, 73, 51);
-      //      colorLeft = color(0);
+      colorLeft = color(273, 73, 51, alphaLeft);
     } 
   }
   if (key == '2'){
-    if (colorRight == color(0)) {
-      colorRight = color(192, 100, 64);
+    if (colorRight.toString() == color(0, 0, 0, alphaRight).toString()) {
+      colorRight = color(192, 100, 64, alphaRight);
     } 
     else {
-      colorRight = color(0);
+      colorRight = color(0, 0, 0, alphaRight);
     } 
   }
   if (key == '3'){
+    console.info(colorLeft);
     transparentLeft =! transparentLeft;
   }
   if (key == '4'){
@@ -131,8 +141,8 @@ function keyReleased(){
   if (key == '0'){
     transparentLeft = false;
     transparentRight = false;
-      colorLeft = color(323, 100, 77);
-      colorRight = color(0);
+      colorLeft = color(323, 100, 77, alphaLeft);
+      colorRight = color(0, 0, 0, alphaRight);
   }
 }
 
