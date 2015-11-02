@@ -114,35 +114,29 @@ function draw(){
 function keyReleased(){
   if (key == 's' || key == 'S') saveCanvas(gd.timestamp(), 'png');
 
-  if (key == '1'){
-    if (colorLeft.toString() == color(273, 73, 51, alphaLeft).toString()) {
-      colorLeft = color(323, 100, 77, alphaLeft);
-    } 
-    else {
-      colorLeft = color(273, 73, 51, alphaLeft);
-    } 
-  }
-  if (key == '2'){
-    if (colorRight.toString() == color(0, 0, 0, alphaRight).toString()) {
-      colorRight = color(192, 100, 64, alphaRight);
-    } 
-    else {
-      colorRight = color(0, 0, 0, alphaRight);
-    } 
-  }
-  if (key == '3'){
-    console.info(colorLeft);
-    transparentLeft =! transparentLeft;
-  }
-  if (key == '4'){
-    transparentRight =! transparentRight;
+  if (key == 'c' || key == 'C') fillMode = (fillMode+1) % 4;
+  if (key == 'd' || key == 'D') sizeMode = (sizeMode+1) % 3;
+
+  if (key == 'g' || key == 'G') {
+    tileCount = tileCount+5;
+    if (tileCount > 20) {
+      tileCount = 10;
+    }
+    tileWidth = width/float(tileCount);
+    tileHeight = height/float(tileCount);
   }
 
-  if (key == '0'){
-    transparentLeft = false;
-    transparentRight = false;
-      colorLeft = color(323, 100, 77, alphaLeft);
-      colorRight = color(0, 0, 0, alphaRight);
-  }
+  if (key == '1') currentShape = loadShape("module_1.svg");
+  if (key == '2') currentShape = loadShape("module_2.svg");
+  if (key == '3') currentShape = loadShape("module_3.svg");
+  if (key == '4') currentShape = loadShape("module_4.svg");
+  if (key == '5') currentShape = loadShape("module_5.svg");
+  if (key == '6') currentShape = loadShape("module_6.svg");
+  if (key == '7') currentShape = loadShape("module_7.svg");
+
+  if (keyCode == UP) shapeSize +=5;
+  if (keyCode == DOWN) shapeSize = max(shapeSize-5, 5);
+  if (keyCode == LEFT) shapeAngle -=5;
+  if (keyCode == RIGHT) shapeAngle +=5;
 }
 
