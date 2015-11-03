@@ -55,10 +55,6 @@ function setup() {
 
   colorRight = color(0, 0, 0, alphaRight);
   colorLeft = color(323, 100, 77, alphaLeft);
-
-  console.info(colorLeft);
-  console.info(colorRight);
-
 }
 
 

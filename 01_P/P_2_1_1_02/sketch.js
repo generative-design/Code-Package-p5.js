@@ -48,7 +48,6 @@ var actRandomSeed;
 var actStrokeCap;
 
 function setup() {
-
   createCanvas(600, 600);
   colorMode(RGB, 255,255,255, 100);
 
@@ -60,7 +59,6 @@ function setup() {
 
   actRandomSeed = 0;
   actStrokeCap = ROUND;
-
 }
 
 

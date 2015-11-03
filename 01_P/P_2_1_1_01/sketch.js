@@ -41,7 +41,6 @@ function setup() {
   createCanvas(600, 600);
   
   actStrokeCap = ROUND;
-
 }
 
 function draw() {
