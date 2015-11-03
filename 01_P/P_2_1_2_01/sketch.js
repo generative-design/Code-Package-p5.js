@@ -1,4 +1,4 @@
-// P_2_0_01.pde
+// P_2_1_2_01.pde
 // 
 // Generative Gestaltung, ISBN: 978-3-87439-759-9
 // First Edition, Hermann Schmidt, Mainz, 2009
@@ -17,45 +17,61 @@
 // limitations under the License.
 
 /**
- * drawing a filled circle with lines.
+ * changing size and position of circles in a grid
  *   
  * MOUSE
- * position x          : length
- * position y          : thickness and number of lines
+ * position x          : circle position
+ * position y          : circle size
+ * left click          : random position
  * 
  * KEYS
  * s                   : save png
  */
- 
-function setup() {
-  createCanvas(550, 550);
+
+
+
+var tileCount = 20;
+var actRandomSeed = 0;
+var circleColor, circleAlpha;
+
+function setup(){
+  createCanvas(600, 600);
+  circleAlpha = 180;
+  circleColor = color(0, 0, 0, circleAlpha);
 }
 
 function draw() {
 
-  strokeCap(SQUARE);
+  translate(width/tileCount/2, height/tileCount/2);
+
+  background(255);
   smooth();
   noFill();
-  background(255);
-  translate(width/2,height/2);
+  
+  randomSeed(actRandomSeed);
 
-  var circleResolution = map(mouseY, 0,height, 2,80);
-  var radius = mouseX-width/2 + 0.5;
-  var angle = TWO_PI/circleResolution;
+  stroke(circleColor);
+  strokeWeight(mouseY/60);
 
-  strokeWeight(mouseY/20);
+  for (var gridY=0; gridY<tileCount; gridY++) {
+    for (var gridX=0; gridX<tileCount; gridX++) {
 
-  beginShape();
-  for (var i=0; i<=circleResolution; i++){
-    var x = cos(angle*i) * radius;
-    var y = sin(angle*i) * radius;
-    line(0, 0, x, y);
-    // vertex(x, y);
+      var posX = width/tileCount * gridX;
+      var posY = height/tileCount * gridY;
+
+      var shiftX = random(-mouseX, mouseX)/20;
+      var shiftY = random(-mouseX, mouseX)/20;
+
+      ellipse(posX+shiftX, posY+shiftY, mouseY/15, mouseY/15);
+    }
   }
-  endShape();
-
+  
 }
 
-function keyPressed() {
+function mousePressed() {
+  actRandomSeed = int(random(100000));
+}
+
+function keyReleased(){
   if (key == 's' || key == 'S') saveCanvas(gd.timestamp(), 'png');
 }
