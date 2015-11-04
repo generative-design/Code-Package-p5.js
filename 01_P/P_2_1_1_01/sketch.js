@@ -39,7 +39,6 @@ var actStrokeCap;
 
 function setup() {
   createCanvas(600, 600);
-  
   actStrokeCap = ROUND;
 }
 
@@ -79,13 +78,7 @@ function mousePressed() {
 function keyReleased(){
   if (key == 's' || key == 'S') saveCanvas(gd.timestamp(), 'png');
   
-  if (key == '1'){
-    actStrokeCap = ROUND;
-  }
-  if (key == '2'){
-    actStrokeCap = SQUARE;
-  }
-  if (key == '3'){
-    actStrokeCap = PROJECT;
-  }
+  if (key == '1') actStrokeCap = ROUND;
+  if (key == '2') actStrokeCap = SQUARE;
+  if (key == '3') actStrokeCap = PROJECT;
 }

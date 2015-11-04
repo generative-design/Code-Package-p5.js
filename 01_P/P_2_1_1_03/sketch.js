@@ -33,7 +33,7 @@
  * 0                   : default
  */
 
-var colorBack;
+var colorWhite;
 var colorLeft;
 var colorRight;
 
@@ -49,7 +49,7 @@ var actRandomSeed = 0;
 function setup() {
   createCanvas(600, 600);
 
-  colorBack = color(255);
+  colorWhite = color(255);
 
   colorMode(HSB, 360, 100, 100, 100);
 
@@ -57,10 +57,8 @@ function setup() {
   colorLeft = color(323, 100, 77, alphaLeft);
 }
 
-
 function draw() {
-  colorMode(HSB, 360, 100, 100, 100);
-  background(colorBack);
+  background(colorWhite);
   smooth();
   noFill();
   randomSeed(actRandomSeed);
@@ -101,17 +99,15 @@ function draw() {
 
 }
 
-
 function mousePressed() {
   actRandomSeed = int(random(100000));
 }
-
 
 function keyReleased(){
   if (key == 's' || key == 'S') saveCanvas(gd.timestamp(), 'png');
 
   if (key == '1'){
-    if (colorLeft.toString() == color(273, 73, 51, alphaLeft).toString()) {
+    if (colorsEqual(colorLeft, color(273, 73, 51, alphaLeft))) {
       colorLeft = color(323, 100, 77, alphaLeft);
     } 
     else {
@@ -119,7 +115,7 @@ function keyReleased(){
     } 
   }
   if (key == '2'){
-    if (colorRight.toString() == color(0, 0, 0, alphaRight).toString()) {
+    if (colorsEqual(colorRight, color(0, 0, 0, alphaRight))) {
       colorRight = color(192, 100, 64, alphaRight);
     } 
     else {
@@ -142,3 +138,6 @@ function keyReleased(){
   }
 }
 
+function colorsEqual(col1, col2) {
+  return col1.toString() === col2.toString();
+}
