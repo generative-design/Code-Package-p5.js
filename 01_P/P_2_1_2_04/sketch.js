@@ -1,4 +1,4 @@
-// P_2_1_1_01.pde
+// P_2_1_2_04.pde
 // 
 // Generative Gestaltung, ISBN: 978-3-87439-759-9
 // First Edition, Hermann Schmidt, Mainz, 2009
@@ -17,59 +17,62 @@
 // limitations under the License.
 
 /**
- * changing strokeweight and strokecaps on diagonals in a grid
+ * moving corners of rectangles in a grid
  *   
  * MOUSE
- * position x          : left diagonal strokeweight
- * position y          : right diagonal strokeweight
- * left click          : new random layout
+ * position x          : corner position offset x
+ * position y          : corner position offset y
+ * left click          : random position
  * 
  * KEYS
- * 1                   : round strokecap
- * 2                   : square strokecap
- * 3                   : project strokecap
  * s                   : save png
  */
+ 
 
 var tileCount = 20;
+var rectSize = 30;
+
 var actRandomSeed = 0;
 
-var actStrokeCap;
 
-
-function setup() {
+function setup(){
   createCanvas(600, 600);
-  actStrokeCap = ROUND;
 }
 
 function draw() {
-  background(255);
+  colorMode(HSB, 360, 100, 100, 100);
+  background(0, 0, 360);
   smooth();
-  noFill();
-  strokeCap(actStrokeCap);
+  noStroke();
+
+  fill(192,100,64,60);
 
   randomSeed(actRandomSeed);
 
   for (var gridY=0; gridY<tileCount; gridY++) {
     for (var gridX=0; gridX<tileCount; gridX++) {
+      
+      var posX = width/tileCount * gridX;
+      var posY = height/tileCount * gridY;
 
-      var posX = width/tileCount*gridX;
-      var posY = height/tileCount*gridY;
-
-      var toggle = int(random(0,2));
-
-      if (toggle == 0) {
-        strokeWeight(mouseX/20);
-        line(posX, posY, posX+width/tileCount, posY+height/tileCount);
-      }
-      if (toggle == 1) {
-        strokeWeight(mouseY/20);
-        line(posX, posY+width/tileCount, posX+height/tileCount, posY);
-      }
+      var shiftX1 = mouseX/20 * random(-1, 1);
+      var shiftY1 = mouseY/20 * random(-1, 1);
+      var shiftX2 = mouseX/20 * random(-1, 1);
+      var shiftY2 = mouseY/20 * random(-1, 1);
+      var shiftX3 = mouseX/20 * random(-1, 1);
+      var shiftY3 = mouseY/20 * random(-1, 1);
+      var shiftX4 = mouseX/20 * random(-1, 1);
+      var shiftY4 = mouseY/20 * random(-1, 1);
+     
+      beginShape();
+      vertex(posX+shiftX1, posY+shiftY1);
+      vertex(posX+rectSize+shiftX2, posY+shiftY2);
+      vertex(posX+rectSize+shiftX3, posY+rectSize+shiftY3);
+      vertex(posX+shiftX4, posY+rectSize+shiftY4);
+      endShape(CLOSE);
     }
-  }
+  } 
 }
-
 
 function mousePressed() {
   actRandomSeed = int(random(100000));
@@ -77,8 +80,4 @@ function mousePressed() {
 
 function keyReleased(){
   if (key == 's' || key == 'S') saveCanvas(gd.timestamp(), 'png');
-  
-  if (key == '1') actStrokeCap = ROUND;
-  if (key == '2') actStrokeCap = SQUARE;
-  if (key == '3') actStrokeCap = PROJECT;
 }

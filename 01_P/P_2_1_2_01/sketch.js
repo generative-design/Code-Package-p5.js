@@ -1,4 +1,4 @@
-// P_2_1_1_01.pde
+// P_2_1_2_01.pde
 // 
 // Generative Gestaltung, ISBN: 978-3-87439-759-9
 // First Edition, Hermann Schmidt, Mainz, 2009
@@ -17,59 +17,54 @@
 // limitations under the License.
 
 /**
- * changing strokeweight and strokecaps on diagonals in a grid
+ * changing size and position of circles in a grid
  *   
  * MOUSE
- * position x          : left diagonal strokeweight
- * position y          : right diagonal strokeweight
- * left click          : new random layout
+ * position x          : circle position
+ * position y          : circle size
+ * left click          : random position
  * 
  * KEYS
- * 1                   : round strokecap
- * 2                   : square strokecap
- * 3                   : project strokecap
  * s                   : save png
  */
 
+
 var tileCount = 20;
 var actRandomSeed = 0;
+var circleAlpha = 0.5;
+var circleColor
 
-var actStrokeCap;
 
-
-function setup() {
+function setup(){
   createCanvas(600, 600);
-  actStrokeCap = ROUND;
+  circleColor = color(0, 0, 0, circleAlpha);
 }
 
 function draw() {
+  translate(width/tileCount/2, height/tileCount/2);
+
   background(255);
   smooth();
   noFill();
-  strokeCap(actStrokeCap);
-
+  
   randomSeed(actRandomSeed);
+
+  stroke(circleColor);
+  strokeWeight(mouseY/60);
 
   for (var gridY=0; gridY<tileCount; gridY++) {
     for (var gridX=0; gridX<tileCount; gridX++) {
 
-      var posX = width/tileCount*gridX;
-      var posY = height/tileCount*gridY;
+      var posX = width/tileCount * gridX;
+      var posY = height/tileCount * gridY;
 
-      var toggle = int(random(0,2));
+      var shiftX = random(-mouseX, mouseX)/20;
+      var shiftY = random(-mouseX, mouseX)/20;
 
-      if (toggle == 0) {
-        strokeWeight(mouseX/20);
-        line(posX, posY, posX+width/tileCount, posY+height/tileCount);
-      }
-      if (toggle == 1) {
-        strokeWeight(mouseY/20);
-        line(posX, posY+width/tileCount, posX+height/tileCount, posY);
-      }
+      ellipse(posX+shiftX, posY+shiftY, mouseY/15, mouseY/15);
     }
   }
 }
-
 
 function mousePressed() {
   actRandomSeed = int(random(100000));
@@ -77,8 +72,4 @@ function mousePressed() {
 
 function keyReleased(){
   if (key == 's' || key == 'S') saveCanvas(gd.timestamp(), 'png');
-  
-  if (key == '1') actStrokeCap = ROUND;
-  if (key == '2') actStrokeCap = SQUARE;
-  if (key == '3') actStrokeCap = PROJECT;
 }

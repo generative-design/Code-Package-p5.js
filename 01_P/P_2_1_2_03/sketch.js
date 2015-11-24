@@ -1,4 +1,4 @@
-// P_2_1_1_01.pde
+// P_2_1_2_03.pde
 // 
 // Generative Gestaltung, ISBN: 978-3-87439-759-9
 // First Edition, Hermann Schmidt, Mainz, 2009
@@ -17,59 +17,49 @@
 // limitations under the License.
 
 /**
- * changing strokeweight and strokecaps on diagonals in a grid
+ * changing size of circles in a rad grid depending the mouseposition
  *   
  * MOUSE
- * position x          : left diagonal strokeweight
- * position y          : right diagonal strokeweight
- * left click          : new random layout
+ * position x/y        : module size and offset z
  * 
  * KEYS
- * 1                   : round strokecap
- * 2                   : square strokecap
- * 3                   : project strokecap
  * s                   : save png
  */
+ 
 
 var tileCount = 20;
+var moduleColor;
+var moduleAlpha = 180;
 var actRandomSeed = 0;
+var max_distance = 500; 
 
-var actStrokeCap;
 
-
-function setup() {
+function setup(){
   createCanvas(600, 600);
-  actStrokeCap = ROUND;
+  moduleColor = color(0, 0, 0, moduleAlpha);
 }
 
 function draw() {
   background(255);
   smooth();
   noFill();
-  strokeCap(actStrokeCap);
 
   randomSeed(actRandomSeed);
 
-  for (var gridY=0; gridY<tileCount; gridY++) {
-    for (var gridX=0; gridX<tileCount; gridX++) {
+  stroke(moduleColor);
+  strokeWeight(3);
 
-      var posX = width/tileCount*gridX;
-      var posY = height/tileCount*gridY;
-
-      var toggle = int(random(0,2));
-
-      if (toggle == 0) {
-        strokeWeight(mouseX/20);
-        line(posX, posY, posX+width/tileCount, posY+height/tileCount);
-      }
-      if (toggle == 1) {
-        strokeWeight(mouseY/20);
-        line(posX, posY+width/tileCount, posX+height/tileCount, posY);
-      }
+  for (var gridY=0; gridY<width; gridY+=25) {
+    for (var gridX=0; gridX<height; gridX+=25) {
+      var diameter = dist(mouseX, mouseY, gridX, gridY);
+      diameter = diameter/max_distance * 40;
+      push();
+      translate(gridX, gridY, diameter*5);
+      rect(0, 0, diameter, diameter);    // also nice: ellipse(...)
+      pop(); 
     }
   }
 }
-
 
 function mousePressed() {
   actRandomSeed = int(random(100000));
@@ -77,8 +67,4 @@ function mousePressed() {
 
 function keyReleased(){
   if (key == 's' || key == 'S') saveCanvas(gd.timestamp(), 'png');
-  
-  if (key == '1') actStrokeCap = ROUND;
-  if (key == '2') actStrokeCap = SQUARE;
-  if (key == '3') actStrokeCap = PROJECT;
 }
