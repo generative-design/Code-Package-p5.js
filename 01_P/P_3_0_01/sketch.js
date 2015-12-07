@@ -60,6 +60,7 @@ function mouseDragged(){
 
 function keyReleased() {
   if (keyCode == CONTROL) saveCanvas(gd.timestamp(), 'png');
+  // if (key != CODED && (int)key > 32) letter = str(key);
 }
 
 function keyTyped() {
