@@ -24,8 +24,8 @@
  * 
  * KEYS
  * a-z                  : text input (keyboard)
- * backspace            : delete last typed letter
- * ctrl                 : save png + pdf
+ * backspace/delete     : delete last typed letter
+ * ctrl                 : save png
  */
 
 var textTyped = "Type slow and fast!";
@@ -110,22 +110,22 @@ function keyReleased() {
 
 function keyPressed() {
   switch(keyCode) {
-  case DELETE:
-  case BACKSPACE:
-    if (textTyped.length > 0) {
-      console.info(textTyped);
-      textTyped = textTyped.substring(0,max(0,textTyped.length-1));
-      fontSizes = shorten(fontSizes);
+    case DELETE:
+    case BACKSPACE:
+      if (textTyped.length > 0) {
+        console.info(textTyped);
+        textTyped = textTyped.substring(0,max(0,textTyped.length-1));
+        fontSizes = shorten(fontSizes);
 
-      return false; // prevent any default behavior
-    }
-    break;
-    // disable those keys
-  case TAB:
-  case ENTER:
-  case RETURN:
-  case ESCAPE:
-    break;
+        return false; // prevent any default behavior
+      }
+      break;
+      // disable those keys
+    case TAB:
+    case ENTER:
+    case RETURN:
+    case ESCAPE:
+      break;
   }
 
   // // reset timer
