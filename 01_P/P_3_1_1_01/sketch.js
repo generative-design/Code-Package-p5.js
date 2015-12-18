@@ -42,7 +42,6 @@ var tracking = 0; // between letters
 var font;
 
 
-
 function setup() {
   createCanvas(800, 600);
 
@@ -101,7 +100,6 @@ function draw() {
 }
 
 
-
 function keyReleased() {
   // export png
   if (keyCode == CONTROL) saveCanvas(gd.timestamp(), 'png');
@@ -113,10 +111,9 @@ function keyPressed() {
     case DELETE:
     case BACKSPACE:
       if (textTyped.length > 0) {
-        console.info(textTyped);
+        println(textTyped);
         textTyped = textTyped.substring(0,max(0,textTyped.length-1));
         fontSizes = shorten(fontSizes);
-
         return false; // prevent any default behavior
       }
       break;
@@ -128,7 +125,7 @@ function keyPressed() {
       break;
   }
 
-  // // reset timer
+  // reset timer
   pMillis = millis();
 }
 
