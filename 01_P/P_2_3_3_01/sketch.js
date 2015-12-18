@@ -29,10 +29,11 @@
  * s                   : save png
  */
 
-var x = 0, y = 0;
+var x = 0;
+var y = 0;
 var stepSize = 5.0;
 
-var font;
+var font = "Georgia";
 var letters = "Sie hören nicht die folgenden Gesänge, Die Seelen, denen ich die ersten sang, Zerstoben ist das freundliche Gedränge, Verklungen ach! der erste Wiederklang.";
 var fontSizeMin = 3;
 var angleDistortion = 0.0;
@@ -50,7 +51,6 @@ function setup() {
   x = mouseX;
   y = mouseY;
 
-  font = "Georgia"
   textFont(font);
   textAlign(LEFT);
   fill(0);
