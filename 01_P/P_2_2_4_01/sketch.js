@@ -25,9 +25,9 @@
 
 var maxCount = 5000; //max count of the cirlces
 var currentCount = 1;
-var x = [maxCount];
-var y = [maxCount];
-var r = [maxCount]; // radius
+var x = [];
+var y = [];
+var r = []; // radius
 
 function setup() {
   createCanvas(600,600);
@@ -48,7 +48,7 @@ function draw() {
   strokeWeight(0.5);
   //noFill();
 
-  // create a radom set of parameters
+  // create a random set of parameters
   var newR = random(1, 7);
   var newX = random(0+newR, width-newR);
   var newY = random(0+newR, height-newR);
