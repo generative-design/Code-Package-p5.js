@@ -41,11 +41,10 @@ var drawMode = 1;
 function setup(){
   createCanvas(550,550);
   rectMode(CENTER);
-  colorMode(HSB);
 }
 
 function draw() {
-  background(0,0,100);
+  background(255);
   noFill();
   stroke(0);
 
@@ -76,8 +75,8 @@ function draw() {
         case 2:
           noStroke();
           for (var i = 0; i < count; i++) {
-            var gradient = lerpColor(color(0,0.01),color(52,100,71,0.1),i / count);
-            fill(gradient);
+            var gradient = lerpColor(color(0,0),color(166,141,5),i / count);
+            fill(gradient,i / count * 200);
             rotate(QUARTER_PI);
             rect(0,0,tileWidth,tileHeight);
             scale(1 - 3 / count);
@@ -85,7 +84,6 @@ function draw() {
           }
           break;
         case 3:
-          colorMode(RGB);
           noStroke();
           for (var i = 0; i < count; i++) {
             var gradient = lerpColor(color(0,130,164),color(255),i / count);
@@ -104,7 +102,6 @@ function draw() {
             scale(1 - 1.5 / count);
             rotate(para * 1.5);
           }
-          colorMode(HSB);
           break;
       }
 
