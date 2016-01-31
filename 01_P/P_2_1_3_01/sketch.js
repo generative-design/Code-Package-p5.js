@@ -74,8 +74,8 @@ function draw() {
 
       // draw module
       for (var i = 0; i < circleCount; i++) {
-        var diameter = map(i,0,circleCount - 1,tileWidth,endSize);
-        var offset = map(i,0,circleCount - 1,0,endOffset);
+        var diameter = map(i,0,circleCount,tileWidth,endSize);
+        var offset = map(i,0,circleCount,0,endOffset);
         ellipse(offset,0,diameter,diameter);
       }
       pop();
