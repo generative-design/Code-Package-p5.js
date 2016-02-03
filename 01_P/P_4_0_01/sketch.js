@@ -26,6 +26,7 @@
  * KEYS
  * s                    : save png
  */
+'use strict';
 
 var img;
 
@@ -33,7 +34,6 @@ function setup() {
   createCanvas(650,450);
   img = loadImage("data/image.jpg");
 }
-
 
 function draw() {
   var stepX = width  / (mouseX / 3 + 1);
