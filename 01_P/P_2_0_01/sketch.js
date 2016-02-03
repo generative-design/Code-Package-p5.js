@@ -1,5 +1,5 @@
 // P_2_0_01.pde
-// 
+//
 // Generative Gestaltung, ISBN: 978-3-87439-759-9
 // First Edition, Hermann Schmidt, Mainz, 2009
 // Hartmut Bohnacker, Benedikt Gross, Julia Laub, Claudius Lazzeroni
@@ -18,23 +18,23 @@
 
 /**
  * drawing a filled circle with lines.
- *   
+ *
  * MOUSE
  * position x          : length
  * position y          : thickness and number of lines
- * 
+ *
  * KEYS
  * s                   : save png
  */
- 
+'use strict';
+
 function setup() {
   createCanvas(550, 550);
+  strokeCap(SQUARE);
+  noFill();
 }
 
 function draw() {
-  strokeCap(SQUARE);
-  smooth();
-  noFill();
   background(255);
   translate(width/2,height/2);
 

@@ -1,5 +1,5 @@
 // P_2_1_1_03.pde
-// 
+//
 // Generative Gestaltung, ISBN: 978-3-87439-759-9
 // First Edition, Hermann Schmidt, Mainz, 2009
 // Hartmut Bohnacker, Benedikt Gross, Julia Laub, Claudius Lazzeroni
@@ -18,12 +18,12 @@
 
 /**
  * changing number, color and strokeweight on diagonals in a grid
- *   
+ *
  * MOUSE
  * position x          : diagonal strokeweight
  * position y          : number diagonals
  * left click          : new random layout
- * 
+ *
  * KEYS
  * s                   : save png
  * 1                   : color left diagonal
@@ -32,6 +32,7 @@
  * 4                   : switch transparency right diagonal on/off
  * 0                   : default
  */
+'use strict';
 
 var colorWhite;
 var colorLeft;
@@ -45,22 +46,18 @@ var alphaRight = 100;
 
 var actRandomSeed = 0;
 
-
 function setup() {
   createCanvas(600, 600);
+  colorMode(HSB, 360, 100, 100, 100);
+  noFill();
 
   colorWhite = color(255);
-
-  colorMode(HSB, 360, 100, 100, 100);
-
   colorRight = color(0, 0, 0, alphaRight);
   colorLeft = color(323, 100, 77, alphaLeft);
 }
 
 function draw() {
   background(colorWhite);
-  smooth();
-  noFill();
   randomSeed(actRandomSeed);
   strokeWeight(mouseX/15);
 
@@ -77,7 +74,7 @@ function draw() {
 
       colorLeft = color(colorLeft.getHue(), colorLeft.getSaturation(), colorLeft.getBrightness(), alphaLeft)
 
-      if (transparentRight == true) alphaRight = 100-gridY*10; 
+      if (transparentRight == true) alphaRight = 100-gridY*10;
       else alphaRight = 100;
 
       colorRight = color(colorRight.getHue(), colorRight.getSaturation(), colorRight.getBrightness(), alphaRight )
@@ -109,18 +106,16 @@ function keyReleased(){
   if (key == '1'){
     if (colorsEqual(colorLeft, color(273, 73, 51, alphaLeft))) {
       colorLeft = color(323, 100, 77, alphaLeft);
-    } 
-    else {
+    } else {
       colorLeft = color(273, 73, 51, alphaLeft);
-    } 
+    }
   }
   if (key == '2'){
     if (colorsEqual(colorRight, color(0, 0, 0, alphaRight))) {
       colorRight = color(192, 100, 64, alphaRight);
-    } 
-    else {
+    } else {
       colorRight = color(0, 0, 0, alphaRight);
-    } 
+    }
   }
   if (key == '3'){
     console.info(colorLeft);
@@ -133,8 +128,8 @@ function keyReleased(){
   if (key == '0'){
     transparentLeft = false;
     transparentRight = false;
-      colorLeft = color(323, 100, 77, alphaLeft);
-      colorRight = color(0, 0, 0, alphaRight);
+    colorLeft = color(323, 100, 77, alphaLeft);
+    colorRight = color(0, 0, 0, alphaRight);
   }
 }
 

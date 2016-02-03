@@ -1,5 +1,5 @@
 // P_2_1_2_02.pde
-// 
+//
 // Generative Gestaltung, ISBN: 978-3-87439-759-9
 // First Edition, Hermann Schmidt, Mainz, 2009
 // Hartmut Bohnacker, Benedikt Gross, Julia Laub, Claudius Lazzeroni
@@ -18,12 +18,12 @@
 
 /**
  * changing module color and positions in a grid
- *   
+ *
  * MOUSE
  * position x          : offset x
  * position y          : offset y
  * left click          : random position
- * 
+ *
  * KEYS
  * 1-3                 : different sets of colors
  * 0                   : default
@@ -31,7 +31,7 @@
  * arrow left/right    : foreground module size
  * s                   : save png
  */
-
+'use strict';
 
 var moduleColorBackground;
 var moduleColorForeground;
@@ -42,29 +42,26 @@ var moduleAlphaForeground = 100;
 var moduleRadiusBackground = 30;
 var moduleRadiusForeground = 15;
 
-var backColor;
-
+var backgroundColor;
 
 var tileCount = 20;
 var actRandomSeed = 0;
 
 function setup(){
   createCanvas(600, 600);
-
   colorMode(HSB, 360, 100, 100, 100);
+  noStroke();
 
   moduleColorBackground = color(0, 0, 0, moduleAlphaBackground);
   moduleColorForeground = color(0, 0, 100, moduleAlphaForeground);
 
-  backColor = color(0, 0, 100);
+  backgroundColor = color(0, 0, 100);
 }
 
 function draw() {
   translate(width/tileCount/2, height/tileCount/2);
 
-  background(backColor);
-  smooth();
-  noStroke();
+  background(backgroundColor);
 
   randomSeed(actRandomSeed);
 
@@ -105,25 +102,25 @@ function keyReleased(){
   if (key == '1'){
     if (colorsEqual(moduleColorBackground, color(0, 0, 0, moduleAlphaBackground))) {
       moduleColorBackground = color(273, 73, 51, moduleAlphaBackground);
-    } 
+    }
     else {
       moduleColorBackground = color(0, 0, 0, moduleAlphaBackground);
-    } 
+    }
   }
   if (key == '2'){
     if (colorsEqual(moduleColorForeground, color(360, 100, 100, moduleAlphaForeground))) {
       moduleColorForeground = color(323, 100, 77, moduleAlphaForeground);
-    } 
+    }
     else {
       moduleColorForeground = color(360, 100, 100, moduleAlphaForeground);
-    } 
+    }
   }
 
   if (key == '3'){
     if (moduleAlphaBackground == 100) {
       moduleAlphaBackground = 50;
       moduleAlphaForeground = 50;
-    } 
+    }
     else {
       moduleAlphaBackground = 100;
       moduleAlphaForeground = 100;
@@ -143,7 +140,7 @@ function keyReleased(){
     );
   }
 
-  if (key == '0'){  
+  if (key == '0'){
     moduleRadiusBackground = 20;
     moduleRadiusForeground = 10;
     moduleAlphaBackground = 100;

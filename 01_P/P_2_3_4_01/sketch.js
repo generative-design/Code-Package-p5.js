@@ -1,5 +1,5 @@
 // P_2_3_4_01.pde
-// 
+//
 // Generative Gestaltung, ISBN: 978-3-87439-759-9
 // First Edition, Hermann Schmidt, Mainz, 2009
 // Hartmut Bohnacker, Benedikt Gross, Julia Laub, Claudius Lazzeroni
@@ -17,11 +17,11 @@
 // limitations under the License.
 
 /**
- * draw tool. shows how to draw with dynamic elements. 
- * 
+ * draw tool. shows how to draw with dynamic elements.
+ *
  * MOUSE
  * drag                : draw
- * 
+ *
  * KEYS
  * 1-9                 : switch module
  * del, backspace      : clear screen
@@ -31,6 +31,7 @@
  * arrow right         : step size +
  * s                   : save png
  */
+'use strict';
 
 var x = 0, y = 0;
 var stepSize = 5.0;
@@ -53,10 +54,9 @@ function preload() {
 }
 
 function setup() {
-  // use full screen size 
+  // use full screen size
   createCanvas(displayWidth, displayHeight);
   background(255);
-  smooth();
   x = mouseX;
   y = mouseY;
   cursor(CROSS);
@@ -68,7 +68,7 @@ function draw() {
     var d = dist(x,y, mouseX,mouseY);
 
     if (d > stepSize) {
-      var angle = atan2(mouseY-y, mouseX-x); 
+      var angle = atan2(mouseY-y, mouseX-x);
 
       push();
       translate(mouseX, mouseY);
@@ -103,12 +103,12 @@ function keyReleased() {
 }
 
 function keyPressed() {
-    // moduleSize arrowkeys up/down 
+    // moduleSize arrowkeys up/down
     if (keyCode == UP_ARROW) moduleSize += 5;
-    if (keyCode == DOWN_ARROW) moduleSize -= 5; 
+    if (keyCode == DOWN_ARROW) moduleSize -= 5;
     // stepSize arrowkeys left/right
-    stepSize = max(stepSize,0.5);   
+    stepSize = max(stepSize,0.5);
     if (keyCode == LEFT_ARROW) stepSize -= 0.5;
-    if (keyCode == RIGHT_ARROW) stepSize += 0.5; 
+    if (keyCode == RIGHT_ARROW) stepSize += 0.5;
     console.log("moduleSize: "+moduleSize+"  stepSize: "+stepSize);
 }

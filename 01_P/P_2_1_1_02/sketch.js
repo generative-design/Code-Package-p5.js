@@ -1,5 +1,5 @@
 // P_2_1_1_02.pde
-// 
+//
 // Generative Gestaltung, ISBN: 978-3-87439-759-9
 // First Edition, Hermann Schmidt, Mainz, 2009
 // Hartmut Bohnacker, Benedikt Gross, Julia Laub, Claudius Lazzeroni
@@ -18,12 +18,12 @@
 
 /**
  * changing strokeweight on diagonals in a grid with colors
- *   
+ *
  * MOUSE
  * position x          : left diagonal strokeweight
  * position y          : right diagonal strokeweight
  * left click          : new random layout
- * 
+ *
  * KEYS
  * s                   : save png
  * 1                   : round strokecap
@@ -35,6 +35,7 @@
  * 7                   : transparency right diagonal
  * 0                   : default
  */
+'use strict';
 
 var tileCount = 20;
 
@@ -47,10 +48,10 @@ var alphaRight = 100;
 var actRandomSeed = 0;
 var actStrokeCap;
 
-
 function setup() {
   createCanvas(600, 600);
   colorMode(RGB, 255, 255, 255, 100);
+  noFill();
 
   colorLeft = color(197, 0, 123, alphaLeft);
   colorRight = color(87, 35, 129, alphaRight);
@@ -60,10 +61,8 @@ function setup() {
 
 function draw() {
   background(255);
-  smooth();
-  noFill();
   strokeCap(actStrokeCap);
-  
+
   randomSeed(actRandomSeed);
 
   for (var gridY=0; gridY<tileCount; gridY++) {
@@ -94,10 +93,10 @@ function mousePressed() {
 
 function keyReleased(){
   if (key == 's' || key == 'S') saveCanvas(gd.timestamp(), 'png');
-  
-  if (key == '1') actStrokeCap = ROUND;  
+
+  if (key == '1') actStrokeCap = ROUND;
   if (key == '2') actStrokeCap = SQUARE;
-  if (key == '3') actStrokeCap = PROJECT; 
+  if (key == '3') actStrokeCap = PROJECT;
 
   var black = color(0, 0, 0, 100);
   if (key == '4'){
@@ -105,7 +104,7 @@ function keyReleased(){
       colorLeft = color(197, 0, 123, alphaLeft);
     } else {
       colorLeft = color(0, 0, 0, alphaLeft);
-    } 
+    }
   }
   if (key == '5'){
     if (colorsEqual(colorRight, black)) {
