@@ -26,7 +26,7 @@
  * arrow up/down        : resize area of interest
  * s                    : save png
  */
-
+'use strict';
 
 var maxCount = 5000; // max number of circles
 var currentCount = 1;
@@ -41,7 +41,6 @@ var maxRadius = 50;
 // for mouse and up/down-arrow interaction
 var mouseRect = 30;
 
-
 function setup() {
   createCanvas(800,800);
   noFill();
@@ -53,7 +52,6 @@ function setup() {
   r[0] = 50;
   closestIndex[0] = 0;
 }
-
 
 function draw() {
   background(255);
