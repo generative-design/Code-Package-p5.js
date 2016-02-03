@@ -30,7 +30,7 @@
  * arrow right         : noise octaves +
  * s                   : save png
  */
-
+'use strict';
 
 var sketch = function( p ) {
 
@@ -42,7 +42,7 @@ var sketch = function( p ) {
   p.setup = function() {
     p.createCanvas(512,512);
     p.cursor(p.CROSS);
-  };
+  }
 
   p.draw = function() {
     p.background(0);
@@ -71,7 +71,7 @@ var sketch = function( p ) {
     p.updatePixels();
 
     console.log("octaves: " + octaves + " falloff: " + falloff + " noiseXRange: 0-" + noiseXRange + " noiseYRange: 0-" + noiseYRange);
-  };
+  }
 
   p.keyReleased = function() {
     if (p.key == 's' || p.key == 'S') p.saveCanvas(gd.timestamp(), 'png');
@@ -94,7 +94,3 @@ var sketch = function( p ) {
 };
 
 var myp5 = new p5(sketch);
-
-
-
-
