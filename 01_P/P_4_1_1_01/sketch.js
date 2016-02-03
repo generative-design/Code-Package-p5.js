@@ -28,6 +28,7 @@
  * r                    : toggle random area
  * s                    : save png
  */
+'use strict';
 
 var img;
 
