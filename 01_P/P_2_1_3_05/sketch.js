@@ -27,7 +27,7 @@
  * KEYS
  * s                   : save png
  */
-
+'use strict';
 
 var tileCountX = 10;
 var tileCountY = 10;
@@ -37,7 +37,6 @@ var colorStep = 6;
 var endSize = 0;
 var stepSize = 30;
 var actRandomSeed = 0;
-
 
 function setup(){
   createCanvas(600,600);
