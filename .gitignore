@@ -1,4 +1,3 @@
-
 bower_components/
-
 *.json
+*.terminal
