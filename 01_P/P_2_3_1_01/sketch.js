@@ -33,13 +33,12 @@
  * arrow down          : line length -
  * s                   : save png
  */
-
+'use strict';
 
 var c;
 var lineLength = 0;
 var angle = 0;
 var angleSpeed = 1;
-
 
 function setup() {
   createCanvas(windowWidth,windowHeight);
