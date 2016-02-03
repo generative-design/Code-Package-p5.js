@@ -29,14 +29,13 @@
  * arrow up/down       : number of tiles vertically
  * s                   : save png
  */
-
+'use strict';
 
 var tileCountX = 6;
 var tileCountY = 6;
 var count = 0;
 
 var drawMode = 1;
-
 
 function setup(){
   createCanvas(600,600);
