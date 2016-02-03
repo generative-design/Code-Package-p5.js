@@ -27,7 +27,7 @@
  * BACKSPACE           : clear display
  * s                   : save png
  */
-
+'use strict';
 
 var directions = [
   "NORTH",
@@ -49,7 +49,6 @@ var posY;
 
 var drawMode = 1;
 var counter = 0;
-
 
 function setup(){
   createCanvas(800,800);
