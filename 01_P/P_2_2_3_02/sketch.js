@@ -32,7 +32,7 @@
  * Delete/Backspace    : clear display
  * s                   : save png
  */
-
+'use strict';
 
 var formResolution = 15;
 var stepSize = 2;
@@ -46,7 +46,6 @@ var y = [];
 var filled = false;
 var freeze = false;
 var drawMode = 1;
-
 
 function setup() {
   createCanvas(windowWidth,windowHeight);
@@ -64,7 +63,6 @@ function setup() {
   strokeWeight(0.75);
   background(255);
 }
-
 
 function draw() {
   // floating towards mouse position
