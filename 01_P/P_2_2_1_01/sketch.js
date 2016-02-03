@@ -26,7 +26,7 @@
  * BACKSPACE           : delete display
  * s                   : save png
  */
-
+'use strict';
 
 var directions = [
   "NORTH",
