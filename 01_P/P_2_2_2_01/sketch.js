@@ -26,7 +26,7 @@
  * Delete/Backspace    : clear display
  * s                   : save png
  */
-
+'use strict';
 
 var directions = [
   "NORTH",
@@ -46,7 +46,6 @@ var posX;
 var posY;
 var posXcross;
 var posYcross;
-
 
 function setup(){
   createCanvas(800,800);
