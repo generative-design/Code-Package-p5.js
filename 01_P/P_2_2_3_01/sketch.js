@@ -29,6 +29,7 @@
  * Delete/Backspace    : clear display
  * s                   : save png
  */
+'use strict';
 
 var formResolution = 15;
 var stepSize = 2;
