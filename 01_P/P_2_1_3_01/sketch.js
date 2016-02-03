@@ -27,7 +27,7 @@
  * KEYS
  * s                   : save png
  */
-
+'use strict';
 
 var tileCountX = 10;
 var tileCountY = 10;
@@ -41,7 +41,6 @@ var endSize = 0;
 var endOffset = 0;
 
 var actRandomSeed = 0;
-
 
 function setup(){
   createCanvas(800,800);
