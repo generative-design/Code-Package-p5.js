@@ -27,7 +27,7 @@
  * 1-3                 : draw mode
  * s                   : save png
  */
-
+'use strict';
 
 var count = 10;
 var colorStep = 20;
@@ -38,7 +38,6 @@ var strokeColor = 0;
 var backgroundColor = 0;
 
 var drawMode = 1;
-
 
 function setup(){
   createCanvas(600,600);
