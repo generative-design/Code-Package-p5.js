@@ -28,16 +28,14 @@
  */
 'use strict';
 
-var directions = [
-  "NORTH",
-  "NORTHEAST",
-  "EAST",
-  "SOUTHEAST",
-  "SOUTH",
-  "SOUTHWEST",
-  "WEST",
-  "NORTHWEST"
-];
+var NORTH = 0;
+var NORTHEAST = 1;
+var EAST = 2;
+var SOUTHEAST = 3;
+var SOUTH = 4;
+var SOUTHWEST = 5;
+var WEST = 6;
+var NORTHWEST= 7;
 var direction;
 
 var stepSize = 1;
@@ -57,26 +55,26 @@ function setup(){
 
 function draw() {
   for (var i = 0; i <= mouseX; i++) {
-    direction = int(random(directions.length));
+    direction = int(random(0,8));
 
-    if (directions[direction] === "NORTH") {
+    if (direction === NORTH) {
       posY -= stepSize;
-    } else if (directions[direction] === "NORTHEAST") {
+    } else if (direction === NORTHEAST) {
       posX += stepSize;
       posY -= stepSize;
-    } else if (directions[direction] === "EAST") {
+    } else if (direction === EAST) {
       posX += stepSize;
-    } else if (directions[direction] === "SOUTHEAST") {
+    } else if (direction === SOUTHEAST) {
       posX += stepSize;
       posY += stepSize;
-    } else if (directions[direction] === "SOUTH") {
+    } else if (direction === SOUTH) {
       posY += stepSize;
-    } else if (directions[direction] === "SOUTHWEST") {
+    } else if (direction === SOUTHWEST) {
       posX -= stepSize;
       posY += stepSize;
-    } else if (directions[direction] === "WEST") {
+    } else if (direction === WEST) {
       posX -= stepSize;
-    } else if (directions[direction] === "NORTHWEST") {
+    } else if (direction === NORTHWEST) {
       posX -= stepSize;
       posY -= stepSize;
     }
