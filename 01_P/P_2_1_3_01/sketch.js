@@ -52,6 +52,7 @@ function setup(){
 
 function draw() {
   background(255);
+  randomSeed(actRandomSeed);
 
   translate(tileWidth / 2,tileHeight / 2);
 
