@@ -151,7 +151,8 @@ function keyReleased() {
   if (key == '3') drawMode = 1;
   if (key == '4') drawMode = 2;
 
-  // pauze/play draw loop
+  // pause/play draw loop
   if (key == 'f' || key == 'F') freeze = !freeze;
-  freeze ? noLoop() : loop();
+  if (freeze == true) noLoop();
+  else loop();
 }
