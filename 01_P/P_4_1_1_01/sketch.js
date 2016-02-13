@@ -44,10 +44,13 @@ var cropY;
 var selectMode = true;
 var randomMode = false;
 
+function preload() {
+  img = loadImage("data/image.jpg");
+}
+
 function setup() {
   createCanvas(1600,1200);
 
-  img = loadImage("data/image.jpg");
   image(img,0,0);
   tileWidth = width / tileCountY;
   tileHeight = height / tileCountX;
