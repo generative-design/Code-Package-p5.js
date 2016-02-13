@@ -1,5 +1,5 @@
 // P_1_2_1_01.pde
-// 
+//
 // Generative Gestaltung, ISBN: 978-3-87439-759-9
 // First Edition, Hermann Schmidt, Mainz, 2009
 // Hartmut Bohnacker, Benedikt Gross, Julia Laub, Claudius Lazzeroni
@@ -18,18 +18,19 @@
 
 /**
  * shows how to interpolate colors in different styles/ color modes
- * 
+ *
  * MOUSE
  * left click          : new random color set
  * position x          : interpolation resolution
  * position y          : row count
- * 
+ *
  * KEYS
  * 1-2                 : switch interpolation style
  * s                   : save png
  * c                   : save color palette
  */
- 
+'use strict';
+
 var tileCountX = 2;
 var tileCountY = 10;
 
@@ -53,28 +54,28 @@ function draw() {
   var tileHeight = height / tileCountY;
   var interCol;
   colors = [];
-    
+
   for (var gridY=0; gridY< tileCountY; gridY++) {
     var col1 = colorsLeft[gridY];
     var col2 = colorsRight[gridY];
 
-    for (var gridX=0; gridX< tileCountX ; gridX++) { 
+    for (var gridX=0; gridX< tileCountX ; gridX++) {
       var amount = map(gridX,0,tileCountX-1,0,1);
-      
+
       if (interpolateShortest) {
         // switch to rgb
         colorMode(RGB);
-        interCol = lerpColor(col1,col2, amount); 
+        interCol = lerpColor(col1,col2, amount);
         // switch back
         colorMode(HSB);
       } else {
-        interCol = lerpColor(col1,col2, amount); 
+        interCol = lerpColor(col1,col2, amount);
       }
 
       fill(interCol);
-      
+
       var posX = tileWidth*gridX;
-      var posY = tileHeight*gridY;      
+      var posY = tileHeight*gridY;
       rect(posX, posY, tileWidth, tileHeight);
 
       // save color for potential ase export

@@ -1,5 +1,5 @@
 // P_1_0_01.pde
-// 
+//
 // Generative Gestaltung, ISBN: 978-3-87439-759-9
 // First Edition, Hermann Schmidt, Mainz, 2009
 // Hartmut Bohnacker, Benedikt Gross, Julia Laub, Claudius Lazzeroni
@@ -18,24 +18,25 @@
 
 /**
  * changing colors and size by moving the mouse
- * 	 
+ *
  * MOUSE
  * position x          : size
  * position y          : color
- * 
+ *
  * KEYS
  * s                   : save png
  */
- 
+'use strict';
+
 function setup() {
   createCanvas(720, 720);
   noCursor();
+  colorMode(HSB, 360, 100, 100);
+  rectMode(CENTER);
+  noStroke();
 }
 
 function draw() {
-  colorMode(HSB, 360, 100, 100);
-  rectMode(CENTER); 
-  noStroke();
   background(mouseY/2, 100, 100);
 
   fill(360-mouseY/2, 100, 100);

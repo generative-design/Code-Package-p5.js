@@ -1,5 +1,5 @@
 // P_2_3_3_01.pde
-// 
+//
 // Generative Gestaltung, ISBN: 978-3-87439-759-9
 // First Edition, Hermann Schmidt, Mainz, 2009
 // Hartmut Bohnacker, Benedikt Gross, Julia Laub, Claudius Lazzeroni
@@ -17,17 +17,18 @@
 // limitations under the License.
 
 /**
- * draw tool. shows how to draw with dynamic elements. 
- * 
+ * draw tool. shows how to draw with dynamic elements.
+ *
  * MOUSE
  * drag                : draw with text
- * 
+ *
  * KEYS
  * del, backspace      : clear screen
  * arrow up            : angle distortion +
  * arrow down          : angle distortion -
  * s                   : save png
  */
+'use strict';
 
 var x = 0;
 var y = 0;
@@ -40,9 +41,8 @@ var angleDistortion = 0.0;
 
 var counter = 0;
 
-
 function setup() {
-  // use full screen size 
+  // use full screen size
   createCanvas(displayWidth, displayHeight);
   background(255);
   smooth();
@@ -56,7 +56,6 @@ function setup() {
   fill(0);
 }
 
-
 function draw() {
   if (mouseIsPressed) {
     var d = dist(x,y, mouseX,mouseY);
@@ -65,7 +64,7 @@ function draw() {
     stepSize = textWidth(newLetter);
 
     if (d > stepSize) {
-      var angle = atan2(mouseY-y, mouseX-x); 
+      var angle = atan2(mouseY-y, mouseX-x);
 
       push();
       translate(x, y);
@@ -77,11 +76,10 @@ function draw() {
       if (counter > letters.length-1) counter = 0;
 
       x = x + cos(angle) * stepSize;
-      y = y + sin(angle) * stepSize; 
+      y = y + sin(angle) * stepSize;
     }
   }
 }
-
 
 function mousePressed() {
   x = mouseX;
@@ -94,7 +92,7 @@ function keyReleased() {
 }
 
 function keyPressed() {
-  // angleDistortion ctrls arrowkeys up/down 
+  // angleDistortion ctrls arrowkeys up/down
   if (keyCode == UP_ARROW) angleDistortion += 0.1;
-  if (keyCode == DOWN_ARROW) angleDistortion -= 0.1; 
+  if (keyCode == DOWN_ARROW) angleDistortion -= 0.1;
 }

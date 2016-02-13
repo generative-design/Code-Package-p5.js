@@ -1,5 +1,5 @@
 // M_1_1_01.pde
-// 
+//
 // Generative Gestaltung, ISBN: 978-3-87439-759-9
 // First Edition, Hermann Schmidt, Mainz, 2009
 // Hartmut Bohnacker, Benedikt Gross, Julia Laub, Claudius Lazzeroni
@@ -18,14 +18,14 @@
 
 /**
  * draws a random chart and shows how to use randomSeed.
- * 
+ *
  * MOUSE
  * click               : new random line
- * 
+ *
  * KEYS
  * s                   : save png
  */
-
+'use strict';
 
 var sketch = function( p ) {
 
@@ -47,11 +47,10 @@ var sketch = function( p ) {
     p.randomSeed(actRandomSeed);
     p.beginShape();
     for (var x = 0; x < p.width; x+=10) {
-      var y = p.random(0,p.height);   
+      var y = p.random(0,p.height);
       p.vertex(x,y);
     }
     p.endShape();
-
 
     // dots
     p.noStroke();
@@ -59,11 +58,10 @@ var sketch = function( p ) {
 
     p.randomSeed(actRandomSeed);
     for (var x = 0; x < p.width; x+=10) {
-      var y = p.random(0,p.height);   
+      var y = p.random(0,p.height);
       p.ellipse(x,y,3,3);
     }
   };
-
 
   p.mousePressed = function() {
     actRandomSeed = p.random(100000);
@@ -76,7 +74,3 @@ var sketch = function( p ) {
 };
 
 var myp5 = new p5(sketch);
-
-
-
-

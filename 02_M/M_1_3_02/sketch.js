@@ -25,7 +25,7 @@
  * KEYS
  * s                   : save png
  */
-
+'use strict';
 
 var sketch = function( p ) {
 
@@ -33,7 +33,7 @@ var sketch = function( p ) {
 
   p.setup = function() {
     p.createCanvas(512,512);
-  };
+  }
 
   p.draw = function() {
     p.background(0);
@@ -46,7 +46,7 @@ var sketch = function( p ) {
       }
     }
     p.updatePixels();
-  };
+  }
 
   p.mousePressed = function() {
     actRandomSeed = p.random(100000);
@@ -59,7 +59,3 @@ var sketch = function( p ) {
 };
 
 var myp5 = new p5(sketch);
-
-
-
-

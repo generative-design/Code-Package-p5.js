@@ -1,5 +1,5 @@
 // P_2_0_03.pde
-// 
+//
 // Generative Gestaltung, ISBN: 978-3-87439-759-9
 // First Edition, Hermann Schmidt, Mainz, 2009
 // Hartmut Bohnacker, Benedikt Gross, Julia Laub, Claudius Lazzeroni
@@ -18,26 +18,27 @@
 
 /**
  * drawing with a changing shape by draging the mouse.
- *   
+ *
  * MOUSE
  * position x          : length
  * position y          : thickness and number of lines
  * drag                : draw
- * 
+ *
  * KEYS
  * 1-3                 : stroke color
  * del, backspace      : erase
  * s                   : save png
  */
+'use strict';
 
 var strokeColor = [];
 
 function setup() {
   createCanvas(720, 720);
   colorMode(HSB,360,100,100,100);
-  smooth();
   noFill();
   background(0,0,100);
+  strokeWeight(2);
 
   strokeColor = color(0, 10);
 }
@@ -51,7 +52,6 @@ function draw() {
     var radius = mouseX-width/2;
     var angle = TWO_PI/circleResolution;
 
-    strokeWeight(2);
     stroke(strokeColor);
 
     beginShape();
@@ -69,7 +69,7 @@ function draw() {
 function keyReleased(){
   if (keyCode == DELETE || keyCode == BACKSPACE) background(0,0,100);
   if (key == 's' || key == 'S') saveCanvas(gd.timestamp(), 'png');
-  
+
   switch(key){
   case '1':
     strokeColor = color(0, 0, 0, 10);

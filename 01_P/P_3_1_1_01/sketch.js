@@ -1,5 +1,5 @@
 // P_3_1_1_01.pde
-// 
+//
 // Generative Gestaltung, ISBN: 978-3-87439-759-9
 // First Edition, Hermann Schmidt, Mainz, 2009
 // Hartmut Bohnacker, Benedikt Gross, Julia Laub, Claudius Lazzeroni
@@ -17,16 +17,17 @@
 // limitations under the License.
 
 /**
- * typewriter. time reactive. 
- * 
+ * typewriter. time reactive.
+ *
  * MOUSE
  * position y           : adjust spacing (line height)
- * 
+ *
  * KEYS
  * a-z                  : text input (keyboard)
  * backspace/delete     : delete last typed letter
  * ctrl                 : save png
  */
+'use strict';
 
 var textTyped = "Type slow and fast!";
 var fontSizes = [textTyped.length];
@@ -47,13 +48,11 @@ function setup() {
 
   font = "Arial";
 
-  smooth();
   noCursor();
+  noStroke();
 
   // init fontSizes
-  for (var i = 0; i < textTyped.length; i++) {
-    fontSizes[i] = minFontSize;
-  }
+  for (var i = 0; i < textTyped.length; i++) fontSizes[i] = minFontSize;
 
   pMillis = millis();
 }
@@ -63,7 +62,6 @@ function draw() {
   background(255);
   textAlign(LEFT);
   fill(0);
-  noStroke();
 
   spacing = map(mouseY, 0,height, 0,120);
   translate(0, 200+spacing);
@@ -76,13 +74,13 @@ function draw() {
     textFont(font, fontSize);
     var letter = textTyped.charAt(i);
     var letterWidth = textWidth(letter) + tracking;
-    
+
     if (x+letterWidth > width) {
       // start new line and add line height
       x = 0;
-      y += spacing; 
+      y += spacing;
     }
-    
+
     // draw letter
     text(letter, x, y);
     // update x-coordinate for next letter
