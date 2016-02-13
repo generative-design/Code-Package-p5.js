@@ -30,9 +30,12 @@
 
 var img;
 
+function preload() {
+  img = loadImage("data/image.jpg");
+}
+
 function setup() {
   createCanvas(650,450);
-  img = loadImage("data/image.jpg");
 }
 
 function draw() {
