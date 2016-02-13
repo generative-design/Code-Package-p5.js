@@ -28,13 +28,11 @@
  */
 'use strict';
 
-var directions = [
-  "NORTH",
-  "EAST",
-  "SOUTH",
-  "WEST"
-];
-var direction = 2;
+var NORTH = 0;
+var EAST = 1;
+var SOUTH = 2;
+var WEST = 3;
+var direction = SOUTH;
 
 var stepSize = 1;
 var minLength = 10;
@@ -47,11 +45,12 @@ var posY;
 var posXcross;
 var posYcross;
 
-function setup(){
-  createCanvas(800,800);
-  background(255);
-  angle = getRandomAngle(directions[direction]);
-  posX = width / 2;
+function setup() {
+  createCanvas(600,600);
+  colorMode(HSB,360,100,100,100);
+  background(360,0,100);
+  angle = getRandomAngle(direction);
+  posX = int(random(width));
   posY = height / 2;
 }
 
@@ -69,22 +68,23 @@ function draw() {
     var reachedBorder = false;
 
     if (posY <= 5) {
-      direction = directions.indexOf("SOUTH");
+      direction = SOUTH;
       reachedBorder = true;
     } else if (posX >= width - 5) {
-      direction = directions.indexOf("WEST");
+      direction = WEST;
       reachedBorder = true;
     } else if (posY >= height - 5) {
-      direction = directions.indexOf("NORTH");
+      direction = NORTH;
       reachedBorder = true;
     } else if (posX <= 5) {
-      direction = directions.indexOf("EAST");
+      direction = EAST;
       reachedBorder = true;
     }
 
     // ------ if agent is crossing his path or border was reached ------
-    if (get(int(posX)/4,int(posY)) != color(255) || reachedBorder) {
-      angle = getRandomAngle(directions[direction]);
+    console.log(get(16,16));
+    if (get(int(posX),int(posY)) != color(360,0,100) || reachedBorder) {
+      angle = getRandomAngle(direction);
       var distance = dist(posX,posY,posXcross,posYcross);
       if (distance >= minLength) {
         strokeWeight(3);
