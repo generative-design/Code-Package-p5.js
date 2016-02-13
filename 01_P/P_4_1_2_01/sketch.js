@@ -27,20 +27,21 @@
 
 var img;
 
+function preload() {
+  img = loadImage('data/pic.png');
+}
+
 function setup() {
   createCanvas(1024,780);
-  background(255);
-  img = loadImage('data/pic.png');
   image(img,0,100);
 }
 
 function draw() {
   var x1 = floor(random(0,width));
-  var y1 = 0;
+  var y1 = -100;
   var x2 = round(x1 + random(-7,7));
-  var y2 = round(random(-10,10));
-
-  var w = floor(random(35,50));
+  var y2 = round(random(-16,16));
+  var w = floor(random(2,4));
   var h = height;
   copy(img,x1,y1,w,h,x2,y2,w,h);
 }
@@ -48,7 +49,7 @@ function draw() {
 function keyReleased() {
   if (key == 's' || key == 'S') saveCanvas(gd.timestamp(), 'png');
   if (keyCode === DELETE || keyCode === BACKSPACE) {
-    background(255);
+    clear();
     image(img,0,100);
   }
 }
