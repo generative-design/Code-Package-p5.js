@@ -32,7 +32,6 @@
  */
 'use strict';
 
-var font;
 var modules = [];
 
 var tileSize = 30;
@@ -44,6 +43,7 @@ var doDrawGrid = true;
 var debugMode = false;
 
 function preload() {
+  // load SVG modules
   for (var i = 0; i < 16; i++) {
     modules[i] = loadImage("data/" + nf(i,2) + ".svg");
   }
