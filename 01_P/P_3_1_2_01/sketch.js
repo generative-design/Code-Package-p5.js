@@ -114,36 +114,37 @@ function draw() {
       case " ": // space
         // 50% left, 50% right
         if (floor(random(2)) == 0) {
-          image(shapeSpace, 0, 0);
+          image(shapeSpace, 0, -16);
           translate(1.9, 0);
+          rotate(QUARTER_PI);
         } else {
-          image(shapeSpace2, 0, 0);
+          image(shapeSpace2, 0, -17);
           translate(13, -5);
+          rotate(-QUARTER_PI);
         }
-        rotate(-QUARTER_PI);
       break;
       case ",": // comma
-        image(shapeComma, 0, 0);
+        image(shapeComma, 0, -16);
         translate(34, 15);
         rotate(QUARTER_PI);
       break;
       case ".": // period
-        image(shapePeriod, 0, 0);
+        image(shapePeriod, 0, -58);
         translate(56, -54);
         rotate(-HALF_PI);
       break;
       case "!": // !
-        image(shapeExclamationmark, 0, 0);
+        image(shapeExclamationmark, 0, -29);
         translate(42, -17.4);
         rotate(-QUARTER_PI);
       break;
       case "?": // ?
-        image(shapeQuestionmark, 0, 0);
+        image(shapeQuestionmark, 0, -29);
         translate(42, -18);
         rotate(-QUARTER_PI);
       break;
       case "\n": // return
-        image(shapeReturn, 0, 0);
+        image(shapeReturn, 0, -16);
         translate(0, 10);
         rotate(PI);
       break;
