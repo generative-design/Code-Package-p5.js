@@ -114,7 +114,7 @@ function draw() {
       case " ": // space
         // 50% left, 50% right
         if (floor(random(2)) == 0) {
-          image(shapeSpace, 0, -16);
+          image(shapeSpace, 0, -15);
           translate(1.9, 0);
           rotate(QUARTER_PI);
         } else {
@@ -124,18 +124,18 @@ function draw() {
         }
       break;
       case ",": // comma
-        image(shapeComma, 0, -16);
-        translate(34, 15);
+        image(shapeComma, 0, -15);
+        translate(33, 15);
         rotate(QUARTER_PI);
       break;
       case ".": // period
         image(shapePeriod, 0, -58);
-        translate(56, -54);
+        translate(58, -58);
         rotate(-HALF_PI);
       break;
       case "!": // !
         image(shapeExclamationmark, 0, -29);
-        translate(42, -17.4);
+        translate(42, -18);
         rotate(-QUARTER_PI);
       break;
       case "?": // ?
@@ -144,7 +144,7 @@ function draw() {
         rotate(-QUARTER_PI);
       break;
       case "\n": // return
-        image(shapeReturn, 0, -16);
+        image(shapeReturn, 0, -15);
         translate(0, 10);
         rotate(PI);
       break;
