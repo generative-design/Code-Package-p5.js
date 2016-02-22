@@ -51,7 +51,6 @@ function setup() {
 
   noStroke();
   textFont("monospace", 18);
-  // textSize(18);
 
   joinedText = joinedText.join(joinedText, " ");
   for (var i = 0; i < alphabet.length; i++) {
