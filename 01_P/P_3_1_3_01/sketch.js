@@ -29,7 +29,6 @@
  */
 'use strict';
 
-// var font;
 var joinedText;
 var alphabet = "ABCDEFGHIJKLMNOPQRSTUVWXYZÄÖÜß,.;:!? ";
 var counters = [];
