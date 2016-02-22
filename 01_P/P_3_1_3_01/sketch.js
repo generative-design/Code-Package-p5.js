@@ -102,5 +102,5 @@ function countCharacters() {
 
 function keyReleased() {
   if (key == 's' || key == 'S') saveCanvas(gd.timestamp(), 'png');
-  if (key == 'a' || key == 'S') drawAlpha = !drawAlpha;
+  if (key == 'a' || key == 'A') drawAlpha = !drawAlpha;
 }
