@@ -33,8 +33,6 @@ var joinedText;
 var alphabet = "ABCDEFGHIJKLMNOPQRSTUVWXYZÄÖÜß,.;:!? ";
 var counters = [];
 
-var charSize;
-var charColor;
 var posX;
 var posY;
 
