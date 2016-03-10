@@ -168,7 +168,6 @@ function keyReleased() {
   if (keyCode === CONTROL) saveCanvas(gd.timestamp(), 'png');
   if (keyCode === ALT) {
     actRandomSeed++;
-    console.log(actRandomSeed);
   }
 }
 
@@ -177,7 +176,6 @@ function keyPressed() {
     if (textTyped.length > 0) {
       println(textTyped);
       textTyped = textTyped.substring(0,max(0,textTyped.length-1));
-      fontSizes = shorten(fontSizes);
       return false; // prevent any default behavior
     }
   }
@@ -191,6 +189,5 @@ function keyPressed() {
 function keyTyped(){
   if(keyCode >= 32){
     textTyped += key;
-    fontSizes = append(fontSizes, newFontSize);
   }
 }
