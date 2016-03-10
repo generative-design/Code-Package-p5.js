@@ -49,7 +49,7 @@ function preload() {
 }
 
 function setup() {
-  createCanvas(1600,1200);
+  createCanvas(800,600);
 
   image(img,0,0);
   tileWidth = width / tileCountY;
