@@ -1,5 +1,5 @@
 // P_2_1_2_01.pde
-// 
+//
 // Generative Gestaltung, ISBN: 978-3-87439-759-9
 // First Edition, Hermann Schmidt, Mainz, 2009
 // Hartmut Bohnacker, Benedikt Gross, Julia Laub, Claudius Lazzeroni
@@ -18,25 +18,25 @@
 
 /**
  * changing size and position of circles in a grid
- *   
+ *
  * MOUSE
  * position x          : circle position
  * position y          : circle size
  * left click          : random position
- * 
+ *
  * KEYS
  * s                   : save png
  */
-
+'use strict';
 
 var tileCount = 20;
 var actRandomSeed = 0;
 var circleAlpha = 0.5;
 var circleColor
 
-
 function setup(){
   createCanvas(600, 600);
+  noFill();
   circleColor = color(0, 0, 0, circleAlpha);
 }
 
@@ -44,9 +44,7 @@ function draw() {
   translate(width/tileCount/2, height/tileCount/2);
 
   background(255);
-  smooth();
-  noFill();
-  
+
   randomSeed(actRandomSeed);
 
   stroke(circleColor);

@@ -1,5 +1,5 @@
 // P_1_1_2_01.pde
-// 
+//
 // Generative Gestaltung, ISBN: 978-3-87439-759-9
 // First Edition, Hermann Schmidt, Mainz, 2009
 // Hartmut Bohnacker, Benedikt Gross, Julia Laub, Claudius Lazzeroni
@@ -18,28 +18,28 @@
 
 /**
  * changing the color circle by moving the mouse.
- *   
+ *
  * MOUSE
  * position x          : saturation
  * position y          : brighness
- * 
+ *
  * KEYS
  * 1-5                 : number of segments
  * s                   : save png
  */
- 
+'use strict';
+
 var segmentCount = 360;
 var radius = 300;
 
 function setup() {
   createCanvas(800, 800);
-}
-
-function draw() {
   noStroke();
   colorMode(HSB, 360, width, height);
   background(360, 0, height);
+}
 
+function draw() {
   var angleStep = 360/segmentCount;
 
   beginShape(TRIANGLE_FAN);
@@ -55,8 +55,8 @@ function draw() {
 
 function keyPressed() {
   if (key == 's' || key == 'S') saveCanvas(gd.timestamp(), 'png');
-  
-  switch(key){
+
+  switch (key) {
   case '1':
     segmentCount = 360;
     break;

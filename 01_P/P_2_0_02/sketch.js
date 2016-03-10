@@ -1,5 +1,5 @@
 // P_2_0_02.pde
-// 
+//
 // Generative Gestaltung, ISBN: 978-3-87439-759-9
 // First Edition, Hermann Schmidt, Mainz, 2009
 // Hartmut Bohnacker, Benedikt Gross, Julia Laub, Claudius Lazzeroni
@@ -18,22 +18,24 @@
 
 /**
  * drawing with a changing shape by draging the mouse.
- *   
+ *
  * MOUSE
  * position x          : length
  * position y          : thickness and number of lines
  * drag                : draw
- * 
+ *
  * KEYS
  * del, backspace      : erase
  * s                   : save png
  */
+'use strict';
 
 function setup() {
   createCanvas(720, 720);
-  smooth();
   noFill();
   background(255);
+  strokeWeight(2);
+  stroke(0, 25);
 }
 
 function draw() {
@@ -44,9 +46,6 @@ function draw() {
     var circleResolution = int(map(mouseY+100,0,height,2, 10));
     var radius = mouseX-width/2 + 0.5;
     var angle = TWO_PI/circleResolution;
-
-    strokeWeight(2);
-    stroke(0, 25);
 
     beginShape();
     for (var i=0; i<=circleResolution; i++){

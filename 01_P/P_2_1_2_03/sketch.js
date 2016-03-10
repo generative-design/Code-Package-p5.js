@@ -1,5 +1,5 @@
 // P_2_1_2_03.pde
-// 
+//
 // Generative Gestaltung, ISBN: 978-3-87439-759-9
 // First Edition, Hermann Schmidt, Mainz, 2009
 // Hartmut Bohnacker, Benedikt Gross, Julia Laub, Claudius Lazzeroni
@@ -18,36 +18,34 @@
 
 /**
  * changing size of circles in a rad grid depending the mouseposition
- *   
+ *
  * MOUSE
  * position x/y        : module size and offset z
- * 
+ *
  * KEYS
  * s                   : save png
  */
- 
+'use strict';
 
 var tileCount = 20;
 var moduleColor;
 var moduleAlpha = 180;
 var actRandomSeed = 0;
-var max_distance = 500; 
-
+var max_distance = 500;
 
 function setup(){
   createCanvas(600, 600);
+  noFill();
+  strokeWeight(3);
   moduleColor = color(0, 0, 0, moduleAlpha);
 }
 
 function draw() {
   background(255);
-  smooth();
-  noFill();
 
   randomSeed(actRandomSeed);
 
   stroke(moduleColor);
-  strokeWeight(3);
 
   for (var gridY=0; gridY<width; gridY+=25) {
     for (var gridX=0; gridX<height; gridX+=25) {
@@ -56,7 +54,7 @@ function draw() {
       push();
       translate(gridX, gridY, diameter*5);
       rect(0, 0, diameter, diameter);    // also nice: ellipse(...)
-      pop(); 
+      pop();
     }
   }
 }

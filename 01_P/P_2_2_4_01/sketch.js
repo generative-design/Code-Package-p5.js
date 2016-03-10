@@ -1,5 +1,5 @@
 // P_2_2_4_01.pde
-// 
+//
 // Generative Gestaltung, ISBN: 978-3-87439-759-9
 // First Edition, Hermann Schmidt, Mainz, 2009
 // Hartmut Bohnacker, Benedikt Gross, Julia Laub, Claudius Lazzeroni
@@ -17,11 +17,12 @@
 // limitations under the License.
 
 /**
- * limited diffusion aggregation 
- * 
+ * limited diffusion aggregation
+ *
  * KEYS
  * s                   : save png
  */
+'use strict';
 
 var maxCount = 5000; //max count of the cirlces
 var currentCount = 1;
@@ -31,14 +32,12 @@ var r = []; // radius
 
 function setup() {
   createCanvas(600,600);
-  smooth();
-  //frameRate(10);
 
   // first circle
   x[0] = width/2;
   y[0] = height/2;
   r[0] = 10;
-  //r[0] = 400; 
+  //r[0] = 400;
 }
 
 
@@ -60,13 +59,13 @@ function draw() {
     var newDist = dist(newX,newY, x[i],y[i]);
     if (newDist < closestDist) {
       closestDist = newDist;
-      closestIndex = i; 
-    } 
+      closestIndex = i;
+    }
   }
 
   // show random position and line
   // fill(230);
-  // ellipse(newX,newY,newR*2,newR*2); 
+  // ellipse(newX,newY,newR*2,newR*2);
   // line(newX,newY,x[closestIndex],y[closestIndex]);
 
   // aline it to the closest circle outline
@@ -81,7 +80,7 @@ function draw() {
   for (var i=0 ; i < currentCount; i++) {
     //fill(50,150);
     fill(50);
-    ellipse(x[i],y[i], r[i]*2,r[i]*2);  
+    ellipse(x[i],y[i], r[i]*2,r[i]*2);
   }
 
   if (currentCount >= maxCount) noLoop();

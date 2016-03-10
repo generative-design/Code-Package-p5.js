@@ -1,5 +1,5 @@
 // P_3_0_01.pde
-// 
+//
 // Generative Gestaltung, ISBN: 978-3-87439-759-9
 // First Edition, Hermann Schmidt, Mainz, 2009
 // Hartmut Bohnacker, Benedikt Gross, Julia Laub, Claudius Lazzeroni
@@ -18,22 +18,20 @@
 
 /**
  * changing the size and the position of a letter
- * 	 
+ *
  * MOUSE
  * position x          : size
  * position y          : position
  * drag                : draw
- * 
+ *
  * KEYS
  * a-z                 : change letter
  * ctrl                : save png
  */
-
-
+'use strict';
 
 var font = "Arial";
 var letter = "A";
-
 
 function setup(){
   createCanvas(800, 800);
@@ -42,9 +40,6 @@ function setup(){
 
   textFont(font);
   textAlign(CENTER, CENTER);
-}
-
-function draw(){
 }
 
 function mouseMoved(){
@@ -66,4 +61,3 @@ function keyTyped() {
   letter = key;
   return false;
 }
-
