@@ -22,7 +22,7 @@
   },
   "homepage": "http://www.generative-gestaltung.de",
   "dependencies": {
-    "p5": "git@github.com:processing/p5.js.git#0.4.23",
+    "p5": "git@github.com:processing/p5.js.git#0.5.0",
     "generative-design-library": "git@github.com:generative-design/generative-design-library.js.git"
   },
   "install": {
