@@ -22,17 +22,17 @@
   },
   "homepage": "http://www.generative-gestaltung.de",
   "dependencies": {
-    "p5": "git@github.com:processing/p5.js.git#0.4.22",
+    "p5": "https://github.com/processing/p5.js/releases/download/0.5.2/p5.zip",
     "generative-design-library": "git@github.com:generative-design/generative-design-library.js.git"
   },
   "install": {
     "path": "libraries",
     "sources": {
       "p5": [
-        "bower_components/p5/docs/js/p5.js",
-        "bower_components/p5/docs/js/p5.dom.js"
+        "bower_components/p5/p5.js",
+        "bower_components/p5/addons/p5.dom.js"
       ],
-      "generative-design-library": "bower_components/generative-design-library/generative-design-library.js"
+      "generative-design-library": "bower_components/generative-design-library/dist/generative-design-library.js"
     }
   }
 }
