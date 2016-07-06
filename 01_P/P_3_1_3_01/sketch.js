@@ -49,7 +49,7 @@ function setup() {
   noStroke();
   textFont("monospace", 18);
 
-  joinedText = joinedText.join(joinedText, " ");
+  joinedText = joinedText.join(" ");
   for (var i = 0; i < alphabet.length; i++) {
     counters[i] = 0;
   }
