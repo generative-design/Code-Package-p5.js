@@ -49,7 +49,7 @@ var drawEllipses = true;
 var drawText = false;
 
 function preload() {
-  joinedText = loadStrings("data/faust_kurz.txt");
+  joinedText = loadStrings("data/faust_short.txt");
 }
 
 function setup() {
