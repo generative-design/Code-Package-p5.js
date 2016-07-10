@@ -125,7 +125,6 @@ function CollageItem(image) {
   this.y = 0;
   this.rotation = 0;
   this.scaling = 1;
-  this.index = -1;
   this.image = image;
 }
 
