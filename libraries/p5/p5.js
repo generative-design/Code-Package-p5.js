@@ -1,4 +1,4 @@
-/*! p5.js v0.5.0 May 02, 2016 */
+/*! p5.js v0.5.2 June 17, 2016 */
 (function(f){if(typeof exports==="object"&&typeof module!=="undefined"){module.exports=f()}else if(typeof define==="function"&&define.amd){define([],f)}else{var g;if(typeof window!=="undefined"){g=window}else if(typeof global!=="undefined"){g=global}else if(typeof self!=="undefined"){g=self}else{g=this}g.p5 = f()}})(function(){var define,module,exports;return (function e(t,n,r){function s(o,u){if(!n[o]){if(!t[o]){var a=typeof require=="function"&&require;if(!u&&a)return a(o,!0);if(i)return i(o,!0);var f=new Error("Cannot find module '"+o+"'");throw f.code="MODULE_NOT_FOUND",f}var l=n[o]={exports:{}};t[o][0].call(l.exports,function(e){var n=t[o][1][e];return s(n?n:e)},l,l.exports,e,t,n,r)}return n[o].exports}var i=typeof require=="function"&&require;for(var o=0;o<r.length;o++)s(r[o]);return s})({1:[function(_dereq_,module,exports){
 
 },{}],2:[function(_dereq_,module,exports){
@@ -5520,3447 +5520,6 @@ exports.sizeOf = sizeOf;
 });
 
 },{}],28:[function(_dereq_,module,exports){
-/**
- * @module Lights, Camera
- * @submodule Camera
- * @for p5
- * @requires core
- */
-
-'use strict';
-
-var p5 = _dereq_('../core/core');
-
-/**
- * Sets camera position
- * @method camera
- * @param  {Number} x  camera postion value on x axis
- * @param  {Number} y  camera postion value on y axis
- * @param  {Number} z  camera postion value on z axis
- * @return {p5}        the p5 object
- * @example
- * <div>
- * <code>
- * function setup(){
- *   createCanvas(100, 100, WEBGL);
- * }
- * function draw(){
- *  //move the camera away from the plane by a sin wave
- *  camera(0, 0, sin(frameCount * 0.01) * 100);
- *  plane(120, 120);
- * }
- * </code>
- * </div>
- */
-p5.prototype.camera = function(x, y, z){
-  var args = new Array(arguments.length);
-  for (var i = 0; i < args.length; ++i) {
-    args[i] = arguments[i];
-  }
-  this._validateParameters(
-    'camera',
-    args,
-    ['Number', 'Number', 'Number']
-  );
-  //what it manipulates is the model view matrix
-  this._renderer.translate(-x, -y, -z);
-};
-
-/**
- * Sets perspective camera
- * @method  perspective
- * @param  {Number} fovy   camera frustum vertical field of view,
- *                         from bottom to top of view, in degrees
- * @param  {Number} aspect camera frustum aspect ratio
- * @param  {Number} near   frustum near plane length
- * @param  {Number} far    frustum far plane length
- * @return {p5}            the p5 object
- * @example
- * <div>
- * <code>
- * //drag mouse to toggle the world!
- * //you will see there's a vanish point
- * function setup(){
- *   createCanvas(100, 100, WEBGL);
- *   perspective(60 / 180 * PI, width/height, 0.1, 100);
- * }
- * function draw(){
- *  background(200);
- *  orbitControl();
- *  for(var i = -1; i < 2; i++){
- *     for(var j = -2; j < 3; j++){
- *       push();
- *       translate(i*160, 0, j*160);
- *       box(40, 40, 40);
- *       pop();
- *     }
- *   }
- * }
- * </code>
- * </div>
- */
-p5.prototype.perspective = function(fovy,aspect,near,far) {
-  var args = new Array(arguments.length);
-  for (var i = 0; i < args.length; ++i) {
-    args[i] = arguments[i];
-  }
-  this._validateParameters(
-    'perspective',
-    args,
-    ['Number', 'Number', 'Number', 'Number']
-  );
-  this._renderer.uPMatrix = p5.Matrix.identity();
-  this._renderer.uPMatrix.perspective(fovy,aspect,near,far);
-  this._renderer._setCamera = true;
-};
-
-/**
- * Setup ortho camera
- * @method  ortho
- * @param  {Number} left   camera frustum left plane
- * @param  {Number} right  camera frustum right plane
- * @param  {Number} bottom camera frustum bottom plane
- * @param  {Number} top    camera frustum top plane
- * @param  {Number} near   camera frustum near plane
- * @param  {Number} far    camera frustum far plane
- * @return {p5}            the p5 object
- * @example
- * <div>
- * <code>
- * //drag mouse to toggle the world!
- * //there's no vanish point
- * function setup(){
- *   createCanvas(100, 100, WEBGL);
- *   ortho(-width/2, width/2, height/2, -height/2, 0.1, 100);
- * }
- * function draw(){
- *  background(200);
- *  orbitControl();
- *  for(var i = -1; i < 2; i++){
- *     for(var j = -2; j < 3; j++){
- *       push();
- *       translate(i*160, 0, j*160);
- *       box(40, 40, 40);
- *       pop();
- *     }
- *   }
- * }
- * </code>
- * </div>
- */
-p5.prototype.ortho = function(left,right,bottom,top,near,far) {
-  var args = new Array(arguments.length);
-  for (var i = 0; i < args.length; ++i) {
-    args[i] = arguments[i];
-  }
-  this._validateParameters(
-    'ortho',
-    args,
-      ['Number', 'Number', 'Number', 'Number', 'Number', 'Number']
-  );
-  left /= this.width;
-  right /= this.width;
-  top /= this.height;
-  bottom /= this.height;
-  this._renderer.uPMatrix = p5.Matrix.identity();
-  this._renderer.uPMatrix.ortho(left,right,bottom,top,near,far);
-  this._renderer._setCamera = true;
-};
-
-module.exports = p5;
-
-},{"../core/core":49}],29:[function(_dereq_,module,exports){
-'use strict';
-
-var p5 = _dereq_('../core/core');
-
-//@TODO: implement full orbit controls including
-//pan, zoom, quaternion rotation, etc.
-p5.prototype.orbitControl = function(){
-  if(this.mouseIsPressed){
-    this.rotateY((this.mouseX - this.width / 2) / (this.width / 2));
-    this.rotateX((this.mouseY - this.height / 2) / (this.width / 2));
-  }
-  return this;
-};
-
-module.exports = p5;
-},{"../core/core":49}],30:[function(_dereq_,module,exports){
-/**
- * @module Lights, Camera
- * @submodule Lights
- * @for p5
- * @requires core
- */
-
-'use strict';
-
-var p5 = _dereq_('../core/core');
-
-/**
- * Creates an ambient light with a color
- * @method  ambientLight
- * @param  {Number|Array|String|p5.Color} v1  gray value,
- * red or hue value (depending on the current color mode),
- * or color Array, or CSS color string
- * @param  {Number}            [v2] optional: green or saturation value
- * @param  {Number}            [v3] optional: blue or brightness value
- * @param  {Number}            [a]  optional: opacity
- * @return {p5}                the p5 object
- * @example
- * <div>
- * <code>
- * function setup(){
- *   createCanvas(100, 100, WEBGL);
- * }
- * function draw(){
- *   background(0);
- *   ambientLight(150);
- *   ambientMaterial(250);
- *   sphere(200);
- * }
- * </code>
- * </div>
- */
-p5.prototype.ambientLight = function(v1, v2, v3, a){
-  var gl = this._renderer.GL;
-  var shaderProgram = this._renderer._getShader(
-    'lightVert', 'lightTextureFrag');
-
-  gl.useProgram(shaderProgram);
-  shaderProgram.uAmbientColor = gl.getUniformLocation(
-    shaderProgram,
-    'uAmbientColor[' + this._renderer.ambientLightCount + ']');
-
-  var color = this._renderer._pInst.color.apply(
-    this._renderer._pInst, arguments);
-  var colors = color._array;
-
-  gl.uniform3f( shaderProgram.uAmbientColor,
-    colors[0], colors[1], colors[2]);
-
-  //in case there's no material color for the geometry
-  shaderProgram.uMaterialColor = gl.getUniformLocation(
-    shaderProgram, 'uMaterialColor' );
-  gl.uniform4f( shaderProgram.uMaterialColor, 1, 1, 1, 1);
-
-  this._renderer.ambientLightCount ++;
-  shaderProgram.uAmbientLightCount =
-    gl.getUniformLocation(shaderProgram, 'uAmbientLightCount');
-  gl.uniform1i(shaderProgram.uAmbientLightCount,
-    this._renderer.ambientLightCount);
-
-  return this;
-};
-
-/**
- * Creates a directional light with a color and a direction
- * @method  directionalLight
- * @param  {Number|Array|String|p5.Color} v1   gray value,
- * red or hue value (depending on the current color mode),
- * or color Array, or CSS color string
- * @param  {Number}          [v2] optional: green or saturation value
- * @param  {Number}          [v3] optional: blue or brightness value
- * @param  {Number}          [a]  optional: opacity
- * @param  {Number|p5.Vector} x   x axis direction or a p5.Vector
- * @param  {Number}          [y]  optional: y axis direction
- * @param  {Number}          [z]  optional: z axis direction
- * @return {p5}              the p5 object
- * @example
- * <div>
- * <code>
- * function setup(){
- *   createCanvas(100, 100, WEBGL);
- * }
- * function draw(){
- *   background(0);
- *   //move your mouse to change light direction
- *   var dirX = (mouseX / width - 0.5) *2;
- *   var dirY = (mouseY / height - 0.5) *(-2);
- *   directionalLight(250, 250, 250, dirX, dirY, 0.25);
- *   ambientMaterial(250);
- *   sphere(200);
- * }
- * </code>
- * </div>
- */
-p5.prototype.directionalLight = function(v1, v2, v3, a, x, y, z) {
-  // TODO(jgessner): Find an example using this and profile it.
-  // var args = new Array(arguments.length);
-  // for (var i = 0; i < args.length; ++i) {
-  //   args[i] = arguments[i];
-  // }
-  // this._validateParameters(
-  //   'directionalLight',
-  //   args,
-  //   [
-  //     //rgbaxyz
-  //     ['Number', 'Number', 'Number', 'Number', 'Number', 'Number', 'Number'],
-  //     //rgbxyz
-  //     ['Number', 'Number', 'Number', 'Number', 'Number', 'Number'],
-  //     //caxyz
-  //     ['Number', 'Number', 'Number', 'Number', 'Number'],
-  //     //cxyz
-  //     ['Number', 'Number', 'Number', 'Number'],
-  //     ['String', 'Number', 'Number', 'Number'],
-  //     ['Array', 'Number', 'Number', 'Number'],
-  //     ['Object', 'Number', 'Number', 'Number'],
-  //     //rgbavector
-  //     ['Number', 'Number', 'Number', 'Number', 'Object'],
-  //     //rgbvector
-  //     ['Number', 'Number', 'Number', 'Object'],
-  //     //cavector
-  //     ['Number', 'Number', 'Object'],
-  //     //cvector
-  //     ['Number', 'Object'],
-  //     ['String', 'Object'],
-  //     ['Array', 'Object'],
-  //     ['Object', 'Object']
-  //   ]
-  // );
-
-  var gl = this._renderer.GL;
-  var shaderProgram = this._renderer._getShader(
-    'lightVert', 'lightTextureFrag');
-
-  gl.useProgram(shaderProgram);
-  shaderProgram.uDirectionalColor = gl.getUniformLocation(
-    shaderProgram,
-    'uDirectionalColor[' + this._renderer.directionalLightCount + ']');
-
-  //@TODO: check parameters number
-  var color = this._renderer._pInst.color.apply(
-    this._renderer._pInst, [v1, v2, v3]);
-  var colors = color._array;
-
-  gl.uniform3f( shaderProgram.uDirectionalColor,
-    colors[0], colors[1], colors[2]);
-
-  var _x, _y, _z;
-
-  if(typeof arguments[arguments.length-1] === 'number'){
-    _x = arguments[arguments.length-3];
-    _y = arguments[arguments.length-2];
-    _z = arguments[arguments.length-1];
-
-  }else{
-    try{
-      _x = arguments[arguments.length-1].x;
-      _y = arguments[arguments.length-1].y;
-      _z = arguments[arguments.length-1].z;
-    }
-    catch(error){
-      throw error;
-    }
-  }
-
-  shaderProgram.uLightingDirection = gl.getUniformLocation(
-    shaderProgram,
-    'uLightingDirection[' + this._renderer.directionalLightCount + ']');
-  gl.uniform3f( shaderProgram.uLightingDirection, _x, _y, _z);
-
-  //in case there's no material color for the geometry
-  shaderProgram.uMaterialColor = gl.getUniformLocation(
-    shaderProgram, 'uMaterialColor' );
-  gl.uniform4f( shaderProgram.uMaterialColor, 1, 1, 1, 1);
-
-  this._renderer.directionalLightCount ++;
-  shaderProgram.uDirectionalLightCount =
-    gl.getUniformLocation(shaderProgram, 'uDirectionalLightCount');
-  gl.uniform1i(shaderProgram.uDirectionalLightCount,
-    this._renderer.directionalLightCount);
-
-  return this;
-};
-
-/**
- * Creates a point light with a color and a light position
- * @method  pointLight
- * @param  {Number|Array|String|p5.Color} v1   gray value,
- * red or hue value (depending on the current color mode),
- * or color Array, or CSS color string
- * @param  {Number}          [v2] optional: green or saturation value
- * @param  {Number}          [v3] optional: blue or brightness value
- * @param  {Number}          [a]  optional: opacity
- * @param  {Number|p5.Vector} x   x axis position or a p5.Vector
- * @param  {Number}          [y]  optional: y axis position
- * @param  {Number}          [z]  optional: z axis position
- * @return {p5}              the p5 object
- * @example
- * <div>
- * <code>
- * function setup(){
- *   createCanvas(100, 100, WEBGL);
- * }
- * function draw(){
- *   background(0);
- *   //move your mouse to change light position
- *   var locY = (mouseY / height - 0.5) *(-2);
- *   var locX = (mouseX / width - 0.5) *2;
- *   //to set the light position,
- *   //think of the world's coordinate as:
- *   // -1,1 -------- 1,1
- *   //   |            |
- *   //   |            |
- *   //   |            |
- *   // -1,-1---------1,-1
- *   pointLight(250, 250, 250, locX, locY, 0);
- *   ambientMaterial(250);
- *   sphere(200);
- * }
- * </code>
- * </div>
- */
-p5.prototype.pointLight = function(v1, v2, v3, a, x, y, z) {
-  // TODO(jgessner): Find an example using this and profile it.
-  // var args = new Array(arguments.length);
-  // for (var i = 0; i < args.length; ++i) {
-  //   args[i] = arguments[i];
-  // }
-  // this._validateParameters(
-  //   'pointLight',
-  //   arguments,
-  //   [
-  //     //rgbaxyz
-  //     ['Number', 'Number', 'Number', 'Number', 'Number', 'Number', 'Number'],
-  //     //rgbxyz
-  //     ['Number', 'Number', 'Number', 'Number', 'Number', 'Number'],
-  //     //caxyz
-  //     ['Number', 'Number', 'Number', 'Number', 'Number'],
-  //     //cxyz
-  //     ['Number', 'Number', 'Number', 'Number'],
-  //     ['String', 'Number', 'Number', 'Number'],
-  //     ['Array', 'Number', 'Number', 'Number'],
-  //     ['Object', 'Number', 'Number', 'Number'],
-  //     //rgbavector
-  //     ['Number', 'Number', 'Number', 'Number', 'Object'],
-  //     //rgbvector
-  //     ['Number', 'Number', 'Number', 'Object'],
-  //     //cavector
-  //     ['Number', 'Number', 'Object'],
-  //     //cvector
-  //     ['Number', 'Object'],
-  //     ['String', 'Object'],
-  //     ['Array', 'Object'],
-  //     ['Object', 'Object']
-  //   ]
-  // );
-
-  var gl = this._renderer.GL;
-  var shaderProgram = this._renderer._getShader(
-    'lightVert', 'lightTextureFrag');
-
-  gl.useProgram(shaderProgram);
-  shaderProgram.uPointLightColor = gl.getUniformLocation(
-    shaderProgram,
-    'uPointLightColor[' + this._renderer.pointLightCount + ']');
-
-  //@TODO: check parameters number
-  var color = this._renderer._pInst.color.apply(
-    this._renderer._pInst, [v1, v2, v3]);
-  var colors = color._array;
-
-  gl.uniform3f( shaderProgram.uPointLightColor,
-    colors[0], colors[1], colors[2]);
-
-  var _x, _y, _z;
-
-  if(typeof arguments[arguments.length-1] === 'number'){
-    _x = arguments[arguments.length-3];
-    _y = arguments[arguments.length-2];
-    _z = arguments[arguments.length-1];
-
-  }else{
-    try{
-      _x = arguments[arguments.length-1].x;
-      _y = arguments[arguments.length-1].y;
-      _z = arguments[arguments.length-1].z;
-    }
-    catch(error){
-      throw error;
-    }
-  }
-
-  shaderProgram.uPointLightLocation = gl.getUniformLocation(
-    shaderProgram,
-    'uPointLightLocation[' + this._renderer.pointLightCount + ']');
-  gl.uniform3f( shaderProgram.uPointLightLocation, _x, _y, _z);
-
-  //in case there's no material color for the geometry
-  shaderProgram.uMaterialColor = gl.getUniformLocation(
-    shaderProgram, 'uMaterialColor' );
-  gl.uniform4f( shaderProgram.uMaterialColor, 1, 1, 1, 1);
-
-  this._renderer.pointLightCount ++;
-  shaderProgram.uPointLightCount =
-    gl.getUniformLocation(shaderProgram, 'uPointLightCount');
-  gl.uniform1i(shaderProgram.uPointLightCount,
-    this._renderer.pointLightCount);
-
-  return this;
-};
-
-module.exports = p5;
-
-},{"../core/core":49}],31:[function(_dereq_,module,exports){
-/**
- * @module Shape
- * @submodule 3D Models
- * @for p5
- * @requires core
- * @requires p5.Geometry3D
- */
-
-'use strict';
-
-var p5 = _dereq_('../core/core');
-_dereq_('./p5.Geometry');
-
-/**
- * Load a 3d model from an OBJ file.
- *
- * @method loadModel
- * @param  {String} path Path of the model to be loaded
- * @return {p5.Geometry} the p5.Geometry3D object
- * @example
- * <div>
- * <code>
- * //draw a spinning teapot
- * var teapot;
- *
- * function setup(){
- *   createCanvas(100, 100, WEBGL);
- *
- *   teapot = loadModel('assets/teapot.obj');
- * }
- *
- * function draw(){
- *   background(200);
- *   rotateX(frameCount * 0.01);
- *   rotateY(frameCount * 0.01);
- *   model(teapot);
- * }
- * </code>
- * </div>
- */
-p5.prototype.loadModel = function ( path ) {
-  var model = new p5.Geometry();
-  model.gid = path;
-  this.loadStrings(path, function(strings) {
-    parseObj(model, strings);
-  }.bind(this));
-
-  return model;
-};
-
-/**
- * Parse OBJ lines into model. For reference, this is what a simple model of a
- * square might look like:
- *
- * v -0.5 -0.5 0.5
- * v -0.5 -0.5 -0.5
- * v -0.5 0.5 -0.5
- * v -0.5 0.5 0.5
- *
- * f 4 3 2 1
- */
-function parseObj( model, lines ) {
-  // OBJ allows a face to specify an index for a vertex (in the above example),
-  // but it also allows you to specify a custom combination of vertex, UV
-  // coordinate, and vertex normal. So, "3/4/3" would mean, "use vertex 3 with
-  // UV coordinate 4 and vertex normal 3". In WebGL, every vertex with different
-  // parameters must be a different vertex, so loadedVerts is used to
-  // temporarily store the parsed vertices, normals, etc., and indexedVerts is
-  // used to map a specific combination (keyed on, for example, the string
-  // "3/4/3"), to the actual index of the newly created vertex in the final
-  // object.
-  var loadedVerts = {'v' : [],
-                     'vt' : [],
-                     'vn' : []},
-      indexedVerts = {};
-
-  for (var line = 0; line < lines.length; ++line) {
-    // Each line is a separate object (vertex, face, vertex normal, etc)
-    // For each line, split it into tokens on whitespace. The first token
-    // describes the type.
-    var tokens = lines[line].trim().split(/\b\s+/);
-
-    if (tokens.length > 0) {
-      if (tokens[0] === 'v' || tokens[0] === 'vn') {
-        // Check if this line describes a vertex or vertex normal.
-        // It will have three numeric parameters.
-        var vertex = new p5.Vector(parseFloat(tokens[1]),
-                                   parseFloat(tokens[2]),
-                                   parseFloat(tokens[3]));
-        loadedVerts[tokens[0]].push(vertex);
-      } else if (tokens[0] === 'vt') {
-        // Check if this line describes a texture coordinate.
-        // It will have two numeric parameters.
-        var texVertex = [parseFloat(tokens[1]), parseFloat(tokens[2])];
-        loadedVerts[tokens[0]].push(texVertex);
-      } else if (tokens[0] === 'f') {
-        // Check if this line describes a face.
-        // OBJ faces can have more than three points. Triangulate points.
-        for (var tri = 3; tri < tokens.length; ++tri) {
-          var face = [];
-
-          var vertexTokens = [1, tri - 1, tri];
-
-          for (var tokenInd = 0; tokenInd < vertexTokens.length; ++tokenInd) {
-            // Now, convert the given token into an index
-            var vertString = tokens[vertexTokens[tokenInd]];
-            var vertIndex = 0;
-
-            // TODO: Faces can technically use negative numbers to refer to the
-            // previous nth vertex. I haven't seen this used in practice, but
-            // it might be good to implement this in the future.
-
-            if (indexedVerts[vertString] !== undefined) {
-              vertIndex = indexedVerts[vertString];
-            } else {
-              var vertParts = vertString.split('/');
-              for (var i = 0; i < vertParts.length; i++) {
-                vertParts[i] = parseInt(vertParts[i]) - 1;
-              }
-
-              vertIndex = indexedVerts[vertString] = model.vertices.length;
-              model.vertices.push(loadedVerts.v[vertParts[0]].copy());
-              if (loadedVerts.vt[vertParts[1]]) {
-                model.uvs.push(loadedVerts.vt[vertParts[1]].slice());
-              } else {
-                model.uvs.push([0, 0]);
-              }
-
-              if (loadedVerts.vn[vertParts[2]]) {
-                model.vertexNormals.push(loadedVerts.vn[vertParts[2]].copy());
-              }
-            }
-
-            face.push(vertIndex);
-          }
-
-          model.faces.push(face);
-        }
-      }
-    }
-  }
-
-  // If the model doesn't have normals, compute the normals
-  if(model.vertexNormals.length === 0) {
-    model.computeNormals();
-  }
-
-  return model;
-}
-
-/**
- * Render a 3d model to the screen.
- *
- * @method model
- * @param  {p5.Geometry} model Loaded 3d model to be rendered
- * @example
- * <div>
- * <code>
- * //draw a spinning teapot
- * var teapot;
- *
- * function setup(){
- *   createCanvas(100, 100, WEBGL);
- *
- *   teapot = loadModel('assets/teapot.obj');
- * }
- *
- * function draw(){
- *   background(200);
- *   rotateX(frameCount * 0.01);
- *   rotateY(frameCount * 0.01);
- *   model(teapot);
- * }
- * </code>
- * </div>
- */
-p5.prototype.model = function ( model ) {
-  if (model.vertices.length > 0) {
-    if (!this._renderer.geometryInHash(model.gid)) {
-      this._renderer.createBuffers(model.gid, model);
-    }
-
-    this._renderer.drawBuffers(model.gid);
-  }
-};
-
-module.exports = p5;
-
-},{"../core/core":49,"./p5.Geometry":33}],32:[function(_dereq_,module,exports){
-/**
- * @module Lights, Camera
- * @submodule Material
- * @for p5
- * @requires core
- */
-
-'use strict';
-
-var p5 = _dereq_('../core/core');
-//require('./p5.Texture');
-
-/**
- * Normal material for geometry
- * @method normalMaterial
- * @return {p5}                the p5 object
- * @example
- * <div>
- * <code>
- * function setup(){
- *   createCanvas(100, 100, WEBGL);
- * }
- *
- * function draw(){
- *  background(0);
- *  normalMaterial();
- *  sphere(200);
- * }
- * </code>
- * </div>
- */
-p5.prototype.normalMaterial = function(){
-  this._renderer._getShader('normalVert', 'normalFrag');
-  return this;
-};
-
-/**
- * Texture for geometry
- * @method texture
- * @return {p5}                the p5 object
- * @example
- * <div>
- * <code>
- * var img;
- * function setup(){
- *   createCanvas(100, 100, WEBGL);
- *   img = loadImage("assets/laDefense.jpg");
- * }
- *
- * function draw(){
- *   background(0);
- *   rotateZ(frameCount * 0.01);
- *   rotateX(frameCount * 0.01);
- *   rotateY(frameCount * 0.01);
- *   //pass image as texture
- *   texture(img);
- *   box(200, 200, 200);
- * }
- * </code>
- * </div>
- */
-p5.prototype.texture = function(image){
-  var gl = this._renderer.GL;
-  var shaderProgram = this._renderer._getShader('lightVert',
-    'lightTextureFrag');
-  gl.useProgram(shaderProgram);
-  if (image instanceof p5.Image) {
-    //check if image is already used as texture
-    if(!image.isTexture){
-      //createTexture and set isTexture to true
-      var tex = gl.createTexture();
-      image.createTexture(tex);
-      gl.bindTexture(gl.TEXTURE_2D, tex);
-      gl.pixelStorei(gl.UNPACK_FLIP_Y_WEBGL, 1);
-      image._setProperty('isTexture', true);
-    }
-    //otherwise we're good to bind texture without creating
-    //a new one on the gl
-    else {
-      //TODO
-    }
-    image.loadPixels();
-    var data = new Uint8Array(image.pixels);
-    gl.texImage2D(gl.TEXTURE_2D, 0,
-      gl.RGBA, image.width, image.height,
-      0, gl.RGBA, gl.UNSIGNED_BYTE, data);
-  }
-  //if param is a video
-  else if (image instanceof p5.MediaElement){
-    if(!image.loadedmetadata) {return;}
-    gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGBA, gl.RGBA,
-    gl.UNSIGNED_BYTE, image.elt);
-  }
-  else {
-    //@TODO handle following cases:
-    //- 2D canvas (p5 inst)
-  }
-  if (_isPowerOf2(image.width) && _isPowerOf2(image.height)) {
-    gl.generateMipmap(gl.TEXTURE_2D);
-  } else {
-    //@TODO this is problematic
-    //image.width = _nextHighestPOT(image.width);
-    //image.height = _nextHighestPOT(image.height);
-    gl.texParameteri(gl.TEXTURE_2D,
-    gl.TEXTURE_MAG_FILTER, gl.LINEAR);
-    gl.texParameteri(gl.TEXTURE_2D,
-    gl.TEXTURE_MIN_FILTER, gl.LINEAR);
-    gl.texParameteri(gl.TEXTURE_2D,
-    gl.TEXTURE_WRAP_S, gl.CLAMP_TO_EDGE);
-    gl.texParameteri(gl.TEXTURE_2D,
-    gl.TEXTURE_WRAP_T, gl.CLAMP_TO_EDGE);
-  }
-  //this is where we'd activate multi textures
-  //eg. gl.activeTexture(gl.TEXTURE0 + (unit || 0));
-  //but for now we just have a single texture.
-  //@TODO need to extend this functionality
-  //gl.activeTexture(gl.TEXTURE0 + 0);
-  //gl.bindTexture(gl.TEXTURE_2D, tex);
-  gl.uniform1i(gl.getUniformLocation(shaderProgram, 'uSampler'), 0);
-  gl.uniform1i(gl.getUniformLocation(shaderProgram, 'isTexture'), true);
-  return this;
-};
-
-/**
- * Helper functions; Checks whether val is a pot
- * more info on power of 2 here:
- * https://www.opengl.org/wiki/NPOT_Texture
- * @param  {Number}  value
- * @return {Boolean}
- */
-function _isPowerOf2 (value){
-  return (value & (value - 1)) === 0;
-}
-
-/**
- * returns the next highest power of 2 value
- * @param  {Number} value [description]
- * @return {Number}       [description]
- */
-// function _nextHighestPOT (value){
-//   --value;
-//   for (var i = 1; i < 32; i <<= 1) {
-//     value = value | value >> i;
-//   }
-//   return value + 1;
-
-/**
- * Ambient material for geometry with a given color
- * @method  ambientMaterial
- * @param  {Number|Array|String|p5.Color} v1  gray value,
- * red or hue value (depending on the current color mode),
- * or color Array, or CSS color string
- * @param  {Number}            [v2] optional: green or saturation value
- * @param  {Number}            [v3] optional: blue or brightness value
- * @param  {Number}            [a]  optional: opacity
-* @return {p5}                 the p5 object
- * @example
- * <div>
- * <code>
- * function setup(){
- *   createCanvas(100, 100, WEBGL);
- * }
- * function draw(){
- *  background(0);
- *  ambientLight(100);
- *  pointLight(250, 250, 250, 100, 100, 0);
- *  ambientMaterial(250);
- *  sphere(200);
- * }
- * </code>
- * </div>
- */
-p5.prototype.ambientMaterial = function(v1, v2, v3, a) {
-  var gl = this._renderer.GL;
-  var shaderProgram =
-    this._renderer._getShader('lightVert', 'lightTextureFrag');
-
-  gl.useProgram(shaderProgram);
-  shaderProgram.uMaterialColor = gl.getUniformLocation(
-    shaderProgram, 'uMaterialColor' );
-  var colors = this._renderer._applyColorBlend(v1,v2,v3,a);
-
-  gl.uniform4f(shaderProgram.uMaterialColor,
-    colors[0], colors[1], colors[2], colors[3]);
-
-  shaderProgram.uSpecular = gl.getUniformLocation(
-    shaderProgram, 'uSpecular' );
-  gl.uniform1i(shaderProgram.uSpecular, false);
-
-  gl.uniform1i(gl.getUniformLocation(shaderProgram, 'isTexture'), false);
-
-  return this;
-};
-
-/**
- * Specular material for geometry with a given color
- * @method specularMaterial
- * @param  {Number|Array|String|p5.Color} v1  gray value,
- * red or hue value (depending on the current color mode),
- * or color Array, or CSS color string
- * @param  {Number}            [v2] optional: green or saturation value
- * @param  {Number}            [v3] optional: blue or brightness value
- * @param  {Number}            [a]  optional: opacity
- * @return {p5}                the p5 object
- * @example
- * <div>
- * <code>
- * function setup(){
- *   createCanvas(100, 100, WEBGL);
- * }
- * function draw(){
- *  background(0);
- *  ambientLight(100);
- *  pointLight(250, 250, 250, 100, 100, 0);
- *  specularMaterial(250);
- *  sphere(200);
- * }
- * </code>
- * </div>
- */
-p5.prototype.specularMaterial = function(v1, v2, v3, a) {
-  var gl = this._renderer.GL;
-  var shaderProgram =
-    this._renderer._getShader('lightVert', 'lightTextureFrag');
-  gl.useProgram(shaderProgram);
-  gl.uniform1i(gl.getUniformLocation(shaderProgram, 'isTexture'), false);
-  shaderProgram.uMaterialColor = gl.getUniformLocation(
-    shaderProgram, 'uMaterialColor' );
-  var colors = this._renderer._applyColorBlend(v1,v2,v3,a);
-  gl.uniform4f(shaderProgram.uMaterialColor,
-    colors[0], colors[1], colors[2], colors[3]);
-  shaderProgram.uSpecular = gl.getUniformLocation(
-    shaderProgram, 'uSpecular' );
-  gl.uniform1i(shaderProgram.uSpecular, true);
-
-  return this;
-};
-
-/**
- * @private blends colors according to color components.
- * If alpha value is less than 1, we need to enable blending
- * on our gl context.  Otherwise opaque objects need to a depthMask.
- * @param  {Number} v1 [description]
- * @param  {Number} v2 [description]
- * @param  {Number} v3 [description]
- * @param  {Number} a  [description]
- * @return {[Number]}  Normalized numbers array
- */
-p5.Renderer3D.prototype._applyColorBlend = function(v1,v2,v3,a){
-  var gl = this.GL;
-  var color = this._pInst.color.apply(
-    this._pInst, arguments);
-  var colors = color._array;
-  if(colors[colors.length-1] < 1.0){
-    gl.depthMask(false);
-    gl.enable(gl.BLEND);
-    gl.blendEquation( gl.FUNC_ADD );
-    gl.blendFunc( gl.SRC_ALPHA, gl.ONE_MINUS_SRC_ALPHA );
-  } else {
-    gl.depthMask(true);
-    gl.disable(gl.BLEND);
-  }
-  return colors;
-};
-
-module.exports = p5;
-
-},{"../core/core":49}],33:[function(_dereq_,module,exports){
-//some of the functions are adjusted from Three.js(http://threejs.org)
-
-'use strict';
-
-var p5 = _dereq_('../core/core');
-
-/**
- * p5 Geometry class
- * @constructor
- * @param  {Function | Object} vertData callback function or Object
- *                     containing routine(s) for vertex data generation
- * @param  {Number} [detailX] number of vertices on horizontal surface
- * @param  {Number} [detailY] number of vertices on horizontal surface
- * @param {Function} [callback] function to call upon object instantiation.
- *
- */
-p5.Geometry = function
-(detailX, detailY, callback){
-  //an array containing every vertex
-  //@type [p5.Vector]
-  this.vertices = [];
-  //an array containing 1 normal per vertex
-  //@type [p5.Vector]
-  //[p5.Vector, p5.Vector, p5.Vector,p5.Vector, p5.Vector, p5.Vector,...]
-  this.vertexNormals = [];
-  //an array containing each three vertex indices that form a face
-  //[[0, 1, 2], [2, 1, 3], ...]
-  this.faces = [];
-  //a 2D array containing uvs for every vertex
-  //[[0.0,0.0],[1.0,0.0], ...]
-  this.uvs = [];
-  this.detailX = (detailX !== undefined) ? detailX: 1;
-  this.detailY = (detailY !== undefined) ? detailY: 1;
-  if(callback instanceof Function){
-    callback.call(this);
-  }
-  return this;
-};
-
-p5.Geometry.prototype.computeFaces = function(){
-  var sliceCount = this.detailX + 1;
-  var a, b, c, d;
-  for (var i = 0; i < this.detailY; i++){
-    for (var j = 0; j < this.detailX; j++){
-      a = i * sliceCount + j;// + offset;
-      b = i * sliceCount + j + 1;// + offset;
-      c = (i + 1)* sliceCount + j + 1;// + offset;
-      d = (i + 1)* sliceCount + j;// + offset;
-      this.faces.push([a, b, d]);
-      this.faces.push([d, b, c]);
-    }
-  }
-  return this;
-};
-
-p5.Geometry.prototype._getFaceNormal = function(faceId,vertId){
-  //This assumes that vA->vB->vC is a counter-clockwise ordering
-  var face = this.faces[faceId];
-  var vA = this.vertices[face[vertId%3]];
-  var vB = this.vertices[face[(vertId+1)%3]];
-  var vC = this.vertices[face[(vertId+2)%3]];
-  var n = p5.Vector.cross(
-    p5.Vector.sub(vB,vA),
-    p5.Vector.sub(vC,vA));
-  var sinAlpha = p5.Vector.mag(n) /
-  (p5.Vector.mag(p5.Vector.sub(vB,vA))*
-    p5.Vector.mag(p5.Vector.sub(vC,vA)));
-  n = n.normalize();
-  return n.mult(Math.asin(sinAlpha));
-};
-/**
- * computes smooth normals per vertex as an average of each
- * face.
- */
-p5.Geometry.prototype.computeNormals = function (){
-  for(var v=0; v < this.vertices.length; v++){
-    var normal = new p5.Vector();
-    for(var i=0; i < this.faces.length; i++){
-      //if our face contains a given vertex
-      //calculate an average of the normals
-      //of the triangles adjacent to that vertex
-      if(this.faces[i][0] === v ||
-        this.faces[i][1] === v ||
-        this.faces[i][2] === v)
-      {
-        normal = normal.add(this._getFaceNormal(i, v));
-      }
-    }
-    normal = normal.normalize();
-    this.vertexNormals.push(normal);
-  }
-};
-
-/**
- * Averages the vertex normals. Used in curved
- * surfaces
- * @return {p5.Geometry}
- */
-p5.Geometry.prototype.averageNormals = function() {
-
-  for(var i = 0; i <= this.detailY; i++){
-    var offset = this.detailX + 1;
-    var temp = p5.Vector
-      .add(this.vertexNormals[i*offset],
-        this.vertexNormals[i*offset + this.detailX]);
-    temp = p5.Vector.div(temp, 2);
-    this.vertexNormals[i*offset] = temp;
-    this.vertexNormals[i*offset + this.detailX] = temp;
-  }
-  return this;
-};
-
-/**
- * Averages pole normals.  Used in spherical primitives
- * @return {p5.Geometry}
- */
-p5.Geometry.prototype.averagePoleNormals = function() {
-
-  //average the north pole
-  var sum = new p5.Vector(0, 0, 0);
-  for(var i = 0; i < this.detailX; i++){
-    sum.add(this.vertexNormals[i]);
-  }
-  sum = p5.Vector.div(sum, this.detailX);
-
-  for(i = 0; i < this.detailX; i++){
-    this.vertexNormals[i] = sum;
-  }
-
-  //average the south pole
-  sum = new p5.Vector(0, 0, 0);
-  for(i = this.vertices.length - 1;
-    i > this.vertices.length - 1 - this.detailX; i--){
-    sum.add(this.vertexNormals[i]);
-  }
-  sum = p5.Vector.div(sum, this.detailX);
-
-  for(i = this.vertices.length - 1;
-    i > this.vertices.length - 1 - this.detailX; i--){
-    this.vertexNormals[i] = sum;
-  }
-  return this;
-};
-
-module.exports = p5.Geometry;
-},{"../core/core":49}],34:[function(_dereq_,module,exports){
-/**
-* @requires constants
-* @todo see methods below needing further implementation.
-* future consideration: implement SIMD optimizations
-* when browser compatibility becomes available
-* https://developer.mozilla.org/en-US/docs/Web/JavaScript/
-*   Reference/Global_Objects/SIMD
-*/
-
-'use strict';
-
-var p5 = _dereq_('../core/core');
-var polarGeometry = _dereq_('../math/polargeometry');
-var constants = _dereq_('../core/constants');
-var GLMAT_ARRAY_TYPE = (
-    typeof Float32Array !== 'undefined') ?
-  Float32Array : Array;
-
-/**
- * A class to describe a 4x4 matrix
- * for model and view matrix manipulation in the p5js webgl renderer.
- * class p5.Matrix
- * @constructor
- * @param {Array} [mat4] array literal of our 4x4 matrix
- */
-p5.Matrix = function() {
-  var args = new Array(arguments.length);
-  for (var i = 0; i < args.length; ++i) {
-    args[i] = arguments[i];
-  }
-  // This is default behavior when object
-  // instantiated using createMatrix()
-  // @todo implement createMatrix() in core/math.js
-  if(args[0] instanceof p5) {
-    // save reference to p5 if passed in
-    this.p5 = args[0];
-    if(args[1] === 'mat3'){
-      this.mat3 = args[2] || new GLMAT_ARRAY_TYPE([
-        1, 0, 0,
-        0, 1, 0,
-        0, 0, 1
-      ]);
-    }
-    else {
-      this.mat4  = args[1] || new GLMAT_ARRAY_TYPE([
-        1, 0, 0, 0,
-        0, 1, 0, 0,
-        0, 0, 1, 0,
-        0, 0, 0, 1
-      ]);
-    }
-  // default behavior when object
-  // instantiated using new p5.Matrix()
-  } else {
-    if(args[0] === 'mat3'){
-      this.mat3 = args[1] || new GLMAT_ARRAY_TYPE([
-        1, 0, 0,
-        0, 1, 0,
-        0, 0, 1
-      ]);
-    }
-    else {
-      this.mat4 = args[0] || new GLMAT_ARRAY_TYPE([
-        1, 0, 0, 0,
-        0, 1, 0, 0,
-        0, 0, 1, 0,
-        0, 0, 0, 1
-      ]);
-    }
-  }
-  return this;
-};
-
-/**
- * Sets the x, y, and z component of the vector using two or three separate
- * variables, the data from a p5.Matrix, or the values from a float array.
- *
- * @param {p5.Matrix|Array} [inMatrix] the input p5.Matrix or
- *                                     an Array of length 16
- */
-p5.Matrix.prototype.set = function (inMatrix) {
-  if (inMatrix instanceof p5.Matrix) {
-    this.mat4 = inMatrix.mat4;
-    return this;
-  }
-  else if (inMatrix instanceof GLMAT_ARRAY_TYPE) {
-    this.mat4 = inMatrix;
-    return this;
-  }
-  return this;
-};
-
-/**
- * Gets a copy of the vector, returns a p5.Matrix object.
- *
- * @return {p5.Matrix} the copy of the p5.Matrix object
- */
-p5.Matrix.prototype.get = function () {
-  return new p5.Matrix(this.mat4);
-};
-
-/**
- * return a copy of a matrix
- * @return {p5.Matrix}   the result matrix
- */
-p5.Matrix.prototype.copy = function(){
-  var copied = new p5.Matrix();
-  copied.mat4[0] = this.mat4[0];
-  copied.mat4[1] = this.mat4[1];
-  copied.mat4[2] = this.mat4[2];
-  copied.mat4[3] = this.mat4[3];
-  copied.mat4[4] = this.mat4[4];
-  copied.mat4[5] = this.mat4[5];
-  copied.mat4[6] = this.mat4[6];
-  copied.mat4[7] = this.mat4[7];
-  copied.mat4[8] = this.mat4[8];
-  copied.mat4[9] = this.mat4[9];
-  copied.mat4[10] = this.mat4[10];
-  copied.mat4[11] = this.mat4[11];
-  copied.mat4[12] = this.mat4[12];
-  copied.mat4[13] = this.mat4[13];
-  copied.mat4[14] = this.mat4[14];
-  copied.mat4[15] = this.mat4[15];
-  return copied;
-};
-
-/**
- * return an identity matrix
- * @return {p5.Matrix}   the result matrix
- */
-p5.Matrix.identity = function(){
-  return new p5.Matrix();
-};
-
-/**
- * transpose according to a given matrix
- * @param  {p5.Matrix | Typed Array} a  the matrix to be based on to transpose
- * @return {p5.Matrix}                  this
- */
-p5.Matrix.prototype.transpose = function(a){
-  var a01, a02, a03, a12, a13, a23;
-  if(a instanceof p5.Matrix){
-    a01 = a.mat4[1];
-    a02 = a.mat4[2];
-    a03 = a.mat4[3];
-    a12 = a.mat4[6];
-    a13 = a.mat4[7];
-    a23 = a.mat4[11];
-
-    this.mat4[0] = a.mat4[0];
-    this.mat4[1] = a.mat4[4];
-    this.mat4[2] = a.mat4[8];
-    this.mat4[3] = a.mat4[12];
-    this.mat4[4] = a01;
-    this.mat4[5] = a.mat4[5];
-    this.mat4[6] = a.mat4[9];
-    this.mat4[7] = a.mat4[13];
-    this.mat4[8] = a02;
-    this.mat4[9] = a12;
-    this.mat4[10] = a.mat4[10];
-    this.mat4[11] = a.mat4[14];
-    this.mat4[12] = a03;
-    this.mat4[13] = a13;
-    this.mat4[14] = a23;
-    this.mat4[15] = a.mat4[15];
-
-  }else if(a instanceof GLMAT_ARRAY_TYPE){
-    a01 = a[1];
-    a02 = a[2];
-    a03 = a[3];
-    a12 = a[6];
-    a13 = a[7];
-    a23 = a[11];
-
-    this.mat4[0] = a[0];
-    this.mat4[1] = a[4];
-    this.mat4[2] = a[8];
-    this.mat4[3] = a[12];
-    this.mat4[4] = a01;
-    this.mat4[5] = a[5];
-    this.mat4[6] = a[9];
-    this.mat4[7] = a[13];
-    this.mat4[8] = a02;
-    this.mat4[9] = a12;
-    this.mat4[10] = a[10];
-    this.mat4[11] = a[14];
-    this.mat4[12] = a03;
-    this.mat4[13] = a13;
-    this.mat4[14] = a23;
-    this.mat4[15] = a[15];
-  }
-  return this;
-};
-
-/**
- * invert  matrix according to a give matrix
- * @param  {p5.Matrix or Typed Array} a   the matrix to be based on to invert
- * @return {p5.Matrix}                    this
- */
-p5.Matrix.prototype.invert = function(a){
-  var a00, a01, a02, a03, a10, a11, a12, a13,
-  a20, a21, a22, a23, a30, a31, a32, a33;
-  if(a instanceof p5.Matrix){
-    a00 = a.mat4[0];
-    a01 = a.mat4[1];
-    a02 = a.mat4[2];
-    a03 = a.mat4[3];
-    a10 = a.mat4[4];
-    a11 = a.mat4[5];
-    a12 = a.mat4[6];
-    a13 = a.mat4[7];
-    a20 = a.mat4[8];
-    a21 = a.mat4[9];
-    a22 = a.mat4[10];
-    a23 = a.mat4[11];
-    a30 = a.mat4[12];
-    a31 = a.mat4[13];
-    a32 = a.mat4[14];
-    a33 = a.mat4[15];
-  }else if(a instanceof GLMAT_ARRAY_TYPE){
-    a00 = a[0];
-    a01 = a[1];
-    a02 = a[2];
-    a03 = a[3];
-    a10 = a[4];
-    a11 = a[5];
-    a12 = a[6];
-    a13 = a[7];
-    a20 = a[8];
-    a21 = a[9];
-    a22 = a[10];
-    a23 = a[11];
-    a30 = a[12];
-    a31 = a[13];
-    a32 = a[14];
-    a33 = a[15];
-  }
-  var b00 = a00 * a11 - a01 * a10,
-  b01 = a00 * a12 - a02 * a10,
-  b02 = a00 * a13 - a03 * a10,
-  b03 = a01 * a12 - a02 * a11,
-  b04 = a01 * a13 - a03 * a11,
-  b05 = a02 * a13 - a03 * a12,
-  b06 = a20 * a31 - a21 * a30,
-  b07 = a20 * a32 - a22 * a30,
-  b08 = a20 * a33 - a23 * a30,
-  b09 = a21 * a32 - a22 * a31,
-  b10 = a21 * a33 - a23 * a31,
-  b11 = a22 * a33 - a23 * a32,
-
-  // Calculate the determinant
-  det = b00 * b11 - b01 * b10 + b02 * b09 + b03 * b08 -
-  b04 * b07 + b05 * b06;
-
-  if (!det) {
-    return null;
-  }
-  det = 1.0 / det;
-
-  this.mat4[0] = (a11 * b11 - a12 * b10 + a13 * b09) * det;
-  this.mat4[1] = (a02 * b10 - a01 * b11 - a03 * b09) * det;
-  this.mat4[2] = (a31 * b05 - a32 * b04 + a33 * b03) * det;
-  this.mat4[3] = (a22 * b04 - a21 * b05 - a23 * b03) * det;
-  this.mat4[4] = (a12 * b08 - a10 * b11 - a13 * b07) * det;
-  this.mat4[5] = (a00 * b11 - a02 * b08 + a03 * b07) * det;
-  this.mat4[6] = (a32 * b02 - a30 * b05 - a33 * b01) * det;
-  this.mat4[7] = (a20 * b05 - a22 * b02 + a23 * b01) * det;
-  this.mat4[8] = (a10 * b10 - a11 * b08 + a13 * b06) * det;
-  this.mat4[9] = (a01 * b08 - a00 * b10 - a03 * b06) * det;
-  this.mat4[10] = (a30 * b04 - a31 * b02 + a33 * b00) * det;
-  this.mat4[11] = (a21 * b02 - a20 * b04 - a23 * b00) * det;
-  this.mat4[12] = (a11 * b07 - a10 * b09 - a12 * b06) * det;
-  this.mat4[13] = (a00 * b09 - a01 * b07 + a02 * b06) * det;
-  this.mat4[14] = (a31 * b01 - a30 * b03 - a32 * b00) * det;
-  this.mat4[15] = (a20 * b03 - a21 * b01 + a22 * b00) * det;
-
-  return this;
-};
-
-/**
- * Inverts a 3x3 matrix
- * @return {[type]} [description]
- */
-p5.Matrix.prototype.invert3x3 = function (){
-  var a00 = this.mat3[0],
-  a01 = this.mat3[1],
-  a02 = this.mat3[2],
-  a10 = this.mat3[3],
-  a11 = this.mat3[4],
-  a12 = this.mat3[5],
-  a20 = this.mat3[6],
-  a21 = this.mat3[7],
-  a22 = this.mat3[8],
-  b01 = a22 * a11 - a12 * a21,
-  b11 = -a22 * a10 + a12 * a20,
-  b21 = a21 * a10 - a11 * a20,
-
-  // Calculate the determinant
-  det = a00 * b01 + a01 * b11 + a02 * b21;
-  if (!det) {
-    return null;
-  }
-  det = 1.0 / det;
-  this.mat3[0] = b01 * det;
-  this.mat3[1] = (-a22 * a01 + a02 * a21) * det;
-  this.mat3[2] = (a12 * a01 - a02 * a11) * det;
-  this.mat3[3] = b11 * det;
-  this.mat3[4] = (a22 * a00 - a02 * a20) * det;
-  this.mat3[5] = (-a12 * a00 + a02 * a10) * det;
-  this.mat3[6] = b21 * det;
-  this.mat3[7] = (-a21 * a00 + a01 * a20) * det;
-  this.mat3[8] = (a11 * a00 - a01 * a10) * det;
-  return this;
-};
-
-/**
- * transposes a 3x3 p5.Matrix by a mat3
- * @param  {[Number]} mat3 1-dimensional array
- * @return {p5.Matrix} this
- */
-p5.Matrix.prototype.transpose3x3 = function (mat3){
-  var a01 = mat3[1], a02 = mat3[2], a12 = mat3[5];
-  this.mat3[1] = mat3[3];
-  this.mat3[2] = mat3[6];
-  this.mat3[3] = a01;
-  this.mat3[5] = mat3[7];
-  this.mat3[6] = a02;
-  this.mat3[7] = a12;
-  return this;
-};
-
-/**
- * converts a 4x4 matrix to its 3x3 inverse tranform
- * commonly used in MVMatrix to NMatrix conversions.
- * @param  {p5.Matrix} mat4 the matrix to be based on to invert
- * @return {p5.Matrix} this with mat3
- * @todo  finish implementation
- */
-p5.Matrix.prototype.inverseTranspose = function (matrix){
-  if(this.mat3 === undefined){
-    console.error('sorry, this function only works with mat3');
-  }
-  else {
-    //convert mat4 -> mat3
-    this.mat3[0] = matrix.mat4[0];
-    this.mat3[1] = matrix.mat4[1];
-    this.mat3[2] = matrix.mat4[2];
-    this.mat3[3] = matrix.mat4[4];
-    this.mat3[4] = matrix.mat4[5];
-    this.mat3[5] = matrix.mat4[6];
-    this.mat3[6] = matrix.mat4[8];
-    this.mat3[7] = matrix.mat4[9];
-    this.mat3[8] = matrix.mat4[10];
-  }
-
-  this.invert3x3().transpose3x3(this.mat3);
-  return this;
-};
-
-/**
- * inspired by Toji's mat4 determinant
- * @return {Number} Determinant of our 4x4 matrix
- */
-p5.Matrix.prototype.determinant = function(){
-  var d00 = (this.mat4[0] * this.mat4[5]) - (this.mat4[1] * this.mat4[4]),
-    d01 = (this.mat4[0] * this.mat4[6]) - (this.mat4[2] * this.mat4[4]),
-    d02 = (this.mat4[0] * this.mat4[7]) - (this.mat4[3] * this.mat4[4]),
-    d03 = (this.mat4[1] * this.mat4[6]) - (this.mat4[2] * this.mat4[5]),
-    d04 = (this.mat4[1] * this.mat4[7]) - (this.mat4[3] * this.mat4[5]),
-    d05 = (this.mat4[2] * this.mat4[7]) - (this.mat4[3] * this.mat4[6]),
-    d06 = (this.mat4[8] * this.mat4[13]) - (this.mat4[9] * this.mat4[12]),
-    d07 = (this.mat4[8] * this.mat4[14]) - (this.mat4[10] * this.mat4[12]),
-    d08 = (this.mat4[8] * this.mat4[15]) - (this.mat4[11] * this.mat4[12]),
-    d09 = (this.mat4[9] * this.mat4[14]) - (this.mat4[10] * this.mat4[13]),
-    d10 = (this.mat4[9] * this.mat4[15]) - (this.mat4[11] * this.mat4[13]),
-    d11 = (this.mat4[10] * this.mat4[15]) - (this.mat4[11] * this.mat4[14]);
-
-  // Calculate the determinant
-  return d00 * d11 - d01 * d10 + d02 * d09 +
-    d03 * d08 - d04 * d07 + d05 * d06;
-};
-
-/**
- * multiply two mat4s
- * @param {p5.Matrix | Array}  multMatrix The matrix we want to multiply by
- * @return {p5.Matrix}         this
- */
-p5.Matrix.prototype.mult = function(multMatrix){
-  var _dest = new GLMAT_ARRAY_TYPE(16);
-  var _src = new GLMAT_ARRAY_TYPE(16);
-
-  if(multMatrix instanceof p5.Matrix) {
-    _src = multMatrix.mat4;
-  }
-  else if(multMatrix instanceof GLMAT_ARRAY_TYPE){
-    _src = multMatrix;
-  }
-
-  // each row is used for the multiplier
-  var b0  = this.mat4[0], b1 = this.mat4[1],
-    b2 = this.mat4[2], b3 = this.mat4[3];
-  _dest[0] = b0*_src[0] + b1*_src[4] + b2*_src[8] + b3*_src[12];
-  _dest[1] = b0*_src[1] + b1*_src[5] + b2*_src[9] + b3*_src[13];
-  _dest[2] = b0*_src[2] + b1*_src[6] + b2*_src[10] + b3*_src[14];
-  _dest[3] = b0*_src[3] + b1*_src[7] + b2*_src[11] + b3*_src[15];
-
-  b0 = this.mat4[4];
-  b1 = this.mat4[5];
-  b2 = this.mat4[6];
-  b3 = this.mat4[7];
-  _dest[4] = b0*_src[0] + b1*_src[4] + b2*_src[8] + b3*_src[12];
-  _dest[5] = b0*_src[1] + b1*_src[5] + b2*_src[9] + b3*_src[13];
-  _dest[6] = b0*_src[2] + b1*_src[6] + b2*_src[10] + b3*_src[14];
-  _dest[7] = b0*_src[3] + b1*_src[7] + b2*_src[11] + b3*_src[15];
-
-  b0 = this.mat4[8];
-  b1 = this.mat4[9];
-  b2 = this.mat4[10];
-  b3 = this.mat4[11];
-  _dest[8] = b0*_src[0] + b1*_src[4] + b2*_src[8] + b3*_src[12];
-  _dest[9] = b0*_src[1] + b1*_src[5] + b2*_src[9] + b3*_src[13];
-  _dest[10] = b0*_src[2] + b1*_src[6] + b2*_src[10] + b3*_src[14];
-  _dest[11] = b0*_src[3] + b1*_src[7] + b2*_src[11] + b3*_src[15];
-
-  b0 = this.mat4[12];
-  b1 = this.mat4[13];
-  b2 = this.mat4[14];
-  b3 = this.mat4[15];
-  _dest[12] = b0*_src[0] + b1*_src[4] + b2*_src[8] + b3*_src[12];
-  _dest[13] = b0*_src[1] + b1*_src[5] + b2*_src[9] + b3*_src[13];
-  _dest[14] = b0*_src[2] + b1*_src[6] + b2*_src[10] + b3*_src[14];
-  _dest[15] = b0*_src[3] + b1*_src[7] + b2*_src[11] + b3*_src[15];
-
-  this.mat4 = _dest;
-
-  return this;
-};
-
-/**
- * scales a p5.Matrix by scalars or a vector
- * @param  {p5.Vector | Array }
- *                      vector to scale by
- * @return {p5.Matrix}  this
- */
-p5.Matrix.prototype.scale = function() {
-  var x,y,z;
-  var args = new Array(arguments.length);
-  for(var i = 0; i < args.length; i++) {
-    args[i] = arguments[i];
-  }
-  //if our 1st arg is a type p5.Vector
-  if (args[0] instanceof p5.Vector){
-    x = args[0].x;
-    y = args[0].y;
-    z = args[0].z;
-  }
-  //otherwise if it's an array
-  else if (args[0] instanceof Array){
-    x = args[0][0];
-    y = args[0][1];
-    z = args[0][2];
-  }
-  var _dest = new GLMAT_ARRAY_TYPE(16);
-  _dest[0] = this.mat4[0] * x;
-  _dest[1] = this.mat4[1] * x;
-  _dest[2] = this.mat4[2] * x;
-  _dest[3] = this.mat4[3] * x;
-  _dest[4] = this.mat4[4] * y;
-  _dest[5] = this.mat4[5] * y;
-  _dest[6] = this.mat4[6] * y;
-  _dest[7] = this.mat4[7] * y;
-  _dest[8] = this.mat4[8] * z;
-  _dest[9] = this.mat4[9] * z;
-  _dest[10] = this.mat4[10] * z;
-  _dest[11] = this.mat4[11] * z;
-  _dest[12] = this.mat4[12];
-  _dest[13] = this.mat4[13];
-  _dest[14] = this.mat4[14];
-  _dest[15] = this.mat4[15];
-
-  this.mat4 = _dest;
-  return this;
-};
-
-/**
- * rotate our Matrix around an axis by the given angle.
- * @param  {Number} a The angle of rotation in radians
- * @param  {p5.Vector | Array} axis  the axis(es) to rotate around
- * @return {p5.Matrix}                    this
- * inspired by Toji's gl-matrix lib, mat4 rotation
- */
-p5.Matrix.prototype.rotate = function(a, axis){
-  var x, y, z, _a, len;
-
-  if (this.p5) {
-    if (this.p5._angleMode === constants.DEGREES) {
-      _a = polarGeometry.degreesToRadians(a);
-    }
-  }
-  else {
-    _a = a;
-  }
-  if (axis instanceof p5.Vector) {
-    x = axis.x;
-    y = axis.y;
-    z = axis.z;
-  }
-  else if (axis instanceof Array) {
-    x = axis[0];
-    y = axis[1];
-    z = axis[2];
-  }
-
-  len = Math.sqrt(x * x + y * y + z * z);
-  x *= (1/len);
-  y *= (1/len);
-  z *= (1/len);
-
-  var a00 = this.mat4[0];
-  var a01 = this.mat4[1];
-  var a02 = this.mat4[2];
-  var a03 = this.mat4[3];
-  var a10 = this.mat4[4];
-  var a11 = this.mat4[5];
-  var a12 = this.mat4[6];
-  var a13 = this.mat4[7];
-  var a20 = this.mat4[8];
-  var a21 = this.mat4[9];
-  var a22 = this.mat4[10];
-  var a23 = this.mat4[11];
-
-  //sin,cos, and tan of respective angle
-  var sA = Math.sin(_a);
-  var cA = Math.cos(_a);
-  var tA = 1 - cA;
-  // Construct the elements of the rotation matrix
-  var b00 = x * x * tA + cA;
-  var b01 = y * x * tA + z * sA;
-  var b02 = z * x * tA - y * sA;
-  var b10 = x * y * tA - z * sA;
-  var b11 = y * y * tA + cA;
-  var b12 = z * y * tA + x * sA;
-  var b20 = x * z * tA + y * sA;
-  var b21 = y * z * tA - x * sA;
-  var b22 = z * z * tA + cA;
-
-  // rotation-specific matrix multiplication
-  this.mat4[0] = a00 * b00 + a10 * b01 + a20 * b02;
-  this.mat4[1] = a01 * b00 + a11 * b01 + a21 * b02;
-  this.mat4[2] = a02 * b00 + a12 * b01 + a22 * b02;
-  this.mat4[3] = a03 * b00 + a13 * b01 + a23 * b02;
-  this.mat4[4] = a00 * b10 + a10 * b11 + a20 * b12;
-  this.mat4[5] = a01 * b10 + a11 * b11 + a21 * b12;
-  this.mat4[6] = a02 * b10 + a12 * b11 + a22 * b12;
-  this.mat4[7] = a03 * b10 + a13 * b11 + a23 * b12;
-  this.mat4[8] = a00 * b20 + a10 * b21 + a20 * b22;
-  this.mat4[9] = a01 * b20 + a11 * b21 + a21 * b22;
-  this.mat4[10] = a02 * b20 + a12 * b21 + a22 * b22;
-  this.mat4[11] = a03 * b20 + a13 * b21 + a23 * b22;
-
-  return this;
-};
-
-/**
- * @todo  finish implementing this method!
- * translates
- * @param  {Array} v vector to translate by
- * @return {p5.Matrix}                    this
- */
-p5.Matrix.prototype.translate = function(v){
-  var x = v[0],
-    y = v[1],
-    z = v[2] || 0;
-  this.mat4[12] =
-    this.mat4[0] * x +this.mat4[4] * y +this.mat4[8] * z +this.mat4[12];
-  this.mat4[13] =
-    this.mat4[1] * x +this.mat4[5] * y +this.mat4[9] * z +this.mat4[13];
-  this.mat4[14] =
-    this.mat4[2] * x +this.mat4[6] * y +this.mat4[10] * z +this.mat4[14];
-  this.mat4[15] =
-    this.mat4[3] * x +this.mat4[7] * y +this.mat4[11] * z +this.mat4[15];
-};
-
-p5.Matrix.prototype.rotateX = function(a){
-  this.rotate(a, [1,0,0]);
-};
-p5.Matrix.prototype.rotateY = function(a){
-  this.rotate(a, [0,1,0]);
-};
-p5.Matrix.prototype.rotateZ = function(a){
-  this.rotate(a, [0,0,1]);
-};
-
-/**
- * sets the perspective matrix
- * @param  {Number} fovy   [description]
- * @param  {Number} aspect [description]
- * @param  {Number} near   near clipping plane
- * @param  {Number} far    far clipping plane
- * @return {void}
- */
-p5.Matrix.prototype.perspective = function(fovy,aspect,near,far){
-
-  var f = 1.0 / Math.tan(fovy / 2),
-    nf = 1 / (near - far);
-
-  this.mat4[0] = f / aspect;
-  this.mat4[1] = 0;
-  this.mat4[2] = 0;
-  this.mat4[3] = 0;
-  this.mat4[4] = 0;
-  this.mat4[5] = f;
-  this.mat4[6] = 0;
-  this.mat4[7] = 0;
-  this.mat4[8] = 0;
-  this.mat4[9] = 0;
-  this.mat4[10] = (far + near) * nf;
-  this.mat4[11] = -1;
-  this.mat4[12] = 0;
-  this.mat4[13] = 0;
-  this.mat4[14] = (2 * far * near) * nf;
-  this.mat4[15] = 0;
-
-  return this;
-
-};
-
-/**
- * sets the ortho matrix
- * @param  {Number} left   [description]
- * @param  {Number} right  [description]
- * @param  {Number} bottom [description]
- * @param  {Number} top    [description]
- * @param  {Number} near   near clipping plane
- * @param  {Number} far    far clipping plane
- * @return {void}
- */
-p5.Matrix.prototype.ortho = function(left,right,bottom,top,near,far){
-
-  var lr = 1 / (left - right),
-    bt = 1 / (bottom - top),
-    nf = 1 / (near - far);
-  this.mat4[0] = -2 * lr;
-  this.mat4[1] = 0;
-  this.mat4[2] = 0;
-  this.mat4[3] = 0;
-  this.mat4[4] = 0;
-  this.mat4[5] = -2 * bt;
-  this.mat4[6] = 0;
-  this.mat4[7] = 0;
-  this.mat4[8] = 0;
-  this.mat4[9] = 0;
-  this.mat4[10] = 2 * nf;
-  this.mat4[11] = 0;
-  this.mat4[12] = (left + right) * lr;
-  this.mat4[13] = (top + bottom) * bt;
-  this.mat4[14] = (far + near) * nf;
-  this.mat4[15] = 1;
-
-  return this;
-};
-
-/**
- * PRIVATE
- */
-// matrix methods adapted from:
-// https://developer.mozilla.org/en-US/docs/Web/WebGL/
-// gluPerspective
-//
-// function _makePerspective(fovy, aspect, znear, zfar){
-//    var ymax = znear * Math.tan(fovy * Math.PI / 360.0);
-//    var ymin = -ymax;
-//    var xmin = ymin * aspect;
-//    var xmax = ymax * aspect;
-//    return _makeFrustum(xmin, xmax, ymin, ymax, znear, zfar);
-//  }
-
-////
-//// glFrustum
-////
-//function _makeFrustum(left, right, bottom, top, znear, zfar){
-//  var X = 2*znear/(right-left);
-//  var Y = 2*znear/(top-bottom);
-//  var A = (right+left)/(right-left);
-//  var B = (top+bottom)/(top-bottom);
-//  var C = -(zfar+znear)/(zfar-znear);
-//  var D = -2*zfar*znear/(zfar-znear);
-//  var frustrumMatrix =[
-//  X, 0, A, 0,
-//  0, Y, B, 0,
-//  0, 0, C, D,
-//  0, 0, -1, 0
-//];
-//return frustrumMatrix;
-// }
-
-// function _setMVPMatrices(){
-////an identity matrix
-////@TODO use the p5.Matrix class to abstract away our MV matrices and
-///other math
-//var _mvMatrix =
-//[
-//  1.0,0.0,0.0,0.0,
-//  0.0,1.0,0.0,0.0,
-//  0.0,0.0,1.0,0.0,
-//  0.0,0.0,0.0,1.0
-//];
-
-module.exports = p5.Matrix;
-},{"../core/constants":48,"../core/core":49,"../math/polargeometry":79}],35:[function(_dereq_,module,exports){
-/**
- * Welcome to RendererGL Immediate Mode.
- * Immediate mode is used for drawing custom shapes
- * from a set of vertices.  Immediate Mode is activated
- * when you call beginShape() & de-activated when you call endShape().
- * Immediate mode is a style of programming borrowed
- * from OpenGL's (now-deprecated) immediate mode.
- * It differs from p5.js' default, Retained Mode, which caches
- * geometries and buffers on the CPU to reduce the number of webgl
- * draw calls. Retained mode is more efficient & performative,
- * however, Immediate Mode is useful for sketching quick
- * geometric ideas.
- */
-'use strict';
-
-var p5 = _dereq_('../core/core');
-var constants = _dereq_('../core/constants');
-
-/**
- * Begin shape drawing.  This is a helpful way of generating
- * custom shapes quickly.  However in WEBGL mode, application
- * performance will likely drop as a result of too many calls to
- * beginShape() / endShape().  As a high performance alternative,
- * please use p5.js geometry primitives.
- * @param  {Number} mode webgl primitives mode.  beginShape supports the
- *                       following modes:
- *                       POINTS,LINES,LINE_STRIP,LINE_LOOP,TRIANGLES,
- *                       TRIANGLE_STRIP,and TRIANGLE_FAN.
- * @return {[type]}      [description]
- */
-p5.Renderer3D.prototype.beginShape = function(mode){
-  //default shape mode is line_strip
-  this.immediateMode.shapeMode = (mode !== undefined ) ?
-    mode : constants.LINE_STRIP;
-  //if we haven't yet initialized our
-  //immediateMode vertices & buffers, create them now!
-  if(this.immediateMode.vertexPositions === undefined){
-    this.immediateMode.vertexPositions = [];
-    this.immediateMode.vertexColors = [];
-    this.immediateMode.vertexBuffer = this.GL.createBuffer();
-    this.immediateMode.colorBuffer = this.GL.createBuffer();
-  } else {
-    this.immediateMode.vertexPositions.length = 0;
-    this.immediateMode.vertexColors.length = 0;
-  }
-  this.isImmediateDrawing = true;
-  return this;
-};
-/**
- * adds a vertex to be drawn in a custom Shape.
- * @param  {Number} x x-coordinate of vertex
- * @param  {Number} y y-coordinate of vertex
- * @param  {Number} z z-coordinate of vertex
- * @return {p5.Renderer3D}   [description]
- * @TODO implement handling of p5.Vector args
- */
-p5.Renderer3D.prototype.vertex = function(x, y, z){
-  this.immediateMode.vertexPositions.push(x, y, z);
-  var vertexColor = this.curFillColor || [0.5, 0.5, 0.5, 1.0];
-  this.immediateMode.vertexColors.push(
-    vertexColor[0],
-    vertexColor[1],
-    vertexColor[2],
-    vertexColor[3]);
-  return this;
-};
-
-/**
- * End shape drawing and render vertices to screen.
- * @return {p5.Renderer3D} [description]
- */
-p5.Renderer3D.prototype.endShape =
-function(mode, isCurve, isBezier,isQuadratic, isContour, shapeKind){
-  var gl = this.GL;
-  this._bindImmediateBuffers(
-    this.immediateMode.vertexPositions,
-    this.immediateMode.vertexColors);
-  if(mode){
-    if(this.drawMode === 'fill'){
-      switch(this.immediateMode.shapeMode){
-        case constants.LINE_STRIP:
-          this.immediateMode.shapeMode = constants.TRIANGLE_FAN;
-          break;
-        case constants.LINES:
-          this.immediateMode.shapeMode = constants.TRIANGLE_FAN;
-          break;
-        case constants.TRIANGLES:
-          this.immediateMode.shapeMode = constants.TRIANGLE_FAN;
-          break;
-      }
-    } else {
-      switch(this.immediateMode.shapeMode){
-        case constants.LINE_STRIP:
-          this.immediateMode.shapeMode = constants.LINE_LOOP;
-          break;
-        case constants.LINES:
-          this.immediateMode.shapeMode = constants.LINE_LOOP;
-          break;
-      }
-    }
-  }
-  //QUADS & QUAD_STRIP are not supported primitives modes
-  //in webgl.
-  if(this.immediateMode.shapeMode === constants.QUADS ||
-    this.immediateMode.shapeMode === constants.QUAD_STRIP){
-    throw new Error('sorry, ' + this.immediateMode.shapeMode+
-      ' not yet implemented in webgl mode.');
-  }
-  else {
-    gl.enable(gl.BLEND);
-    gl.drawArrays(this.immediateMode.shapeMode, 0,
-      this.immediateMode.vertexPositions.length / 3);
-  }
-  //clear out our vertexPositions & colors arrays
-  //after rendering
-  this.immediateMode.vertexPositions.length = 0;
-  this.immediateMode.vertexColors.length = 0;
-  this.isImmediateDrawing = false;
-  return this;
-};
-/**
- * Bind immediateMode buffers to data,
- * then draw gl arrays
- * @param  {Array} vertices Numbers array representing
- *                          vertex positions
- * @return {p5.Renderer3D}
- */
-p5.Renderer3D.prototype._bindImmediateBuffers = function(vertices, colors){
-  this._setDefaultCamera();
-  var gl = this.GL;
-  var shaderKey = this._getCurShaderId();
-  var shaderProgram = this.mHash[shaderKey];
-  //vertex position Attribute
-  shaderProgram.vertexPositionAttribute =
-    gl.getAttribLocation(shaderProgram, 'aPosition');
-  gl.enableVertexAttribArray(shaderProgram.vertexPositionAttribute);
-  gl.bindBuffer(gl.ARRAY_BUFFER, this.immediateMode.vertexBuffer);
-  gl.bufferData(
-    gl.ARRAY_BUFFER, new Float32Array(vertices), gl.DYNAMIC_DRAW);
-  gl.vertexAttribPointer(shaderProgram.vertexPositionAttribute,
-    3, gl.FLOAT, false, 0, 0);
-
-  shaderProgram.vertexColorAttribute =
-    gl.getAttribLocation(shaderProgram, 'aVertexColor');
-  gl.enableVertexAttribArray(shaderProgram.vertexColorAttribute);
-  gl.bindBuffer(gl.ARRAY_BUFFER, this.immediateMode.colorBuffer);
-  gl.bufferData(gl.ARRAY_BUFFER,
-    new Float32Array(colors),gl.DYNAMIC_DRAW);
-  gl.vertexAttribPointer(shaderProgram.vertexColorAttribute,
-    4, gl.FLOAT, false, 0, 0);
-  //matrix
-  this._setMatrixUniforms(shaderKey);
-  //@todo implement in all shaders (not just immediateVert)
-  //set our default point size
-  // this._setUniform1f(shaderKey,
-  //   'uPointSize',
-  //   this.pointSize);
-  return this;
-};
-
-//////////////////////////////////////////////
-// COLOR
-//////////////////////////////////////////////
-
-p5.Renderer3D.prototype._getColorVertexShader = function(){
-  var gl = this.GL;
-  var mId = 'immediateVert|vertexColorFrag';
-  var shaderProgram;
-
-  if(!this.materialInHash(mId)){
-    shaderProgram =
-      this._initShaders('immediateVert', 'vertexColorFrag', true);
-    this.mHash[mId] = shaderProgram;
-    shaderProgram.vertexColorAttribute =
-    gl.getAttribLocation(shaderProgram, 'aVertexColor');
-    gl.enableVertexAttribArray(shaderProgram.vertexColorAttribute);
-  }else{
-    shaderProgram = this.mHash[mId];
-  }
-  return shaderProgram;
-};
-
-module.exports = p5.Renderer3D;
-},{"../core/constants":48,"../core/core":49}],36:[function(_dereq_,module,exports){
-//Retained Mode. The default mode for rendering 3D primitives
-//in WEBGL.
-'use strict';
-
-var p5 = _dereq_('../core/core');
-var hashCount = 0;
-/**
- * _initBufferDefaults
- * @description initializes buffer defaults. runs each time a new geometry is
- * registered
- * @param  {String} gId  key of the geometry object
- */
-p5.Renderer3D.prototype._initBufferDefaults = function(gId) {
-  //@TODO remove this limit on hashes in gHash
-  hashCount ++;
-  if(hashCount > 1000){
-    var key = Object.keys(this.gHash)[0];
-    delete this.gHash[key];
-    hashCount --;
-  }
-
-  var gl = this.GL;
-  //create a new entry in our gHash
-  this.gHash[gId] = {};
-  this.gHash[gId].vertexBuffer = gl.createBuffer();
-  this.gHash[gId].normalBuffer = gl.createBuffer();
-  this.gHash[gId].uvBuffer = gl.createBuffer();
-  this.gHash[gId].indexBuffer = gl.createBuffer();
-};
-/**
- * createBuffers description
- * @param  {String} gId    key of the geometry object
- * @param  {p5.Geometry}  obj contains geometry data
- */
-p5.Renderer3D.prototype.createBuffers = function(gId, obj) {
-  var gl = this.GL;
-  this._setDefaultCamera();
-  //initialize the gl buffers for our geom groups
-  this._initBufferDefaults(gId);
-  //return the current shaderProgram from our material hash
-  var shaderProgram = this.mHash[this._getCurShaderId()];
-  //@todo rename "numberOfItems" property to something more descriptive
-  //we mult the num geom faces by 3
-  this.gHash[gId].numberOfItems = obj.faces.length * 3;
-  gl.bindBuffer(gl.ARRAY_BUFFER, this.gHash[gId].vertexBuffer);
-  gl.bufferData(
-    gl.ARRAY_BUFFER,
-    new Float32Array( vToNArray(obj.vertices) ),
-    gl.STATIC_DRAW);
-  //vertex position
-  shaderProgram.vertexPositionAttribute =
-    gl.getAttribLocation(shaderProgram, 'aPosition');
-  gl.enableVertexAttribArray(shaderProgram.vertexPositionAttribute);
-
-  gl.vertexAttribPointer(
-    shaderProgram.vertexPositionAttribute,
-    3, gl.FLOAT, false, 0, 0);
-
-  gl.bindBuffer(gl.ARRAY_BUFFER, this.gHash[gId].normalBuffer);
-  gl.bufferData(
-    gl.ARRAY_BUFFER,
-    new Float32Array( vToNArray(obj.vertexNormals) ),
-    gl.STATIC_DRAW);
-  //vertex normal
-  shaderProgram.vertexNormalAttribute =
-    gl.getAttribLocation(shaderProgram, 'aNormal');
-  gl.enableVertexAttribArray(shaderProgram.vertexNormalAttribute);
-
-  gl.vertexAttribPointer(
-    shaderProgram.vertexNormalAttribute,
-    3, gl.FLOAT, false, 0, 0);
-
-  gl.bindBuffer(gl.ARRAY_BUFFER, this.gHash[gId].uvBuffer);
-  gl.bufferData(
-    gl.ARRAY_BUFFER,
-    new Float32Array( flatten(obj.uvs) ),
-    gl.STATIC_DRAW);
-  //texture coordinate Attribute
-  shaderProgram.textureCoordAttribute =
-    gl.getAttribLocation(shaderProgram, 'aTexCoord');
-  gl.enableVertexAttribArray(shaderProgram.textureCoordAttribute);
-  gl.vertexAttribPointer(
-    shaderProgram.textureCoordAttribute,
-    2, gl.FLOAT, false, 0, 0);
-
-  gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, this.gHash[gId].indexBuffer);
-  gl.bufferData(
-    gl.ELEMENT_ARRAY_BUFFER,
-    new Uint16Array( flatten(obj.faces) ),
-    gl.STATIC_DRAW);
-};
-
-/**
- * Draws buffers given a geometry key ID
- * @param  {String} gId     ID in our geom hash
- * @return {p5.Renderer3D} this
- */
-p5.Renderer3D.prototype.drawBuffers = function(gId) {
-  this._setDefaultCamera();
-  var gl = this.GL;
-  var shaderKey = this._getCurShaderId();
-  var shaderProgram = this.mHash[shaderKey];
-  //vertex position buffer
-  gl.bindBuffer(gl.ARRAY_BUFFER, this.gHash[gId].vertexBuffer);
-  gl.vertexAttribPointer(
-    shaderProgram.vertexPositionAttribute,
-    3, gl.FLOAT, false, 0, 0);
-  //normal buffer
-  gl.bindBuffer(gl.ARRAY_BUFFER, this.gHash[gId].normalBuffer);
-  gl.vertexAttribPointer(
-    shaderProgram.vertexNormalAttribute,
-    3, gl.FLOAT, false, 0, 0);
-  // uv buffer
-  gl.bindBuffer(gl.ARRAY_BUFFER, this.gHash[gId].uvBuffer);
-  gl.vertexAttribPointer(
-    shaderProgram.textureCoordAttribute,
-    2, gl.FLOAT, false, 0, 0);
-  //vertex index buffer
-  gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, this.gHash[gId].indexBuffer);
-  this._setMatrixUniforms(shaderKey);
-  gl.drawElements(
-    gl.TRIANGLES, this.gHash[gId].numberOfItems,
-    gl.UNSIGNED_SHORT, 0);
-  return this;
-};
-///////////////////////////////
-//// UTILITY FUNCTIONS
-//////////////////////////////
-/**
- * turn a two dimensional array into one dimensional array
- * @param  {Array} arr 2-dimensional array
- * @return {Array}     1-dimensional array
- * [[1, 2, 3],[4, 5, 6]] -> [1, 2, 3, 4, 5, 6]
- */
-function flatten(arr){
-  if (arr.length>0){
-    return arr.reduce(function(a, b){
-      return a.concat(b);
-    });
-  } else {
-    return [];
-  }
-}
-
-/**
- * turn a p5.Vector Array into a one dimensional number array
- * @param  {Array} arr  an array of p5.Vector
- * @return {Array]}     a one dimensional array of numbers
- * [p5.Vector(1, 2, 3), p5.Vector(4, 5, 6)] ->
- * [1, 2, 3, 4, 5, 6]
- */
-function vToNArray(arr){
-  return flatten(arr.map(function(item){
-    return [item.x, item.y, item.z];
-  }));
-}
-module.exports = p5.Renderer3D;
-},{"../core/core":49}],37:[function(_dereq_,module,exports){
-'use strict';
-
-var p5 = _dereq_('../core/core');
-var shader = _dereq_('./shader');
-_dereq_('../core/p5.Renderer');
-_dereq_('./p5.Matrix');
-var uMVMatrixStack = [];
-var RESOLUTION = 1000;
-
-//@TODO should implement public method
-//to override these attributes
-var attributes = {
-  alpha: true,
-  depth: true,
-  stencil: true,
-  antialias: false,
-  premultipliedAlpha: false,
-  preserveDrawingBuffer: false
-};
-
-/**
- * @class p5.Renderer3D
- * @constructor
- * @extends p5.Renderer
- * 3D graphics class.
- * @todo extend class to include public method for offscreen
- * rendering (FBO).
- *
- */
-p5.Renderer3D = function(elt, pInst, isMainCanvas) {
-  p5.Renderer.call(this, elt, pInst, isMainCanvas);
-  this._initContext();
-
-  this.isP3D = true; //lets us know we're in 3d mode
-  this.GL = this.drawingContext;
-  //lights
-  this.ambientLightCount = 0;
-  this.directionalLightCount = 0;
-  this.pointLightCount = 0;
-  //camera
-  this._isSetCamera = false;
-
-  /**
-   * model view, projection, & normal
-   * matrices
-   */
-  this.uMVMatrix = new p5.Matrix();
-  this.uPMatrix  = new p5.Matrix();
-  this.uNMatrix = new p5.Matrix('mat3');
-  //Geometry & Material hashes
-  this.gHash = {};
-  this.mHash = {};
-  //Imediate Mode
-  //default drawing is done in Retained Mode
-  this.isImmediateDrawing = false;
-  this.immediateMode = {};
-  this.curFillColor = [0.5,0.5,0.5,1.0];
-  this.curStrokeColor = [0.5,0.5,0.5,1.0];
-  this.pointSize = 5.0;//default point/stroke
-  return this;
-};
-
-p5.Renderer3D.prototype = Object.create(p5.Renderer.prototype);
-
-//////////////////////////////////////////////
-// Setting
-//////////////////////////////////////////////
-
-p5.Renderer3D.prototype._initContext = function() {
-  try {
-    this.drawingContext = this.canvas.getContext('webgl', attributes) ||
-      this.canvas.getContext('experimental-webgl', attributes);
-    if (this.drawingContext === null) {
-      throw new Error('Error creating webgl context');
-    } else {
-      console.log('p5.Renderer3D: enabled webgl context');
-      var gl = this.drawingContext;
-      gl.enable(gl.DEPTH_TEST);
-      gl.depthFunc(gl.LEQUAL);
-      gl.viewport(0, 0, gl.drawingBufferWidth, gl.drawingBufferHeight);
-    }
-  } catch (er) {
-    throw new Error(er);
-  }
-};
-//detect if user didn't set the camera
-//then call this function below
-p5.Renderer3D.prototype._setDefaultCamera = function(){
-  if(!this._isSetCamera){
-    var _w = this.width;
-    var _h = this.height;
-    this.uPMatrix = p5.Matrix.identity();
-    this.uPMatrix.perspective(60 / 180 * Math.PI, _w / _h, 0.1, 100);
-    this._isSetCamera = true;
-  }
-};
-
-p5.Renderer3D.prototype._update = function() {
-  this.uMVMatrix = p5.Matrix.identity();
-  this.translate(0, 0, -800);
-  this.ambientLightCount = 0;
-  this.directionalLightCount = 0;
-  this.pointLightCount = 0;
-};
-
-/**
- * [background description]
- * @return {[type]} [description]
- */
-p5.Renderer3D.prototype.background = function() {
-  var gl = this.GL;
-  var _col = this._pInst.color.apply(this._pInst, arguments);
-  var _r = (_col.levels[0]) / 255;
-  var _g = (_col.levels[1]) / 255;
-  var _b = (_col.levels[2]) / 255;
-  var _a = (_col.levels[3]) / 255;
-  gl.clearColor(_r, _g, _b, _a);
-  gl.clear(gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT);
-};
-
-//@TODO implement this
-// p5.Renderer3D.prototype.clear = function() {
-//@TODO
-// };
-
-//////////////////////////////////////////////
-// SHADER
-//////////////////////////////////////////////
-
-/**
- * [_initShaders description]
- * @param  {string} vertId [description]
- * @param  {string} fragId [description]
- * @return {[type]}        [description]
- */
-p5.Renderer3D.prototype._initShaders =
-function(vertId, fragId, isImmediateMode) {
-  var gl = this.GL;
-  //set up our default shaders by:
-  // 1. create the shader,
-  // 2. load the shader source,
-  // 3. compile the shader
-  var _vertShader = gl.createShader(gl.VERTEX_SHADER);
-  //load in our default vertex shader
-  gl.shaderSource(_vertShader, shader[vertId]);
-  gl.compileShader(_vertShader);
-  // if our vertex shader failed compilation?
-  if (!gl.getShaderParameter(_vertShader, gl.COMPILE_STATUS)) {
-    alert('Yikes! An error occurred compiling the shaders:' +
-      gl.getShaderInfoLog(_vertShader));
-    return null;
-  }
-
-  var _fragShader = gl.createShader(gl.FRAGMENT_SHADER);
-  //load in our material frag shader
-  gl.shaderSource(_fragShader, shader[fragId]);
-  gl.compileShader(_fragShader);
-  // if our frag shader failed compilation?
-  if (!gl.getShaderParameter(_fragShader, gl.COMPILE_STATUS)) {
-    alert('Darn! An error occurred compiling the shaders:' +
-      gl.getShaderInfoLog(_fragShader));
-    return null;
-  }
-
-  var shaderProgram = gl.createProgram();
-  gl.attachShader(shaderProgram, _vertShader);
-  gl.attachShader(shaderProgram, _fragShader);
-  gl.linkProgram(shaderProgram);
-  if (!gl.getProgramParameter(shaderProgram, gl.LINK_STATUS)) {
-    alert('Snap! Error linking shader program');
-  }
-  //END SHADERS SETUP
-
-  this._getLocation(shaderProgram, isImmediateMode);
-
-  return shaderProgram;
-};
-
-p5.Renderer3D.prototype._getLocation =
-function(shaderProgram, isImmediateMode) {
-  var gl = this.GL;
-  gl.useProgram(shaderProgram);
-  shaderProgram.uResolution =
-    gl.getUniformLocation(shaderProgram, 'uResolution');
-  gl.uniform1f(shaderProgram.uResolution, RESOLUTION);
-
-  //projection Matrix uniform
-  shaderProgram.uPMatrixUniform =
-    gl.getUniformLocation(shaderProgram, 'uProjectionMatrix');
-  //model view Matrix uniform
-  shaderProgram.uMVMatrixUniform =
-    gl.getUniformLocation(shaderProgram, 'uModelViewMatrix');
-
-  //@TODO: figure out a better way instead of if statement
-  if(isImmediateMode === undefined){
-    //normal Matrix uniform
-    shaderProgram.uNMatrixUniform =
-    gl.getUniformLocation(shaderProgram, 'uNormalMatrix');
-
-    shaderProgram.samplerUniform =
-    gl.getUniformLocation(shaderProgram, 'uSampler');
-  }
-};
-
-/**
- * Sets a shader uniform given a shaderProgram and uniform string
- * @param {String} shaderKey key to material Hash.
- * @param {String} uniform location in shader.
- * @param { Number} data data to bind uniform.  Float data type.
- * @todo currently this function sets uniform1f data.
- * Should generalize function to accept any uniform
- * data type.
- */
-p5.Renderer3D.prototype._setUniform1f = function(shaderKey,uniform,data)
-{
-  var gl = this.GL;
-  var shaderProgram = this.mHash[shaderKey];
-  gl.useProgram(shaderProgram);
-  shaderProgram[uniform] = gl.getUniformLocation(shaderProgram, uniform);
-  gl.uniform1f(shaderProgram[uniform], data);
-  return this;
-};
-
-p5.Renderer3D.prototype._setMatrixUniforms = function(shaderKey) {
-  var gl = this.GL;
-  var shaderProgram = this.mHash[shaderKey];
-
-  gl.useProgram(shaderProgram);
-
-  gl.uniformMatrix4fv(
-    shaderProgram.uPMatrixUniform,
-    false, this.uPMatrix.mat4);
-
-  gl.uniformMatrix4fv(
-    shaderProgram.uMVMatrixUniform,
-    false, this.uMVMatrix.mat4);
-
-  gl.uniformMatrix3fv(
-    shaderProgram.uNMatrixUniform,
-    false, this.uNMatrix.mat3);
-};
-//////////////////////////////////////////////
-// GET CURRENT | for shader and color
-//////////////////////////////////////////////
-p5.Renderer3D.prototype._getShader = function(vertId, fragId, isImmediateMode) {
-  var mId = vertId + '|' + fragId;
-  //create it and put it into hashTable
-  if(!this.materialInHash(mId)){
-    var shaderProgram = this._initShaders(vertId, fragId, isImmediateMode);
-    this.mHash[mId] = shaderProgram;
-  }
-  this.curShaderId = mId;
-
-  return this.mHash[this.curShaderId];
-};
-
-p5.Renderer3D.prototype._getCurShaderId = function(){
-  //if the shader ID is not yet defined
-  var mId, shaderProgram;
-  if(this.drawMode !== 'fill' && this.curShaderId === undefined){
-    //default shader: normalMaterial()
-    mId = 'normalVert|normalFrag';
-    shaderProgram = this._initShaders('normalVert', 'normalFrag');
-    this.mHash[mId] = shaderProgram;
-    this.curShaderId = mId;
-  } else if(this.isImmediateDrawing && this.drawMode === 'fill'){
-    mId = 'immediateVert|vertexColorFrag';
-    shaderProgram = this._initShaders('immediateVert', 'vertexColorFrag');
-    this.mHash[mId] = shaderProgram;
-    this.curShaderId = mId;
-  }
-  return this.curShaderId;
-};
-
-//////////////////////////////////////////////
-// COLOR
-//////////////////////////////////////////////
-/**
- * Basic fill material for geometry with a given color
- * @method  fill
- * @param  {Number|Array|String|p5.Color} v1  gray value,
- * red or hue value (depending on the current color mode),
- * or color Array, or CSS color string
- * @param  {Number}            [v2] optional: green or saturation value
- * @param  {Number}            [v3] optional: blue or brightness value
- * @param  {Number}            [a]  optional: opacity
- * @return {p5}                the p5 object
- * @example
- * <div>
- * <code>
- * function setup(){
- *   createCanvas(100, 100, WEBGL);
- * }
- *
- * function draw(){
- *  background(0);
- *  fill(250, 0, 0);
- *  rotateX(frameCount * 0.01);
- *  rotateY(frameCount * 0.01);
- *  rotateZ(frameCount * 0.01);
- *  box(200, 200, 200);
- * }
- * </code>
- * </div>
- */
-p5.Renderer3D.prototype.fill = function(v1, v2, v3, a) {
-  var gl = this.GL;
-  var shaderProgram;
-  //see material.js for more info on color blending in webgl
-  var colors = this._applyColorBlend(v1,v2,v3,a);
-  this.curFillColor = colors;
-  this.drawMode = 'fill';
-  if(this.isImmediateDrawing){
-    shaderProgram =
-    this._getShader('immediateVert','vertexColorFrag');
-    gl.useProgram(shaderProgram);
-  } else {
-    shaderProgram =
-    this._getShader('normalVert', 'basicFrag');
-    gl.useProgram(shaderProgram);
-    //RetainedMode uses a webgl uniform to pass color vals
-    //in ImmediateMode, we want access to each vertex so therefore
-    //we cannot use a uniform.
-    shaderProgram.uMaterialColor = gl.getUniformLocation(
-      shaderProgram, 'uMaterialColor' );
-    gl.uniform4f( shaderProgram.uMaterialColor,
-      colors[0],
-      colors[1],
-      colors[2],
-      colors[3]);
-  }
-  return this;
-};
-p5.Renderer3D.prototype.stroke = function(r, g, b, a) {
-  var color = this._pInst.color.apply(this._pInst, arguments);
-  var colorNormalized = color._array;
-  this.curStrokeColor = colorNormalized;
-  this.drawMode = 'stroke';
-  return this;
-};
-
-//@TODO
-p5.Renderer3D.prototype._strokeCheck = function(){
-  if(this.drawMode === 'stroke'){
-    throw new Error(
-      'stroke for shapes in 3D not yet implemented, use fill for now :('
-    );
-  }
-};
-
-/**
- * [strokeWeight description]
- * @param  {Number} pointSize stroke point size
- * @return {[type]}           [description]
- * @todo  strokeWeight currently works on points only.
- * implement on all wireframes and strokes.
- */
-p5.Renderer3D.prototype.strokeWeight = function(pointSize) {
-  this.pointSize = pointSize;
-  return this;
-};
-//////////////////////////////////////////////
-// HASH | for material and geometry
-//////////////////////////////////////////////
-
-p5.Renderer3D.prototype.geometryInHash = function(gId){
-  return this.gHash[gId] !== undefined;
-};
-
-p5.Renderer3D.prototype.materialInHash = function(mId){
-  return this.mHash[mId] !== undefined;
-};
-
-/**
- * [resize description]
- * @param  {[type]} w [description]
- * @param  {[tyoe]} h [description]
- * @return {[type]}   [description]
- */
-p5.Renderer3D.prototype.resize = function(w,h) {
-  var gl = this.GL;
-  p5.Renderer.prototype.resize.call(this, w, h);
-  gl.viewport(0, 0, gl.drawingBufferWidth, gl.drawingBufferHeight);
-};
-
-/**
- * clears color and depth buffers
- * with r,g,b,a
- * @param {Number} r normalized red val.
- * @param {Number} g normalized green val.
- * @param {Number} b normalized blue val.
- * @param {Number} a normalized alpha val.
- */
-p5.Renderer3D.prototype.clear = function() {
-  var gl = this.GL;
-  gl.clearColor(arguments[0],
-    arguments[1],
-    arguments[2],
-    arguments[3]);
-  gl.clear(gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT);
-};
-
-/**
- * [translate description]
- * @param  {[type]} x [description]
- * @param  {[type]} y [description]
- * @param  {[type]} z [description]
- * @return {[type]}   [description]
- * @todo implement handle for components or vector as args
- */
-p5.Renderer3D.prototype.translate = function(x, y, z) {
-  //@TODO: figure out how to fit the resolution
-  x = x / RESOLUTION;
-  y = -y / RESOLUTION;
-  z = z / RESOLUTION;
-  this.uMVMatrix.translate([x,y,z]);
-  return this;
-};
-
-/**
- * Scales the Model View Matrix by a vector
- * @param  {Number | p5.Vector | Array} x [description]
- * @param  {Number} [y] y-axis scalar
- * @param  {Number} [z] z-axis scalar
- * @return {this}   [description]
- */
-p5.Renderer3D.prototype.scale = function(x,y,z) {
-  this.uMVMatrix.scale([x,y,z]);
-  return this;
-};
-
-/**
- * [rotate description]
- * @param  {Number} rad  angle in radians
- * @param  {p5.Vector | Array} axis axis to rotate around
- * @return {p5.Renderer3D}      [description]
- */
-p5.Renderer3D.prototype.rotate = function(rad, axis){
-  this.uMVMatrix.rotate(rad, axis);
-  this.uNMatrix.inverseTranspose(this.uMVMatrix);
-  return this;
-};
-
-/**
- * [rotateX description]
- * @param  {Number} rad radians to rotate
- * @return {[type]}     [description]
- */
-p5.Renderer3D.prototype.rotateX = function(rad) {
-  this.rotate(rad, [1,0,0]);
-  return this;
-};
-
-/**
- * [rotateY description]
- * @param  {Number} rad rad radians to rotate
- * @return {[type]}     [description]
- */
-p5.Renderer3D.prototype.rotateY = function(rad) {
-  this.rotate(rad, [0,1,0]);
-  return this;
-};
-
-/**
- * [rotateZ description]
- * @param  {Number} rad rad radians to rotate
- * @return {[type]}     [description]
- */
-p5.Renderer3D.prototype.rotateZ = function(rad) {
-  this.rotate(rad, [0,0,1]);
-  return this;
-};
-
-/**
- * pushes a copy of the model view matrix onto the
- * MV Matrix stack.
- * NOTE to self: could probably make this more readable
- * @return {[type]} [description]
- */
-p5.Renderer3D.prototype.push = function() {
-  uMVMatrixStack.push(this.uMVMatrix.copy());
-};
-
-/**
- * [pop description]
- * @return {[type]} [description]
- */
-p5.Renderer3D.prototype.pop = function() {
-  if (uMVMatrixStack.length === 0) {
-    throw new Error('Invalid popMatrix!');
-  }
-  this.uMVMatrix = uMVMatrixStack.pop();
-};
-
-// Text/Typography
-// @TODO:
-p5.Renderer3D.prototype._applyTextProperties = function() {
-  //@TODO finish implementation
-  console.error('text commands not yet implemented in webgl');
-};
-module.exports = p5.Renderer3D;
-
-},{"../core/core":49,"../core/p5.Renderer":55,"./p5.Matrix":34,"./shader":39}],38:[function(_dereq_,module,exports){
-/**
- * @module Shape
- * @submodule 3D Primitives
- * @for p5
- * @requires core
- * @requires p5.Geometry
- */
-
-'use strict';
-
-var p5 = _dereq_('../core/core');
-_dereq_('./p5.Geometry');
-/**
- * Draw a plane with given a width and height
- * @method plane
- * @param  {Number} width      width of the plane
- * @param  {Number} height     height of the plane
- * @param  {Number} [detailX]  Optional number of triangle
- *                             subdivisions in x-dimension
- * @param {Number} [detailY]   Optional number of triangle
- *                             subdivisions in y-dimension
- * @return {p5}                the p5 object
- * @example
- * <div>
- * <code>
- * //draw a plane with width 200 and height 200
- * function setup(){
- *   createCanvas(100, 100, WEBGL);
- * }
- *
- * function draw(){
- *   background(200);
- *   plane(200, 200);
- * }
- * </code>
- * </div>
- */
-p5.prototype.plane = function(){
-  var args = new Array(arguments.length);
-  for (var i = 0; i < args.length; ++i) {
-    args[i] = arguments[i];
-  }
-  var width = args[0] || 50;
-  var height = args[1] || width;
-  var detailX = typeof args[2] === 'number' ? args[2] : 1;
-  var detailY = typeof args[3] === 'number' ? args[3] : 1;
-
-  var gId = 'plane|'+width+'|'+height+'|'+detailX+'|'+detailY;
-
-  if(!this._renderer.geometryInHash(gId)){
-    var _plane = function(){
-      var u,v,p;
-      for (var i = 0; i <= this.detailY; i++){
-        v = i / this.detailY;
-        for (var j = 0; j <= this.detailX; j++){
-          u = j / this.detailX;
-          p = new p5.Vector(width * u - width/2,
-            height * v - height/2,
-            0);
-          this.vertices.push(p);
-          this.uvs.push([u,v]);
-        }
-      }
-    };
-    var planeGeom =
-    new p5.Geometry(detailX, detailY, _plane);
-    planeGeom
-      .computeFaces()
-      .computeNormals();
-    this._renderer.createBuffers(gId, planeGeom);
-  }
-
-  this._renderer.drawBuffers(gId);
-
-};
-
-/**
- * Draw a box with given width, height and depth
- * @method  box
- * @param  {Number} width     width of the box
- * @param  {Number} Height    height of the box
- * @param  {Number} depth     depth of the box
- * @param {Number} [detailX]  Optional number of triangle
- *                            subdivisions in x-dimension
- * @param {Number} [detailY]  Optional number of triangle
- *                            subdivisions in y-dimension
- * @return {p5}               the p5 object
- * @example
- * <div>
- * <code>
- * //draw a spining box with width, height and depth 200
- * function setup(){
- *   createCanvas(100, 100, WEBGL);
- * }
- *
- * function draw(){
- *   background(200);
- *   rotateX(frameCount * 0.01);
- *   rotateY(frameCount * 0.01);
- *   box(200, 200, 200);
- * }
- * </code>
- * </div>
- */
-p5.prototype.box = function(){
-  var args = new Array(arguments.length);
-  for (var i = 0; i < args.length; ++i) {
-    args[i] = arguments[i];
-  }
-  var width = args[0] || 50;
-  var height = args[1] || width;
-  var depth = args[2] || width;
-
-  var detailX = typeof args[3] === 'number' ? args[3] : 4;
-  var detailY = typeof args[4] === 'number' ? args[4] : 4;
-  var gId = 'box|'+width+'|'+height+'|'+depth+'|'+detailX+'|'+detailY;
-
-  if(!this._renderer.geometryInHash(gId)){
-    var _box = function(){
-      var cubeIndices = [
-        [0, 4, 2, 6],// -1, 0, 0],// -x
-        [1, 3, 5, 7],// +1, 0, 0],// +x
-        [0, 1, 4, 5],// 0, -1, 0],// -y
-        [2, 6, 3, 7],// 0, +1, 0],// +y
-        [0, 2, 1, 3],// 0, 0, -1],// -z
-        [4, 5, 6, 7]// 0, 0, +1] // +z
-      ];
-      var id=0;
-      for (var i = 0; i < cubeIndices.length; i++) {
-        var cubeIndex = cubeIndices[i];
-        var v = i * 4;
-        for (var j = 0; j < 4; j++) {
-          var d = cubeIndex[j];
-          //inspired by lightgl:
-          //https://github.com/evanw/lightgl.js
-          //octants:https://en.wikipedia.org/wiki/Octant_(solid_geometry)
-          var octant = new p5.Vector(
-            ((d & 1) * 2 - 1)*width/2,
-            ((d & 2) - 1) *height/2,
-            ((d & 4) / 2 - 1) * depth/2);
-          this.vertices.push( octant );
-          this.uvs.push([j & 1, (j & 2) / 2]);
-          id++;
-        }
-        this.faces.push([v, v + 1, v + 2]);
-        this.faces.push([v + 2, v + 1, v + 3]);
-      }
-    };
-    var boxGeom = new p5.Geometry(detailX,detailY, _box);
-    boxGeom.computeNormals();
-    //initialize our geometry buffer with
-    //the key val pair:
-    //geometry Id, Geom object
-    this._renderer.createBuffers(gId, boxGeom);
-  }
-  this._renderer.drawBuffers(gId);
-
-  return this;
-
-};
-
-/**
- * Draw a sphere with given radius
- * @method sphere
- * @param  {Number} radius            radius of circle
- * @param  {Number} [detailX]         optional: number of segments,
- *                                    the more segments the smoother geometry
- *                                    default is 24
- * @param  {Number} [detailY]         optional: number of segments,
- *                                    the more segments the smoother geometry
- *                                    default is 16
- * @return {p5}                       the p5 object
- * @example
- * <div>
- * <code>
- * // draw a sphere with radius 200
- * function setup(){
- *   createCanvas(100, 100, WEBGL);
- * }
- *
- * function draw(){
- *   background(200);
- *   sphere(200);
- * }
- * </code>
- * </div>
- */
-p5.prototype.sphere = function(){
-  var args = new Array(arguments.length);
-  for (var i = 0; i < args.length; ++i) {
-    args[i] = arguments[i];
-  }
-  //@todo validate params here
-  //
-  var radius = args[0] || 50;
-  var detailX = typeof args[1] === 'number' ? args[1] : 24;
-  var detailY = typeof args[2] === 'number' ? args[2] : 16;
-  var gId = 'sphere|'+radius+'|'+detailX+'|'+detailY;
-  if(!this._renderer.geometryInHash(gId)){
-    var _sphere = function(){
-      var u,v,p;
-      for (var i = 0; i <= this.detailY; i++){
-        v = i / this.detailY;
-        for (var j = 0; j <= this.detailX; j++){
-          u = j / this.detailX;
-          var theta = 2 * Math.PI * u;
-          var phi = Math.PI * v - Math.PI / 2;
-          p = new p5.Vector(radius * Math.cos(phi) * Math.sin(theta),
-            radius * Math.sin(phi),
-            radius * Math.cos(phi) * Math.cos(theta));
-          this.vertices.push(p);
-          this.uvs.push([u,v]);
-        }
-      }
-    };
-    var sphereGeom = new p5.Geometry(detailX, detailY, _sphere);
-    sphereGeom
-      .computeFaces()
-      .computeNormals();
-    this._renderer.createBuffers(gId, sphereGeom);
-  }
-  this._renderer.drawBuffers(gId);
-
-  return this;
-};
-
-
-/**
-* @private
-* helper function for creating both cones and cyllinders
-*/
-var _truncatedCone = function(
-  bottomRadius,
-  topRadius,
-  height,
-  detailX,
-  detailY,
-  topCap,
-  bottomCap) {
-  detailX = (detailX < 3) ? 3 : detailX;
-  detailY = (detailY < 1) ? 1 : detailY;
-  topCap = (topCap === undefined) ? true : topCap;
-  bottomCap = (bottomCap === undefined) ? true : bottomCap;
-  var extra = (topCap ? 2 : 0) + (bottomCap ? 2 : 0);
-  var vertsAroundEdge = detailX + 1;
-
-  // ensure constant slant
-  var slant = Math.atan2(bottomRadius - topRadius, height);
-  var start = topCap ? -2 : 0;
-  var end = detailY + (bottomCap ? 2 : 0);
-  var yy, ii;
-  for (yy = start; yy <= end; ++yy) {
-    var v = yy / detailY;
-    var y = height * v;
-    var ringRadius;
-    if (yy < 0) {
-      y = 0;
-      v = 1;
-      ringRadius = bottomRadius;
-    } else if (yy > detailY) {
-      y = height;
-      v = 1;
-      ringRadius = topRadius;
-    } else {
-      ringRadius = bottomRadius +
-        (topRadius - bottomRadius) * (yy / detailY);
-    }
-    if (yy === -2 || yy === detailY + 2) {
-      ringRadius = 0;
-      v = 0;
-    }
-    y -= height / 2;
-    for (ii = 0; ii < vertsAroundEdge; ++ii) {
-      //VERTICES
-      this.vertices.push(
-        new p5.Vector(
-          Math.sin(ii*Math.PI * 2 /detailX) * ringRadius,
-          y,
-          Math.cos(ii*Math.PI * 2 /detailX) * ringRadius)
-        );
-      //VERTEX NORMALS
-      this.vertexNormals.push(
-        new p5.Vector(
-          (yy < 0 || yy > detailY) ? 0 :
-          (Math.sin(ii * Math.PI * 2 / detailX) * Math.cos(slant)),
-          (yy < 0) ? -1 : (yy > detailY ? 1 : Math.sin(slant)),
-          (yy < 0 || yy > detailY) ? 0 :
-          (Math.cos(ii * Math.PI * 2 / detailX) * Math.cos(slant)))
-        );
-      //UVs
-      this.uvs.push([(ii / detailX), v]);
-    }
-  }
-  for (yy = 0; yy < detailY + extra; ++yy) {
-    for (ii = 0; ii < detailX; ++ii) {
-      this.faces.push([vertsAroundEdge * (yy + 0) + 0 + ii,
-        vertsAroundEdge * (yy + 0) + 1 + ii,
-        vertsAroundEdge * (yy + 1) + 1 + ii]);
-      this.faces.push([vertsAroundEdge * (yy + 0) + 0 + ii,
-        vertsAroundEdge * (yy + 1) + 1 + ii,
-        vertsAroundEdge * (yy + 1) + 0 + ii]);
-    }
-  }
-};
-
-/**
- * Draw a cylinder with given radius and height
- * @method  cylinder
- * @param  {Number} radius     radius of the surface
- * @param  {Number} height     height of the cylinder
- * @param  {Number} [detailX]  optional: number of segments,
- *                             the more segments the smoother geometry
- *                             default is 24
- * @param {Number} [detailY]   optional: number of segments in y-dimension,
- *                             the more segments the smoother geometry
- *                             default is 16
- * @return {p5}                the p5 object
- * @example
- * <div>
- * <code>
- * //draw a spining sylinder with radius 200 and height 200
- * function setup(){
- *   createCanvas(100, 100, WEBGL);
- * }
- *
- * function draw(){
- *   background(200);
- *   rotateX(frameCount * 0.01);
- *   rotateZ(frameCount * 0.01);
- *   cylinder(200, 200);
- * }
- * </code>
- * </div>
- */
-p5.prototype.cylinder = function(){
-  var args = new Array(arguments.length);
-  for (var i = 0; i < args.length; ++i) {
-    args[i] = arguments[i];
-  }
-  var radius = args[0] || 50;
-  var height = args[1] || radius;
-  var detailX = typeof args[2] === 'number' ? args[2] : 24;
-  var detailY = typeof args[3] === 'number' ? args[3] : 16;
-  var gId = 'cylinder|'+radius+'|'+height+'|'+detailX+'|'+detailY;
-  if(!this._renderer.geometryInHash(gId)){
-    var cylinderGeom = new p5.Geometry(detailX, detailY);
-    _truncatedCone.call(
-      cylinderGeom,
-      radius,
-      radius,
-      height,
-      detailX,
-      detailY,
-      true,true);
-    cylinderGeom.computeNormals();
-    this._renderer.createBuffers(gId, cylinderGeom);
-  }
-
-  this._renderer.drawBuffers(gId);
-
-  return this;
-};
-
-
-/**
- * Draw a cone with given radius and height
- * @method cone
- * @param  {Number} radius            radius of the bottom surface
- * @param  {Number} height            height of the cone
- * @param  {Number} [detailX]         optional: number of segments,
- *                                    the more segments the smoother geometry
- *                                    default is 24
- * @param  {Number} [detailY]         optional: number of segments,
- *                                    the more segments the smoother geometry
- *                                    default is 16
- * @return {p5}                       the p5 object
- * @example
- * <div>
- * <code>
- * //draw a spining cone with radius 200 and height 200
- * function setup(){
- *   createCanvas(100, 100, WEBGL);
- * }
- *
- * function draw(){
- *   background(200);
- *   rotateX(frameCount * 0.01);
- *   rotateZ(frameCount * 0.01);
- *   cone(200, 200);
- * }
- * </code>
- * </div>
- */
-p5.prototype.cone = function(){
-  var args = new Array(arguments.length);
-  for (var i = 0; i < args.length; ++i) {
-    args[i] = arguments[i];
-  }
-  var baseRadius = args[0] || 50;
-  var height = args[1] || baseRadius;
-  var detailX = typeof args[2] === 'number' ? args[2] : 24;
-  var detailY = typeof args[3] === 'number' ? args[3] : 16;
-  var gId = 'cone|'+baseRadius+'|'+height+'|'+detailX+'|'+detailY;
-  if(!this._renderer.geometryInHash(gId)){
-    var coneGeom = new p5.Geometry(detailX, detailY);
-    _truncatedCone.call(coneGeom,
-      baseRadius,
-      0,//top radius 0
-      height,
-      detailX,
-      detailY,
-      true,
-      true);
-    //for cones we need to average Normals
-    coneGeom
-      .computeNormals();
-    this._renderer.createBuffers(gId, coneGeom);
-  }
-
-  this._renderer.drawBuffers(gId);
-
-  return this;
-};
-
-/**
- * Draw an ellipsoid with given raduis
- * @method ellipsoid
- * @param  {Number} radiusx           xradius of circle
- * @param  {Number} radiusy           yradius of circle
- * @param  {Number} radiusz           zradius of circle
- * @param  {Number} [detail]          number of segments,
- *                                    the more segments the smoother geometry
- *                                    default is 24. Avoid detail number above
- *                                    150. It may crash the browser.
- * @return {p5}                       the p5 object
- * @example
- * <div>
- * <code>
- * // draw an ellipsoid with radius 200, 300 and 400 .
- * function setup(){
- *   createCanvas(100, 100, WEBGL);
- * }
- *
- * function draw(){
- *   background(200);
- *   ellipsoid(200,300,400);
- * }
- * </code>
- * </div>
- */
-p5.prototype.ellipsoid =
-function(){
-  var args = new Array(arguments.length);
-  for (var i = 0; i < args.length; ++i) {
-    args[i] = arguments[i];
-  }
-  var detailX = typeof args[2] === 'number' ? args[2] : 24;
-  var detailY = typeof args[3] === 'number' ? args[3] : 24;
-  var radiusX = args[0] || 50;
-  var radiusY = args[1] || radiusX;
-  var radiusZ = args[2] || radiusX;
-
-  var gId = 'ellipsoid|'+radiusX+'|'+radiusY+
-  '|'+radiusZ+'|'+detailX+'|'+detailY;
-
-
-  if(!this._renderer.geometryInHash(gId)){
-    var _ellipsoid = function(){
-      var u,v,p;
-      for (var i = 0; i <= this.detailY; i++){
-        v = i / this.detailY;
-        for (var j = 0; j <= this.detailX; j++){
-          u = j / this.detailX;
-          var theta = 2 * Math.PI * u;
-          var phi = Math.PI * v - Math.PI / 2;
-          p = new p5.Vector(radiusX * Math.cos(phi) * Math.sin(theta),
-            radiusY * Math.sin(phi),
-            radiusZ * Math.cos(phi) * Math.cos(theta));
-          this.vertices.push(p);
-          this.uvs.push([u,v]);
-        }
-      }
-    };
-    var ellipsoidGeom = new p5.Geometry(detailX, detailY,_ellipsoid);
-    ellipsoidGeom
-      .computeFaces()
-      .computeNormals();
-    this._renderer.createBuffers(gId, ellipsoidGeom);
-  }
-
-  this._renderer.drawBuffers(gId);
-
-  return this;
-};
-
-/**
- * Draw a torus with given radius and tube radius
- * @method torus
- * @param  {Number} radius        radius of the whole ring
- * @param  {Number} tubeRadius    radius of the tube
- * @param  {Number} [detailX]     optional: number of segments in x-dimension,
- *                                the more segments the smoother geometry
- *                                default is 24
- * @param  {Number} [detailY]     optional: number of segments in y-dimension,
- *                                the more segments the smoother geometry
- *                                default is 16
- * @return {p5}                   the p5 object
- * @example
- * <div>
- * <code>
- * //draw a spining torus with radius 200 and tube radius 60
- * function setup(){
- *   createCanvas(100, 100, WEBGL);
- * }
- *
- * function draw(){
- *   background(200);
- *   rotateX(frameCount * 0.01);
- *   rotateY(frameCount * 0.01);
- *   torus(200, 60);
- * }
- * </code>
- * </div>
- */
-p5.prototype.torus = function(){
-  var args = new Array(arguments.length);
-  for (var i = 0; i < args.length; ++i) {
-    args[i] = arguments[i];
-  }
-  var detailX = typeof args[2] === 'number' ? args[2] : 24;
-  var detailY = typeof args[3] === 'number' ? args[3] : 16;
-
-  var radius = args[0] || 50;
-  var tubeRadius = args[1] || 10;
-
-  var gId = 'torus|'+radius+'|'+tubeRadius+'|'+detailX+'|'+detailY;
-
-  if(!this._renderer.geometryInHash(gId)){
-    var _torus = function(){
-      var u,v,p;
-      for (var i = 0; i <= this.detailY; i++){
-        v = i / this.detailY;
-        for (var j = 0; j <= this.detailX; j++){
-          u = j / this.detailX;
-          var theta = 2 * Math.PI * u;
-          var phi = 2 * Math.PI * v;
-          p = new p5.Vector(
-            (radius + tubeRadius * Math.cos(phi)) * Math.cos(theta),
-            (radius + tubeRadius * Math.cos(phi)) * Math.sin(theta),
-            tubeRadius * Math.sin(phi));
-          this.vertices.push(p);
-          this.uvs.push([u,v]);
-        }
-      }
-    };
-    var torusGeom = new p5.Geometry(detailX, detailY, _torus);
-    torusGeom
-      .computeFaces()
-      .computeNormals();
-    this._renderer.createBuffers(gId, torusGeom);
-  }
-
-  this._renderer.drawBuffers(gId);
-
-  return this;
-};
-
-///////////////////////
-/// 2D primitives
-/////////////////////////
-
-//@TODO
-p5.Renderer3D.prototype.point = function(x, y, z){
-  console.log('point not yet implemented in webgl');
-  return this;
-};
-
-p5.Renderer3D.prototype.triangle = function
-(args){
-  var x1=args[0], y1=args[1], z1=args[2];
-  var x2=args[3], y2=args[4], z2=args[5];
-  var x3=args[6], y3=args[7], z3=args[8];
-  var gId = 'tri|'+x1+'|'+y1+'|'+z1+'|'+
-  x2+'|'+y2+'|'+z2+
-  x3+'|'+y3+'|'+z3;
-  if(!this.geometryInHash(gId)){
-    var _triangle = function(){
-      var vertices = [];
-      vertices.push(new p5.Vector(x1,y1,z1));
-      vertices.push(new p5.Vector(x2,y2,z2));
-      vertices.push(new p5.Vector(x3,y3,z3));
-      this.vertices = vertices;
-      this.faces = [[0,1,2]];
-      this.uvs = [[0,0],[0,1],[1,1]];
-    };
-    var triGeom = new p5.Geometry(1,1,_triangle);
-    triGeom.computeNormals();
-    this.createBuffers(gId, triGeom);
-  }
-
-  this.drawBuffers(gId);
-  return this;
-};
-
-p5.Renderer3D.prototype.ellipse = function
-(args){
-  var x = args[0];
-  var y = args[1];
-  var z = args[2];
-  var width = args[3];
-  var height = args[4];
-  //detailX and Y are optional 6th & 7th
-  //arguments
-  var detailX = args[5] || 24;
-  var detailY = args[6] || 16;
-  var gId = 'ellipse|'+args[0]+'|'+args[1]+'|'+args[2]+'|'+
-  args[3]+'|'+args[4];
-  if(!this.geometryInHash(gId)){
-    var _ellipse = function(){
-      var u,v,p;
-      for (var i = 0; i <= this.detailY; i++){
-        v = i / this.detailY;
-        for (var j = 0; j <= this.detailX; j++){
-          u = j / this.detailX;
-          var theta = 2 * Math.PI * u;
-          if(v === 0){
-            p = new p5.Vector(x, y, z);
-          }
-          else{
-            var _x = x + width * Math.sin(theta);
-            var _y = y + height * Math.cos(theta);
-            var _z = z;
-            p = new p5.Vector(_x, _y, _z);
-          }
-          this.vertices.push(p);
-          this.uvs.push([u,v]);
-        }
-      }
-    };
-    var ellipseGeom = new p5.Geometry(detailX,detailY,_ellipse);
-    ellipseGeom
-      .computeFaces()
-      .computeNormals();
-    this.createBuffers(gId, ellipseGeom);
-  }
-  this.drawBuffers(gId);
-  return this;
-};
-
-p5.Renderer3D.prototype.rect = function
-(args){
-  var gId = 'rect|'+args[0]+'|'+args[1]+'|'+args[2]+'|'+
-  args[3]+'|'+args[4];
-  var x = args[0];
-  var y = args[1];
-  var z = args[2];
-  var width = args[3];
-  var height = args[4];
-  var detailX = args[5] || 24;
-  var detailY = args[6] || 16;
-  if(!this.geometryInHash(gId)){
-    var _rect = function(){
-      var u,v,p;
-      for (var i = 0; i <= this.detailY; i++){
-        v = i / this.detailY;
-        for (var j = 0; j <= this.detailX; j++){
-          u = j / this.detailX;
-          p = new p5.Vector(
-            (x + width) * u,
-            (y + height) * v,
-            z
-          );
-          this.vertices.push(p);
-          this.uvs.push([u,v]);
-        }
-      }
-    };
-    var rectGeom = new p5.Geometry(detailX,detailY,_rect);
-    rectGeom
-      .computeFaces()
-      .computeNormals();
-    this.createBuffers(gId, rectGeom);
-  }
-  this.drawBuffers(gId);
-  return this;
-};
-
-p5.Renderer3D.prototype.quad = function
-(args){
-  var x1 = args[0],
-    y1 = args[1],
-    z1 = args[2],
-    x2 = args[3],
-    y2 = args[4],
-    z2 = args[5],
-    x3 = args[6],
-    y3 = args[7],
-    z3 = args[8],
-    x4 = args[9],
-    y4 = args[10],
-    z4 = args[11];
-  var gId = 'quad|'+x1+'|'+y1+'|'+z1+'|'+
-  x2+'|'+y2+'|'+z2+
-  x3+'|'+y3+'|'+z3+
-  x4+'|'+y4+'|'+z4;
-  if(!this.geometryInHash(gId)){
-    var _quad = function(){
-      this.vertices.push(new p5.Vector(x1,y1,z1));
-      this.vertices.push(new p5.Vector(x2,y2,z2));
-      this.vertices.push(new p5.Vector(x3,y3,z3));
-      this.vertices.push(new p5.Vector(x4,y4,z4));
-    };
-    var quadGeom = new p5.Geometry(2,2,_quad);
-    quadGeom
-      .computeNormals()
-      .computeUVs();
-    quadGeom.faces = [[0,1,2],[2,3,1]];
-    this.createBuffers(gId, quadGeom);
-  }
-  this.drawBuffers(gId);
-  return this;
-};
-
-//this implementation of bezier curve
-//is based on Bernstein polynomial
-p5.Renderer3D.prototype.bezier = function
-(args){
-  var bezierDetail=args[12] || 20;//value of Bezier detail
-  this.beginShape();
-  var coeff=[0,0,0,0];//  Bernstein polynomial coeffecients
-  var vertex=[0,0,0]; //(x,y,z) coordinates of points in bezier curve
-  for(var i=0; i<=bezierDetail; i++){
-    coeff[0]=Math.pow(1-(i/bezierDetail),3);
-    coeff[1]=(3*(i/bezierDetail)) * (Math.pow(1-(i/bezierDetail),2));
-    coeff[2]=(3*Math.pow(i/bezierDetail,2)) * (1-(i/bezierDetail));
-    coeff[3]=Math.pow(i/bezierDetail,3);
-    vertex[0]=args[0]*coeff[0] + args[3]*coeff[1] +
-              args[6]*coeff[2] + args[9]*coeff[3];
-    vertex[1]=args[1]*coeff[0] + args[4]*coeff[1] +
-              args[7]*coeff[2] + args[10]*coeff[3];
-    vertex[2]=args[2]*coeff[0] + args[5]*coeff[1] +
-              args[8]*coeff[2] + args[11]*coeff[3];
-    this.vertex(vertex[0],vertex[1],vertex[2]);
-  }
-  this.endShape();
-  return this;
-};
-
-p5.Renderer3D.prototype.curve=function
-(args){
-  var curveDetail=args[12];
-  this.beginShape();
-  var coeff=[0,0,0,0];//coeffecients of the equation
-  var vertex=[0,0,0]; //(x,y,z) coordinates of points in bezier curve
-  for(var i=0; i<=curveDetail; i++){
-    coeff[0]=Math.pow((i/curveDetail),3) * 0.5;
-    coeff[1]=Math.pow((i/curveDetail),2) * 0.5;
-    coeff[2]=(i/curveDetail) * 0.5;
-    coeff[3]=0.5;
-    vertex[0]=coeff[0]*(-args[0] + (3*args[3]) - (3*args[6]) +args[9]) +
-              coeff[1]*((2*args[0]) - (5*args[3]) + (4*args[6]) - args[9]) +
-              coeff[2]*(-args[0] + args[6]) +
-              coeff[3]*(2*args[3]);
-    vertex[1]=coeff[0]*(-args[1] + (3*args[4]) - (3*args[7]) +args[10]) +
-              coeff[1]*((2*args[1]) - (5*args[4]) + (4*args[7]) - args[10]) +
-              coeff[2]*(-args[1] + args[7]) +
-              coeff[3]*(2*args[4]);
-    vertex[2]=coeff[0]*(-args[2] + (3*args[5]) - (3*args[8]) +args[11]) +
-              coeff[1]*((2*args[2]) - (5*args[5]) + (4*args[8]) - args[11]) +
-              coeff[2]*(-args[2] + args[8]) +
-              coeff[3]*(2*args[5]);
-    this.vertex(vertex[0],vertex[1],vertex[2]);
-  }
-  this.endShape();
-  return this;
-};
-
-module.exports = p5;
-},{"../core/core":49,"./p5.Geometry":33}],39:[function(_dereq_,module,exports){
-
-
-module.exports = {
-  immediateVert:
-    "attribute vec3 aPosition;\nattribute vec4 aVertexColor;\n\nuniform mat4 uModelViewMatrix;\nuniform mat4 uProjectionMatrix;\nuniform float uResolution;\nuniform float uPointSize;\n\nvarying vec4 vColor;\nvoid main(void) {\n  vec4 positionVec4 = vec4(aPosition / uResolution *vec3(1.0, -1.0, 1.0), 1.0);\n  gl_Position = uProjectionMatrix * uModelViewMatrix * positionVec4;\n  vColor = aVertexColor;\n  gl_PointSize = uPointSize;\n}",
-  vertexColorVert:
-    "attribute vec3 aPosition;\nattribute vec4 aVertexColor;\n\nuniform mat4 uModelViewMatrix;\nuniform mat4 uProjectionMatrix;\nuniform float uResolution;\n\nvarying vec4 vColor;\n\nvoid main(void) {\n  vec4 positionVec4 = vec4(aPosition / uResolution * vec3(1.0, -1.0, 1.0), 1.0);\n  gl_Position = uProjectionMatrix * uModelViewMatrix * positionVec4;\n  vColor = aVertexColor;\n}",
-  vertexColorFrag:
-    "precision mediump float;\nvarying vec4 vColor;\nvoid main(void) {\n  gl_FragColor = vColor;\n}",
-  normalVert:
-    "attribute vec3 aPosition;\nattribute vec3 aNormal;\nattribute vec2 aTexCoord;\n\nuniform mat4 uModelViewMatrix;\nuniform mat4 uProjectionMatrix;\nuniform mat3 uNormalMatrix;\nuniform float uResolution;\n\nvarying vec3 vVertexNormal;\nvarying highp vec2 vVertTexCoord;\n\nvoid main(void) {\n  vec4 positionVec4 = vec4(aPosition / uResolution, 1.0);\n  gl_Position = uProjectionMatrix * uModelViewMatrix * positionVec4;\n  vVertexNormal = vec3( uNormalMatrix * aNormal );\n  vVertTexCoord = aTexCoord;\n}",
-  normalFrag:
-    "precision mediump float;\nvarying vec3 vVertexNormal;\nvoid main(void) {\n  gl_FragColor = vec4(vVertexNormal, 1.0);\n}",
-  basicFrag:
-    "precision mediump float;\nvarying vec3 vVertexNormal;\nuniform vec4 uMaterialColor;\nvoid main(void) {\n  gl_FragColor = uMaterialColor;\n}",
-  lightVert:
-    "attribute vec3 aPosition;\nattribute vec3 aNormal;\nattribute vec2 aTexCoord;\n\nuniform mat4 uModelViewMatrix;\nuniform mat4 uProjectionMatrix;\nuniform mat3 uNormalMatrix;\nuniform float uResolution;\nuniform int uAmbientLightCount;\nuniform int uDirectionalLightCount;\nuniform int uPointLightCount;\n\nuniform vec3 uAmbientColor[8];\nuniform vec3 uLightingDirection[8];\nuniform vec3 uDirectionalColor[8];\nuniform vec3 uPointLightLocation[8];\nuniform vec3 uPointLightColor[8];\nuniform bool uSpecular;\n\nvarying vec3 vVertexNormal;\nvarying vec2 vVertTexCoord;\nvarying vec3 vLightWeighting;\n\nvec3 ambientLightFactor = vec3(0.0, 0.0, 0.0);\nvec3 directionalLightFactor = vec3(0.0, 0.0, 0.0);\nvec3 pointLightFactor = vec3(0.0, 0.0, 0.0);\nvec3 pointLightFactor2 = vec3(0.0, 0.0, 0.0);\n\nvoid main(void){\n\n  vec4 positionVec4 = vec4(aPosition / uResolution, 1.0);\n  gl_Position = uProjectionMatrix * uModelViewMatrix * positionVec4;\n\n  vec3 vertexNormal = vec3( uNormalMatrix * aNormal );\n  vVertexNormal = vertexNormal;\n  vVertTexCoord = aTexCoord;\n\n  vec4 mvPosition = uModelViewMatrix * vec4(aPosition / uResolution, 1.0);\n  vec3 eyeDirection = normalize(-mvPosition.xyz);\n\n  float shininess = 32.0;\n  float specularFactor = 2.0;\n  float diffuseFactor = 0.3;\n\n  for(int i = 0; i < 8; i++){\n    if(uAmbientLightCount == i) break;\n    ambientLightFactor += uAmbientColor[i];\n  }\n\n  for(int j = 0; j < 8; j++){\n    if(uDirectionalLightCount == j) break;\n    vec3 dir = uLightingDirection[j];\n    float directionalLightWeighting = max(dot(vertexNormal, dir), 0.0);\n    directionalLightFactor += uDirectionalColor[j] * directionalLightWeighting;\n  }\n\n  for(int k = 0; k < 8; k++){\n    if(uPointLightCount == k) break;\n    vec3 loc = uPointLightLocation[k];\n    //loc = loc / uResolution;\n    vec3 lightDirection = normalize(loc - mvPosition.xyz);\n\n    float directionalLightWeighting = max(dot(vertexNormal, lightDirection), 0.0);\n    pointLightFactor += uPointLightColor[k] * directionalLightWeighting;\n\n    //factor2 for specular\n    vec3 reflectionDirection = reflect(-lightDirection, vertexNormal);\n    float specularLightWeighting = pow(max(dot(reflectionDirection, eyeDirection), 0.0), shininess);\n\n    pointLightFactor2 += uPointLightColor[k] * (specularFactor * specularLightWeighting\n      +  directionalLightWeighting * diffuseFactor);\n  }\n  \n  if(!uSpecular){\n    vLightWeighting =  ambientLightFactor + directionalLightFactor + pointLightFactor;\n  }else{\n    vLightWeighting = ambientLightFactor + directionalLightFactor + pointLightFactor2;\n  }\n\n}",
-  lightTextureFrag:
-    "precision mediump float;\n\nuniform vec4 uMaterialColor;\nuniform sampler2D uSampler;\nuniform bool isTexture;\n\nvarying vec3 vLightWeighting;\nvarying highp vec2 vVertTexCoord;\n\nvoid main(void) {\n  if(!isTexture){\n    gl_FragColor = vec4(vec3(uMaterialColor.rgb * vLightWeighting), uMaterialColor.a);\n  }else{\n    vec4 textureColor = texture2D(uSampler, vVertTexCoord);\n    if(vLightWeighting == vec3(0., 0., 0.)){\n      gl_FragColor = textureColor;\n    }else{\n      gl_FragColor = vec4(vec3(textureColor.rgb * vLightWeighting), textureColor.a); \n    }\n  }\n}"
-};
-},{}],40:[function(_dereq_,module,exports){
 
 'use strict';
 
@@ -9009,18 +5568,18 @@ _dereq_('./core/transform');
 _dereq_('./typography/attributes');
 _dereq_('./typography/loading_displaying');
 
-_dereq_('./3d/p5.Renderer3D');
-_dereq_('./3d/p5.Geometry');
-_dereq_('./3d/p5.Renderer3D.Retained');
-_dereq_('./3d/p5.Renderer3D.Immediate');
-_dereq_('./3d/primitives');
-_dereq_('./3d/loading');
-_dereq_('./3d/p5.Matrix');
-_dereq_('./3d/material');
-_dereq_('./3d/light');
-_dereq_('./3d/shader');
-_dereq_('./3d/camera');
-_dereq_('./3d/interaction');
+_dereq_('./webgl/p5.RendererGL');
+_dereq_('./webgl/p5.Geometry');
+_dereq_('./webgl/p5.RendererGL.Retained');
+_dereq_('./webgl/p5.RendererGL.Immediate');
+_dereq_('./webgl/primitives');
+_dereq_('./webgl/loading');
+_dereq_('./webgl/p5.Matrix');
+_dereq_('./webgl/material');
+_dereq_('./webgl/light');
+_dereq_('./webgl/shader');
+_dereq_('./webgl/camera');
+_dereq_('./webgl/interaction');
 
 /**
  * _globalInit
@@ -9052,7 +5611,7 @@ if (document.readyState === 'complete') {
 }
 
 module.exports = p5;
-},{"./3d/camera":28,"./3d/interaction":29,"./3d/light":30,"./3d/loading":31,"./3d/material":32,"./3d/p5.Geometry":33,"./3d/p5.Matrix":34,"./3d/p5.Renderer3D":37,"./3d/p5.Renderer3D.Immediate":35,"./3d/p5.Renderer3D.Retained":36,"./3d/primitives":38,"./3d/shader":39,"./color/creating_reading":42,"./color/p5.Color":43,"./color/setting":44,"./core/2d_primitives":45,"./core/attributes":46,"./core/constants":48,"./core/core":49,"./core/curves":50,"./core/environment":51,"./core/p5.Element":53,"./core/p5.Graphics":54,"./core/p5.Renderer2D":56,"./core/rendering":57,"./core/structure":59,"./core/transform":60,"./core/vertex":61,"./events/acceleration":62,"./events/keyboard":63,"./events/mouse":64,"./events/touch":65,"./image/image":67,"./image/loading_displaying":68,"./image/p5.Image":69,"./image/pixels":70,"./io/files":71,"./io/p5.Table":72,"./io/p5.TableRow":73,"./io/p5.XML":74,"./math/calculation":75,"./math/math":76,"./math/noise":77,"./math/p5.Vector":78,"./math/random":80,"./math/trigonometry":81,"./typography/attributes":82,"./typography/loading_displaying":83,"./typography/p5.Font":84,"./utilities/array_functions":85,"./utilities/conversion":86,"./utilities/string_functions":87,"./utilities/time_date":88}],41:[function(_dereq_,module,exports){
+},{"./color/creating_reading":30,"./color/p5.Color":31,"./color/setting":32,"./core/2d_primitives":33,"./core/attributes":34,"./core/constants":36,"./core/core":37,"./core/curves":38,"./core/environment":39,"./core/p5.Element":41,"./core/p5.Graphics":42,"./core/p5.Renderer2D":44,"./core/rendering":45,"./core/structure":47,"./core/transform":48,"./core/vertex":49,"./events/acceleration":50,"./events/keyboard":51,"./events/mouse":52,"./events/touch":53,"./image/image":55,"./image/loading_displaying":56,"./image/p5.Image":57,"./image/pixels":58,"./io/files":59,"./io/p5.Table":60,"./io/p5.TableRow":61,"./io/p5.XML":62,"./math/calculation":63,"./math/math":64,"./math/noise":65,"./math/p5.Vector":66,"./math/random":68,"./math/trigonometry":69,"./typography/attributes":70,"./typography/loading_displaying":71,"./typography/p5.Font":72,"./utilities/array_functions":73,"./utilities/conversion":74,"./utilities/string_functions":75,"./utilities/time_date":76,"./webgl/camera":77,"./webgl/interaction":78,"./webgl/light":79,"./webgl/loading":80,"./webgl/material":81,"./webgl/p5.Geometry":82,"./webgl/p5.Matrix":83,"./webgl/p5.RendererGL":86,"./webgl/p5.RendererGL.Immediate":84,"./webgl/p5.RendererGL.Retained":85,"./webgl/primitives":87,"./webgl/shader":88}],29:[function(_dereq_,module,exports){
 /**
  * module Conversion
  * submodule Color Conversion
@@ -9116,11 +5675,7 @@ p5.ColorConversion._hsbaToRGBA = function(hsba) {
     var tint2 = val * (1 - sat * (hue - sector));
     var tint3 = val * (1 - sat * (1 + sector - hue));
     var red, green, blue;
-    if (sector === 0) {  // Red to yellow.
-      red = val;
-      green = tint3;
-      blue = tint1;
-    } else if (sector === 1) {  // Yellow to green.
+    if (sector === 1) {  // Yellow to green.
       red = tint2;
       green = val;
       blue = tint1;
@@ -9136,10 +5691,14 @@ p5.ColorConversion._hsbaToRGBA = function(hsba) {
       red = tint3;
       green = tint1;
       blue = val;
-    } else {  // Magenta to red.
+    } else if (sector === 5) {  // Magenta to red.
       red = val;
       green = tint1;
       blue = tint2;
+    } else {  // Red to yellow (sector could be 0 or 6).
+      red = val;
+      green = tint3;
+      blue = tint1;
     }
     RGBA = [red, green, blue, hsba[3]];
   }
@@ -9305,7 +5864,7 @@ p5.ColorConversion._rgbaToHSLA = function(rgba) {
 
 module.exports = p5.ColorConversion;
 
-},{"../core/core":49}],42:[function(_dereq_,module,exports){
+},{"../core/core":37}],30:[function(_dereq_,module,exports){
 /**
  * @module Color
  * @submodule Creating & Reading
@@ -9816,7 +6375,7 @@ p5.prototype.saturation = function(c) {
 
 module.exports = p5;
 
-},{"../core/constants":48,"../core/core":49,"./p5.Color":43}],43:[function(_dereq_,module,exports){
+},{"../core/constants":36,"../core/core":37,"./p5.Color":31}],31:[function(_dereq_,module,exports){
 /**
  * @module Color
  * @submodule Creating & Reading
@@ -9872,8 +6431,8 @@ p5.Color = function(renderer, vals) {
 
 p5.Color.prototype.toString = function() {
   var a = this.levels;
-  a[3] = this._array[3];  // String representation uses normalized alpha.
-  return 'rgba('+a[0]+','+a[1]+','+a[2]+','+ a[3] +')';
+  var alpha = this._array[3];  // String representation uses normalized alpha.
+  return 'rgba('+a[0]+','+a[1]+','+a[2]+','+ alpha +')';
 };
 
 p5.Color.prototype._getAlpha = function() {
@@ -10418,7 +6977,7 @@ p5.Color._parseInputs = function() {
 
 module.exports = p5.Color;
 
-},{"../core/constants":48,"../core/core":49,"./color_conversion":41}],44:[function(_dereq_,module,exports){
+},{"../core/constants":36,"../core/core":37,"./color_conversion":29}],32:[function(_dereq_,module,exports){
 /**
  * @module Color
  * @submodule Setting
@@ -10991,7 +7550,7 @@ p5.prototype.stroke = function() {
 
 module.exports = p5;
 
-},{"../core/constants":48,"../core/core":49,"./p5.Color":43}],45:[function(_dereq_,module,exports){
+},{"../core/constants":36,"../core/core":37,"./p5.Color":31}],33:[function(_dereq_,module,exports){
 /**
  * @module Shape
  * @submodule 2D Primitives
@@ -11117,14 +7676,15 @@ p5.prototype.arc = function(x, y, w, h, start, stop, mode) {
 /**
  * Draws an ellipse (oval) to the screen. An ellipse with equal width and
  * height is a circle. By default, the first two parameters set the location,
- * and the third and fourth parameters set the shape's width and height. The
- * origin may be changed with the ellipseMode() function.
+ * and the third and fourth parameters set the shape's width and height. If
+ * no height is specified, the value of width is used for both the width and
+ * height. The origin may be changed with the ellipseMode() function.
  *
  * @method ellipse
  * @param  {Number} x x-coordinate of the ellipse.
  * @param  {Number} y y-coordinate of the ellipse.
  * @param  {Number} w width of the ellipse.
- * @param  {Number} h height of the ellipse.
+ * @param  {Number} [h] height of the ellipse.
  * @return {p5}       the p5 object
  * @example
  * <div>
@@ -11139,13 +7699,17 @@ p5.prototype.arc = function(x, y, w, h, start, stop, mode) {
  * @param {Number} y
  * @param {Number} z z-coordinate of the ellipse
  * @param {Number} w
- * @param {Number} h
+ * @param {Number} [h]
  * @return {p5}
  */
 p5.prototype.ellipse = function() {
   var args = new Array(arguments.length);
   for (var i = 0; i < args.length; ++i) {
     args[i] = arguments[i];
+  }
+  // Duplicate 3rd argument if onl 3 given.
+  if (args.length === 3) {
+    args.push(args[2]);
   }
   if(this._renderer.isP3D){
     // p5 supports negative width and heights for ellipses
@@ -11308,9 +7872,17 @@ p5.prototype.point = function() {
  */
 /**
  * @method quad
+ * @param {Number} x1
+ * @param {Number} y1
  * @param {Number} z1 the z-coordinate of the first point
+ * @param {Number} x2
+ * @param {Number} y2
  * @param {Number} z2 the z-coordinate of the second point
+ * @param {Number} x3
+ * @param {Number} y3
  * @param {Number} z3 the z-coordinate of the third point
+ * @param {Number} x4
+ * @param {Number} y4
  * @param {Number} z4 the z-coordinate of the fourth point
  * @return {p5} the p5 object
  */
@@ -11399,7 +7971,15 @@ p5.prototype.quad = function() {
 */
 /**
 * @method rect
+* @param  {Number} x
+* @param  {Number} y
 * @param  {Number} z  z-coordinate of the rectangle.
+* @param  {Number} w
+* @param  {Number} h
+* @param  {Number} [tl]
+* @param  {Number} [tr]
+* @param  {Number} [br]
+* @param  {Number} [bl]
 * @return {p5}          the p5 object.
 */
 p5.prototype.rect = function () {
@@ -11411,7 +7991,7 @@ p5.prototype.rect = function () {
     // p5 supports negative width and heights for rects
     if (args[3] < 0){args[3] = Math.abs(args[3]);}
     if (args[4] < 0){args[4] = Math.abs(args[4]);}
-  } else {
+  } else if (this._renderer._rectMode !== constants.CORNERS) {
     // p5 supports negative width and heights for rects
     if (args[2] < 0){args[2] = Math.abs(args[2]);}
     if (args[3] < 0){args[3] = Math.abs(args[3]);}
@@ -11469,7 +8049,7 @@ p5.prototype.triangle = function() {
 
 module.exports = p5;
 
-},{"./constants":48,"./core":49,"./error_helpers":52}],46:[function(_dereq_,module,exports){
+},{"./constants":36,"./core":37,"./error_helpers":40}],34:[function(_dereq_,module,exports){
 /**
  * @module Shape
  * @submodule Attributes
@@ -11768,7 +8348,7 @@ p5.prototype.strokeWeight = function(w) {
 
 module.exports = p5;
 
-},{"./constants":48,"./core":49}],47:[function(_dereq_,module,exports){
+},{"./constants":36,"./core":37}],35:[function(_dereq_,module,exports){
 /**
  * @requires constants
  */
@@ -11804,7 +8384,7 @@ module.exports = {
 };
 
 
-},{"./constants":48}],48:[function(_dereq_,module,exports){
+},{"./constants":36}],36:[function(_dereq_,module,exports){
 /**
  * @module Constants
  * @submodule Constants
@@ -12009,7 +8589,7 @@ module.exports = {
 
 };
 
-},{}],49:[function(_dereq_,module,exports){
+},{}],37:[function(_dereq_,module,exports){
 /**
  * @module Structure
  * @submodule Structure
@@ -12287,7 +8867,10 @@ var p5 = function(sketch, node, sync) {
       //increment counter
       this._incrementPreload();
       //call original function
-      var args = Array.prototype.slice.call(arguments);
+      var args = new Array(arguments.length);
+      for (var i = 0; i < args.length; ++i) {
+        args[i] = arguments[i];
+      }
       args.push(this._decrementPreload.bind(this));
       return this._registeredPreloadMethods[fnName].apply(obj, args);
     }.bind(this);
@@ -12347,15 +8930,16 @@ var p5 = function(sketch, node, sync) {
     if (!this._loop ||
         time_since_last >= target_time_between_frames - epsilon) {
 
-      //mandatory update values(matrixs and stack) for 3d
+      //mandatory update values(matrixs and stack)
+      this.resetMatrix();
       if(this._renderer.isP3D){
         this._renderer._update();
       }
 
       this._setProperty('frameCount', this.frameCount + 1);
+      this.redraw();
       this._updateMouseCoords();
       this._updateTouchCoords();
-      this.redraw();
       this._frameRate = 1000.0/(now - this._lastFrameTime);
       this._lastFrameTime = now;
     }
@@ -12540,7 +9124,8 @@ p5.prototype._preloadMethods = {
   loadXML: p5.prototype,
   loadShape: p5.prototype,
   loadTable: p5.prototype,
-  loadFont: p5.prototype
+  loadFont: p5.prototype,
+  loadModel: p5.prototype
 };
 
 p5.prototype._registeredMethods = { init: [], pre: [], post: [], remove: [] };
@@ -12634,7 +9219,7 @@ p5.prototype._createFriendlyGlobalFunctionBinder = function(options) {
 
 module.exports = p5;
 
-},{"./constants":48,"./shim":58}],50:[function(_dereq_,module,exports){
+},{"./constants":36,"./shim":46}],38:[function(_dereq_,module,exports){
 /**
  * @module Shape
  * @submodule Curves
@@ -13129,7 +9714,7 @@ p5.prototype.curveTangent = function(a, b,c, d, t) {
 
 module.exports = p5;
 
-},{"./core":49,"./error_helpers":52}],51:[function(_dereq_,module,exports){
+},{"./core":37,"./error_helpers":40}],39:[function(_dereq_,module,exports){
 /**
  * @module Environment
  * @submodule Environment
@@ -13225,17 +9810,17 @@ p5.prototype.frameCount = 0;
  * // To demonstrate, put two windows side by side.
  * // Click on the window that the p5 sketch isn't in!
  * function draw() {
- *   if (focused) {  // or "if (focused === true)"
- *     noStroke();
- *     fill(0, 200, 0);
- *     ellipse(25, 25, 50, 50);
- *   } else {
+ *   background(200);
+ *   noStroke();
+ *   fill(0, 200, 0);
+ *   ellipse(25, 25, 50, 50);
+ *
+ *   if (!focused) {  // or "if (focused === false)"
  *     stroke(200,0,0);
  *     line(0, 0, 100, 100);
  *     line(100, 0, 0, 100);
  *   }
  * }
- *
  * </code></div>
  */
 p5.prototype.focused = (document.hasFocus());
@@ -13434,7 +10019,7 @@ p5.prototype.displayHeight = screen.height;
  * createCanvas(windowWidth, windowHeight);
  * </code></div>
  */
-p5.prototype.windowWidth = window.innerWidth;
+p5.prototype.windowWidth = document.documentElement.clientWidth;
 /**
  * System variable that stores the height of the inner window, it maps to
  * window.innerHeight.
@@ -13445,7 +10030,7 @@ p5.prototype.windowWidth = window.innerWidth;
  * createCanvas(windowWidth, windowHeight);
  * </code></div>
  */
-p5.prototype.windowHeight = window.innerHeight;
+p5.prototype.windowHeight = document.documentElement.clientHeight;
 
 /**
  * The windowResized() function is called once every time the browser window
@@ -13718,7 +10303,7 @@ p5.prototype.getURLParams = function() {
 
 module.exports = p5;
 
-},{"./constants":48,"./core":49}],52:[function(_dereq_,module,exports){
+},{"./constants":36,"./core":37}],40:[function(_dereq_,module,exports){
 /**
  * @for p5
  * @requires core
@@ -14105,7 +10690,7 @@ if (document.readyState !== 'complete') {
 
 module.exports = p5;
 
-},{"./constants":48,"./core":49}],53:[function(_dereq_,module,exports){
+},{"./constants":36,"./core":37}],41:[function(_dereq_,module,exports){
 /**
  * @module DOM
  * @submodule DOM
@@ -14915,7 +11500,7 @@ p5.Element.prototype._setProperty = function (prop, value) {
 
 module.exports = p5.Element;
 
-},{"./core":49}],54:[function(_dereq_,module,exports){
+},{"./core":37}],42:[function(_dereq_,module,exports){
 /**
  * @module Rendering
  * @submodule Rendering
@@ -14954,7 +11539,7 @@ p5.Graphics = function(w, h, renderer, pInst) {
   this._pixelDensity = pInst._pixelDensity;
 
   if (r === constants.WEBGL) {
-    this._renderer = new p5.Renderer3D(c, this, false);
+    this._renderer = new p5.RendererGL(c, this, false);
   } else {
     this._renderer = new p5.Renderer2D(c, this, false);
   }
@@ -14982,7 +11567,7 @@ p5.Graphics.prototype = Object.create(p5.Element.prototype);
 
 module.exports = p5.Graphics;
 
-},{"./constants":48,"./core":49}],55:[function(_dereq_,module,exports){
+},{"./constants":36,"./core":37}],43:[function(_dereq_,module,exports){
 /**
  * @module Rendering
  * @submodule Rendering
@@ -15204,7 +11789,7 @@ function calculateOffset(object) {
 
 module.exports = p5.Renderer;
 
-},{"../core/constants":48,"./core":49}],56:[function(_dereq_,module,exports){
+},{"../core/constants":36,"./core":37}],44:[function(_dereq_,module,exports){
 
 var p5 = _dereq_('./core');
 var canvas = _dereq_('./canvas');
@@ -15420,20 +12005,19 @@ p5.Renderer2D.prototype.get = function(x, y, w, h) {
   var ctx = this._pInst || this;
 
   var pd = ctx._pixelDensity;
-
-  this.loadPixels.call(ctx);
+  ctx.loadPixels();
 
   // round down to get integer numbers
   x = Math.floor(x);
   y = Math.floor(y);
 
   if (w === 1 && h === 1){
-
+    var startPoint = pd*pd*4*(y*this.width+x);
     return [
-      ctx.pixels[pd*4*(y*this.width+x)],
-      ctx.pixels[pd*(4*(y*this.width+x)+1)],
-      ctx.pixels[pd*(4*(y*this.width+x)+2)],
-      ctx.pixels[pd*(4*(y*this.width+x)+3)]
+      ctx.pixels[startPoint],
+      ctx.pixels[startPoint+1],
+      ctx.pixels[startPoint+2],
+      ctx.pixels[startPoint+3]
     ];
   } else {
     var sx = x * pd;
@@ -16313,7 +12897,7 @@ p5.Renderer2D.prototype.text = function (str, x, y, maxWidth, maxHeight) {
       case constants.BOTTOM:
         y += (maxHeight - totalHeight);
         break;
-      case constants._CTX_MIDDLE:
+      case constants._CTX_MIDDLE: // CENTER?
         y += (maxHeight - totalHeight) / 2;
         break;
       case constants.BASELINE:
@@ -16347,8 +12931,15 @@ p5.Renderer2D.prototype.text = function (str, x, y, maxWidth, maxHeight) {
     }
   }
   else {
-    //offset to account for centering multiple lines of text
-    var offset = ((cars.length)*0.5-0.5)*p.textLeading();
+    // Offset to account for vertically centering multiple lines of text - no
+    // need to adjust anything for vertical align top or baseline
+    var offset = 0,
+      vAlign = p.textAlign().vertical;
+    if (vAlign === constants.CENTER) {
+      offset = ((cars.length - 1) * p.textLeading()) / 2;
+    } else if (vAlign === constants.BOTTOM) {
+      offset = (cars.length - 1) * p.textLeading();
+    }
 
     for (jj = 0; jj < cars.length; jj++) {
 
@@ -16403,7 +12994,7 @@ p5.Renderer2D.prototype.textWidth = function(s) {
 
   if (this._isOpenType()) {
 
-    return this._textFont._textWidth(s);
+    return this._textFont._textWidth(s, this._textSize);
   }
 
   return this.drawingContext.measureText(s).width;
@@ -16486,8 +13077,7 @@ p5.Renderer2D.prototype.pop = function() {
 };
 
 module.exports = p5.Renderer2D;
-
-},{"../image/filters":66,"./canvas":47,"./constants":48,"./core":49,"./p5.Renderer":55}],57:[function(_dereq_,module,exports){
+},{"../image/filters":54,"./canvas":35,"./constants":36,"./core":37,"./p5.Renderer":43}],45:[function(_dereq_,module,exports){
 /**
  * @module Rendering
  * @submodule Rendering
@@ -16498,7 +13088,7 @@ var p5 = _dereq_('./core');
 var constants = _dereq_('./constants');
 _dereq_('./p5.Graphics');
 _dereq_('./p5.Renderer2D');
-_dereq_('../3d/p5.Renderer3D');
+_dereq_('../webgl/p5.RendererGL');
 var defaultId = 'defaultCanvas0'; // this gets set again in createCanvas
 
 /**
@@ -16584,7 +13174,7 @@ p5.prototype.createCanvas = function(w, h, renderer) {
   // Init our graphics renderer
   //webgl mode
   if (r === constants.WEBGL) {
-    this._setProperty('_renderer', new p5.Renderer3D(c, this, true));
+    this._setProperty('_renderer', new p5.RendererGL(c, this, true));
     this._isdefaultGraphics = true;
   }
   //P2D mode
@@ -16773,7 +13363,7 @@ p5.prototype.blendMode = function(mode) {
 
 module.exports = p5;
 
-},{"../3d/p5.Renderer3D":37,"./constants":48,"./core":49,"./p5.Graphics":54,"./p5.Renderer2D":56}],58:[function(_dereq_,module,exports){
+},{"../webgl/p5.RendererGL":86,"./constants":36,"./core":37,"./p5.Graphics":42,"./p5.Renderer2D":44}],46:[function(_dereq_,module,exports){
 
 // requestAnim shim layer by Paul Irish
 window.requestAnimationFrame = (function(){
@@ -16856,7 +13446,7 @@ window.performance.now = (function(){
   }
 }());
 
-},{}],59:[function(_dereq_,module,exports){
+},{}],47:[function(_dereq_,module,exports){
 /**
  * @module Structure
  * @submodule Structure
@@ -17142,7 +13732,6 @@ p5.prototype.redraw = function () {
   var userSetup = this.setup || window.setup;
   var userDraw = this.draw || window.draw;
   if (typeof userDraw === 'function') {
-    this.resetMatrix.bind(this);
     if (typeof userSetup === 'undefined') {
       this.scale(this._pixelDensity, this._pixelDensity);
     }
@@ -17166,7 +13755,7 @@ p5.prototype.size = function() {
 
 module.exports = p5;
 
-},{"./core":49}],60:[function(_dereq_,module,exports){
+},{"./core":37}],48:[function(_dereq_,module,exports){
 /**
  * @module Transform
  * @submodule Transform
@@ -17264,14 +13853,26 @@ p5.prototype.resetMatrix = function() {
  * </code>
  * </div>
  */
+/**
+ * @method rotate
+ * @param  {Number} rad  angle in radians
+ * @param  {p5.Vector | Array} axis axis to rotate around
+ * @return {p5.RendererGL}      [description]
+ */
 p5.prototype.rotate = function() {
-  var r = arguments[0];
+  var args = new Array(arguments.length);
+  var r;
+  for (var i = 0; i < args.length; ++i) {
+    args[i] = arguments[i];
+  }
   if (this._angleMode === constants.DEGREES) {
-    r = this.radians(r);
+    r = this.radians(args[0]);
+  } else if (this._angleMode === constants.RADIANS){
+    r = args[0];
   }
   //in webgl mode
-  if(arguments.length > 1){
-    this._renderer.rotate(r, arguments[1]);
+  if(args.length > 1){
+    this._renderer.rotate(r, args[1]);
   }
   else {
     this._renderer.rotate(r);
@@ -17280,8 +13881,9 @@ p5.prototype.rotate = function() {
 };
 
 /**
- * [rotateX description]
- * @param  {[type]} rad [description]
+ * Rotates around X axis.
+ * @method  rotateX
+ * @param  {Number} rad angles in radians
  * @return {[type]}     [description]
  */
 p5.prototype.rotateX = function(rad) {
@@ -17305,8 +13907,9 @@ p5.prototype.rotateX = function(rad) {
 };
 
 /**
- * [rotateY description]
- * @param  {[type]} rad [description]
+ * Rotates around Y axis.
+ * @method rotateY
+ * @param  {Number} rad angles in radians
  * @return {[type]}     [description]
  */
 p5.prototype.rotateY = function(rad) {
@@ -17330,8 +13933,9 @@ p5.prototype.rotateY = function(rad) {
 };
 
 /**
- * [rotateZ description]
- * @param  {[type]} rad [description]
+ * Rotates around Z axis.  Webgl mode only.
+ * @method rotateZ
+ * @param  {Number} rad angles in radians
  * @return {[type]}     [description]
  */
 p5.prototype.rotateZ = function(rad) {
@@ -17366,9 +13970,8 @@ p5.prototype.rotateZ = function(rad) {
  * and then scale(1.5) is the same as scale(3.0). If scale() is called
  * within draw(), the transformation is reset when the loop begins again.
  * <br><br>
- * Using this fuction with the z parameter requires using P3D as a
- * parameter for size(), as shown in the third example above. This function
- * can be further controlled with push() and pop().
+ * Using this function with the z parameter is only available in WEBGL mode.
+ * This function can be further controlled with push() and pop().
  *
  * @method scale
  * @param  {Number | p5.Vector | Array} s
@@ -17520,6 +14123,7 @@ p5.prototype.shearY = function(angle) {
  * @method translate
  * @param  {Number} x left/right translation
  * @param  {Number} y up/down translation
+ * @param  {Number} [z] forward/backward translation (webgl only)
  * @return {p5}       the p5 object
  * @example
  * <div>
@@ -17571,7 +14175,7 @@ p5.prototype.translate = function(x, y, z) {
 
 module.exports = p5;
 
-},{"./constants":48,"./core":49}],61:[function(_dereq_,module,exports){
+},{"./constants":36,"./core":37}],49:[function(_dereq_,module,exports){
 /**
  * @module Shape
  * @submodule Vertex
@@ -18184,8 +14788,7 @@ p5.prototype.vertex = function(x, y, moveTo) {
 };
 
 module.exports = p5;
-
-},{"./constants":48,"./core":49}],62:[function(_dereq_,module,exports){
+},{"./constants":36,"./core":37}],50:[function(_dereq_,module,exports){
 /**
  * @module Events
  * @submodule Acceleration
@@ -18743,7 +15346,7 @@ p5.prototype._handleMotion = function() {
 
 module.exports = p5;
 
-},{"../core/core":49}],63:[function(_dereq_,module,exports){
+},{"../core/core":37}],51:[function(_dereq_,module,exports){
 /**
  * @module Events
  * @submodule Keyboard
@@ -19071,7 +15674,7 @@ p5.prototype.keyIsDown = function(code) {
 
 module.exports = p5;
 
-},{"../core/core":49}],64:[function(_dereq_,module,exports){
+},{"../core/core":37}],52:[function(_dereq_,module,exports){
 /**
  * @module Events
  * @submodule Mouse
@@ -19087,15 +15690,12 @@ var p5 = _dereq_('../core/core');
 var constants = _dereq_('../core/constants');
 
 /*
- * These are helper vars that store the mouseX and mouseY vals
- * between the time that a mouse event happens and the next frame
- * of draw. This is done to deal with the asynchronicity of event
- * calls interacting with the draw loop. When a mouse event occurs
- * the _nextMouseX/Y vars are updated, then on each call of draw, mouseX/Y
- * and pmouseX/Y are updated using the _nextMouseX/Y vals.
+ * This is a flag which is false until the first time
+ * we receive a mouse event. The pmouseX and pmouseY
+ * values will match the mouseX and mouseY values until
+ * this interaction takes place.
  */
-p5.prototype._nextMouseX = 0;
-p5.prototype._nextMouseY = 0;
+p5.prototype._hasMouseInteracted = false;
 
 /**
  * The system variable mouseX always contains the current horizontal
@@ -19386,27 +15986,32 @@ p5.prototype.mouseIsPressed = false;
 p5.prototype.isMousePressed = false; // both are supported
 
 p5.prototype._updateNextMouseCoords = function(e) {
+  var x = this.mouseX;
+  var y = this.mouseY;
   if(e.type === 'touchstart' ||
      e.type === 'touchmove' ||
      e.type === 'touchend' || e.touches) {
-    this._setProperty('_nextMouseX', this._nextTouchX);
-    this._setProperty('_nextMouseY', this._nextTouchY);
-  } else {
-    if(this._curElement !== null) {
-      var mousePos = getMousePos(this._curElement.elt, e);
-      this._setProperty('_nextMouseX', mousePos.x);
-      this._setProperty('_nextMouseY', mousePos.y);
-    }
+    x = this.touchX;
+    y = this.touchY;
+  } else if(this._curElement !== null) {
+    var mousePos = getMousePos(this._curElement.elt, e);
+    x = mousePos.x;
+    y = mousePos.y;
   }
+  this._setProperty('mouseX', x);
+  this._setProperty('mouseY', y);
   this._setProperty('winMouseX', e.pageX);
   this._setProperty('winMouseY', e.pageY);
+  if (!this._hasMouseInteracted) {
+    // For first draw, make previous and next equal
+    this._updateMouseCoords();
+    this._setProperty('_hasMouseInteracted', true);
+  }
 };
 
 p5.prototype._updateMouseCoords = function() {
   this._setProperty('pmouseX', this.mouseX);
   this._setProperty('pmouseY', this.mouseY);
-  this._setProperty('mouseX', this._nextMouseX);
-  this._setProperty('mouseY', this._nextMouseY);
   this._setProperty('pwinMouseX', this.winMouseX);
   this._setProperty('pwinMouseY', this.winMouseY);
 };
@@ -19761,7 +16366,7 @@ p5.prototype._onwheel = function(e) {
 
 module.exports = p5;
 
-},{"../core/constants":48,"../core/core":49}],65:[function(_dereq_,module,exports){
+},{"../core/constants":36,"../core/core":37}],53:[function(_dereq_,module,exports){
 /**
  * @module Events
  * @submodule Touch
@@ -19774,15 +16379,12 @@ module.exports = p5;
 var p5 = _dereq_('../core/core');
 
 /*
- * These are helper vars that store the touchX and touchY vals
- * between the time that a mouse event happens and the next frame
- * of draw. This is done to deal with the asynchronicity of event
- * calls interacting with the draw loop. When a touch event occurs
- * the _nextTouchX/Y vars are updated, then on each call of draw, touchX/Y
- * and ptouchX/Y are updated using the _nextMouseX/Y vals.
+ * This is a flag which is false until the first time
+ * we receive a touch event. The ptouchX and ptouchY
+ * values will match the touchX and touchY values until
+ * this interaction takes place.
  */
-p5.prototype._nextTouchX = 0;
-p5.prototype._nextTouchY = 0;
+p5.prototype._hasTouchInteracted = false;
 
 /**
  * The system variable touchX always contains the horizontal position of
@@ -19841,16 +16443,18 @@ p5.prototype.touches = [];
 p5.prototype.touchIsDown = false;
 
 p5.prototype._updateNextTouchCoords = function(e) {
+  var x = this.touchX;
+  var y = this.touchY;
   if(e.type === 'mousedown' ||
      e.type === 'mousemove' ||
      e.type === 'mouseup' || !e.touches) {
-    this._setProperty('_nextTouchX', this._nextMouseX);
-    this._setProperty('_nextTouchY', this._nextMouseY);
+    x = this.mouseX;
+    y = this.mouseY;
   } else {
     if(this._curElement !== null) {
       var touchInfo = getTouchInfo(this._curElement.elt, e, 0);
-      this._setProperty('_nextTouchX', touchInfo.x);
-      this._setProperty('_nextTouchY', touchInfo.y);
+      x = touchInfo.x;
+      y = touchInfo.y;
 
       var touches = [];
       for(var i = 0; i < e.touches.length; i++){
@@ -19859,13 +16463,18 @@ p5.prototype._updateNextTouchCoords = function(e) {
       this._setProperty('touches', touches);
     }
   }
+  this._setProperty('touchX', x);
+  this._setProperty('touchY', y);
+  if (!this._hasTouchInteracted) {
+    // For first draw, make previous and next equal
+    this._updateTouchCoords();
+    this._setProperty('_hasTouchInteracted', true);
+  }
 };
 
 p5.prototype._updateTouchCoords = function() {
   this._setProperty('ptouchX', this.touchX);
   this._setProperty('ptouchY', this.touchY);
-  this._setProperty('touchX', this._nextTouchX);
-  this._setProperty('touchY', this._nextTouchY);
 };
 
 function getTouchInfo(canvas, e, i) {
@@ -20059,7 +16668,7 @@ p5.prototype._ontouchend = function(e) {
 
 module.exports = p5;
 
-},{"../core/core":49}],66:[function(_dereq_,module,exports){
+},{"../core/core":37}],54:[function(_dereq_,module,exports){
 /*global ImageData:false */
 
 /**
@@ -20662,7 +17271,7 @@ Filters.blur = function(canvas, radius){
 
 module.exports = Filters;
 
-},{}],67:[function(_dereq_,module,exports){
+},{}],55:[function(_dereq_,module,exports){
 /**
  * @module Image
  * @submodule Image
@@ -20895,7 +17504,7 @@ p5.prototype.saveCanvas = function() {
  *  @param  {Function} [callback] A callback function that will be executed
                                   to handle the image data. This function
                                   should accept an array as argument. The
-                                  array will contain the spcecified number of
+                                  array will contain the specified number of
                                   frames of objects. Each object has three
                                   properties: imageData - an
                                   image/octet-stream, filename and extension.
@@ -20983,7 +17592,7 @@ p5.prototype._makeFrame = function(filename, extension, _cnv) {
 
 module.exports = p5;
 
-},{"../core/core":49}],68:[function(_dereq_,module,exports){
+},{"../core/core":37}],56:[function(_dereq_,module,exports){
 /**
  * @module Image
  * @submodule Loading & Displaying
@@ -21414,7 +18023,7 @@ p5.prototype.imageMode = function(m) {
 
 module.exports = p5;
 
-},{"../core/canvas":47,"../core/constants":48,"../core/core":49,"../core/error_helpers":52,"./filters":66}],69:[function(_dereq_,module,exports){
+},{"../core/canvas":35,"../core/constants":36,"../core/core":37,"../core/error_helpers":40,"./filters":54}],57:[function(_dereq_,module,exports){
 /**
  * @module Image
  * @submodule Image
@@ -22061,20 +18670,8 @@ p5.Image.prototype.save = function(filename, extension) {
   p5.prototype.downloadFile(imageData, filename, extension);
 };
 
-/**
- * creates a gl texture
- * used in WEBGL mode only
- * @param  {[type]} tex [description]
- * @return {[type]}     [description]
- */
-p5.Image.prototype.createTexture = function(tex){
-  //this.texture = tex;
-  return this;
-};
-
 module.exports = p5.Image;
-
-},{"../core/core":49,"./filters":66}],70:[function(_dereq_,module,exports){
+},{"../core/core":37,"./filters":54}],58:[function(_dereq_,module,exports){
 /**
  * @module Image
  * @submodule Pixels
@@ -22641,7 +19238,7 @@ p5.prototype.updatePixels = function (x, y, w, h) {
 
 module.exports = p5;
 
-},{"../color/p5.Color":43,"../core/core":49,"./filters":66}],71:[function(_dereq_,module,exports){
+},{"../color/p5.Color":31,"../core/core":37,"./filters":54}],59:[function(_dereq_,module,exports){
 /**
  * @module IO
  * @submodule Input
@@ -23416,7 +20013,10 @@ p5.prototype.selectInput = function () {
  *                                    in as first argument
  */
 p5.prototype.httpGet = function () {
-  var args = Array.prototype.slice.call(arguments);
+  var args = new Array(arguments.length);
+  for (var i = 0; i < args.length; ++i) {
+    args[i] = arguments[i];
+  }
   args.push('GET');
   p5.prototype.httpDo.apply(this, args);
 };
@@ -23437,7 +20037,10 @@ p5.prototype.httpGet = function () {
  *                                    in as first argument
  */
 p5.prototype.httpPost = function () {
-  var args = Array.prototype.slice.call(arguments);
+  var args = new Array(arguments.length);
+  for (var i = 0; i < args.length; ++i) {
+    args[i] = arguments[i];
+  }
   args.push('POST');
   p5.prototype.httpDo.apply(this, args);
 };
@@ -23447,8 +20050,8 @@ p5.prototype.httpPost = function () {
  * p5 will try to guess based on the URL, defaulting to text.<br><br>
  * You may also pass a single object specifying all parameters for the
  * request following the examples inside the reqwest() calls here:
- * <a href='https://github.com/ded/reqwest#api'
- * >https://github.com/ded/reqwest#api</a>
+ * <a href='https://github.com/ded/reqwest#api'>
+ * https://github.com/ded/reqwest#api</a>
  *
  * @method httpDo
  * @param  {String}        path       name of the file or url to load
@@ -23770,7 +20373,7 @@ p5.prototype.save = function (object, _filename, _options) {
  *    json.name = 'Lion';
  *
  *  // To save, un-comment the line below, then click 'run'
- *  // saveJSONObject(json, 'lion.json');
+ *  // saveJSON(json, 'lion.json');
  *  }
  *
  *  // Saves the following to a file called "lion.json":
@@ -24097,7 +20700,7 @@ function destroyClickedElement(event) {
 
 module.exports = p5;
 
-},{"../core/core":49,"../core/error_helpers":52,"opentype.js":8,"reqwest":27}],72:[function(_dereq_,module,exports){
+},{"../core/core":37,"../core/error_helpers":40,"opentype.js":8,"reqwest":27}],60:[function(_dereq_,module,exports){
 /**
  * @module IO
  * @submodule Table
@@ -24507,17 +21110,50 @@ p5.Table.prototype.matchRow = function(regexp, column) {
 };
 
 /**
- *  Finds the first row in the Table that matches the regular
- *  expression provided, and returns a reference to that row.
- *  Even if multiple rows are possible matches, only the first
- *  matching row is returned. The column to search may be specified
- *  by either its ID or title.
+ *  Finds the rows in the Table that match the regular expression provided,
+ *  and returns references to those rows. Returns an array, so for must be
+ *  used to iterate through all the rows, as shown in the example. The
+ *  column to search may be specified by either its ID or title.
  *
  *  @method  matchRows
  *  @param  {String} regexp The regular expression to match
  *  @param  {String|Number} [column] The column ID (number) or
  *                                   title (string)
  *  @return {Array}        An Array of TableRow objects
+ *  @example
+ *  var table;
+ *
+ *  function setup() {
+ *
+ *    table = new p5.Table();
+ *
+ *    table.addColumn('name');
+ *    table.addColumn('type');
+ *
+ *    var newRow = table.addRow();
+ *    newRow.setString('name', 'Lion');
+ *    newRow.setString('type', 'Mammal');
+ *
+ *    newRow = table.addRow();
+ *    newRow.setString('name', 'Snake');
+ *    newRow.setString('type', 'Reptile');
+ *
+ *    newRow = table.addRow();
+ *    newRow.setString('name', 'Mosquito');
+ *    newRow.setString('type', 'Insect');
+ *
+ *    newRow = table.addRow();
+ *    newRow.setString('name', 'Lizard');
+ *    newRow.setString('type', 'Reptile');
+ *
+ *    var rows = table.matchRows('R.*', 'type');
+ *    for (var i = 0; i < rows.length; i++) {
+ *      println(rows[i].getString('name') + ': ' + rows[i].getString('type'));
+ *    }
+ *  }
+ *  // Sketch prints:
+ *  // Snake: Reptile
+ *  // Lizard: Reptile
  */
 p5.Table.prototype.matchRows = function(regexp, column) {
   var ret = [];
@@ -25161,7 +21797,7 @@ p5.Table.prototype.getArray = function () {
 
 module.exports = p5.Table;
 
-},{"../core/core":49}],73:[function(_dereq_,module,exports){
+},{"../core/core":37}],61:[function(_dereq_,module,exports){
 /**
  * @module IO
  * @submodule Table
@@ -25331,7 +21967,7 @@ p5.TableRow.prototype.getString = function(column) {
 
 module.exports = p5.TableRow;
 
-},{"../core/core":49}],74:[function(_dereq_,module,exports){
+},{"../core/core":37}],62:[function(_dereq_,module,exports){
 /**
  * @module IO
  * @submodule XML
@@ -26126,7 +22762,7 @@ p5.XML.prototype._setAttributes = function(node) {
 };
 
 module.exports = p5.XML;
-},{"../core/core":49}],75:[function(_dereq_,module,exports){
+},{"../core/core":37}],63:[function(_dereq_,module,exports){
 /**
  * @module Math
  * @submodule Calculation
@@ -26805,7 +23441,7 @@ p5.prototype.sqrt = Math.sqrt;
 
 module.exports = p5;
 
-},{"../core/core":49}],76:[function(_dereq_,module,exports){
+},{"../core/core":37}],64:[function(_dereq_,module,exports){
 /**
  * @module Math
  * @submodule Math
@@ -26839,7 +23475,7 @@ p5.prototype.createVector = function (x, y, z) {
 
 module.exports = p5;
 
-},{"../core/core":49}],77:[function(_dereq_,module,exports){
+},{"../core/core":37}],65:[function(_dereq_,module,exports){
 //////////////////////////////////////////////////////////////
 
 // http://mrl.nyu.edu/~perlin/noise/
@@ -27128,7 +23764,7 @@ p5.prototype.noiseSeed = function(seed) {
 
 module.exports = p5;
 
-},{"../core/core":49}],78:[function(_dereq_,module,exports){
+},{"../core/core":37}],66:[function(_dereq_,module,exports){
 /**
  * @module Math
  * @submodule Math
@@ -27478,7 +24114,7 @@ p5.Vector.prototype.div = function (n) {
  * <div class="norender">
  * <code>
  * var v = createVector(20.0, 30.0, 40.0);
- * var m = v.mag(10);
+ * var m = v.mag();
  * print(m); // Prints "53.85164807134504"
  * </code>
  * </div>
@@ -28179,7 +24815,7 @@ p5.Vector.mag = function (vecT){
 
 module.exports = p5.Vector;
 
-},{"../core/constants":48,"../core/core":49,"./polargeometry":79}],79:[function(_dereq_,module,exports){
+},{"../core/constants":36,"../core/core":37,"./polargeometry":67}],67:[function(_dereq_,module,exports){
 
 module.exports = {
 
@@ -28193,7 +24829,7 @@ module.exports = {
 
 };
 
-},{}],80:[function(_dereq_,module,exports){
+},{}],68:[function(_dereq_,module,exports){
 /**
  * @module Math
  * @submodule Random
@@ -28272,8 +24908,11 @@ p5.prototype.randomSeed = function(seed) {
  * If no argument is given, returns a random number from 0
  * up to (but not including) 1.
  *
- * If one argument is given, returns a random number from 0 up to
- * (but not including) the number.
+ * If one argument is given and it is a number, returns a random number from 0
+ * up to (but not including) the number.
+ *
+ * If one argument is given and it is an array, returns a random element from
+ * that array.
  *
  * If two arguments are given, returns a random number from the
  * first argument up to (but not including) the second argument.
@@ -28281,7 +24920,7 @@ p5.prototype.randomSeed = function(seed) {
  * @method random
  * @param  {Number} [min]   the lower bound (inclusive)
  * @param  {Number} [max]   the upper bound (exclusive)
- * @return {Number} the random number
+ * @return {Number|mixed} the random number or a random element in choices
  * @example
  * <div>
  * <code>
@@ -28302,12 +24941,18 @@ p5.prototype.randomSeed = function(seed) {
  * </div>
  * <div>
  * <code>
- * // Get a random element from an array
+ * // Get a random element from an array using the random(Array) syntax
  * var words = [ "apple", "bear", "cat", "dog" ];
- * var index = floor(random(words.length));  // Convert to integer
- * text(words[index],10,50);  // Displays one of the four words
+ * var word = random(words);  // select random word
+ * text(word,10,50);  // draw the word
  * </code>
  * </div>
+ */
+/**
+ * @method random
+ * @param  {Array} choices   the array to choose from
+ * @return {mixed} the random element from the array
+ * @example
  */
 p5.prototype.random = function (min, max) {
 
@@ -28323,7 +24968,11 @@ p5.prototype.random = function (min, max) {
     return rand;
   } else
   if (arguments.length === 1) {
-    return rand * min;
+    if (arguments[0] instanceof Array) {
+      return arguments[0][Math.floor(rand * arguments[0].length)];
+    } else {
+      return rand * min;
+    }
   } else {
     if (min > max) {
       var tmp = min;
@@ -28414,7 +25063,7 @@ p5.prototype.randomGaussian = function(mean, sd)  {
 
 module.exports = p5;
 
-},{"../core/core":49}],81:[function(_dereq_,module,exports){
+},{"../core/core":37}],69:[function(_dereq_,module,exports){
 /**
  * @module Math
  * @submodule Trigonometry
@@ -28754,7 +25403,7 @@ p5.prototype.angleMode = function(mode) {
 
 module.exports = p5;
 
-},{"../core/constants":48,"../core/core":49,"./polargeometry":79}],82:[function(_dereq_,module,exports){
+},{"../core/constants":36,"../core/core":37,"./polargeometry":67}],70:[function(_dereq_,module,exports){
 /**
  * @module Typography
  * @submodule Attributes
@@ -28976,7 +25625,7 @@ p5.prototype._updateTextMetrics = function() {
 
 module.exports = p5;
 
-},{"../core/core":49}],83:[function(_dereq_,module,exports){
+},{"../core/core":37}],71:[function(_dereq_,module,exports){
 /**
  * @module Typography
  * @submodule Loading & Displaying
@@ -29121,7 +25770,7 @@ p5.prototype.textFont = function(theFont, theSize) {
 
 module.exports = p5;
 
-},{"../core/constants":48,"../core/core":49,"../core/error_helpers":52}],84:[function(_dereq_,module,exports){
+},{"../core/constants":36,"../core/core":37,"../core/error_helpers":40}],72:[function(_dereq_,module,exports){
 /**
  * This module defines the p5.Font class and functions for
  * drawing text to the display canvas.
@@ -29222,7 +25871,17 @@ p5.Font.prototype.textBounds = function(str, x, y, fontSize, options) {
   y = y !== undefined ? y : 0;
   fontSize = fontSize || this.parent._renderer._textSize;
 
-  var result = this.cache[cacheKey('textBounds', str, x, y, fontSize)];
+  // Check cache for existing bounds. Take into consideration the text alignment
+  // settings. Default alignment should match opentype's origin: left-aligned &
+  // alphabetic baseline.
+  var p = (options && options.renderer && options.renderer._pInst) ||
+    this.parent,
+    ctx = p._renderer.drawingContext,
+    alignment = ctx.textAlign || constants.LEFT,
+    baseline = ctx.textBaseline || constants.BASELINE;
+  var result = this.cache[cacheKey('textBounds', str, x, y, fontSize, alignment,
+    baseline)];
+
   if (!result) {
 
     var xCoords = [], yCoords = [], self = this,
@@ -29249,10 +25908,15 @@ p5.Font.prototype.textBounds = function(str, x, y, fontSize, options) {
         }
       });
 
-    minX = Math.max(0, Math.min.apply(null, xCoords));
+    // fix to #1409 (not sure why these max() functions were here)
+    /*minX = Math.max(0, Math.min.apply(null, xCoords));
     minY = Math.max(0, Math.min.apply(null, yCoords));
     maxX = Math.max(0, Math.max.apply(null, xCoords));
-    maxY = Math.max(0, Math.max.apply(null, yCoords));
+    maxY = Math.max(0, Math.max.apply(null, yCoords));*/
+    minX = Math.min.apply(null, xCoords);
+    minY = Math.min.apply(null, yCoords);
+    maxX = Math.max.apply(null, xCoords);
+    maxY = Math.max.apply(null, yCoords);
 
     result = {
       x: minX,
@@ -29262,7 +25926,14 @@ p5.Font.prototype.textBounds = function(str, x, y, fontSize, options) {
       advance: minX - x
     };
 
-    this.cache[cacheKey('textBounds', str, x, y, fontSize)] = result;
+    // Bounds are now calculated, so shift the x & y to match alignment settings
+    var textWidth = result.w + result.advance;
+    var pos = this._handleAlignment(p, ctx, str, result.x, result.y, textWidth);
+    result.x = pos.x;
+    result.y = pos.y;
+
+    this.cache[cacheKey('textBounds', str, x, y, fontSize, alignment,
+      baseline)] = result;
   }
   //else console.log('cache-hit');
 
@@ -29344,7 +26015,8 @@ p5.Font.prototype._getGlyphs = function(str) {
  */
 p5.Font.prototype._getPath = function(line, x, y, options) {
 
-  var p = this.parent,
+  var p = (options && options.renderer && options.renderer._pInst) ||
+    this.parent,
     ctx = p._renderer.drawingContext,
     pos = this._handleAlignment(p, ctx, line, x, y);
 
@@ -29465,7 +26137,7 @@ p5.Font.prototype._renderPath = function(line, x, y, options) {
   } else {
 
     //pos = handleAlignment(p, ctx, line, x, y);
-    pdata = this._getPath(line, x, y, pg._textSize, options).commands;
+    pdata = this._getPath(line, x, y, options).commands;
   }
 
   ctx.beginPath();
@@ -29528,12 +26200,13 @@ p5.Font.prototype._scale = function(fontSize) {
     this.parent._renderer._textSize);
 };
 
-p5.Font.prototype._handleAlignment = function(p, ctx, line, x, y) {
+p5.Font.prototype._handleAlignment = function(p, ctx, line, x, y, textWidth) {
+  var fontSize = p._renderer._textSize,
+    textAscent = this._textAscent(fontSize),
+    textDescent = this._textDescent(fontSize);
 
-  var textWidth = this._textWidth(line),
-    textAscent = this._textAscent(),
-    textDescent = this._textDescent(),
-    textHeight = textAscent + textDescent;
+  textWidth = textWidth !== undefined ? textWidth :
+    this._textWidth(line, fontSize);
 
   if (ctx.textAlign === constants.CENTER) {
     x -= textWidth / 2;
@@ -29542,9 +26215,9 @@ p5.Font.prototype._handleAlignment = function(p, ctx, line, x, y) {
   }
 
   if (ctx.textBaseline === constants.TOP) {
-    y += textHeight;
+    y += textAscent;
   } else if (ctx.textBaseline === constants._CTX_MIDDLE) {
-    y += textHeight / 2 - textDescent;
+    y += textAscent / 2;
   } else if (ctx.textBaseline === constants.BOTTOM) {
     y -= textDescent;
   }
@@ -30164,7 +26837,7 @@ function cacheKey() {
 
 module.exports = p5.Font;
 
-},{"../core/constants":48,"../core/core":49}],85:[function(_dereq_,module,exports){
+},{"../core/constants":36,"../core/core":37}],73:[function(_dereq_,module,exports){
 /**
  * @module Data
  * @submodule Array Functions
@@ -30512,7 +27185,7 @@ p5.prototype.subset = function(list, start, count) {
 
 module.exports = p5;
 
-},{"../core/core":49}],86:[function(_dereq_,module,exports){
+},{"../core/core":37}],74:[function(_dereq_,module,exports){
 /**
  * @module Data
  * @submodule Conversion
@@ -30773,7 +27446,7 @@ p5.prototype.unhex = function(n) {
 
 module.exports = p5;
 
-},{"../core/core":49}],87:[function(_dereq_,module,exports){
+},{"../core/core":37}],75:[function(_dereq_,module,exports){
 /**
  * @module Data
  * @submodule String Functions
@@ -31276,9 +27949,9 @@ p5.prototype.trim = function(str) {
 
 module.exports = p5;
 
-},{"../core/core":49}],88:[function(_dereq_,module,exports){
+},{"../core/core":37}],76:[function(_dereq_,module,exports){
 /**
- * @module Input
+ * @module IO
  * @submodule Time & Date
  * @for p5
  * @requires core
@@ -31417,5 +28090,3575 @@ p5.prototype.year = function() {
 
 module.exports = p5;
 
-},{"../core/core":49}]},{},[40])(40)
+},{"../core/core":37}],77:[function(_dereq_,module,exports){
+/**
+ * @module Lights, Camera
+ * @submodule Camera
+ * @for p5
+ * @requires core
+ */
+
+'use strict';
+
+var p5 = _dereq_('../core/core');
+
+/**
+ * Sets camera position
+ * @method camera
+ * @param  {Number} x  camera position value on x axis
+ * @param  {Number} y  camera position value on y axis
+ * @param  {Number} z  camera position value on z axis
+ * @return {p5}        the p5 object
+ * @example
+ * <div>
+ * <code>
+ * function setup(){
+ *   createCanvas(100, 100, WEBGL);
+ * }
+ * function draw(){
+ *  //move the camera away from the plane by a sin wave
+ *  camera(0, 0, sin(frameCount * 0.01) * 100);
+ *  plane(120, 120);
+ * }
+ * </code>
+ * </div>
+ */
+p5.prototype.camera = function(x, y, z){
+  var args = new Array(arguments.length);
+  for (var i = 0; i < args.length; ++i) {
+    args[i] = arguments[i];
+  }
+  this._validateParameters(
+    'camera',
+    args,
+    ['Number', 'Number', 'Number']
+  );
+  //what it manipulates is the model view matrix
+  this._renderer.translate(-x, -y, -z);
+};
+
+/**
+ * Sets perspective camera
+ * @method  perspective
+ * @param  {Number} fovy   camera frustum vertical field of view,
+ *                         from bottom to top of view, in degrees
+ * @param  {Number} aspect camera frustum aspect ratio
+ * @param  {Number} near   frustum near plane length
+ * @param  {Number} far    frustum far plane length
+ * @return {p5}            the p5 object
+ * @example
+ * <div>
+ * <code>
+ * //drag mouse to toggle the world!
+ * //you will see there's a vanish point
+ * function setup(){
+ *   createCanvas(100, 100, WEBGL);
+ *   perspective(60 / 180 * PI, width/height, 0.1, 100);
+ * }
+ * function draw(){
+ *  background(200);
+ *  orbitControl();
+ *  for(var i = -1; i < 2; i++){
+ *     for(var j = -2; j < 3; j++){
+ *       push();
+ *       translate(i*160, 0, j*160);
+ *       box(40, 40, 40);
+ *       pop();
+ *     }
+ *   }
+ * }
+ * </code>
+ * </div>
+ */
+p5.prototype.perspective = function(fovy,aspect,near,far) {
+  var args = new Array(arguments.length);
+  for (var i = 0; i < args.length; ++i) {
+    args[i] = arguments[i];
+  }
+  this._validateParameters(
+    'perspective',
+    args,
+    ['Number', 'Number', 'Number', 'Number']
+  );
+  this._renderer.uPMatrix = p5.Matrix.identity();
+  this._renderer.uPMatrix.perspective(fovy,aspect,near,far);
+  this._renderer._isSetCamera = true;
+};
+
+/**
+ * Setup ortho camera
+ * @method  ortho
+ * @param  {Number} left   camera frustum left plane
+ * @param  {Number} right  camera frustum right plane
+ * @param  {Number} bottom camera frustum bottom plane
+ * @param  {Number} top    camera frustum top plane
+ * @param  {Number} near   camera frustum near plane
+ * @param  {Number} far    camera frustum far plane
+ * @return {p5}            the p5 object
+ * @example
+ * <div>
+ * <code>
+ * //drag mouse to toggle the world!
+ * //there's no vanish point
+ * function setup(){
+ *   createCanvas(100, 100, WEBGL);
+ *   ortho(-width/2, width/2, height/2, -height/2, 0.1, 100);
+ * }
+ * function draw(){
+ *  background(200);
+ *  orbitControl();
+ *  for(var i = -1; i < 2; i++){
+ *     for(var j = -2; j < 3; j++){
+ *       push();
+ *       translate(i*160, 0, j*160);
+ *       box(40, 40, 40);
+ *       pop();
+ *     }
+ *   }
+ * }
+ * </code>
+ * </div>
+ */
+p5.prototype.ortho = function(left,right,bottom,top,near,far) {
+  var args = new Array(arguments.length);
+  for (var i = 0; i < args.length; ++i) {
+    args[i] = arguments[i];
+  }
+  this._validateParameters(
+    'ortho',
+    args,
+      ['Number', 'Number', 'Number', 'Number', 'Number', 'Number']
+  );
+  left /= this.width;
+  right /= this.width;
+  top /= this.height;
+  bottom /= this.height;
+  this._renderer.uPMatrix = p5.Matrix.identity();
+  this._renderer.uPMatrix.ortho(left,right,bottom,top,near,far);
+  this._renderer._isSetCamera = true;
+};
+
+module.exports = p5;
+
+},{"../core/core":37}],78:[function(_dereq_,module,exports){
+'use strict';
+
+var p5 = _dereq_('../core/core');
+
+//@TODO: implement full orbit controls including
+//pan, zoom, quaternion rotation, etc.
+p5.prototype.orbitControl = function(){
+  if(this.mouseIsPressed){
+    this.rotateY((this.mouseX - this.width / 2) / (this.width / 2));
+    this.rotateX((this.mouseY - this.height / 2) / (this.width / 2));
+  }
+  return this;
+};
+
+module.exports = p5;
+},{"../core/core":37}],79:[function(_dereq_,module,exports){
+/**
+ * @module Lights, Camera
+ * @submodule Lights
+ * @for p5
+ * @requires core
+ */
+
+'use strict';
+
+var p5 = _dereq_('../core/core');
+
+/**
+ * Creates an ambient light with a color
+ * @method  ambientLight
+ * @param  {Number|Array|String|p5.Color} v1  gray value,
+ * red or hue value (depending on the current color mode),
+ * or color Array, or CSS color string
+ * @param  {Number}            [v2] optional: green or saturation value
+ * @param  {Number}            [v3] optional: blue or brightness value
+ * @param  {Number}            [a]  optional: opacity
+ * @return {p5}                the p5 object
+ * @example
+ * <div>
+ * <code>
+ * function setup(){
+ *   createCanvas(100, 100, WEBGL);
+ * }
+ * function draw(){
+ *   background(0);
+ *   ambientLight(150);
+ *   ambientMaterial(250);
+ *   sphere(200);
+ * }
+ * </code>
+ * </div>
+ */
+p5.prototype.ambientLight = function(v1, v2, v3, a){
+  var gl = this._renderer.GL;
+  var shaderProgram = this._renderer._getShader(
+    'lightVert', 'lightTextureFrag');
+
+  gl.useProgram(shaderProgram);
+  shaderProgram.uAmbientColor = gl.getUniformLocation(
+    shaderProgram,
+    'uAmbientColor[' + this._renderer.ambientLightCount + ']');
+
+  var color = this._renderer._pInst.color.apply(
+    this._renderer._pInst, arguments);
+  var colors = color._array;
+
+  gl.uniform3f( shaderProgram.uAmbientColor,
+    colors[0], colors[1], colors[2]);
+
+  //in case there's no material color for the geometry
+  shaderProgram.uMaterialColor = gl.getUniformLocation(
+    shaderProgram, 'uMaterialColor' );
+  gl.uniform4f( shaderProgram.uMaterialColor, 1, 1, 1, 1);
+
+  this._renderer.ambientLightCount ++;
+  shaderProgram.uAmbientLightCount =
+    gl.getUniformLocation(shaderProgram, 'uAmbientLightCount');
+  gl.uniform1i(shaderProgram.uAmbientLightCount,
+    this._renderer.ambientLightCount);
+
+  return this;
+};
+
+/**
+ * Creates a directional light with a color and a direction
+ * @method  directionalLight
+ * @param  {Number|Array|String|p5.Color} v1   gray value,
+ * red or hue value (depending on the current color mode),
+ * or color Array, or CSS color string
+ * @param  {Number}          [v2] optional: green or saturation value
+ * @param  {Number}          [v3] optional: blue or brightness value
+ * @param  {Number}          [a]  optional: opacity
+ * @param  {Number|p5.Vector} x   x axis direction or a p5.Vector
+ * @param  {Number}          [y]  optional: y axis direction
+ * @param  {Number}          [z]  optional: z axis direction
+ * @return {p5}              the p5 object
+ * @example
+ * <div>
+ * <code>
+ * function setup(){
+ *   createCanvas(100, 100, WEBGL);
+ * }
+ * function draw(){
+ *   background(0);
+ *   //move your mouse to change light direction
+ *   var dirX = (mouseX / width - 0.5) *2;
+ *   var dirY = (mouseY / height - 0.5) *(-2);
+ *   directionalLight(250, 250, 250, dirX, dirY, 0.25);
+ *   ambientMaterial(250);
+ *   sphere(200);
+ * }
+ * </code>
+ * </div>
+ */
+p5.prototype.directionalLight = function(v1, v2, v3, a, x, y, z) {
+  // TODO(jgessner): Find an example using this and profile it.
+  // var args = new Array(arguments.length);
+  // for (var i = 0; i < args.length; ++i) {
+  //   args[i] = arguments[i];
+  // }
+  // this._validateParameters(
+  //   'directionalLight',
+  //   args,
+  //   [
+  //     //rgbaxyz
+  //     ['Number', 'Number', 'Number', 'Number', 'Number', 'Number', 'Number'],
+  //     //rgbxyz
+  //     ['Number', 'Number', 'Number', 'Number', 'Number', 'Number'],
+  //     //caxyz
+  //     ['Number', 'Number', 'Number', 'Number', 'Number'],
+  //     //cxyz
+  //     ['Number', 'Number', 'Number', 'Number'],
+  //     ['String', 'Number', 'Number', 'Number'],
+  //     ['Array', 'Number', 'Number', 'Number'],
+  //     ['Object', 'Number', 'Number', 'Number'],
+  //     //rgbavector
+  //     ['Number', 'Number', 'Number', 'Number', 'Object'],
+  //     //rgbvector
+  //     ['Number', 'Number', 'Number', 'Object'],
+  //     //cavector
+  //     ['Number', 'Number', 'Object'],
+  //     //cvector
+  //     ['Number', 'Object'],
+  //     ['String', 'Object'],
+  //     ['Array', 'Object'],
+  //     ['Object', 'Object']
+  //   ]
+  // );
+
+  var gl = this._renderer.GL;
+  var shaderProgram = this._renderer._getShader(
+    'lightVert', 'lightTextureFrag');
+
+  gl.useProgram(shaderProgram);
+  shaderProgram.uDirectionalColor = gl.getUniformLocation(
+    shaderProgram,
+    'uDirectionalColor[' + this._renderer.directionalLightCount + ']');
+
+  //@TODO: check parameters number
+  var color = this._renderer._pInst.color.apply(
+    this._renderer._pInst, [v1, v2, v3]);
+  var colors = color._array;
+
+  gl.uniform3f( shaderProgram.uDirectionalColor,
+    colors[0], colors[1], colors[2]);
+
+  var _x, _y, _z;
+
+  var args = new Array(arguments.length);
+  for (var i = 0; i < args.length; ++i) {
+    args[i] = arguments[i];
+  }
+  if(typeof args[args.length-1] === 'number'){
+    _x = args[args.length-3];
+    _y = args[args.length-2];
+    _z = args[args.length-1];
+
+  }else{
+    try{
+      _x = args[args.length-1].x;
+      _y = args[args.length-1].y;
+      _z = args[args.length-1].z;
+    }
+    catch(error){
+      throw error;
+    }
+  }
+
+  shaderProgram.uLightingDirection = gl.getUniformLocation(
+    shaderProgram,
+    'uLightingDirection[' + this._renderer.directionalLightCount + ']');
+  gl.uniform3f( shaderProgram.uLightingDirection, _x, _y, _z);
+
+  //in case there's no material color for the geometry
+  shaderProgram.uMaterialColor = gl.getUniformLocation(
+    shaderProgram, 'uMaterialColor' );
+  gl.uniform4f( shaderProgram.uMaterialColor, 1, 1, 1, 1);
+
+  this._renderer.directionalLightCount ++;
+  shaderProgram.uDirectionalLightCount =
+    gl.getUniformLocation(shaderProgram, 'uDirectionalLightCount');
+  gl.uniform1i(shaderProgram.uDirectionalLightCount,
+    this._renderer.directionalLightCount);
+
+  return this;
+};
+
+/**
+ * Creates a point light with a color and a light position
+ * @method  pointLight
+ * @param  {Number|Array|String|p5.Color} v1   gray value,
+ * red or hue value (depending on the current color mode),
+ * or color Array, or CSS color string
+ * @param  {Number}          [v2] optional: green or saturation value
+ * @param  {Number}          [v3] optional: blue or brightness value
+ * @param  {Number}          [a]  optional: opacity
+ * @param  {Number|p5.Vector} x   x axis position or a p5.Vector
+ * @param  {Number}          [y]  optional: y axis position
+ * @param  {Number}          [z]  optional: z axis position
+ * @return {p5}              the p5 object
+ * @example
+ * <div>
+ * <code>
+ * function setup(){
+ *   createCanvas(100, 100, WEBGL);
+ * }
+ * function draw(){
+ *   background(0);
+ *   //move your mouse to change light position
+ *   var locY = (mouseY / height - 0.5) *(-2);
+ *   var locX = (mouseX / width - 0.5) *2;
+ *   //to set the light position,
+ *   //think of the world's coordinate as:
+ *   // -1,1 -------- 1,1
+ *   //   |            |
+ *   //   |            |
+ *   //   |            |
+ *   // -1,-1---------1,-1
+ *   pointLight(250, 250, 250, locX, locY, 0);
+ *   ambientMaterial(250);
+ *   sphere(200);
+ * }
+ * </code>
+ * </div>
+ */
+p5.prototype.pointLight = function(v1, v2, v3, a, x, y, z) {
+  // TODO(jgessner): Find an example using this and profile it.
+  // var args = new Array(arguments.length);
+  // for (var i = 0; i < args.length; ++i) {
+  //   args[i] = arguments[i];
+  // }
+  // this._validateParameters(
+  //   'pointLight',
+  //   arguments,
+  //   [
+  //     //rgbaxyz
+  //     ['Number', 'Number', 'Number', 'Number', 'Number', 'Number', 'Number'],
+  //     //rgbxyz
+  //     ['Number', 'Number', 'Number', 'Number', 'Number', 'Number'],
+  //     //caxyz
+  //     ['Number', 'Number', 'Number', 'Number', 'Number'],
+  //     //cxyz
+  //     ['Number', 'Number', 'Number', 'Number'],
+  //     ['String', 'Number', 'Number', 'Number'],
+  //     ['Array', 'Number', 'Number', 'Number'],
+  //     ['Object', 'Number', 'Number', 'Number'],
+  //     //rgbavector
+  //     ['Number', 'Number', 'Number', 'Number', 'Object'],
+  //     //rgbvector
+  //     ['Number', 'Number', 'Number', 'Object'],
+  //     //cavector
+  //     ['Number', 'Number', 'Object'],
+  //     //cvector
+  //     ['Number', 'Object'],
+  //     ['String', 'Object'],
+  //     ['Array', 'Object'],
+  //     ['Object', 'Object']
+  //   ]
+  // );
+
+  var gl = this._renderer.GL;
+  var shaderProgram = this._renderer._getShader(
+    'lightVert', 'lightTextureFrag');
+
+  gl.useProgram(shaderProgram);
+  shaderProgram.uPointLightColor = gl.getUniformLocation(
+    shaderProgram,
+    'uPointLightColor[' + this._renderer.pointLightCount + ']');
+
+  //@TODO: check parameters number
+  var color = this._renderer._pInst.color.apply(
+    this._renderer._pInst, [v1, v2, v3]);
+  var colors = color._array;
+
+  gl.uniform3f( shaderProgram.uPointLightColor,
+    colors[0], colors[1], colors[2]);
+
+  var _x, _y, _z;
+
+  var args = new Array(arguments.length);
+  for (var i = 0; i < args.length; ++i) {
+    args[i] = arguments[i];
+  }
+  if(typeof args[args.length-1] === 'number'){
+    _x = args[args.length-3];
+    _y = args[args.length-2];
+    _z = args[args.length-1];
+
+  }else{
+    try{
+      _x = args[args.length-1].x;
+      _y = args[args.length-1].y;
+      _z = args[args.length-1].z;
+    }
+    catch(error){
+      throw error;
+    }
+  }
+
+  shaderProgram.uPointLightLocation = gl.getUniformLocation(
+    shaderProgram,
+    'uPointLightLocation[' + this._renderer.pointLightCount + ']');
+  gl.uniform3f( shaderProgram.uPointLightLocation, _x, _y, _z);
+
+  //in case there's no material color for the geometry
+  shaderProgram.uMaterialColor = gl.getUniformLocation(
+    shaderProgram, 'uMaterialColor' );
+  gl.uniform4f( shaderProgram.uMaterialColor, 1, 1, 1, 1);
+
+  this._renderer.pointLightCount ++;
+  shaderProgram.uPointLightCount =
+    gl.getUniformLocation(shaderProgram, 'uPointLightCount');
+  gl.uniform1i(shaderProgram.uPointLightCount,
+    this._renderer.pointLightCount);
+
+  return this;
+};
+
+module.exports = p5;
+
+},{"../core/core":37}],80:[function(_dereq_,module,exports){
+/**
+ * @module Shape
+ * @submodule 3D Models
+ * @for p5
+ * @requires core
+ * @requires p5.Geometry3D
+ */
+
+'use strict';
+
+var p5 = _dereq_('../core/core');
+_dereq_('./p5.Geometry');
+
+/**
+ * Load a 3d model from an OBJ file.
+ * <br><br>
+ * One of the limitations of the OBJ format is that it doesn't have a built-in
+ * sense of scale. This means that models exported from different programs might
+ * be very different sizes. If your model isn't displaying, try calling
+ * loadModel() with the normalized parameter set to true. This will resize the
+ * model to a scale appropriate for p5. You can also make additional changes to
+ * the final size of your model with the scale() function.
+ *
+ * @method loadModel
+ * @param  {String} path Path of the model to be loaded
+ * @param  {Boolean} [normalize] If true, scale the model to a
+ *                                standardized size when loading
+ * @param  {Function(p5.Geometry3D)} [successCallback] Function to be called
+ *                                   once the model is loaded. Will be passed
+ *                                   the 3D model object.
+ * @param  {Function(Event)}    [failureCallback] called with event error if
+ *                                the image fails to load.
+ * @return {p5.Geometry} the p5.Geometry3D object
+ * @example
+ * <div>
+ * <code>
+ * //draw a spinning teapot
+ * var teapot;
+ *
+ * function setup(){
+ *   createCanvas(100, 100, WEBGL);
+ *
+ *   teapot = loadModel('assets/teapot.obj');
+ * }
+ *
+ * function draw(){
+ *   background(200);
+ *   rotateX(frameCount * 0.01);
+ *   rotateY(frameCount * 0.01);
+ *   model(teapot);
+ * }
+ * </code>
+ * </div>
+ */
+p5.prototype.loadModel = function () {
+  var path = arguments[0];
+  var normalize;
+  var successCallback;
+  var failureCallback;
+  if(typeof arguments[1] === 'boolean') {
+    normalize = arguments[1];
+    successCallback = arguments[2];
+    failureCallback = arguments[3];
+  } else {
+    normalize = false;
+    successCallback = arguments[1];
+    failureCallback = arguments[2];
+  }
+
+  var model = new p5.Geometry();
+  model.gid = path + '|' + normalize;
+  this.loadStrings(path, function(strings) {
+    parseObj(model, strings);
+
+    if (normalize) {
+      model.normalize();
+    }
+
+    if (typeof successCallback === 'function') {
+      successCallback(model);
+    }
+  }.bind(this), failureCallback);
+
+  return model;
+};
+
+/**
+ * Parse OBJ lines into model. For reference, this is what a simple model of a
+ * square might look like:
+ *
+ * v -0.5 -0.5 0.5
+ * v -0.5 -0.5 -0.5
+ * v -0.5 0.5 -0.5
+ * v -0.5 0.5 0.5
+ *
+ * f 4 3 2 1
+ */
+function parseObj( model, lines ) {
+  // OBJ allows a face to specify an index for a vertex (in the above example),
+  // but it also allows you to specify a custom combination of vertex, UV
+  // coordinate, and vertex normal. So, "3/4/3" would mean, "use vertex 3 with
+  // UV coordinate 4 and vertex normal 3". In WebGL, every vertex with different
+  // parameters must be a different vertex, so loadedVerts is used to
+  // temporarily store the parsed vertices, normals, etc., and indexedVerts is
+  // used to map a specific combination (keyed on, for example, the string
+  // "3/4/3"), to the actual index of the newly created vertex in the final
+  // object.
+  var loadedVerts = {'v' : [],
+                     'vt' : [],
+                     'vn' : []},
+      indexedVerts = {};
+
+  for (var line = 0; line < lines.length; ++line) {
+    // Each line is a separate object (vertex, face, vertex normal, etc)
+    // For each line, split it into tokens on whitespace. The first token
+    // describes the type.
+    var tokens = lines[line].trim().split(/\b\s+/);
+
+    if (tokens.length > 0) {
+      if (tokens[0] === 'v' || tokens[0] === 'vn') {
+        // Check if this line describes a vertex or vertex normal.
+        // It will have three numeric parameters.
+        var vertex = new p5.Vector(parseFloat(tokens[1]),
+                                   parseFloat(tokens[2]),
+                                   parseFloat(tokens[3]));
+        loadedVerts[tokens[0]].push(vertex);
+      } else if (tokens[0] === 'vt') {
+        // Check if this line describes a texture coordinate.
+        // It will have two numeric parameters.
+        var texVertex = [parseFloat(tokens[1]), parseFloat(tokens[2])];
+        loadedVerts[tokens[0]].push(texVertex);
+      } else if (tokens[0] === 'f') {
+        // Check if this line describes a face.
+        // OBJ faces can have more than three points. Triangulate points.
+        for (var tri = 3; tri < tokens.length; ++tri) {
+          var face = [];
+
+          var vertexTokens = [1, tri - 1, tri];
+
+          for (var tokenInd = 0; tokenInd < vertexTokens.length; ++tokenInd) {
+            // Now, convert the given token into an index
+            var vertString = tokens[vertexTokens[tokenInd]];
+            var vertIndex = 0;
+
+            // TODO: Faces can technically use negative numbers to refer to the
+            // previous nth vertex. I haven't seen this used in practice, but
+            // it might be good to implement this in the future.
+
+            if (indexedVerts[vertString] !== undefined) {
+              vertIndex = indexedVerts[vertString];
+            } else {
+              var vertParts = vertString.split('/');
+              for (var i = 0; i < vertParts.length; i++) {
+                vertParts[i] = parseInt(vertParts[i]) - 1;
+              }
+
+              vertIndex = indexedVerts[vertString] = model.vertices.length;
+              model.vertices.push(loadedVerts.v[vertParts[0]].copy());
+              if (loadedVerts.vt[vertParts[1]]) {
+                model.uvs.push(loadedVerts.vt[vertParts[1]].slice());
+              } else {
+                model.uvs.push([0, 0]);
+              }
+
+              if (loadedVerts.vn[vertParts[2]]) {
+                model.vertexNormals.push(loadedVerts.vn[vertParts[2]].copy());
+              }
+            }
+
+            face.push(vertIndex);
+          }
+
+          model.faces.push(face);
+        }
+      }
+    }
+  }
+
+  // If the model doesn't have normals, compute the normals
+  if(model.vertexNormals.length === 0) {
+    model.computeNormals();
+  }
+
+  return model;
+}
+
+/**
+ * Render a 3d model to the screen.
+ *
+ * @method model
+ * @param  {p5.Geometry} model Loaded 3d model to be rendered
+ * @example
+ * <div>
+ * <code>
+ * //draw a spinning teapot
+ * var teapot;
+ *
+ * function setup(){
+ *   createCanvas(100, 100, WEBGL);
+ *
+ *   teapot = loadModel('assets/teapot.obj');
+ * }
+ *
+ * function draw(){
+ *   background(200);
+ *   rotateX(frameCount * 0.01);
+ *   rotateY(frameCount * 0.01);
+ *   model(teapot);
+ * }
+ * </code>
+ * </div>
+ */
+p5.prototype.model = function ( model ) {
+  if (model.vertices.length > 0) {
+    if (!this._renderer.geometryInHash(model.gid)) {
+      this._renderer.createBuffers(model.gid, model);
+    }
+
+    this._renderer.drawBuffers(model.gid);
+  }
+};
+
+module.exports = p5;
+
+},{"../core/core":37,"./p5.Geometry":82}],81:[function(_dereq_,module,exports){
+/**
+ * @module Lights, Camera
+ * @submodule Material
+ * @for p5
+ * @requires core
+ */
+
+'use strict';
+
+var p5 = _dereq_('../core/core');
+//require('./p5.Texture');
+
+/**
+ * Normal material for geometry
+ * @method normalMaterial
+ * @return {p5}                the p5 object
+ * @example
+ * <div>
+ * <code>
+ * function setup(){
+ *   createCanvas(100, 100, WEBGL);
+ * }
+ *
+ * function draw(){
+ *  background(0);
+ *  normalMaterial();
+ *  sphere(200);
+ * }
+ * </code>
+ * </div>
+ */
+p5.prototype.normalMaterial = function(){
+  this._renderer._getShader('normalVert', 'normalFrag');
+  return this;
+};
+
+/**
+ * Texture for geometry
+ * @method texture
+ * @param {p5.Image | p5.MediaElement | p5.Graphics} tex 2-dimensional graphics
+ *                    to render as texture
+ * @return {p5}                the p5 object
+ * @example
+ * <div>
+ * <code>
+ * var img;
+ * function setup(){
+ *   createCanvas(100, 100, WEBGL);
+ *   img = loadImage("assets/laDefense.jpg");
+ * }
+ *
+ * function draw(){
+ *   background(0);
+ *   rotateZ(frameCount * 0.01);
+ *   rotateX(frameCount * 0.01);
+ *   rotateY(frameCount * 0.01);
+ *   //pass image as texture
+ *   texture(img);
+ *   box(200, 200, 200);
+ * }
+ * </code>
+ * </div>
+ *
+ * <div>
+ * <code>
+ * var pg;
+ * function setup(){
+ *   createCanvas(100, 100, WEBGL);
+ *   pg = createGraphics(256,256);
+ * }
+ *
+ * function draw(){
+ *   background(0);
+ *   pg.background(255);
+ *   pg.text('hello world!');
+ *   //pass image as texture
+ *   texture(pg);
+ *   plane(200);
+ * }
+ * </code>
+ * </div>
+ *
+ * <div>
+ * <code>
+ * var vid;
+ * function preload(){
+ *   vid = createVideo("assets/fingers.mov");
+ *   vid.hide();
+ *   vid.loop();
+ * }
+ * function setup(){
+ *   createCanvas(100, 100, WEBGL);
+ * }
+ *
+ * function draw(){
+ *   background(0);
+ *   //pass video frame as texture
+ *   texture(vid);
+ *   plane(200);
+ * }
+ * </code>
+ * </div>
+ */
+p5.prototype.texture = function(){
+  var args = new Array(arguments.length);
+  for (var i = 0; i < args.length; ++i) {
+    args[i] = arguments[i];
+  }
+  var gl = this._renderer.GL;
+  var shaderProgram = this._renderer._getShader('lightVert',
+    'lightTextureFrag');
+  gl.useProgram(shaderProgram);
+  var textureData;
+  //if argument is not already a texture
+  //create a new one
+  if(!args[0].isTexture){
+    if (args[0] instanceof p5.Image) {
+      textureData = args[0].canvas;
+    }
+    //if param is a video
+    else if (typeof p5.MediaElement !== 'undefined' &&
+            args[0] instanceof p5.MediaElement){
+      if(!args[0].loadedmetadata) {return;}
+      textureData = args[0].elt;
+    }
+    //used with offscreen 2d graphics renderer
+    else if(args[0] instanceof p5.Graphics){
+      textureData = args[0].elt;
+    }
+    var tex = gl.createTexture();
+    args[0]._setProperty('tex', tex);
+    args[0]._setProperty('isTexture', true);
+    this._renderer._bind.call(this, tex, textureData);
+  }
+  else {
+    if(args[0] instanceof p5.Graphics ||
+      (typeof p5.MediaElement !== 'undefined' &&
+      args[0] instanceof p5.MediaElement)){
+      textureData = args[0].elt;
+    }
+    else if(args[0] instanceof p5.Image){
+      textureData = args[0].canvas;
+    }
+    this._renderer._bind.call(this, args[0].tex, textureData);
+  }
+  //this is where we'd activate multi textures
+  //eg. gl.activeTexture(gl.TEXTURE0 + (unit || 0));
+  //but for now we just have a single texture.
+  //@TODO need to extend this functionality
+  gl.activeTexture(gl.TEXTURE0);
+  gl.bindTexture(gl.TEXTURE_2D, args[0].tex);
+  gl.uniform1i(gl.getUniformLocation(shaderProgram, 'isTexture'), true);
+  gl.uniform1i(gl.getUniformLocation(shaderProgram, 'uSampler'), 0);
+  return this;
+};
+
+/**
+ * Texture Util functions
+ */
+p5.RendererGL.prototype._bind = function(tex, data){
+  var gl = this._renderer.GL;
+  gl.bindTexture(gl.TEXTURE_2D, tex);
+  gl.pixelStorei(gl.UNPACK_FLIP_Y_WEBGL, true);
+  gl.texImage2D(gl.TEXTURE_2D, 0,
+    gl.RGBA, gl.RGBA, gl.UNSIGNED_BYTE, data);
+  gl.pixelStorei(gl.UNPACK_FLIP_Y_WEBGL, true);
+  gl.texParameteri(gl.TEXTURE_2D,
+  gl.TEXTURE_MAG_FILTER, gl.LINEAR);
+  gl.texParameteri(gl.TEXTURE_2D,
+  gl.TEXTURE_MIN_FILTER, gl.LINEAR);
+  gl.texParameteri(gl.TEXTURE_2D,
+  gl.TEXTURE_WRAP_S, gl.CLAMP_TO_EDGE);
+  gl.texParameteri(gl.TEXTURE_2D,
+  gl.TEXTURE_WRAP_T, gl.CLAMP_TO_EDGE);
+  gl.bindTexture(gl.TEXTURE_2D, null);
+};
+
+/**
+ * Checks whether val is a pot
+ * more info on power of 2 here:
+ * https://www.opengl.org/wiki/NPOT_Texture
+ * @param  {Number}  value
+ * @return {Boolean}
+ */
+// function _isPowerOf2 (value){
+//   return (value & (value - 1)) === 0;
+// }
+
+/**
+ * returns the next highest power of 2 value
+ * @param  {Number} value [description]
+ * @return {Number}       [description]
+ */
+// function _nextHighestPOT (value){
+//   --value;
+//   for (var i = 1; i < 32; i <<= 1) {
+//     value = value | value >> i;
+//   }
+//   return value + 1;
+
+/**
+ * Ambient material for geometry with a given color
+ * @method  ambientMaterial
+ * @param  {Number|Array|String|p5.Color} v1  gray value,
+ * red or hue value (depending on the current color mode),
+ * or color Array, or CSS color string
+ * @param  {Number}            [v2] optional: green or saturation value
+ * @param  {Number}            [v3] optional: blue or brightness value
+ * @param  {Number}            [a]  optional: opacity
+* @return {p5}                 the p5 object
+ * @example
+ * <div>
+ * <code>
+ * function setup(){
+ *   createCanvas(100, 100, WEBGL);
+ * }
+ * function draw(){
+ *  background(0);
+ *  ambientLight(100);
+ *  pointLight(250, 250, 250, 100, 100, 0);
+ *  ambientMaterial(250);
+ *  sphere(200);
+ * }
+ * </code>
+ * </div>
+ */
+p5.prototype.ambientMaterial = function(v1, v2, v3, a) {
+  var gl = this._renderer.GL;
+  var shaderProgram =
+    this._renderer._getShader('lightVert', 'lightTextureFrag');
+
+  gl.useProgram(shaderProgram);
+  shaderProgram.uMaterialColor = gl.getUniformLocation(
+    shaderProgram, 'uMaterialColor' );
+  var colors = this._renderer._applyColorBlend.apply(this._renderer, arguments);
+
+  gl.uniform4f(shaderProgram.uMaterialColor,
+    colors[0], colors[1], colors[2], colors[3]);
+
+  shaderProgram.uSpecular = gl.getUniformLocation(
+    shaderProgram, 'uSpecular' );
+  gl.uniform1i(shaderProgram.uSpecular, false);
+
+  gl.uniform1i(gl.getUniformLocation(shaderProgram, 'isTexture'), false);
+
+  return this;
+};
+
+/**
+ * Specular material for geometry with a given color
+ * @method specularMaterial
+ * @param  {Number|Array|String|p5.Color} v1  gray value,
+ * red or hue value (depending on the current color mode),
+ * or color Array, or CSS color string
+ * @param  {Number}            [v2] optional: green or saturation value
+ * @param  {Number}            [v3] optional: blue or brightness value
+ * @param  {Number}            [a]  optional: opacity
+ * @return {p5}                the p5 object
+ * @example
+ * <div>
+ * <code>
+ * function setup(){
+ *   createCanvas(100, 100, WEBGL);
+ * }
+ * function draw(){
+ *  background(0);
+ *  ambientLight(100);
+ *  pointLight(250, 250, 250, 100, 100, 0);
+ *  specularMaterial(250);
+ *  sphere(200);
+ * }
+ * </code>
+ * </div>
+ */
+p5.prototype.specularMaterial = function(v1, v2, v3, a) {
+  var gl = this._renderer.GL;
+  var shaderProgram =
+    this._renderer._getShader('lightVert', 'lightTextureFrag');
+  gl.useProgram(shaderProgram);
+  gl.uniform1i(gl.getUniformLocation(shaderProgram, 'isTexture'), false);
+  shaderProgram.uMaterialColor = gl.getUniformLocation(
+    shaderProgram, 'uMaterialColor' );
+  var colors = this._renderer._applyColorBlend.apply(this._renderer, arguments);
+  gl.uniform4f(shaderProgram.uMaterialColor,
+    colors[0], colors[1], colors[2], colors[3]);
+  shaderProgram.uSpecular = gl.getUniformLocation(
+    shaderProgram, 'uSpecular' );
+  gl.uniform1i(shaderProgram.uSpecular, true);
+
+  return this;
+};
+
+/**
+ * @private blends colors according to color components.
+ * If alpha value is less than 1, we need to enable blending
+ * on our gl context.  Otherwise opaque objects need to a depthMask.
+ * @param  {Number} v1 [description]
+ * @param  {Number} v2 [description]
+ * @param  {Number} v3 [description]
+ * @param  {Number} a  [description]
+ * @return {[Number]}  Normalized numbers array
+ */
+p5.RendererGL.prototype._applyColorBlend = function(v1,v2,v3,a){
+  var gl = this.GL;
+  var color = this._pInst.color.apply(
+    this._pInst, arguments);
+  var colors = color._array;
+  if(colors[colors.length-1] < 1.0){
+    gl.depthMask(false);
+    gl.enable(gl.BLEND);
+    gl.blendEquation( gl.FUNC_ADD );
+    gl.blendFunc( gl.SRC_ALPHA, gl.ONE_MINUS_SRC_ALPHA );
+  } else {
+    gl.depthMask(true);
+    gl.disable(gl.BLEND);
+  }
+  return colors;
+};
+
+module.exports = p5;
+
+},{"../core/core":37}],82:[function(_dereq_,module,exports){
+//some of the functions are adjusted from Three.js(http://threejs.org)
+
+'use strict';
+
+var p5 = _dereq_('../core/core');
+
+/**
+ * p5 Geometry class
+ * @constructor
+ * @param  {Function | Object} vertData callback function or Object
+ *                     containing routine(s) for vertex data generation
+ * @param  {Number} [detailX] number of vertices on horizontal surface
+ * @param  {Number} [detailY] number of vertices on horizontal surface
+ * @param {Function} [callback] function to call upon object instantiation.
+ *
+ */
+p5.Geometry = function
+(detailX, detailY, callback){
+  //an array containing every vertex
+  //@type [p5.Vector]
+  this.vertices = [];
+  //an array containing 1 normal per vertex
+  //@type [p5.Vector]
+  //[p5.Vector, p5.Vector, p5.Vector,p5.Vector, p5.Vector, p5.Vector,...]
+  this.vertexNormals = [];
+  //an array containing each three vertex indices that form a face
+  //[[0, 1, 2], [2, 1, 3], ...]
+  this.faces = [];
+  //a 2D array containing uvs for every vertex
+  //[[0.0,0.0],[1.0,0.0], ...]
+  this.uvs = [];
+  this.detailX = (detailX !== undefined) ? detailX: 1;
+  this.detailY = (detailY !== undefined) ? detailY: 1;
+  if(callback instanceof Function){
+    callback.call(this);
+  }
+  return this;
+};
+
+p5.Geometry.prototype.computeFaces = function(){
+  var sliceCount = this.detailX + 1;
+  var a, b, c, d;
+  for (var i = 0; i < this.detailY; i++){
+    for (var j = 0; j < this.detailX; j++){
+      a = i * sliceCount + j;// + offset;
+      b = i * sliceCount + j + 1;// + offset;
+      c = (i + 1)* sliceCount + j + 1;// + offset;
+      d = (i + 1)* sliceCount + j;// + offset;
+      this.faces.push([a, b, d]);
+      this.faces.push([d, b, c]);
+    }
+  }
+  return this;
+};
+
+p5.Geometry.prototype._getFaceNormal = function(faceId,vertId){
+  //This assumes that vA->vB->vC is a counter-clockwise ordering
+  var face = this.faces[faceId];
+  var vA = this.vertices[face[vertId%3]];
+  var vB = this.vertices[face[(vertId+1)%3]];
+  var vC = this.vertices[face[(vertId+2)%3]];
+  var n = p5.Vector.cross(
+    p5.Vector.sub(vB,vA),
+    p5.Vector.sub(vC,vA));
+  var sinAlpha = p5.Vector.mag(n) /
+  (p5.Vector.mag(p5.Vector.sub(vB,vA))*
+    p5.Vector.mag(p5.Vector.sub(vC,vA)));
+  n = n.normalize();
+  return n.mult(Math.asin(sinAlpha));
+};
+/**
+ * computes smooth normals per vertex as an average of each
+ * face.
+ */
+p5.Geometry.prototype.computeNormals = function (){
+  for(var v=0; v < this.vertices.length; v++){
+    var normal = new p5.Vector();
+    for(var i=0; i < this.faces.length; i++){
+      //if our face contains a given vertex
+      //calculate an average of the normals
+      //of the triangles adjacent to that vertex
+      if(this.faces[i][0] === v ||
+        this.faces[i][1] === v ||
+        this.faces[i][2] === v)
+      {
+        normal = normal.add(this._getFaceNormal(i, v));
+      }
+    }
+    normal = normal.normalize();
+    this.vertexNormals.push(normal);
+  }
+  return this;
+};
+
+/**
+ * Averages the vertex normals. Used in curved
+ * surfaces
+ * @return {p5.Geometry}
+ */
+p5.Geometry.prototype.averageNormals = function() {
+
+  for(var i = 0; i <= this.detailY; i++){
+    var offset = this.detailX + 1;
+    var temp = p5.Vector
+      .add(this.vertexNormals[i*offset],
+        this.vertexNormals[i*offset + this.detailX]);
+    temp = p5.Vector.div(temp, 2);
+    this.vertexNormals[i*offset] = temp;
+    this.vertexNormals[i*offset + this.detailX] = temp;
+  }
+  return this;
+};
+
+/**
+ * Averages pole normals.  Used in spherical primitives
+ * @return {p5.Geometry}
+ */
+p5.Geometry.prototype.averagePoleNormals = function() {
+
+  //average the north pole
+  var sum = new p5.Vector(0, 0, 0);
+  for(var i = 0; i < this.detailX; i++){
+    sum.add(this.vertexNormals[i]);
+  }
+  sum = p5.Vector.div(sum, this.detailX);
+
+  for(i = 0; i < this.detailX; i++){
+    this.vertexNormals[i] = sum;
+  }
+
+  //average the south pole
+  sum = new p5.Vector(0, 0, 0);
+  for(i = this.vertices.length - 1;
+    i > this.vertices.length - 1 - this.detailX; i--){
+    sum.add(this.vertexNormals[i]);
+  }
+  sum = p5.Vector.div(sum, this.detailX);
+
+  for(i = this.vertices.length - 1;
+    i > this.vertices.length - 1 - this.detailX; i--){
+    this.vertexNormals[i] = sum;
+  }
+  return this;
+};
+
+/**
+ * Modifies all vertices to be centered within the range -100 to 100.
+ * @return {p5.Geometry}
+ */
+p5.Geometry.prototype.normalize = function() {
+  if(this.vertices.length > 0) {
+    // Find the corners of our bounding box
+    var maxPosition = this.vertices[0].copy();
+    var minPosition = this.vertices[0].copy();
+
+    for(var i = 0; i < this.vertices.length; i++) {
+      maxPosition.x = Math.max(maxPosition.x, this.vertices[i].x);
+      minPosition.x = Math.min(minPosition.x, this.vertices[i].x);
+      maxPosition.y = Math.max(maxPosition.y, this.vertices[i].y);
+      minPosition.y = Math.min(minPosition.y, this.vertices[i].y);
+      maxPosition.z = Math.max(maxPosition.z, this.vertices[i].z);
+      minPosition.z = Math.min(minPosition.z, this.vertices[i].z);
+    }
+
+    var center = p5.Vector.lerp(maxPosition, minPosition, 0.5);
+    var dist = p5.Vector.sub(maxPosition, minPosition);
+    var longestDist = Math.max(Math.max(dist.x, dist.y), dist.z);
+    var scale = 200 / longestDist;
+
+    for(i = 0; i < this.vertices.length; i++) {
+      this.vertices[i].sub(center);
+      this.vertices[i].mult(scale);
+    }
+  }
+  return this;
+};
+
+module.exports = p5.Geometry;
+
+},{"../core/core":37}],83:[function(_dereq_,module,exports){
+/**
+* @requires constants
+* @todo see methods below needing further implementation.
+* future consideration: implement SIMD optimizations
+* when browser compatibility becomes available
+* https://developer.mozilla.org/en-US/docs/Web/JavaScript/
+*   Reference/Global_Objects/SIMD
+*/
+
+'use strict';
+
+var p5 = _dereq_('../core/core');
+var polarGeometry = _dereq_('../math/polargeometry');
+var constants = _dereq_('../core/constants');
+var GLMAT_ARRAY_TYPE = (
+    typeof Float32Array !== 'undefined') ?
+  Float32Array : Array;
+
+/**
+ * A class to describe a 4x4 matrix
+ * for model and view matrix manipulation in the p5js webgl renderer.
+ * class p5.Matrix
+ * @constructor
+ * @param {Array} [mat4] array literal of our 4x4 matrix
+ */
+p5.Matrix = function() {
+  var args = new Array(arguments.length);
+  for (var i = 0; i < args.length; ++i) {
+    args[i] = arguments[i];
+  }
+  // This is default behavior when object
+  // instantiated using createMatrix()
+  // @todo implement createMatrix() in core/math.js
+  if(args[0] instanceof p5) {
+    // save reference to p5 if passed in
+    this.p5 = args[0];
+    if(args[1] === 'mat3'){
+      this.mat3 = args[2] || new GLMAT_ARRAY_TYPE([
+        1, 0, 0,
+        0, 1, 0,
+        0, 0, 1
+      ]);
+    }
+    else {
+      this.mat4  = args[1] || new GLMAT_ARRAY_TYPE([
+        1, 0, 0, 0,
+        0, 1, 0, 0,
+        0, 0, 1, 0,
+        0, 0, 0, 1
+      ]);
+    }
+  // default behavior when object
+  // instantiated using new p5.Matrix()
+  } else {
+    if(args[0] === 'mat3'){
+      this.mat3 = args[1] || new GLMAT_ARRAY_TYPE([
+        1, 0, 0,
+        0, 1, 0,
+        0, 0, 1
+      ]);
+    }
+    else {
+      this.mat4 = args[0] || new GLMAT_ARRAY_TYPE([
+        1, 0, 0, 0,
+        0, 1, 0, 0,
+        0, 0, 1, 0,
+        0, 0, 0, 1
+      ]);
+    }
+  }
+  return this;
+};
+
+/**
+ * Sets the x, y, and z component of the vector using two or three separate
+ * variables, the data from a p5.Matrix, or the values from a float array.
+ *
+ * @param {p5.Matrix|Array} [inMatrix] the input p5.Matrix or
+ *                                     an Array of length 16
+ */
+p5.Matrix.prototype.set = function (inMatrix) {
+  if (inMatrix instanceof p5.Matrix) {
+    this.mat4 = inMatrix.mat4;
+    return this;
+  }
+  else if (inMatrix instanceof GLMAT_ARRAY_TYPE) {
+    this.mat4 = inMatrix;
+    return this;
+  }
+  return this;
+};
+
+/**
+ * Gets a copy of the vector, returns a p5.Matrix object.
+ *
+ * @return {p5.Matrix} the copy of the p5.Matrix object
+ */
+p5.Matrix.prototype.get = function () {
+  return new p5.Matrix(this.mat4);
+};
+
+/**
+ * return a copy of a matrix
+ * @return {p5.Matrix}   the result matrix
+ */
+p5.Matrix.prototype.copy = function(){
+  var copied = new p5.Matrix();
+  copied.mat4[0] = this.mat4[0];
+  copied.mat4[1] = this.mat4[1];
+  copied.mat4[2] = this.mat4[2];
+  copied.mat4[3] = this.mat4[3];
+  copied.mat4[4] = this.mat4[4];
+  copied.mat4[5] = this.mat4[5];
+  copied.mat4[6] = this.mat4[6];
+  copied.mat4[7] = this.mat4[7];
+  copied.mat4[8] = this.mat4[8];
+  copied.mat4[9] = this.mat4[9];
+  copied.mat4[10] = this.mat4[10];
+  copied.mat4[11] = this.mat4[11];
+  copied.mat4[12] = this.mat4[12];
+  copied.mat4[13] = this.mat4[13];
+  copied.mat4[14] = this.mat4[14];
+  copied.mat4[15] = this.mat4[15];
+  return copied;
+};
+
+/**
+ * return an identity matrix
+ * @return {p5.Matrix}   the result matrix
+ */
+p5.Matrix.identity = function(){
+  return new p5.Matrix();
+};
+
+/**
+ * transpose according to a given matrix
+ * @param  {p5.Matrix | Typed Array} a  the matrix to be based on to transpose
+ * @return {p5.Matrix}                  this
+ */
+p5.Matrix.prototype.transpose = function(a){
+  var a01, a02, a03, a12, a13, a23;
+  if(a instanceof p5.Matrix){
+    a01 = a.mat4[1];
+    a02 = a.mat4[2];
+    a03 = a.mat4[3];
+    a12 = a.mat4[6];
+    a13 = a.mat4[7];
+    a23 = a.mat4[11];
+
+    this.mat4[0] = a.mat4[0];
+    this.mat4[1] = a.mat4[4];
+    this.mat4[2] = a.mat4[8];
+    this.mat4[3] = a.mat4[12];
+    this.mat4[4] = a01;
+    this.mat4[5] = a.mat4[5];
+    this.mat4[6] = a.mat4[9];
+    this.mat4[7] = a.mat4[13];
+    this.mat4[8] = a02;
+    this.mat4[9] = a12;
+    this.mat4[10] = a.mat4[10];
+    this.mat4[11] = a.mat4[14];
+    this.mat4[12] = a03;
+    this.mat4[13] = a13;
+    this.mat4[14] = a23;
+    this.mat4[15] = a.mat4[15];
+
+  }else if(a instanceof GLMAT_ARRAY_TYPE){
+    a01 = a[1];
+    a02 = a[2];
+    a03 = a[3];
+    a12 = a[6];
+    a13 = a[7];
+    a23 = a[11];
+
+    this.mat4[0] = a[0];
+    this.mat4[1] = a[4];
+    this.mat4[2] = a[8];
+    this.mat4[3] = a[12];
+    this.mat4[4] = a01;
+    this.mat4[5] = a[5];
+    this.mat4[6] = a[9];
+    this.mat4[7] = a[13];
+    this.mat4[8] = a02;
+    this.mat4[9] = a12;
+    this.mat4[10] = a[10];
+    this.mat4[11] = a[14];
+    this.mat4[12] = a03;
+    this.mat4[13] = a13;
+    this.mat4[14] = a23;
+    this.mat4[15] = a[15];
+  }
+  return this;
+};
+
+/**
+ * invert  matrix according to a give matrix
+ * @param  {p5.Matrix or Typed Array} a   the matrix to be based on to invert
+ * @return {p5.Matrix}                    this
+ */
+p5.Matrix.prototype.invert = function(a){
+  var a00, a01, a02, a03, a10, a11, a12, a13,
+  a20, a21, a22, a23, a30, a31, a32, a33;
+  if(a instanceof p5.Matrix){
+    a00 = a.mat4[0];
+    a01 = a.mat4[1];
+    a02 = a.mat4[2];
+    a03 = a.mat4[3];
+    a10 = a.mat4[4];
+    a11 = a.mat4[5];
+    a12 = a.mat4[6];
+    a13 = a.mat4[7];
+    a20 = a.mat4[8];
+    a21 = a.mat4[9];
+    a22 = a.mat4[10];
+    a23 = a.mat4[11];
+    a30 = a.mat4[12];
+    a31 = a.mat4[13];
+    a32 = a.mat4[14];
+    a33 = a.mat4[15];
+  }else if(a instanceof GLMAT_ARRAY_TYPE){
+    a00 = a[0];
+    a01 = a[1];
+    a02 = a[2];
+    a03 = a[3];
+    a10 = a[4];
+    a11 = a[5];
+    a12 = a[6];
+    a13 = a[7];
+    a20 = a[8];
+    a21 = a[9];
+    a22 = a[10];
+    a23 = a[11];
+    a30 = a[12];
+    a31 = a[13];
+    a32 = a[14];
+    a33 = a[15];
+  }
+  var b00 = a00 * a11 - a01 * a10,
+  b01 = a00 * a12 - a02 * a10,
+  b02 = a00 * a13 - a03 * a10,
+  b03 = a01 * a12 - a02 * a11,
+  b04 = a01 * a13 - a03 * a11,
+  b05 = a02 * a13 - a03 * a12,
+  b06 = a20 * a31 - a21 * a30,
+  b07 = a20 * a32 - a22 * a30,
+  b08 = a20 * a33 - a23 * a30,
+  b09 = a21 * a32 - a22 * a31,
+  b10 = a21 * a33 - a23 * a31,
+  b11 = a22 * a33 - a23 * a32,
+
+  // Calculate the determinant
+  det = b00 * b11 - b01 * b10 + b02 * b09 + b03 * b08 -
+  b04 * b07 + b05 * b06;
+
+  if (!det) {
+    return null;
+  }
+  det = 1.0 / det;
+
+  this.mat4[0] = (a11 * b11 - a12 * b10 + a13 * b09) * det;
+  this.mat4[1] = (a02 * b10 - a01 * b11 - a03 * b09) * det;
+  this.mat4[2] = (a31 * b05 - a32 * b04 + a33 * b03) * det;
+  this.mat4[3] = (a22 * b04 - a21 * b05 - a23 * b03) * det;
+  this.mat4[4] = (a12 * b08 - a10 * b11 - a13 * b07) * det;
+  this.mat4[5] = (a00 * b11 - a02 * b08 + a03 * b07) * det;
+  this.mat4[6] = (a32 * b02 - a30 * b05 - a33 * b01) * det;
+  this.mat4[7] = (a20 * b05 - a22 * b02 + a23 * b01) * det;
+  this.mat4[8] = (a10 * b10 - a11 * b08 + a13 * b06) * det;
+  this.mat4[9] = (a01 * b08 - a00 * b10 - a03 * b06) * det;
+  this.mat4[10] = (a30 * b04 - a31 * b02 + a33 * b00) * det;
+  this.mat4[11] = (a21 * b02 - a20 * b04 - a23 * b00) * det;
+  this.mat4[12] = (a11 * b07 - a10 * b09 - a12 * b06) * det;
+  this.mat4[13] = (a00 * b09 - a01 * b07 + a02 * b06) * det;
+  this.mat4[14] = (a31 * b01 - a30 * b03 - a32 * b00) * det;
+  this.mat4[15] = (a20 * b03 - a21 * b01 + a22 * b00) * det;
+
+  return this;
+};
+
+/**
+ * Inverts a 3x3 matrix
+ * @return {[type]} [description]
+ */
+p5.Matrix.prototype.invert3x3 = function (){
+  var a00 = this.mat3[0],
+  a01 = this.mat3[1],
+  a02 = this.mat3[2],
+  a10 = this.mat3[3],
+  a11 = this.mat3[4],
+  a12 = this.mat3[5],
+  a20 = this.mat3[6],
+  a21 = this.mat3[7],
+  a22 = this.mat3[8],
+  b01 = a22 * a11 - a12 * a21,
+  b11 = -a22 * a10 + a12 * a20,
+  b21 = a21 * a10 - a11 * a20,
+
+  // Calculate the determinant
+  det = a00 * b01 + a01 * b11 + a02 * b21;
+  if (!det) {
+    return null;
+  }
+  det = 1.0 / det;
+  this.mat3[0] = b01 * det;
+  this.mat3[1] = (-a22 * a01 + a02 * a21) * det;
+  this.mat3[2] = (a12 * a01 - a02 * a11) * det;
+  this.mat3[3] = b11 * det;
+  this.mat3[4] = (a22 * a00 - a02 * a20) * det;
+  this.mat3[5] = (-a12 * a00 + a02 * a10) * det;
+  this.mat3[6] = b21 * det;
+  this.mat3[7] = (-a21 * a00 + a01 * a20) * det;
+  this.mat3[8] = (a11 * a00 - a01 * a10) * det;
+  return this;
+};
+
+/**
+ * transposes a 3x3 p5.Matrix by a mat3
+ * @param  {[Number]} mat3 1-dimensional array
+ * @return {p5.Matrix} this
+ */
+p5.Matrix.prototype.transpose3x3 = function (mat3){
+  var a01 = mat3[1], a02 = mat3[2], a12 = mat3[5];
+  this.mat3[1] = mat3[3];
+  this.mat3[2] = mat3[6];
+  this.mat3[3] = a01;
+  this.mat3[5] = mat3[7];
+  this.mat3[6] = a02;
+  this.mat3[7] = a12;
+  return this;
+};
+
+/**
+ * converts a 4x4 matrix to its 3x3 inverse tranform
+ * commonly used in MVMatrix to NMatrix conversions.
+ * @param  {p5.Matrix} mat4 the matrix to be based on to invert
+ * @return {p5.Matrix} this with mat3
+ * @todo  finish implementation
+ */
+p5.Matrix.prototype.inverseTranspose = function (matrix){
+  if(this.mat3 === undefined){
+    console.error('sorry, this function only works with mat3');
+  }
+  else {
+    //convert mat4 -> mat3
+    this.mat3[0] = matrix.mat4[0];
+    this.mat3[1] = matrix.mat4[1];
+    this.mat3[2] = matrix.mat4[2];
+    this.mat3[3] = matrix.mat4[4];
+    this.mat3[4] = matrix.mat4[5];
+    this.mat3[5] = matrix.mat4[6];
+    this.mat3[6] = matrix.mat4[8];
+    this.mat3[7] = matrix.mat4[9];
+    this.mat3[8] = matrix.mat4[10];
+  }
+
+  this.invert3x3().transpose3x3(this.mat3);
+  return this;
+};
+
+/**
+ * inspired by Toji's mat4 determinant
+ * @return {Number} Determinant of our 4x4 matrix
+ */
+p5.Matrix.prototype.determinant = function(){
+  var d00 = (this.mat4[0] * this.mat4[5]) - (this.mat4[1] * this.mat4[4]),
+    d01 = (this.mat4[0] * this.mat4[6]) - (this.mat4[2] * this.mat4[4]),
+    d02 = (this.mat4[0] * this.mat4[7]) - (this.mat4[3] * this.mat4[4]),
+    d03 = (this.mat4[1] * this.mat4[6]) - (this.mat4[2] * this.mat4[5]),
+    d04 = (this.mat4[1] * this.mat4[7]) - (this.mat4[3] * this.mat4[5]),
+    d05 = (this.mat4[2] * this.mat4[7]) - (this.mat4[3] * this.mat4[6]),
+    d06 = (this.mat4[8] * this.mat4[13]) - (this.mat4[9] * this.mat4[12]),
+    d07 = (this.mat4[8] * this.mat4[14]) - (this.mat4[10] * this.mat4[12]),
+    d08 = (this.mat4[8] * this.mat4[15]) - (this.mat4[11] * this.mat4[12]),
+    d09 = (this.mat4[9] * this.mat4[14]) - (this.mat4[10] * this.mat4[13]),
+    d10 = (this.mat4[9] * this.mat4[15]) - (this.mat4[11] * this.mat4[13]),
+    d11 = (this.mat4[10] * this.mat4[15]) - (this.mat4[11] * this.mat4[14]);
+
+  // Calculate the determinant
+  return d00 * d11 - d01 * d10 + d02 * d09 +
+    d03 * d08 - d04 * d07 + d05 * d06;
+};
+
+/**
+ * multiply two mat4s
+ * @param {p5.Matrix | Array}  multMatrix The matrix we want to multiply by
+ * @return {p5.Matrix}         this
+ */
+p5.Matrix.prototype.mult = function(multMatrix){
+  var _dest = new GLMAT_ARRAY_TYPE(16);
+  var _src = new GLMAT_ARRAY_TYPE(16);
+
+  if(multMatrix instanceof p5.Matrix) {
+    _src = multMatrix.mat4;
+  }
+  else if(multMatrix instanceof GLMAT_ARRAY_TYPE){
+    _src = multMatrix;
+  }
+
+  // each row is used for the multiplier
+  var b0  = this.mat4[0], b1 = this.mat4[1],
+    b2 = this.mat4[2], b3 = this.mat4[3];
+  _dest[0] = b0*_src[0] + b1*_src[4] + b2*_src[8] + b3*_src[12];
+  _dest[1] = b0*_src[1] + b1*_src[5] + b2*_src[9] + b3*_src[13];
+  _dest[2] = b0*_src[2] + b1*_src[6] + b2*_src[10] + b3*_src[14];
+  _dest[3] = b0*_src[3] + b1*_src[7] + b2*_src[11] + b3*_src[15];
+
+  b0 = this.mat4[4];
+  b1 = this.mat4[5];
+  b2 = this.mat4[6];
+  b3 = this.mat4[7];
+  _dest[4] = b0*_src[0] + b1*_src[4] + b2*_src[8] + b3*_src[12];
+  _dest[5] = b0*_src[1] + b1*_src[5] + b2*_src[9] + b3*_src[13];
+  _dest[6] = b0*_src[2] + b1*_src[6] + b2*_src[10] + b3*_src[14];
+  _dest[7] = b0*_src[3] + b1*_src[7] + b2*_src[11] + b3*_src[15];
+
+  b0 = this.mat4[8];
+  b1 = this.mat4[9];
+  b2 = this.mat4[10];
+  b3 = this.mat4[11];
+  _dest[8] = b0*_src[0] + b1*_src[4] + b2*_src[8] + b3*_src[12];
+  _dest[9] = b0*_src[1] + b1*_src[5] + b2*_src[9] + b3*_src[13];
+  _dest[10] = b0*_src[2] + b1*_src[6] + b2*_src[10] + b3*_src[14];
+  _dest[11] = b0*_src[3] + b1*_src[7] + b2*_src[11] + b3*_src[15];
+
+  b0 = this.mat4[12];
+  b1 = this.mat4[13];
+  b2 = this.mat4[14];
+  b3 = this.mat4[15];
+  _dest[12] = b0*_src[0] + b1*_src[4] + b2*_src[8] + b3*_src[12];
+  _dest[13] = b0*_src[1] + b1*_src[5] + b2*_src[9] + b3*_src[13];
+  _dest[14] = b0*_src[2] + b1*_src[6] + b2*_src[10] + b3*_src[14];
+  _dest[15] = b0*_src[3] + b1*_src[7] + b2*_src[11] + b3*_src[15];
+
+  this.mat4 = _dest;
+
+  return this;
+};
+
+/**
+ * scales a p5.Matrix by scalars or a vector
+ * @param  {p5.Vector | Array }
+ *                      vector to scale by
+ * @return {p5.Matrix}  this
+ */
+p5.Matrix.prototype.scale = function() {
+  var x,y,z;
+  var args = new Array(arguments.length);
+  for (var i = 0; i < args.length; ++i) {
+    args[i] = arguments[i];
+  }
+  //if our 1st arg is a type p5.Vector
+  if (args[0] instanceof p5.Vector){
+    x = args[0].x;
+    y = args[0].y;
+    z = args[0].z;
+  }
+  //otherwise if it's an array
+  else if (args[0] instanceof Array){
+    x = args[0][0];
+    y = args[0][1];
+    z = args[0][2];
+  }
+  var _dest = new GLMAT_ARRAY_TYPE(16);
+  _dest[0] = this.mat4[0] * x;
+  _dest[1] = this.mat4[1] * x;
+  _dest[2] = this.mat4[2] * x;
+  _dest[3] = this.mat4[3] * x;
+  _dest[4] = this.mat4[4] * y;
+  _dest[5] = this.mat4[5] * y;
+  _dest[6] = this.mat4[6] * y;
+  _dest[7] = this.mat4[7] * y;
+  _dest[8] = this.mat4[8] * z;
+  _dest[9] = this.mat4[9] * z;
+  _dest[10] = this.mat4[10] * z;
+  _dest[11] = this.mat4[11] * z;
+  _dest[12] = this.mat4[12];
+  _dest[13] = this.mat4[13];
+  _dest[14] = this.mat4[14];
+  _dest[15] = this.mat4[15];
+
+  this.mat4 = _dest;
+  return this;
+};
+
+/**
+ * rotate our Matrix around an axis by the given angle.
+ * @param  {Number} a The angle of rotation in radians
+ * @param  {p5.Vector | Array} axis  the axis(es) to rotate around
+ * @return {p5.Matrix}                    this
+ * inspired by Toji's gl-matrix lib, mat4 rotation
+ */
+p5.Matrix.prototype.rotate = function(a, axis){
+  var x, y, z, _a, len;
+
+  if (this.p5) {
+    if (this.p5._angleMode === constants.DEGREES) {
+      _a = polarGeometry.degreesToRadians(a);
+    }
+  }
+  else {
+    _a = a;
+  }
+  if (axis instanceof p5.Vector) {
+    x = axis.x;
+    y = axis.y;
+    z = axis.z;
+  }
+  else if (axis instanceof Array) {
+    x = axis[0];
+    y = axis[1];
+    z = axis[2];
+  }
+
+  len = Math.sqrt(x * x + y * y + z * z);
+  x *= (1/len);
+  y *= (1/len);
+  z *= (1/len);
+
+  var a00 = this.mat4[0];
+  var a01 = this.mat4[1];
+  var a02 = this.mat4[2];
+  var a03 = this.mat4[3];
+  var a10 = this.mat4[4];
+  var a11 = this.mat4[5];
+  var a12 = this.mat4[6];
+  var a13 = this.mat4[7];
+  var a20 = this.mat4[8];
+  var a21 = this.mat4[9];
+  var a22 = this.mat4[10];
+  var a23 = this.mat4[11];
+
+  //sin,cos, and tan of respective angle
+  var sA = Math.sin(_a);
+  var cA = Math.cos(_a);
+  var tA = 1 - cA;
+  // Construct the elements of the rotation matrix
+  var b00 = x * x * tA + cA;
+  var b01 = y * x * tA + z * sA;
+  var b02 = z * x * tA - y * sA;
+  var b10 = x * y * tA - z * sA;
+  var b11 = y * y * tA + cA;
+  var b12 = z * y * tA + x * sA;
+  var b20 = x * z * tA + y * sA;
+  var b21 = y * z * tA - x * sA;
+  var b22 = z * z * tA + cA;
+
+  // rotation-specific matrix multiplication
+  this.mat4[0] = a00 * b00 + a10 * b01 + a20 * b02;
+  this.mat4[1] = a01 * b00 + a11 * b01 + a21 * b02;
+  this.mat4[2] = a02 * b00 + a12 * b01 + a22 * b02;
+  this.mat4[3] = a03 * b00 + a13 * b01 + a23 * b02;
+  this.mat4[4] = a00 * b10 + a10 * b11 + a20 * b12;
+  this.mat4[5] = a01 * b10 + a11 * b11 + a21 * b12;
+  this.mat4[6] = a02 * b10 + a12 * b11 + a22 * b12;
+  this.mat4[7] = a03 * b10 + a13 * b11 + a23 * b12;
+  this.mat4[8] = a00 * b20 + a10 * b21 + a20 * b22;
+  this.mat4[9] = a01 * b20 + a11 * b21 + a21 * b22;
+  this.mat4[10] = a02 * b20 + a12 * b21 + a22 * b22;
+  this.mat4[11] = a03 * b20 + a13 * b21 + a23 * b22;
+
+  return this;
+};
+
+/**
+ * @todo  finish implementing this method!
+ * translates
+ * @param  {Array} v vector to translate by
+ * @return {p5.Matrix}                    this
+ */
+p5.Matrix.prototype.translate = function(v){
+  var x = v[0],
+    y = v[1],
+    z = v[2] || 0;
+  this.mat4[12] =
+    this.mat4[0] * x +this.mat4[4] * y +this.mat4[8] * z +this.mat4[12];
+  this.mat4[13] =
+    this.mat4[1] * x +this.mat4[5] * y +this.mat4[9] * z +this.mat4[13];
+  this.mat4[14] =
+    this.mat4[2] * x +this.mat4[6] * y +this.mat4[10] * z +this.mat4[14];
+  this.mat4[15] =
+    this.mat4[3] * x +this.mat4[7] * y +this.mat4[11] * z +this.mat4[15];
+};
+
+p5.Matrix.prototype.rotateX = function(a){
+  this.rotate(a, [1,0,0]);
+};
+p5.Matrix.prototype.rotateY = function(a){
+  this.rotate(a, [0,1,0]);
+};
+p5.Matrix.prototype.rotateZ = function(a){
+  this.rotate(a, [0,0,1]);
+};
+
+/**
+ * sets the perspective matrix
+ * @param  {Number} fovy   [description]
+ * @param  {Number} aspect [description]
+ * @param  {Number} near   near clipping plane
+ * @param  {Number} far    far clipping plane
+ * @return {void}
+ */
+p5.Matrix.prototype.perspective = function(fovy,aspect,near,far){
+
+  var f = 1.0 / Math.tan(fovy / 2),
+    nf = 1 / (near - far);
+
+  this.mat4[0] = f / aspect;
+  this.mat4[1] = 0;
+  this.mat4[2] = 0;
+  this.mat4[3] = 0;
+  this.mat4[4] = 0;
+  this.mat4[5] = f;
+  this.mat4[6] = 0;
+  this.mat4[7] = 0;
+  this.mat4[8] = 0;
+  this.mat4[9] = 0;
+  this.mat4[10] = (far + near) * nf;
+  this.mat4[11] = -1;
+  this.mat4[12] = 0;
+  this.mat4[13] = 0;
+  this.mat4[14] = (2 * far * near) * nf;
+  this.mat4[15] = 0;
+
+  return this;
+
+};
+
+/**
+ * sets the ortho matrix
+ * @param  {Number} left   [description]
+ * @param  {Number} right  [description]
+ * @param  {Number} bottom [description]
+ * @param  {Number} top    [description]
+ * @param  {Number} near   near clipping plane
+ * @param  {Number} far    far clipping plane
+ * @return {void}
+ */
+p5.Matrix.prototype.ortho = function(left,right,bottom,top,near,far){
+
+  var lr = 1 / (left - right),
+    bt = 1 / (bottom - top),
+    nf = 1 / (near - far);
+  this.mat4[0] = -2 * lr;
+  this.mat4[1] = 0;
+  this.mat4[2] = 0;
+  this.mat4[3] = 0;
+  this.mat4[4] = 0;
+  this.mat4[5] = -2 * bt;
+  this.mat4[6] = 0;
+  this.mat4[7] = 0;
+  this.mat4[8] = 0;
+  this.mat4[9] = 0;
+  this.mat4[10] = 2 * nf;
+  this.mat4[11] = 0;
+  this.mat4[12] = (left + right) * lr;
+  this.mat4[13] = (top + bottom) * bt;
+  this.mat4[14] = (far + near) * nf;
+  this.mat4[15] = 1;
+
+  return this;
+};
+
+/**
+ * PRIVATE
+ */
+// matrix methods adapted from:
+// https://developer.mozilla.org/en-US/docs/Web/WebGL/
+// gluPerspective
+//
+// function _makePerspective(fovy, aspect, znear, zfar){
+//    var ymax = znear * Math.tan(fovy * Math.PI / 360.0);
+//    var ymin = -ymax;
+//    var xmin = ymin * aspect;
+//    var xmax = ymax * aspect;
+//    return _makeFrustum(xmin, xmax, ymin, ymax, znear, zfar);
+//  }
+
+////
+//// glFrustum
+////
+//function _makeFrustum(left, right, bottom, top, znear, zfar){
+//  var X = 2*znear/(right-left);
+//  var Y = 2*znear/(top-bottom);
+//  var A = (right+left)/(right-left);
+//  var B = (top+bottom)/(top-bottom);
+//  var C = -(zfar+znear)/(zfar-znear);
+//  var D = -2*zfar*znear/(zfar-znear);
+//  var frustrumMatrix =[
+//  X, 0, A, 0,
+//  0, Y, B, 0,
+//  0, 0, C, D,
+//  0, 0, -1, 0
+//];
+//return frustrumMatrix;
+// }
+
+// function _setMVPMatrices(){
+////an identity matrix
+////@TODO use the p5.Matrix class to abstract away our MV matrices and
+///other math
+//var _mvMatrix =
+//[
+//  1.0,0.0,0.0,0.0,
+//  0.0,1.0,0.0,0.0,
+//  0.0,0.0,1.0,0.0,
+//  0.0,0.0,0.0,1.0
+//];
+
+module.exports = p5.Matrix;
+
+},{"../core/constants":36,"../core/core":37,"../math/polargeometry":67}],84:[function(_dereq_,module,exports){
+/**
+ * Welcome to RendererGL Immediate Mode.
+ * Immediate mode is used for drawing custom shapes
+ * from a set of vertices.  Immediate Mode is activated
+ * when you call beginShape() & de-activated when you call endShape().
+ * Immediate mode is a style of programming borrowed
+ * from OpenGL's (now-deprecated) immediate mode.
+ * It differs from p5.js' default, Retained Mode, which caches
+ * geometries and buffers on the CPU to reduce the number of webgl
+ * draw calls. Retained mode is more efficient & performative,
+ * however, Immediate Mode is useful for sketching quick
+ * geometric ideas.
+ */
+'use strict';
+
+var p5 = _dereq_('../core/core');
+var constants = _dereq_('../core/constants');
+
+/**
+ * Begin shape drawing.  This is a helpful way of generating
+ * custom shapes quickly.  However in WEBGL mode, application
+ * performance will likely drop as a result of too many calls to
+ * beginShape() / endShape().  As a high performance alternative,
+ * please use p5.js geometry primitives.
+ * @param  {Number} mode webgl primitives mode.  beginShape supports the
+ *                       following modes:
+ *                       POINTS,LINES,LINE_STRIP,LINE_LOOP,TRIANGLES,
+ *                       TRIANGLE_STRIP,and TRIANGLE_FAN.
+ * @return {[type]}      [description]
+ */
+p5.RendererGL.prototype.beginShape = function(mode){
+  //default shape mode is line_strip
+  this.immediateMode.shapeMode = (mode !== undefined ) ?
+    mode : constants.LINE_STRIP;
+  //if we haven't yet initialized our
+  //immediateMode vertices & buffers, create them now!
+  if(this.immediateMode.vertexPositions === undefined){
+    this.immediateMode.vertexPositions = [];
+    this.immediateMode.vertexColors = [];
+    this.immediateMode.vertexBuffer = this.GL.createBuffer();
+    this.immediateMode.colorBuffer = this.GL.createBuffer();
+  } else {
+    this.immediateMode.vertexPositions.length = 0;
+    this.immediateMode.vertexColors.length = 0;
+  }
+  this.isImmediateDrawing = true;
+  return this;
+};
+/**
+ * adds a vertex to be drawn in a custom Shape.
+ * @param  {Number} x x-coordinate of vertex
+ * @param  {Number} y y-coordinate of vertex
+ * @param  {Number} z z-coordinate of vertex
+ * @return {p5.RendererGL}   [description]
+ * @TODO implement handling of p5.Vector args
+ */
+p5.RendererGL.prototype.vertex = function(x, y, z){
+  this.immediateMode.vertexPositions.push(x, y, z);
+  var vertexColor = this.curFillColor || [0.5, 0.5, 0.5, 1.0];
+  this.immediateMode.vertexColors.push(
+    vertexColor[0],
+    vertexColor[1],
+    vertexColor[2],
+    vertexColor[3]);
+  return this;
+};
+
+/**
+ * End shape drawing and render vertices to screen.
+ * @return {p5.RendererGL} [description]
+ */
+p5.RendererGL.prototype.endShape =
+function(mode, isCurve, isBezier,isQuadratic, isContour, shapeKind){
+  var gl = this.GL;
+  this._bindImmediateBuffers(
+    this.immediateMode.vertexPositions,
+    this.immediateMode.vertexColors);
+  if(mode){
+    if(this.drawMode === 'fill'){
+      switch(this.immediateMode.shapeMode){
+        case constants.LINE_STRIP:
+          this.immediateMode.shapeMode = constants.TRIANGLE_FAN;
+          break;
+        case constants.LINES:
+          this.immediateMode.shapeMode = constants.TRIANGLE_FAN;
+          break;
+        case constants.TRIANGLES:
+          this.immediateMode.shapeMode = constants.TRIANGLE_FAN;
+          break;
+      }
+    } else {
+      switch(this.immediateMode.shapeMode){
+        case constants.LINE_STRIP:
+          this.immediateMode.shapeMode = constants.LINE_LOOP;
+          break;
+        case constants.LINES:
+          this.immediateMode.shapeMode = constants.LINE_LOOP;
+          break;
+      }
+    }
+  }
+  //QUADS & QUAD_STRIP are not supported primitives modes
+  //in webgl.
+  if(this.immediateMode.shapeMode === constants.QUADS ||
+    this.immediateMode.shapeMode === constants.QUAD_STRIP){
+    throw new Error('sorry, ' + this.immediateMode.shapeMode+
+      ' not yet implemented in webgl mode.');
+  }
+  else {
+    gl.enable(gl.BLEND);
+    gl.drawArrays(this.immediateMode.shapeMode, 0,
+      this.immediateMode.vertexPositions.length / 3);
+  }
+  //clear out our vertexPositions & colors arrays
+  //after rendering
+  this.immediateMode.vertexPositions.length = 0;
+  this.immediateMode.vertexColors.length = 0;
+  this.isImmediateDrawing = false;
+  return this;
+};
+/**
+ * Bind immediateMode buffers to data,
+ * then draw gl arrays
+ * @param  {Array} vertices Numbers array representing
+ *                          vertex positions
+ * @return {p5.RendererGL}
+ */
+p5.RendererGL.prototype._bindImmediateBuffers = function(vertices, colors){
+  this._setDefaultCamera();
+  var gl = this.GL;
+  var shaderKey = this._getCurShaderId();
+  var shaderProgram = this.mHash[shaderKey];
+  //vertex position Attribute
+  shaderProgram.vertexPositionAttribute =
+    gl.getAttribLocation(shaderProgram, 'aPosition');
+  gl.enableVertexAttribArray(shaderProgram.vertexPositionAttribute);
+  gl.bindBuffer(gl.ARRAY_BUFFER, this.immediateMode.vertexBuffer);
+  gl.bufferData(
+    gl.ARRAY_BUFFER, new Float32Array(vertices), gl.DYNAMIC_DRAW);
+  gl.vertexAttribPointer(shaderProgram.vertexPositionAttribute,
+    3, gl.FLOAT, false, 0, 0);
+
+  shaderProgram.vertexColorAttribute =
+    gl.getAttribLocation(shaderProgram, 'aVertexColor');
+  gl.enableVertexAttribArray(shaderProgram.vertexColorAttribute);
+  gl.bindBuffer(gl.ARRAY_BUFFER, this.immediateMode.colorBuffer);
+  gl.bufferData(gl.ARRAY_BUFFER,
+    new Float32Array(colors),gl.DYNAMIC_DRAW);
+  gl.vertexAttribPointer(shaderProgram.vertexColorAttribute,
+    4, gl.FLOAT, false, 0, 0);
+  //matrix
+  this._setMatrixUniforms(shaderKey);
+  //@todo implement in all shaders (not just immediateVert)
+  //set our default point size
+  // this._setUniform1f(shaderKey,
+  //   'uPointSize',
+  //   this.pointSize);
+  return this;
+};
+
+//////////////////////////////////////////////
+// COLOR
+//////////////////////////////////////////////
+
+p5.RendererGL.prototype._getColorVertexShader = function(){
+  var gl = this.GL;
+  var mId = 'immediateVert|vertexColorFrag';
+  var shaderProgram;
+
+  if(!this.materialInHash(mId)){
+    shaderProgram =
+      this._initShaders('immediateVert', 'vertexColorFrag', true);
+    this.mHash[mId] = shaderProgram;
+    shaderProgram.vertexColorAttribute =
+    gl.getAttribLocation(shaderProgram, 'aVertexColor');
+    gl.enableVertexAttribArray(shaderProgram.vertexColorAttribute);
+  }else{
+    shaderProgram = this.mHash[mId];
+  }
+  return shaderProgram;
+};
+
+module.exports = p5.RendererGL;
+},{"../core/constants":36,"../core/core":37}],85:[function(_dereq_,module,exports){
+//Retained Mode. The default mode for rendering 3D primitives
+//in WEBGL.
+'use strict';
+
+var p5 = _dereq_('../core/core');
+var hashCount = 0;
+/**
+ * _initBufferDefaults
+ * @description initializes buffer defaults. runs each time a new geometry is
+ * registered
+ * @param  {String} gId  key of the geometry object
+ */
+p5.RendererGL.prototype._initBufferDefaults = function(gId) {
+  //@TODO remove this limit on hashes in gHash
+  hashCount ++;
+  if(hashCount > 1000){
+    var key = Object.keys(this.gHash)[0];
+    delete this.gHash[key];
+    hashCount --;
+  }
+
+  var gl = this.GL;
+  //create a new entry in our gHash
+  this.gHash[gId] = {};
+  this.gHash[gId].vertexBuffer = gl.createBuffer();
+  this.gHash[gId].normalBuffer = gl.createBuffer();
+  this.gHash[gId].uvBuffer = gl.createBuffer();
+  this.gHash[gId].indexBuffer = gl.createBuffer();
+};
+/**
+ * createBuffers description
+ * @param  {String} gId    key of the geometry object
+ * @param  {p5.Geometry}  obj contains geometry data
+ */
+p5.RendererGL.prototype.createBuffers = function(gId, obj) {
+  var gl = this.GL;
+  this._setDefaultCamera();
+  //initialize the gl buffers for our geom groups
+  this._initBufferDefaults(gId);
+  //return the current shaderProgram from our material hash
+  var shaderProgram = this.mHash[this._getCurShaderId()];
+  //@todo rename "numberOfItems" property to something more descriptive
+  //we mult the num geom faces by 3
+  this.gHash[gId].numberOfItems = obj.faces.length * 3;
+  gl.bindBuffer(gl.ARRAY_BUFFER, this.gHash[gId].vertexBuffer);
+  gl.bufferData(
+    gl.ARRAY_BUFFER,
+    new Float32Array( vToNArray(obj.vertices) ),
+    gl.STATIC_DRAW);
+  //vertex position
+  shaderProgram.vertexPositionAttribute =
+    gl.getAttribLocation(shaderProgram, 'aPosition');
+  gl.enableVertexAttribArray(shaderProgram.vertexPositionAttribute);
+
+  gl.vertexAttribPointer(
+    shaderProgram.vertexPositionAttribute,
+    3, gl.FLOAT, false, 0, 0);
+
+  gl.bindBuffer(gl.ARRAY_BUFFER, this.gHash[gId].normalBuffer);
+  gl.bufferData(
+    gl.ARRAY_BUFFER,
+    new Float32Array( vToNArray(obj.vertexNormals) ),
+    gl.STATIC_DRAW);
+  //vertex normal
+  shaderProgram.vertexNormalAttribute =
+    gl.getAttribLocation(shaderProgram, 'aNormal');
+  gl.enableVertexAttribArray(shaderProgram.vertexNormalAttribute);
+
+  gl.vertexAttribPointer(
+    shaderProgram.vertexNormalAttribute,
+    3, gl.FLOAT, false, 0, 0);
+
+  gl.bindBuffer(gl.ARRAY_BUFFER, this.gHash[gId].uvBuffer);
+  gl.bufferData(
+    gl.ARRAY_BUFFER,
+    new Float32Array( flatten(obj.uvs) ),
+    gl.STATIC_DRAW);
+  //texture coordinate Attribute
+  shaderProgram.textureCoordAttribute =
+    gl.getAttribLocation(shaderProgram, 'aTexCoord');
+  gl.enableVertexAttribArray(shaderProgram.textureCoordAttribute);
+  gl.vertexAttribPointer(
+    shaderProgram.textureCoordAttribute,
+    2, gl.FLOAT, false, 0, 0);
+
+  gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, this.gHash[gId].indexBuffer);
+  gl.bufferData(
+    gl.ELEMENT_ARRAY_BUFFER,
+    new Uint16Array( flatten(obj.faces) ),
+    gl.STATIC_DRAW);
+};
+
+/**
+ * Draws buffers given a geometry key ID
+ * @param  {String} gId     ID in our geom hash
+ * @return {p5.RendererGL} this
+ */
+p5.RendererGL.prototype.drawBuffers = function(gId) {
+  this._setDefaultCamera();
+  var gl = this.GL;
+  var shaderKey = this._getCurShaderId();
+  var shaderProgram = this.mHash[shaderKey];
+  //vertex position buffer
+  gl.bindBuffer(gl.ARRAY_BUFFER, this.gHash[gId].vertexBuffer);
+  gl.vertexAttribPointer(
+    shaderProgram.vertexPositionAttribute,
+    3, gl.FLOAT, false, 0, 0);
+  //normal buffer
+  gl.bindBuffer(gl.ARRAY_BUFFER, this.gHash[gId].normalBuffer);
+  gl.vertexAttribPointer(
+    shaderProgram.vertexNormalAttribute,
+    3, gl.FLOAT, false, 0, 0);
+  // uv buffer
+  gl.bindBuffer(gl.ARRAY_BUFFER, this.gHash[gId].uvBuffer);
+  gl.vertexAttribPointer(
+    shaderProgram.textureCoordAttribute,
+    2, gl.FLOAT, false, 0, 0);
+  //vertex index buffer
+  gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, this.gHash[gId].indexBuffer);
+  this._setMatrixUniforms(shaderKey);
+  gl.drawElements(
+    gl.TRIANGLES, this.gHash[gId].numberOfItems,
+    gl.UNSIGNED_SHORT, 0);
+  return this;
+};
+///////////////////////////////
+//// UTILITY FUNCTIONS
+//////////////////////////////
+/**
+ * turn a two dimensional array into one dimensional array
+ * @param  {Array} arr 2-dimensional array
+ * @return {Array}     1-dimensional array
+ * [[1, 2, 3],[4, 5, 6]] -> [1, 2, 3, 4, 5, 6]
+ */
+function flatten(arr){
+  if (arr.length>0){
+    return arr.reduce(function(a, b){
+      return a.concat(b);
+    });
+  } else {
+    return [];
+  }
+}
+
+/**
+ * turn a p5.Vector Array into a one dimensional number array
+ * @param  {Array} arr  an array of p5.Vector
+ * @return {Array]}     a one dimensional array of numbers
+ * [p5.Vector(1, 2, 3), p5.Vector(4, 5, 6)] ->
+ * [1, 2, 3, 4, 5, 6]
+ */
+function vToNArray(arr){
+  return flatten(arr.map(function(item){
+    return [item.x, item.y, item.z];
+  }));
+}
+module.exports = p5.RendererGL;
+
+},{"../core/core":37}],86:[function(_dereq_,module,exports){
+'use strict';
+
+var p5 = _dereq_('../core/core');
+var shader = _dereq_('./shader');
+_dereq_('../core/p5.Renderer');
+_dereq_('./p5.Matrix');
+var uMVMatrixStack = [];
+var RESOLUTION = 1000;
+
+//@TODO should implement public method
+//to override these attributes
+var attributes = {
+  alpha: true,
+  depth: true,
+  stencil: true,
+  antialias: false,
+  premultipliedAlpha: false,
+  preserveDrawingBuffer: false
+};
+
+/**
+ * @class p5.RendererGL
+ * @constructor
+ * @extends p5.Renderer
+ * 3D graphics class.
+ * @todo extend class to include public method for offscreen
+ * rendering (FBO).
+ *
+ */
+p5.RendererGL = function(elt, pInst, isMainCanvas) {
+  p5.Renderer.call(this, elt, pInst, isMainCanvas);
+  this._initContext();
+
+  this.isP3D = true; //lets us know we're in 3d mode
+  this.GL = this.drawingContext;
+  //lights
+  this.ambientLightCount = 0;
+  this.directionalLightCount = 0;
+  this.pointLightCount = 0;
+  //camera
+  this._isSetCamera = false;
+
+  /**
+   * model view, projection, & normal
+   * matrices
+   */
+  this.uMVMatrix = new p5.Matrix();
+  this.uPMatrix  = new p5.Matrix();
+  this.uNMatrix = new p5.Matrix('mat3');
+  //Geometry & Material hashes
+  this.gHash = {};
+  this.mHash = {};
+  //Imediate Mode
+  //default drawing is done in Retained Mode
+  this.isImmediateDrawing = false;
+  this.immediateMode = {};
+  this.curFillColor = [0.5,0.5,0.5,1.0];
+  this.curStrokeColor = [0.5,0.5,0.5,1.0];
+  this.pointSize = 5.0;//default point/stroke
+  return this;
+};
+
+p5.RendererGL.prototype = Object.create(p5.Renderer.prototype);
+
+//////////////////////////////////////////////
+// Setting
+//////////////////////////////////////////////
+
+p5.RendererGL.prototype._initContext = function() {
+  try {
+    this.drawingContext = this.canvas.getContext('webgl', attributes) ||
+      this.canvas.getContext('experimental-webgl', attributes);
+    if (this.drawingContext === null) {
+      throw new Error('Error creating webgl context');
+    } else {
+      console.log('p5.RendererGL: enabled webgl context');
+      var gl = this.drawingContext;
+      gl.enable(gl.DEPTH_TEST);
+      gl.depthFunc(gl.LEQUAL);
+      gl.viewport(0, 0, gl.drawingBufferWidth, gl.drawingBufferHeight);
+    }
+  } catch (er) {
+    throw new Error(er);
+  }
+};
+//detect if user didn't set the camera
+//then call this function below
+p5.RendererGL.prototype._setDefaultCamera = function(){
+  if(!this._isSetCamera){
+    var _w = this.width;
+    var _h = this.height;
+    this.uPMatrix = p5.Matrix.identity();
+    this.uPMatrix.perspective(60 / 180 * Math.PI, _w / _h, 0.1, 100);
+    this._isSetCamera = true;
+  }
+};
+
+p5.RendererGL.prototype._update = function() {
+  this.uMVMatrix = p5.Matrix.identity();
+  this.translate(0, 0, -800);
+  this.ambientLightCount = 0;
+  this.directionalLightCount = 0;
+  this.pointLightCount = 0;
+};
+
+/**
+ * [background description]
+ * @return {[type]} [description]
+ */
+p5.RendererGL.prototype.background = function() {
+  var gl = this.GL;
+  var _col = this._pInst.color.apply(this._pInst, arguments);
+  var _r = (_col.levels[0]) / 255;
+  var _g = (_col.levels[1]) / 255;
+  var _b = (_col.levels[2]) / 255;
+  var _a = (_col.levels[3]) / 255;
+  gl.clearColor(_r, _g, _b, _a);
+  gl.clear(gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT);
+};
+
+//@TODO implement this
+// p5.RendererGL.prototype.clear = function() {
+//@TODO
+// };
+
+//////////////////////////////////////////////
+// SHADER
+//////////////////////////////////////////////
+
+/**
+ * [_initShaders description]
+ * @param  {string} vertId [description]
+ * @param  {string} fragId [description]
+ * @return {[type]}        [description]
+ */
+p5.RendererGL.prototype._initShaders =
+function(vertId, fragId, isImmediateMode) {
+  var gl = this.GL;
+  //set up our default shaders by:
+  // 1. create the shader,
+  // 2. load the shader source,
+  // 3. compile the shader
+  var _vertShader = gl.createShader(gl.VERTEX_SHADER);
+  //load in our default vertex shader
+  gl.shaderSource(_vertShader, shader[vertId]);
+  gl.compileShader(_vertShader);
+  // if our vertex shader failed compilation?
+  if (!gl.getShaderParameter(_vertShader, gl.COMPILE_STATUS)) {
+    alert('Yikes! An error occurred compiling the shaders:' +
+      gl.getShaderInfoLog(_vertShader));
+    return null;
+  }
+
+  var _fragShader = gl.createShader(gl.FRAGMENT_SHADER);
+  //load in our material frag shader
+  gl.shaderSource(_fragShader, shader[fragId]);
+  gl.compileShader(_fragShader);
+  // if our frag shader failed compilation?
+  if (!gl.getShaderParameter(_fragShader, gl.COMPILE_STATUS)) {
+    alert('Darn! An error occurred compiling the shaders:' +
+      gl.getShaderInfoLog(_fragShader));
+    return null;
+  }
+
+  var shaderProgram = gl.createProgram();
+  gl.attachShader(shaderProgram, _vertShader);
+  gl.attachShader(shaderProgram, _fragShader);
+  gl.linkProgram(shaderProgram);
+  if (!gl.getProgramParameter(shaderProgram, gl.LINK_STATUS)) {
+    alert('Snap! Error linking shader program');
+  }
+  //END SHADERS SETUP
+
+  this._getLocation(shaderProgram, isImmediateMode);
+
+  return shaderProgram;
+};
+
+p5.RendererGL.prototype._getLocation =
+function(shaderProgram, isImmediateMode) {
+  var gl = this.GL;
+  gl.useProgram(shaderProgram);
+  shaderProgram.uResolution =
+    gl.getUniformLocation(shaderProgram, 'uResolution');
+  gl.uniform1f(shaderProgram.uResolution, RESOLUTION);
+
+  //projection Matrix uniform
+  shaderProgram.uPMatrixUniform =
+    gl.getUniformLocation(shaderProgram, 'uProjectionMatrix');
+  //model view Matrix uniform
+  shaderProgram.uMVMatrixUniform =
+    gl.getUniformLocation(shaderProgram, 'uModelViewMatrix');
+
+  //@TODO: figure out a better way instead of if statement
+  if(isImmediateMode === undefined){
+    //normal Matrix uniform
+    shaderProgram.uNMatrixUniform =
+    gl.getUniformLocation(shaderProgram, 'uNormalMatrix');
+
+    shaderProgram.samplerUniform =
+    gl.getUniformLocation(shaderProgram, 'uSampler');
+  }
+};
+
+/**
+ * Sets a shader uniform given a shaderProgram and uniform string
+ * @param {String} shaderKey key to material Hash.
+ * @param {String} uniform location in shader.
+ * @param { Number} data data to bind uniform.  Float data type.
+ * @todo currently this function sets uniform1f data.
+ * Should generalize function to accept any uniform
+ * data type.
+ */
+p5.RendererGL.prototype._setUniform1f = function(shaderKey,uniform,data)
+{
+  var gl = this.GL;
+  var shaderProgram = this.mHash[shaderKey];
+  gl.useProgram(shaderProgram);
+  shaderProgram[uniform] = gl.getUniformLocation(shaderProgram, uniform);
+  gl.uniform1f(shaderProgram[uniform], data);
+  return this;
+};
+
+p5.RendererGL.prototype._setMatrixUniforms = function(shaderKey) {
+  var gl = this.GL;
+  var shaderProgram = this.mHash[shaderKey];
+
+  gl.useProgram(shaderProgram);
+
+  gl.uniformMatrix4fv(
+    shaderProgram.uPMatrixUniform,
+    false, this.uPMatrix.mat4);
+
+  gl.uniformMatrix4fv(
+    shaderProgram.uMVMatrixUniform,
+    false, this.uMVMatrix.mat4);
+
+  this.uNMatrix.inverseTranspose(this.uMVMatrix);
+
+  gl.uniformMatrix3fv(
+    shaderProgram.uNMatrixUniform,
+    false, this.uNMatrix.mat3);
+};
+//////////////////////////////////////////////
+// GET CURRENT | for shader and color
+//////////////////////////////////////////////
+p5.RendererGL.prototype._getShader = function(vertId, fragId, isImmediateMode) {
+  var mId = vertId + '|' + fragId;
+  //create it and put it into hashTable
+  if(!this.materialInHash(mId)){
+    var shaderProgram = this._initShaders(vertId, fragId, isImmediateMode);
+    this.mHash[mId] = shaderProgram;
+  }
+  this.curShaderId = mId;
+
+  return this.mHash[this.curShaderId];
+};
+
+p5.RendererGL.prototype._getCurShaderId = function(){
+  //if the shader ID is not yet defined
+  var mId, shaderProgram;
+  if(this.drawMode !== 'fill' && this.curShaderId === undefined){
+    //default shader: normalMaterial()
+    mId = 'normalVert|normalFrag';
+    shaderProgram = this._initShaders('normalVert', 'normalFrag');
+    this.mHash[mId] = shaderProgram;
+    this.curShaderId = mId;
+  } else if(this.isImmediateDrawing && this.drawMode === 'fill'){
+    mId = 'immediateVert|vertexColorFrag';
+    shaderProgram = this._initShaders('immediateVert', 'vertexColorFrag');
+    this.mHash[mId] = shaderProgram;
+    this.curShaderId = mId;
+  }
+  return this.curShaderId;
+};
+
+//////////////////////////////////////////////
+// COLOR
+//////////////////////////////////////////////
+/**
+ * Basic fill material for geometry with a given color
+ * @method  fill
+ * @param  {Number|Array|String|p5.Color} v1  gray value,
+ * red or hue value (depending on the current color mode),
+ * or color Array, or CSS color string
+ * @param  {Number}            [v2] optional: green or saturation value
+ * @param  {Number}            [v3] optional: blue or brightness value
+ * @param  {Number}            [a]  optional: opacity
+ * @return {p5}                the p5 object
+ * @example
+ * <div>
+ * <code>
+ * function setup(){
+ *   createCanvas(100, 100, WEBGL);
+ * }
+ *
+ * function draw(){
+ *  background(0);
+ *  fill(250, 0, 0);
+ *  rotateX(frameCount * 0.01);
+ *  rotateY(frameCount * 0.01);
+ *  rotateZ(frameCount * 0.01);
+ *  box(200, 200, 200);
+ * }
+ * </code>
+ * </div>
+ */
+p5.RendererGL.prototype.fill = function(v1, v2, v3, a) {
+  var gl = this.GL;
+  var shaderProgram;
+  //see material.js for more info on color blending in webgl
+  var colors = this._renderer._applyColorBlend.apply(this._renderer, arguments);
+  this.curFillColor = colors;
+  this.drawMode = 'fill';
+  if(this.isImmediateDrawing){
+    shaderProgram =
+    this._getShader('immediateVert','vertexColorFrag');
+    gl.useProgram(shaderProgram);
+  } else {
+    shaderProgram =
+    this._getShader('normalVert', 'basicFrag');
+    gl.useProgram(shaderProgram);
+    //RetainedMode uses a webgl uniform to pass color vals
+    //in ImmediateMode, we want access to each vertex so therefore
+    //we cannot use a uniform.
+    shaderProgram.uMaterialColor = gl.getUniformLocation(
+      shaderProgram, 'uMaterialColor' );
+    gl.uniform4f( shaderProgram.uMaterialColor,
+      colors[0],
+      colors[1],
+      colors[2],
+      colors[3]);
+  }
+  return this;
+};
+p5.RendererGL.prototype.stroke = function(r, g, b, a) {
+  var color = this._pInst.color.apply(this._pInst, arguments);
+  var colorNormalized = color._array;
+  this.curStrokeColor = colorNormalized;
+  this.drawMode = 'stroke';
+  return this;
+};
+
+//@TODO
+p5.RendererGL.prototype._strokeCheck = function(){
+  if(this.drawMode === 'stroke'){
+    throw new Error(
+      'stroke for shapes in 3D not yet implemented, use fill for now :('
+    );
+  }
+};
+
+/**
+ * [strokeWeight description]
+ * @param  {Number} pointSize stroke point size
+ * @return {[type]}           [description]
+ * @todo  strokeWeight currently works on points only.
+ * implement on all wireframes and strokes.
+ */
+p5.RendererGL.prototype.strokeWeight = function(pointSize) {
+  this.pointSize = pointSize;
+  return this;
+};
+//////////////////////////////////////////////
+// HASH | for material and geometry
+//////////////////////////////////////////////
+
+p5.RendererGL.prototype.geometryInHash = function(gId){
+  return this.gHash[gId] !== undefined;
+};
+
+p5.RendererGL.prototype.materialInHash = function(mId){
+  return this.mHash[mId] !== undefined;
+};
+
+/**
+ * [resize description]
+ * @param  {[type]} w [description]
+ * @param  {[tyoe]} h [description]
+ * @return {[type]}   [description]
+ */
+p5.RendererGL.prototype.resize = function(w,h) {
+  var gl = this.GL;
+  p5.Renderer.prototype.resize.call(this, w, h);
+  gl.viewport(0, 0, gl.drawingBufferWidth, gl.drawingBufferHeight);
+};
+
+/**
+ * clears color and depth buffers
+ * with r,g,b,a
+ * @param {Number} r normalized red val.
+ * @param {Number} g normalized green val.
+ * @param {Number} b normalized blue val.
+ * @param {Number} a normalized alpha val.
+ */
+p5.RendererGL.prototype.clear = function() {
+  var gl = this.GL;
+  gl.clearColor(arguments[0],
+    arguments[1],
+    arguments[2],
+    arguments[3]);
+  gl.clear(gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT);
+};
+
+/**
+ * [translate description]
+ * @param  {[type]} x [description]
+ * @param  {[type]} y [description]
+ * @param  {[type]} z [description]
+ * @return {[type]}   [description]
+ * @todo implement handle for components or vector as args
+ */
+p5.RendererGL.prototype.translate = function(x, y, z) {
+  //@TODO: figure out how to fit the resolution
+  x = x / RESOLUTION;
+  y = -y / RESOLUTION;
+  z = z / RESOLUTION;
+  this.uMVMatrix.translate([x,y,z]);
+  return this;
+};
+
+/**
+ * Scales the Model View Matrix by a vector
+ * @param  {Number | p5.Vector | Array} x [description]
+ * @param  {Number} [y] y-axis scalar
+ * @param  {Number} [z] z-axis scalar
+ * @return {this}   [description]
+ */
+p5.RendererGL.prototype.scale = function(x,y,z) {
+  this.uMVMatrix.scale([x,y,z]);
+  return this;
+};
+
+p5.RendererGL.prototype.rotate = function(rad, axis){
+  this.uMVMatrix.rotate(rad, axis);
+  return this;
+};
+
+p5.RendererGL.prototype.rotateX = function(rad) {
+  this.rotate(rad, [1,0,0]);
+  return this;
+};
+
+p5.RendererGL.prototype.rotateY = function(rad) {
+  this.rotate(rad, [0,1,0]);
+  return this;
+};
+
+p5.RendererGL.prototype.rotateZ = function(rad) {
+  this.rotate(rad, [0,0,1]);
+  return this;
+};
+
+/**
+ * pushes a copy of the model view matrix onto the
+ * MV Matrix stack.
+ */
+p5.RendererGL.prototype.push = function() {
+  uMVMatrixStack.push(this.uMVMatrix.copy());
+};
+
+/**
+ * [pop description]
+ * @return {[type]} [description]
+ */
+p5.RendererGL.prototype.pop = function() {
+  if (uMVMatrixStack.length === 0) {
+    throw new Error('Invalid popMatrix!');
+  }
+  this.uMVMatrix = uMVMatrixStack.pop();
+};
+
+p5.RendererGL.prototype.resetMatrix = function() {
+  this.uMVMatrix = p5.Matrix.identity();
+  this.translate(0, 0, -800);
+  return this;
+};
+
+// Text/Typography
+// @TODO:
+p5.RendererGL.prototype._applyTextProperties = function() {
+  //@TODO finish implementation
+  console.error('text commands not yet implemented in webgl');
+};
+module.exports = p5.RendererGL;
+
+},{"../core/core":37,"../core/p5.Renderer":43,"./p5.Matrix":83,"./shader":88}],87:[function(_dereq_,module,exports){
+/**
+ * @module Shape
+ * @submodule 3D Primitives
+ * @for p5
+ * @requires core
+ * @requires p5.Geometry
+ */
+
+'use strict';
+
+var p5 = _dereq_('../core/core');
+_dereq_('./p5.Geometry');
+/**
+ * Draw a plane with given a width and height
+ * @method plane
+ * @param  {Number} width      width of the plane
+ * @param  {Number} height     height of the plane
+ * @param  {Number} [detailX]  Optional number of triangle
+ *                             subdivisions in x-dimension
+ * @param {Number} [detailY]   Optional number of triangle
+ *                             subdivisions in y-dimension
+ * @return {p5}                the p5 object
+ * @example
+ * <div>
+ * <code>
+ * //draw a plane with width 200 and height 200
+ * function setup(){
+ *   createCanvas(100, 100, WEBGL);
+ * }
+ *
+ * function draw(){
+ *   background(200);
+ *   plane(200, 200);
+ * }
+ * </code>
+ * </div>
+ */
+p5.prototype.plane = function(){
+  var args = new Array(arguments.length);
+  for (var i = 0; i < args.length; ++i) {
+    args[i] = arguments[i];
+  }
+  var width = args[0] || 50;
+  var height = args[1] || width;
+  var detailX = typeof args[2] === 'number' ? args[2] : 1;
+  var detailY = typeof args[3] === 'number' ? args[3] : 1;
+
+  var gId = 'plane|'+width+'|'+height+'|'+detailX+'|'+detailY;
+
+  if(!this._renderer.geometryInHash(gId)){
+    var _plane = function(){
+      var u,v,p;
+      for (var i = 0; i <= this.detailY; i++){
+        v = i / this.detailY;
+        for (var j = 0; j <= this.detailX; j++){
+          u = j / this.detailX;
+          p = new p5.Vector(width * u - width/2,
+            height * v - height/2,
+            0);
+          this.vertices.push(p);
+          this.uvs.push([u,v]);
+        }
+      }
+    };
+    var planeGeom =
+    new p5.Geometry(detailX, detailY, _plane);
+    planeGeom
+      .computeFaces()
+      .computeNormals();
+    this._renderer.createBuffers(gId, planeGeom);
+  }
+
+  this._renderer.drawBuffers(gId);
+
+};
+
+/**
+ * Draw a box with given width, height and depth
+ * @method  box
+ * @param  {Number} width     width of the box
+ * @param  {Number} Height    height of the box
+ * @param  {Number} depth     depth of the box
+ * @param {Number} [detailX]  Optional number of triangle
+ *                            subdivisions in x-dimension
+ * @param {Number} [detailY]  Optional number of triangle
+ *                            subdivisions in y-dimension
+ * @return {p5}               the p5 object
+ * @example
+ * <div>
+ * <code>
+ * //draw a spining box with width, height and depth 200
+ * function setup(){
+ *   createCanvas(100, 100, WEBGL);
+ * }
+ *
+ * function draw(){
+ *   background(200);
+ *   rotateX(frameCount * 0.01);
+ *   rotateY(frameCount * 0.01);
+ *   box(200, 200, 200);
+ * }
+ * </code>
+ * </div>
+ */
+p5.prototype.box = function(){
+  var args = new Array(arguments.length);
+  for (var i = 0; i < args.length; ++i) {
+    args[i] = arguments[i];
+  }
+  var width = args[0] || 50;
+  var height = args[1] || width;
+  var depth = args[2] || width;
+
+  var detailX = typeof args[3] === 'number' ? args[3] : 4;
+  var detailY = typeof args[4] === 'number' ? args[4] : 4;
+  var gId = 'box|'+width+'|'+height+'|'+depth+'|'+detailX+'|'+detailY;
+
+  if(!this._renderer.geometryInHash(gId)){
+    var _box = function(){
+      var cubeIndices = [
+        [0, 4, 2, 6],// -1, 0, 0],// -x
+        [1, 3, 5, 7],// +1, 0, 0],// +x
+        [0, 1, 4, 5],// 0, -1, 0],// -y
+        [2, 6, 3, 7],// 0, +1, 0],// +y
+        [0, 2, 1, 3],// 0, 0, -1],// -z
+        [4, 5, 6, 7]// 0, 0, +1] // +z
+      ];
+      var id=0;
+      for (var i = 0; i < cubeIndices.length; i++) {
+        var cubeIndex = cubeIndices[i];
+        var v = i * 4;
+        for (var j = 0; j < 4; j++) {
+          var d = cubeIndex[j];
+          //inspired by lightgl:
+          //https://github.com/evanw/lightgl.js
+          //octants:https://en.wikipedia.org/wiki/Octant_(solid_geometry)
+          var octant = new p5.Vector(
+            ((d & 1) * 2 - 1)*width/2,
+            ((d & 2) - 1) *height/2,
+            ((d & 4) / 2 - 1) * depth/2);
+          this.vertices.push( octant );
+          this.uvs.push([j & 1, (j & 2) / 2]);
+          id++;
+        }
+        this.faces.push([v, v + 1, v + 2]);
+        this.faces.push([v + 2, v + 1, v + 3]);
+      }
+    };
+    var boxGeom = new p5.Geometry(detailX,detailY, _box);
+    boxGeom.computeNormals();
+    //initialize our geometry buffer with
+    //the key val pair:
+    //geometry Id, Geom object
+    this._renderer.createBuffers(gId, boxGeom);
+  }
+  this._renderer.drawBuffers(gId);
+
+  return this;
+
+};
+
+/**
+ * Draw a sphere with given radius
+ * @method sphere
+ * @param  {Number} radius            radius of circle
+ * @param  {Number} [detailX]         optional: number of segments,
+ *                                    the more segments the smoother geometry
+ *                                    default is 24
+ * @param  {Number} [detailY]         optional: number of segments,
+ *                                    the more segments the smoother geometry
+ *                                    default is 16
+ * @return {p5}                       the p5 object
+ * @example
+ * <div>
+ * <code>
+ * // draw a sphere with radius 200
+ * function setup(){
+ *   createCanvas(100, 100, WEBGL);
+ * }
+ *
+ * function draw(){
+ *   background(200);
+ *   sphere(200);
+ * }
+ * </code>
+ * </div>
+ */
+p5.prototype.sphere = function(){
+  var args = new Array(arguments.length);
+  for (var i = 0; i < args.length; ++i) {
+    args[i] = arguments[i];
+  }
+  //@todo validate params here
+  //
+  var radius = args[0] || 50;
+  var detailX = typeof args[1] === 'number' ? args[1] : 24;
+  var detailY = typeof args[2] === 'number' ? args[2] : 16;
+  var gId = 'sphere|'+radius+'|'+detailX+'|'+detailY;
+  if(!this._renderer.geometryInHash(gId)){
+    var _sphere = function(){
+      var u,v,p;
+      for (var i = 0; i <= this.detailY; i++){
+        v = i / this.detailY;
+        for (var j = 0; j <= this.detailX; j++){
+          u = j / this.detailX;
+          var theta = 2 * Math.PI * u;
+          var phi = Math.PI * v - Math.PI / 2;
+          p = new p5.Vector(radius * Math.cos(phi) * Math.sin(theta),
+            radius * Math.sin(phi),
+            radius * Math.cos(phi) * Math.cos(theta));
+          this.vertices.push(p);
+          this.uvs.push([u,v]);
+        }
+      }
+    };
+    var sphereGeom = new p5.Geometry(detailX, detailY, _sphere);
+    sphereGeom
+      .computeFaces()
+      .computeNormals()
+      .averageNormals()
+      .averagePoleNormals();
+    this._renderer.createBuffers(gId, sphereGeom);
+  }
+  this._renderer.drawBuffers(gId);
+
+  return this;
+};
+
+
+/**
+* @private
+* helper function for creating both cones and cyllinders
+*/
+var _truncatedCone = function(
+  bottomRadius,
+  topRadius,
+  height,
+  detailX,
+  detailY,
+  topCap,
+  bottomCap) {
+  detailX = (detailX < 3) ? 3 : detailX;
+  detailY = (detailY < 1) ? 1 : detailY;
+  topCap = (topCap === undefined) ? true : topCap;
+  bottomCap = (bottomCap === undefined) ? true : bottomCap;
+  var extra = (topCap ? 2 : 0) + (bottomCap ? 2 : 0);
+  var vertsAroundEdge = detailX + 1;
+
+  // ensure constant slant
+  var slant = Math.atan2(bottomRadius - topRadius, height);
+  var start = topCap ? -2 : 0;
+  var end = detailY + (bottomCap ? 2 : 0);
+  var yy, ii;
+  for (yy = start; yy <= end; ++yy) {
+    var v = yy / detailY;
+    var y = height * v;
+    var ringRadius;
+    if (yy < 0) {
+      y = 0;
+      v = 1;
+      ringRadius = bottomRadius;
+    } else if (yy > detailY) {
+      y = height;
+      v = 1;
+      ringRadius = topRadius;
+    } else {
+      ringRadius = bottomRadius +
+        (topRadius - bottomRadius) * (yy / detailY);
+    }
+    if (yy === -2 || yy === detailY + 2) {
+      ringRadius = 0;
+      v = 0;
+    }
+    y -= height / 2;
+    for (ii = 0; ii < vertsAroundEdge; ++ii) {
+      //VERTICES
+      this.vertices.push(
+        new p5.Vector(
+          Math.sin(ii*Math.PI * 2 /detailX) * ringRadius,
+          y,
+          Math.cos(ii*Math.PI * 2 /detailX) * ringRadius)
+        );
+      //VERTEX NORMALS
+      this.vertexNormals.push(
+        new p5.Vector(
+          (yy < 0 || yy > detailY) ? 0 :
+          (Math.sin(ii * Math.PI * 2 / detailX) * Math.cos(slant)),
+          (yy < 0) ? -1 : (yy > detailY ? 1 : Math.sin(slant)),
+          (yy < 0 || yy > detailY) ? 0 :
+          (Math.cos(ii * Math.PI * 2 / detailX) * Math.cos(slant)))
+        );
+      //UVs
+      this.uvs.push([(ii / detailX), v]);
+    }
+  }
+  for (yy = 0; yy < detailY + extra; ++yy) {
+    for (ii = 0; ii < detailX; ++ii) {
+      this.faces.push([vertsAroundEdge * (yy + 0) + 0 + ii,
+        vertsAroundEdge * (yy + 0) + 1 + ii,
+        vertsAroundEdge * (yy + 1) + 1 + ii]);
+      this.faces.push([vertsAroundEdge * (yy + 0) + 0 + ii,
+        vertsAroundEdge * (yy + 1) + 1 + ii,
+        vertsAroundEdge * (yy + 1) + 0 + ii]);
+    }
+  }
+};
+
+/**
+ * Draw a cylinder with given radius and height
+ * @method  cylinder
+ * @param  {Number} radius     radius of the surface
+ * @param  {Number} height     height of the cylinder
+ * @param  {Number} [detailX]  optional: number of segments,
+ *                             the more segments the smoother geometry
+ *                             default is 24
+ * @param {Number} [detailY]   optional: number of segments in y-dimension,
+ *                             the more segments the smoother geometry
+ *                             default is 16
+ * @return {p5}                the p5 object
+ * @example
+ * <div>
+ * <code>
+ * //draw a spining sylinder with radius 200 and height 200
+ * function setup(){
+ *   createCanvas(100, 100, WEBGL);
+ * }
+ *
+ * function draw(){
+ *   background(200);
+ *   rotateX(frameCount * 0.01);
+ *   rotateZ(frameCount * 0.01);
+ *   cylinder(200, 200);
+ * }
+ * </code>
+ * </div>
+ */
+p5.prototype.cylinder = function(){
+  var args = new Array(arguments.length);
+  for (var i = 0; i < args.length; ++i) {
+    args[i] = arguments[i];
+  }
+  var radius = args[0] || 50;
+  var height = args[1] || radius;
+  var detailX = typeof args[2] === 'number' ? args[2] : 24;
+  var detailY = typeof args[3] === 'number' ? args[3] : 16;
+  var gId = 'cylinder|'+radius+'|'+height+'|'+detailX+'|'+detailY;
+  if(!this._renderer.geometryInHash(gId)){
+    var cylinderGeom = new p5.Geometry(detailX, detailY);
+    _truncatedCone.call(
+      cylinderGeom,
+      radius,
+      radius,
+      height,
+      detailX,
+      detailY,
+      true,true);
+    cylinderGeom.computeNormals();
+    this._renderer.createBuffers(gId, cylinderGeom);
+  }
+
+  this._renderer.drawBuffers(gId);
+
+  return this;
+};
+
+
+/**
+ * Draw a cone with given radius and height
+ * @method cone
+ * @param  {Number} radius            radius of the bottom surface
+ * @param  {Number} height            height of the cone
+ * @param  {Number} [detailX]         optional: number of segments,
+ *                                    the more segments the smoother geometry
+ *                                    default is 24
+ * @param  {Number} [detailY]         optional: number of segments,
+ *                                    the more segments the smoother geometry
+ *                                    default is 16
+ * @return {p5}                       the p5 object
+ * @example
+ * <div>
+ * <code>
+ * //draw a spining cone with radius 200 and height 200
+ * function setup(){
+ *   createCanvas(100, 100, WEBGL);
+ * }
+ *
+ * function draw(){
+ *   background(200);
+ *   rotateX(frameCount * 0.01);
+ *   rotateZ(frameCount * 0.01);
+ *   cone(200, 200);
+ * }
+ * </code>
+ * </div>
+ */
+p5.prototype.cone = function(){
+  var args = new Array(arguments.length);
+  for (var i = 0; i < args.length; ++i) {
+    args[i] = arguments[i];
+  }
+  var baseRadius = args[0] || 50;
+  var height = args[1] || baseRadius;
+  var detailX = typeof args[2] === 'number' ? args[2] : 24;
+  var detailY = typeof args[3] === 'number' ? args[3] : 16;
+  var gId = 'cone|'+baseRadius+'|'+height+'|'+detailX+'|'+detailY;
+  if(!this._renderer.geometryInHash(gId)){
+    var coneGeom = new p5.Geometry(detailX, detailY);
+    _truncatedCone.call(coneGeom,
+      baseRadius,
+      0,//top radius 0
+      height,
+      detailX,
+      detailY,
+      true,
+      true);
+    //for cones we need to average Normals
+    coneGeom
+      .computeNormals();
+    this._renderer.createBuffers(gId, coneGeom);
+  }
+
+  this._renderer.drawBuffers(gId);
+
+  return this;
+};
+
+/**
+ * Draw an ellipsoid with given raduis
+ * @method ellipsoid
+ * @param  {Number} radiusx           xradius of circle
+ * @param  {Number} radiusy           yradius of circle
+ * @param  {Number} radiusz           zradius of circle
+ * @param  {Number} [detailX]         optional: number of segments,
+ *                                    the more segments the smoother geometry
+ *                                    default is 24. Avoid detail number above
+ *                                    150, it may crash the browser.
+ * @param  {Number} [detailY]         optional: number of segments,
+ *                                    the more segments the smoother geometry
+ *                                    default is 16. Avoid detail number above
+ *                                    150, it may crash the browser.
+ * @return {p5}                       the p5 object
+ * @example
+ * <div>
+ * <code>
+ * // draw an ellipsoid with radius 200, 300 and 400 .
+ * function setup(){
+ *   createCanvas(100, 100, WEBGL);
+ * }
+ *
+ * function draw(){
+ *   background(200);
+ *   ellipsoid(200,300,400);
+ * }
+ * </code>
+ * </div>
+ */
+p5.prototype.ellipsoid = function(){
+  var args = new Array(arguments.length);
+  for (var i = 0; i < args.length; ++i) {
+    args[i] = arguments[i];
+  }
+  var detailX = typeof args[3] === 'number' ? args[3] : 24;
+  var detailY = typeof args[4] === 'number' ? args[4] : 24;
+  var radiusX = args[0] || 50;
+  var radiusY = args[1] || radiusX;
+  var radiusZ = args[2] || radiusX;
+
+  var gId = 'ellipsoid|'+radiusX+'|'+radiusY+
+  '|'+radiusZ+'|'+detailX+'|'+detailY;
+
+
+  if(!this._renderer.geometryInHash(gId)){
+    var _ellipsoid = function(){
+      var u,v,p;
+      for (var i = 0; i <= this.detailY; i++){
+        v = i / this.detailY;
+        for (var j = 0; j <= this.detailX; j++){
+          u = j / this.detailX;
+          var theta = 2 * Math.PI * u;
+          var phi = Math.PI * v - Math.PI / 2;
+          p = new p5.Vector(radiusX * Math.cos(phi) * Math.sin(theta),
+            radiusY * Math.sin(phi),
+            radiusZ * Math.cos(phi) * Math.cos(theta));
+          this.vertices.push(p);
+          this.uvs.push([u,v]);
+        }
+      }
+    };
+    var ellipsoidGeom = new p5.Geometry(detailX, detailY,_ellipsoid);
+    ellipsoidGeom
+      .computeFaces()
+      .computeNormals();
+    this._renderer.createBuffers(gId, ellipsoidGeom);
+  }
+
+  this._renderer.drawBuffers(gId);
+
+  return this;
+};
+
+/**
+ * Draw a torus with given radius and tube radius
+ * @method torus
+ * @param  {Number} radius        radius of the whole ring
+ * @param  {Number} tubeRadius    radius of the tube
+ * @param  {Number} [detailX]     optional: number of segments in x-dimension,
+ *                                the more segments the smoother geometry
+ *                                default is 24
+ * @param  {Number} [detailY]     optional: number of segments in y-dimension,
+ *                                the more segments the smoother geometry
+ *                                default is 16
+ * @return {p5}                   the p5 object
+ * @example
+ * <div>
+ * <code>
+ * //draw a spining torus with radius 200 and tube radius 60
+ * function setup(){
+ *   createCanvas(100, 100, WEBGL);
+ * }
+ *
+ * function draw(){
+ *   background(200);
+ *   rotateX(frameCount * 0.01);
+ *   rotateY(frameCount * 0.01);
+ *   torus(200, 60);
+ * }
+ * </code>
+ * </div>
+ */
+p5.prototype.torus = function(){
+  var args = new Array(arguments.length);
+  for (var i = 0; i < args.length; ++i) {
+    args[i] = arguments[i];
+  }
+  var detailX = typeof args[2] === 'number' ? args[2] : 24;
+  var detailY = typeof args[3] === 'number' ? args[3] : 16;
+
+  var radius = args[0] || 50;
+  var tubeRadius = args[1] || 10;
+
+  var gId = 'torus|'+radius+'|'+tubeRadius+'|'+detailX+'|'+detailY;
+
+  if(!this._renderer.geometryInHash(gId)){
+    var _torus = function(){
+      var u,v,p;
+      for (var i = 0; i <= this.detailY; i++){
+        v = i / this.detailY;
+        for (var j = 0; j <= this.detailX; j++){
+          u = j / this.detailX;
+          var theta = 2 * Math.PI * u;
+          var phi = 2 * Math.PI * v;
+          p = new p5.Vector(
+            (radius + tubeRadius * Math.cos(phi)) * Math.cos(theta),
+            (radius + tubeRadius * Math.cos(phi)) * Math.sin(theta),
+            tubeRadius * Math.sin(phi));
+          this.vertices.push(p);
+          this.uvs.push([u,v]);
+        }
+      }
+    };
+    var torusGeom = new p5.Geometry(detailX, detailY, _torus);
+    torusGeom
+      .computeFaces()
+      .computeNormals()
+      .averageNormals();
+    this._renderer.createBuffers(gId, torusGeom);
+  }
+
+  this._renderer.drawBuffers(gId);
+
+  return this;
+};
+
+///////////////////////
+/// 2D primitives
+/////////////////////////
+
+//@TODO
+p5.RendererGL.prototype.point = function(x, y, z){
+  console.log('point not yet implemented in webgl');
+  return this;
+};
+
+p5.RendererGL.prototype.triangle = function
+(args){
+  var x1=args[0], y1=args[1], z1=args[2];
+  var x2=args[3], y2=args[4], z2=args[5];
+  var x3=args[6], y3=args[7], z3=args[8];
+  var gId = 'tri|'+x1+'|'+y1+'|'+z1+'|'+
+  x2+'|'+y2+'|'+z2+
+  x3+'|'+y3+'|'+z3;
+  if(!this.geometryInHash(gId)){
+    var _triangle = function(){
+      var vertices = [];
+      vertices.push(new p5.Vector(x1,y1,z1));
+      vertices.push(new p5.Vector(x2,y2,z2));
+      vertices.push(new p5.Vector(x3,y3,z3));
+      this.vertices = vertices;
+      this.faces = [[0,1,2]];
+      this.uvs = [[0,0],[0,1],[1,1]];
+    };
+    var triGeom = new p5.Geometry(1,1,_triangle);
+    triGeom.computeNormals();
+    this.createBuffers(gId, triGeom);
+  }
+
+  this.drawBuffers(gId);
+  return this;
+};
+
+p5.RendererGL.prototype.ellipse = function
+(args){
+  var x = args[0];
+  var y = args[1];
+  var z = args[2];
+  var width = args[3];
+  var height = args[4];
+  //detailX and Y are optional 6th & 7th
+  //arguments
+  var detailX = args[5] || 24;
+  var detailY = args[6] || 16;
+  var gId = 'ellipse|'+args[0]+'|'+args[1]+'|'+args[2]+'|'+
+  args[3]+'|'+args[4];
+  if(!this.geometryInHash(gId)){
+    var _ellipse = function(){
+      var u,v,p;
+      for (var i = 0; i <= this.detailY; i++){
+        v = i / this.detailY;
+        for (var j = 0; j <= this.detailX; j++){
+          u = j / this.detailX;
+          var theta = 2 * Math.PI * u;
+          if(v === 0){
+            p = new p5.Vector(x, y, z);
+          }
+          else{
+            var _x = x + width * Math.sin(theta);
+            var _y = y + height * Math.cos(theta);
+            var _z = z;
+            p = new p5.Vector(_x, _y, _z);
+          }
+          this.vertices.push(p);
+          this.uvs.push([u,v]);
+        }
+      }
+    };
+    var ellipseGeom = new p5.Geometry(detailX,detailY,_ellipse);
+    ellipseGeom
+      .computeFaces()
+      .computeNormals();
+    this.createBuffers(gId, ellipseGeom);
+  }
+  this.drawBuffers(gId);
+  return this;
+};
+
+p5.RendererGL.prototype.rect = function
+(args){
+  var gId = 'rect|'+args[0]+'|'+args[1]+'|'+args[2]+'|'+
+  args[3]+'|'+args[4];
+  var x = args[0];
+  var y = args[1];
+  var z = args[2];
+  var width = args[3];
+  var height = args[4];
+  var detailX = args[5] || 24;
+  var detailY = args[6] || 16;
+  if(!this.geometryInHash(gId)){
+    var _rect = function(){
+      var u,v,p;
+      for (var i = 0; i <= this.detailY; i++){
+        v = i / this.detailY;
+        for (var j = 0; j <= this.detailX; j++){
+          u = j / this.detailX;
+          p = new p5.Vector(
+            (x + width) * u,
+            (y + height) * v,
+            z
+          );
+          this.vertices.push(p);
+          this.uvs.push([u,v]);
+        }
+      }
+    };
+    var rectGeom = new p5.Geometry(detailX,detailY,_rect);
+    rectGeom
+      .computeFaces()
+      .computeNormals();
+    this.createBuffers(gId, rectGeom);
+  }
+  this.drawBuffers(gId);
+  return this;
+};
+
+p5.RendererGL.prototype.quad = function(){
+  var args = new Array(arguments.length);
+  for (var i = 0; i < args.length; ++i) {
+    args[i] = arguments[i];
+  }
+  //@todo validate params here
+  //
+  var x1 = args[0],
+    y1 = args[1],
+    z1 = args[2],
+    x2 = args[3],
+    y2 = args[4],
+    z2 = args[5],
+    x3 = args[6],
+    y3 = args[7],
+    z3 = args[8],
+    x4 = args[9],
+    y4 = args[10],
+    z4 = args[11];
+  var gId = 'quad|'+x1+'|'+y1+'|'+z1+'|'+
+  x2+'|'+y2+'|'+z2+
+  x3+'|'+y3+'|'+z3+
+  x4+'|'+y4+'|'+z4;
+  if(!this.geometryInHash(gId)){
+    var _quad = function(){
+      this.vertices.push(new p5.Vector(x1,y1,z1));
+      this.vertices.push(new p5.Vector(x2,y2,z2));
+      this.vertices.push(new p5.Vector(x3,y3,z3));
+      this.vertices.push(new p5.Vector(x4,y4,z4));
+      this.uvs.push([0, 0], [1, 0], [1, 1], [0, 1]);
+    };
+    var quadGeom = new p5.Geometry(2,2,_quad);
+    quadGeom.computeNormals();
+    quadGeom.faces = [[0,1,2],[2,3,0]];
+    this.createBuffers(gId, quadGeom);
+  }
+  this.drawBuffers(gId);
+  return this;
+};
+
+//this implementation of bezier curve
+//is based on Bernstein polynomial
+p5.RendererGL.prototype.bezier = function
+(args){
+  var bezierDetail=args[12] || 20;//value of Bezier detail
+  this.beginShape();
+  var coeff=[0,0,0,0];//  Bernstein polynomial coeffecients
+  var vertex=[0,0,0]; //(x,y,z) coordinates of points in bezier curve
+  for(var i=0; i<=bezierDetail; i++){
+    coeff[0]=Math.pow(1-(i/bezierDetail),3);
+    coeff[1]=(3*(i/bezierDetail)) * (Math.pow(1-(i/bezierDetail),2));
+    coeff[2]=(3*Math.pow(i/bezierDetail,2)) * (1-(i/bezierDetail));
+    coeff[3]=Math.pow(i/bezierDetail,3);
+    vertex[0]=args[0]*coeff[0] + args[3]*coeff[1] +
+              args[6]*coeff[2] + args[9]*coeff[3];
+    vertex[1]=args[1]*coeff[0] + args[4]*coeff[1] +
+              args[7]*coeff[2] + args[10]*coeff[3];
+    vertex[2]=args[2]*coeff[0] + args[5]*coeff[1] +
+              args[8]*coeff[2] + args[11]*coeff[3];
+    this.vertex(vertex[0],vertex[1],vertex[2]);
+  }
+  this.endShape();
+  return this;
+};
+
+p5.RendererGL.prototype.curve=function
+(args){
+  var curveDetail=args[12];
+  this.beginShape();
+  var coeff=[0,0,0,0];//coeffecients of the equation
+  var vertex=[0,0,0]; //(x,y,z) coordinates of points in bezier curve
+  for(var i=0; i<=curveDetail; i++){
+    coeff[0]=Math.pow((i/curveDetail),3) * 0.5;
+    coeff[1]=Math.pow((i/curveDetail),2) * 0.5;
+    coeff[2]=(i/curveDetail) * 0.5;
+    coeff[3]=0.5;
+    vertex[0]=coeff[0]*(-args[0] + (3*args[3]) - (3*args[6]) +args[9]) +
+              coeff[1]*((2*args[0]) - (5*args[3]) + (4*args[6]) - args[9]) +
+              coeff[2]*(-args[0] + args[6]) +
+              coeff[3]*(2*args[3]);
+    vertex[1]=coeff[0]*(-args[1] + (3*args[4]) - (3*args[7]) +args[10]) +
+              coeff[1]*((2*args[1]) - (5*args[4]) + (4*args[7]) - args[10]) +
+              coeff[2]*(-args[1] + args[7]) +
+              coeff[3]*(2*args[4]);
+    vertex[2]=coeff[0]*(-args[2] + (3*args[5]) - (3*args[8]) +args[11]) +
+              coeff[1]*((2*args[2]) - (5*args[5]) + (4*args[8]) - args[11]) +
+              coeff[2]*(-args[2] + args[8]) +
+              coeff[3]*(2*args[5]);
+    this.vertex(vertex[0],vertex[1],vertex[2]);
+  }
+  this.endShape();
+  return this;
+};
+
+module.exports = p5;
+
+},{"../core/core":37,"./p5.Geometry":82}],88:[function(_dereq_,module,exports){
+
+
+module.exports = {
+  immediateVert:
+    "attribute vec3 aPosition;\nattribute vec4 aVertexColor;\n\nuniform mat4 uModelViewMatrix;\nuniform mat4 uProjectionMatrix;\nuniform float uResolution;\nuniform float uPointSize;\n\nvarying vec4 vColor;\nvoid main(void) {\n  vec4 positionVec4 = vec4(aPosition / uResolution *vec3(1.0, -1.0, 1.0), 1.0);\n  gl_Position = uProjectionMatrix * uModelViewMatrix * positionVec4;\n  vColor = aVertexColor;\n  gl_PointSize = uPointSize;\n}\n",
+  vertexColorVert:
+    "attribute vec3 aPosition;\nattribute vec4 aVertexColor;\n\nuniform mat4 uModelViewMatrix;\nuniform mat4 uProjectionMatrix;\nuniform float uResolution;\n\nvarying vec4 vColor;\n\nvoid main(void) {\n  vec4 positionVec4 = vec4(aPosition / uResolution * vec3(1.0, -1.0, 1.0), 1.0);\n  gl_Position = uProjectionMatrix * uModelViewMatrix * positionVec4;\n  vColor = aVertexColor;\n}\n",
+  vertexColorFrag:
+    "precision mediump float;\nvarying vec4 vColor;\nvoid main(void) {\n  gl_FragColor = vColor;\n}",
+  normalVert:
+    "attribute vec3 aPosition;\nattribute vec3 aNormal;\nattribute vec2 aTexCoord;\n\nuniform mat4 uModelViewMatrix;\nuniform mat4 uProjectionMatrix;\nuniform mat3 uNormalMatrix;\nuniform float uResolution;\n\nvarying vec3 vVertexNormal;\nvarying highp vec2 vVertTexCoord;\n\nvoid main(void) {\n  vec4 positionVec4 = vec4(aPosition / uResolution, 1.0);\n  gl_Position = uProjectionMatrix * uModelViewMatrix * positionVec4;\n  vVertexNormal = vec3( uNormalMatrix * aNormal );\n  vVertTexCoord = aTexCoord;\n}\n",
+  normalFrag:
+    "precision mediump float;\nvarying vec3 vVertexNormal;\nvoid main(void) {\n  gl_FragColor = vec4(vVertexNormal, 1.0);\n}",
+  basicFrag:
+    "precision mediump float;\nvarying vec3 vVertexNormal;\nuniform vec4 uMaterialColor;\nvoid main(void) {\n  gl_FragColor = uMaterialColor;\n}",
+  lightVert:
+    "attribute vec3 aPosition;\nattribute vec3 aNormal;\nattribute vec2 aTexCoord;\n\nuniform mat4 uModelViewMatrix;\nuniform mat4 uProjectionMatrix;\nuniform mat3 uNormalMatrix;\nuniform float uResolution;\nuniform int uAmbientLightCount;\nuniform int uDirectionalLightCount;\nuniform int uPointLightCount;\n\nuniform vec3 uAmbientColor[8];\nuniform vec3 uLightingDirection[8];\nuniform vec3 uDirectionalColor[8];\nuniform vec3 uPointLightLocation[8];\nuniform vec3 uPointLightColor[8];\nuniform bool uSpecular;\n\nvarying vec3 vVertexNormal;\nvarying vec2 vVertTexCoord;\nvarying vec3 vLightWeighting;\n\nvec3 ambientLightFactor = vec3(0.0, 0.0, 0.0);\nvec3 directionalLightFactor = vec3(0.0, 0.0, 0.0);\nvec3 pointLightFactor = vec3(0.0, 0.0, 0.0);\nvec3 pointLightFactor2 = vec3(0.0, 0.0, 0.0);\n\nvoid main(void){\n\n  vec4 positionVec4 = vec4(aPosition / uResolution, 1.0);\n  gl_Position = uProjectionMatrix * uModelViewMatrix * positionVec4;\n\n  vec3 vertexNormal = vec3( uNormalMatrix * aNormal );\n  vVertexNormal = vertexNormal;\n  vVertTexCoord = aTexCoord;\n\n  vec4 mvPosition = uModelViewMatrix * vec4(aPosition / uResolution, 1.0);\n  vec3 eyeDirection = normalize(-mvPosition.xyz);\n\n  float shininess = 32.0;\n  float specularFactor = 2.0;\n  float diffuseFactor = 0.3;\n\n  for(int i = 0; i < 8; i++){\n    if(uAmbientLightCount == i) break;\n    ambientLightFactor += uAmbientColor[i];\n  }\n\n  for(int j = 0; j < 8; j++){\n    if(uDirectionalLightCount == j) break;\n    vec3 dir = uLightingDirection[j];\n    float directionalLightWeighting = max(dot(vertexNormal, dir), 0.0);\n    directionalLightFactor += uDirectionalColor[j] * directionalLightWeighting;\n  }\n\n  for(int k = 0; k < 8; k++){\n    if(uPointLightCount == k) break;\n    vec3 loc = uPointLightLocation[k];\n    //loc = loc / uResolution;\n    vec3 lightDirection = normalize(loc - mvPosition.xyz);\n\n    float directionalLightWeighting = max(dot(vertexNormal, lightDirection), 0.0);\n    pointLightFactor += uPointLightColor[k] * directionalLightWeighting;\n\n    //factor2 for specular\n    vec3 reflectionDirection = reflect(-lightDirection, vertexNormal);\n    float specularLightWeighting = pow(max(dot(reflectionDirection, eyeDirection), 0.0), shininess);\n\n    pointLightFactor2 += uPointLightColor[k] * (specularFactor * specularLightWeighting\n      +  directionalLightWeighting * diffuseFactor);\n  }\n\n  if(!uSpecular){\n    vLightWeighting =  ambientLightFactor + directionalLightFactor + pointLightFactor;\n  }else{\n    vLightWeighting = ambientLightFactor + directionalLightFactor + pointLightFactor2;\n  }\n\n}\n",
+  lightTextureFrag:
+    "precision mediump float;\n\nuniform vec4 uMaterialColor;\nuniform sampler2D uSampler;\nuniform bool isTexture;\n\nvarying vec3 vLightWeighting;\nvarying highp vec2 vVertTexCoord;\n\nvoid main(void) {\n  if(!isTexture){\n    gl_FragColor = vec4(vec3(uMaterialColor.rgb * vLightWeighting), uMaterialColor.a);\n  }else{\n    vec4 textureColor = texture2D(uSampler, vVertTexCoord);\n    if(vLightWeighting == vec3(0., 0., 0.)){\n      gl_FragColor = textureColor;\n    }else{\n      gl_FragColor = vec4(vec3(textureColor.rgb * vLightWeighting), textureColor.a); \n    }\n  }\n}"
+};
+},{}]},{},[28])(28)
 });
