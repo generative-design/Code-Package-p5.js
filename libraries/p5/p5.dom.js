@@ -1,4 +1,4 @@
-/*! p5.dom.js v0.2.10 April 25, 2016 */
+/*! p5.dom.js v0.2.11 June 17, 2016 */
 /**
  * <p>The web is much more than just canvas and p5.dom makes it easy to interact
  * with other HTML5 objects, including text, hyperlink, image, input, video,
@@ -375,6 +375,7 @@
    * @param  {Number} min minimum value of the slider
    * @param  {Number} max maximum value of the slider
    * @param  {Number} [value] default value of the slider
+   * @param  {Number} [step] step size for each tick of the slider
    * @return {Object/p5.Element} pointer to p5.Element holding created node
    * @example
    * <div><code>
@@ -388,6 +389,21 @@
    * function draw() {
    *   var val = slider.value();
    *   background(val);
+   * }
+   * </code></div>
+   *
+   * <div><code>
+   * var slider;
+   * function setup() {
+   *   colorMode(HSB);
+   *   slider = createSlider(0, 360, 60, 40);
+   *   slider.position(10, 10);
+   *   slider.style('width', '80px');
+   * }
+   *
+   * function draw() {
+   *   var val = slider.value();
+   *   background(val, 100, 100, 1);
    * }
    * </code></div>
    */
@@ -980,8 +996,8 @@
     // set width and height onload metadata
     elt.addEventListener('loadedmetadata', function() {
       elt.play();
-      c.width = elt.width = elt.videoWidth;
-      c.height = elt.height = elt.videoHeight;
+      c.width = elt.videoWidth = elt.width;
+      c.height = elt.videoHeight = elt.height;
       c.loadedmetadata = true;
     });
     return c;
@@ -1423,7 +1439,7 @@
    * @example
    * <div class='norender'><code>
    * var div = createDiv('div');
-   * div.attribute("display", "none");
+   * div.style("display", "none");
    * div.show(); // turns display to block
    * </code></div>
    */
@@ -1766,7 +1782,11 @@
   p5.MediaElement.prototype.get = function(x, y, w, h){
     if (this.loadedmetadata) { // wait for metadata
       return p5.Renderer2D.prototype.get.call(this, x, y, w, h);
-    } else return [0, 0, 0, 255];
+    } else if (!x) {
+      return new p5.Image(1, 1);
+    } else {
+      return [0, 0, 0, 255];
+    }
   };
   p5.MediaElement.prototype.set = function(x, y, imgOrCol){
     if (this.loadedmetadata) { // wait for metadata
