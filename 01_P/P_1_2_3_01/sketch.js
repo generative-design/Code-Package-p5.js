@@ -1,5 +1,5 @@
 // P_1_2_3_01.pde
-// 
+//
 // Generative Gestaltung, ISBN: 978-3-87439-759-9
 // First Edition, Hermann Schmidt, Mainz, 2009
 // Hartmut Bohnacker, Benedikt Gross, Julia Laub, Claudius Lazzeroni
@@ -17,17 +17,18 @@
 // limitations under the License.
 
 /**
- * generates specific color palettes  
- * 
+ * generates specific color palettes
+ *
  * MOUSE
  * position x/y        : row and coloum count
- * 
+ *
  * KEYS
  * 0-9                 : creates specific color palettes
  * s                   : save png
  * c                   : save color palette
  */
- 
+'use strict';
+
 var tileCountX = 50;
 var tileCountY = 10;
 
@@ -67,7 +68,7 @@ function draw() {
   var tileHeight = height / currentTileCountY;
 
   for (var gridY=0; gridY< tileCountY; gridY++) {
-    for (var gridX=0; gridX< tileCountX; gridX++) {  
+    for (var gridX=0; gridX< tileCountX; gridX++) {
       var posX = tileWidth*gridX;
       var posY = tileHeight*gridY;
       var index = counter % currentTileCountX;
@@ -98,36 +99,36 @@ function keyPressed() {
       brightnessValues[i] = int( random(0,100) );
     }
   }
-  if (key == '2') { 
+  if (key == '2') {
     for (var i=0; i<tileCountX; i++) {
       hueValues[i] = int( random(0,360) );
       saturationValues[i] = int( random(0,100) );
       brightnessValues[i] = 100;
     }
   }
-  if (key == '3') {  
+  if (key == '3') {
     for (var i=0; i<tileCountX; i++) {
       hueValues[i] = int( random(0,360) );
       saturationValues[i] = 100;
       brightnessValues[i] = int( random(0,100) );
     }
-  } 
+  }
 
-  if (key == '4') {  
+  if (key == '4') {
     for (var i=0; i<tileCountX; i++) {
       hueValues[i] = 0;
       saturationValues[i] = 0;
       brightnessValues[i] = int( random(0,100) );
     }
   }
-  if (key == '5') {  
+  if (key == '5') {
     for (var i=0; i<tileCountX; i++) {
       hueValues[i] = 195;
       saturationValues[i] = 100;
       brightnessValues[i] = int( random(0,100) );
     }
   }
-  if (key == '6') {  
+  if (key == '6') {
     for (var i=0; i<tileCountX; i++) {
       hueValues[i] = 195;
       saturationValues[i] = int( random(0,100) );
@@ -135,14 +136,14 @@ function keyPressed() {
     }
   }
 
-  if (key == '7') {  
+  if (key == '7') {
     for (var i=0; i<tileCountX; i++) {
       hueValues[i] = int( random(0,180) );
       saturationValues[i] = int( random(80,100) );
       brightnessValues[i] = int( random(50,90) );
     }
   }
-  if (key == '8') {  
+  if (key == '8') {
     for (var i=0; i<tileCountX; i++) {
       hueValues[i] = int( random(180,360) );
       saturationValues[i] = int( random(80,100) );
@@ -156,7 +157,7 @@ function keyPressed() {
         hueValues[i] = int( random(0,360) );
         saturationValues[i] = 100;
         brightnessValues[i] = int( random(0,100) );
-      } 
+      }
       else {
         hueValues[i] = 195;
         saturationValues[i] = int( random(0,100) );
@@ -164,13 +165,13 @@ function keyPressed() {
       }
     }
   }
-  if (key == '0') {  
+  if (key == '0') {
     for (var i=0; i<tileCountX; i++) {
       if (i%2 == 0) {
         hueValues[i] = 192;
         saturationValues[i] = int( random(0,100) );
         brightnessValues[i] = int( random(10,100) );
-      } 
+      }
       else {
         hueValues[i] = 273;
         saturationValues[i] = int( random(0,100) );

@@ -1,5 +1,5 @@
 // P_1_2_3_02.pde
-// 
+//
 // Generative Gestaltung, ISBN: 978-3-87439-759-9
 // First Edition, Hermann Schmidt, Mainz, 2009
 // Hartmut Bohnacker, Benedikt Gross, Julia Laub, Claudius Lazzeroni
@@ -18,15 +18,16 @@
 
 /**
  * generates a specific color palette and some random "rect-tilings"
- * 
+ *
  * MOUSE
  * left click          : new composition
- * 
+ *
  * KEYS
  * s                   : save png
- * c                   : save color palette 
+ * c                   : save color palette
  */
- 
+'use strict';
+
 var colorCount = 20;
 var hueValues = [];
 var saturationValues = [];
@@ -46,7 +47,7 @@ function draw() {
       hueValues[i] = int(random(0,360));
       saturationValues[i] = 100;
       brightnessValues[i] = int(random(0,100));
-    } 
+    }
     else {
       hueValues[i] = 195;
       saturationValues[i] = int(random(0,100));
@@ -62,7 +63,7 @@ function draw() {
   var rowHeight = height/rowCount;
 
   for(var i=0; i<rowCount; i++) {
-    // seperate each line in parts  
+    // seperate each line in parts
     // how many fragments
     var partCount = i+1;
     var parts = [];
@@ -70,15 +71,15 @@ function draw() {
     for(var ii=0; ii<partCount; ii++) {
       // sub fragments or not?
       if (random(1.0) < 0.075) {
-        // take care of big values      
+        // take care of big values
         var fragments = int(random(2,20));
-        partCount = partCount + fragments; 
+        partCount = partCount + fragments;
         for(var iii=0; iii<fragments; iii++) {
           parts = append(parts, random(2));
-        }              
-      }  
+        }
+      }
       else {
-        parts = append(parts, random(2,20));   
+        parts = append(parts, random(2,20));
       }
     }
 
@@ -94,7 +95,7 @@ function draw() {
       fill(hueValues[index],saturationValues[index],brightnessValues[index]);
 
       sumPartsNow += parts[ii];
-      rect(map(sumPartsNow, 0,sumPartsTotal, 0,width),rowHeight*i, 
+      rect(map(sumPartsNow, 0,sumPartsTotal, 0,width),rowHeight*i,
       map(parts[ii], 0,sumPartsTotal, 0,width)*-1,rowHeight);
 
       counter++;

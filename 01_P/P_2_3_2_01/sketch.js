@@ -1,5 +1,5 @@
 // P_2_3_2_01.pde
-// 
+//
 // Generative Gestaltung, ISBN: 978-3-87439-759-9
 // First Edition, Hermann Schmidt, Mainz, 2009
 // Hartmut Bohnacker, Benedikt Gross, Julia Laub, Claudius Lazzeroni
@@ -17,19 +17,20 @@
 // limitations under the License.
 
 /**
- * draw tool. shows how to work with relations between elements. 
- * 
+ * draw tool. shows how to work with relations between elements.
+ *
  * MOUSE
  * drag                : draw
- * 
+ *
  * KEYS
  * 1                   : draw mode 1 - fixed distance
- * 2                   : draw mode 2 - distance threshold 
+ * 2                   : draw mode 2 - distance threshold
  * del, backspace      : clear screen
  * arrow up            : line length +
  * arrow down          : line length -
  * s                   : save png
  */
+'use strict';
 
 var drawMode = 1;
 
@@ -38,13 +39,11 @@ var x = 0, y = 0;
 var stepSize = 5.0;
 var lineLength = 25;
 
-
 function setup() {
   col = color(random(255),random(255),random(255),random(100));
-  // use full screen size 
+  // use full screen size
   createCanvas(displayWidth, displayHeight);
   background(255);
-  smooth();
   x = mouseX;
   y = mouseY;
   cursor(CROSS);
@@ -56,7 +55,7 @@ function draw() {
     var d = dist(x,y, mouseX,mouseY);
 
     if (d > stepSize) {
-      var angle = atan2(mouseY-y, mouseX-x); 
+      var angle = atan2(mouseY-y, mouseX-x);
 
       push();
       translate(x,y);
@@ -68,11 +67,11 @@ function draw() {
 
       if (drawMode == 1) {
         x = x + cos(angle) * stepSize;
-        y = y + sin(angle) * stepSize; 
-      } 
+        y = y + sin(angle) * stepSize;
+      }
       else {
         x  = mouseX;
-        y  = mouseY; 
+        y  = mouseY;
       }
     }
   }
@@ -94,7 +93,7 @@ function keyReleased() {
 }
 
 function keyPressed() {
-  // lineLength ctrls arrowkeys up/down 
+  // lineLength ctrls arrowkeys up/down
   if (keyCode == UP_ARROW) lineLength += 5;
-  if (keyCode == DOWN_ARROW) lineLength -= 5; 
+  if (keyCode == DOWN_ARROW) lineLength -= 5;
 }
