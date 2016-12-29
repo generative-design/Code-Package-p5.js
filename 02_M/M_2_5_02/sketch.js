@@ -21,13 +21,12 @@
  * explore different parameters of drawing lissajous figures
  *
  * KEYS
- * m                   : menu open/close
  * s                   : save png
  */
+
 'use strict';
 
 var sketch = function( p ) {
-
   var pointCount = 1500;
   var pointIndex = 0;
   var lissajousPoints = [];
@@ -72,7 +71,6 @@ var sketch = function( p ) {
   }
 
   p.draw = function() {
-
     if (!connectAllPoints) {
       for (var i = 0; i < pointCount - 1; i++) {
         drawLine(lissajousPoints[i], lissajousPoints[i + 1]);
@@ -91,7 +89,6 @@ var sketch = function( p ) {
     if (pointIndex >= pointCount - 1) {
       p.noLoop();
     }
-
   }
 
   p.keyPressed = function() {
@@ -120,7 +117,6 @@ var sketch = function( p ) {
 
       lissajousPoints[i] = p.createVector(x, y);
     }
-
   }
 
   var drawLine = function(vector1, vector2) {
@@ -137,7 +133,6 @@ var sketch = function( p ) {
       p.line(vector1.x, vector1.y, vector2.x, vector2.y);
     }
   }
-
 };
 
 var myp5 = new p5(sketch);
