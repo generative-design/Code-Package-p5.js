@@ -38,11 +38,11 @@ function preload() {
 
 function setup() {
   createCanvas(603, 873);
-  console.log(img.width + ' • ' + img.height);
+  print(img.width + ' • ' + img.height);
 }
 
 function draw() {
-  clear();
+  background(255);
 
   var mouseXFactor = map(mouseX, 0, width, 0.05, 1);
   var mouseYFactor = map(mouseY, 0, height, 0.05, 1);
@@ -152,10 +152,8 @@ function draw() {
           pop();
           break;
       }
-
     }
   }
-
 }
 
 function keyReleased() {
