@@ -49,11 +49,11 @@ function setup() {
   textFont("Times");
   textSize(10);
   textAlign(LEFT, CENTER);
-  console.log(img.width + ' • ' + img.height);
+  print(img.width + ' • ' + img.height);
 }
 
 function draw() {
-  clear();
+  background(255);
 
   var x = 0;
   var y = 10;
@@ -109,7 +109,6 @@ function draw() {
     if (counter >= inputText.length) {
       counter = 0;
     }
-
   }
 }
 
@@ -119,7 +118,7 @@ function keyReleased() {
   if (key == '1') fontSizeStatic = !fontSizeStatic;
   // change color style
   if (key == '2') blackAndWhite = !blackAndWhite;
-  console.log('fontSizeMin: ' + fontSizeMin + ' fontSizeMax: ' + fontSizeMax + ' fontSizeStatic: ' + fontSizeStatic + ' blackAndWhite: ' + blackAndWhite);
+  print('fontSizeMin: ' + fontSizeMin + ' fontSizeMax: ' + fontSizeMax + ' fontSizeStatic: ' + fontSizeStatic + ' blackAndWhite: ' + blackAndWhite);
 }
 
 function keyPressed() {
