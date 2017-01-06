@@ -1,5 +1,5 @@
 // M_5_1_01.pde
-// 
+//
 // Generative Gestaltung, ISBN: 978-3-87439-759-9
 // First Edition, Hermann Schmidt, Mainz, 2009
 // Hartmut Bohnacker, Benedikt Gross, Julia Laub, Claudius Lazzeroni
@@ -18,18 +18,14 @@
 
 /**
  * simple example of a recursive function
- * 
+ *
  * KEYS
  * 1-9                 : recursion level
- * p                   : save pdf
  * s                   : save png
  */
 'use strict';
 
-var sketch = function( p ) {
-
-  var savePDF = false;
-
+var sketch = function(p) {
   var recursionLevel = 6;
   var startRadius = 200;
 
@@ -38,27 +34,16 @@ var sketch = function( p ) {
 
   p.setup = function() {
     p.createCanvas(width,height);
-    drawArcs();
   };
 
-  function drawArcs() {
-  	if(savePDF){
-  		p.beginRecord();
-  	};
+  p.draw = function() {
     p.background(255);
     p.smooth();
     p.noFill();
     p.strokeCap('PROJECT');
 
     p.translate(width/2, height/2);
-
     drawBranch(0, 0, startRadius, recursionLevel);
-
-    if (savePDF) {
-    	savePDF = false;
-    	p.endRecord();
-    };
-
   };
 
   p.keyReleased = function(){
@@ -75,9 +60,6 @@ var sketch = function( p ) {
     if (p.key == '8') recursionLevel = 8;
     if (p.key == '9') recursionLevel = 9;
     if (p.key == '0') recursionLevel = 0;
-    
-    drawArcs();
-  	
   };
 
   // ------ recursive function ------
