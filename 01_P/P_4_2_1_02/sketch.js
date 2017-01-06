@@ -98,7 +98,7 @@ function keyReleased() {
   if (key == '2') layer2Items = generateCollageItems(layer2Images, random(10, 25), 0, height * 0.15, PI * 5, 150, 0.1, random(0.3, 0.8), -PI / 6, PI / 6);
   if (key == '3') layer3Items = generateCollageItems(layer3Images, random(10, 25), 0, height * 0.66, PI * 5, height * 0.66, 0.1, random(0.2, 0.5), -0.05, 0.05);
 
-  clear();
+  background(255);
 
   drawCollageitems(layer1Items);
   drawCollageitems(layer2Items);
