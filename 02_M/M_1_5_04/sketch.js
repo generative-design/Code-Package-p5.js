@@ -44,7 +44,7 @@ var sketch = function( p ) {
   var drawMode = 1;
 
   p.setup = function() {
-    p.createCanvas(1280, 800);
+    p.createCanvas(p.windowWidth, p.windowHeight);
     p.colorMode(p.HSB, 360, 100, 100, 100);
 
     for(var i = 0; i < agentCount; i++) {
