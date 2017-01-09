@@ -48,7 +48,7 @@ var sketch = function( p ) {
     p.colorMode(p.HSB, 360, 100, 100, 100);
 
     for(var i = 0; i < agentCount; i++) {
-      agents[i] = new Agent();
+      agents[i] = new Agent(noiseStickingRange, agentAlpha, noiseScale, noiseStrength, strokeWidth, agentWidthMin, agentWidthMax, zNoiseVelocity);
     }
   }
 
@@ -78,62 +78,6 @@ var sketch = function( p ) {
       p.noiseSeed(newNoiseSeed);
     }
     if (p.keyCode === p.DELETE || p.keyCode === p.BACKSPACE) p.background(255);
-  }
-
-  var Agent = function() {
-    this.vector = p.createVector(p.random(p.width), p.random(p.height));
-    this.vectorOld = this.vector.copy();
-    this.randomizer = p.random(1);
-    this.stepSize = 1 + this.randomizer * 4;
-    this.zNoise = p.random(noiseStickingRange);
-    this.angle;
-    this.color = this.randomizer < 0.5 ? p.color(p.random(170, 190), 70, p.random(100), agentAlpha) : p.color(p.random(40, 60), 70, p.random(100), agentAlpha);
-  }
-
-  Agent.prototype.updateStart = function() {
-    this.angle = p.noise(this.vector.x / noiseScale, this.vector.y / noiseScale, this.noiseZ) * noiseStrength;
-
-    this.vector.x += p.cos(this.angle) * this.stepSize;
-    this.vector.y += p.sin(this.angle) * this.stepSize;
-
-    if (this.vector.x < -10) this.vector.x = this.vectorOld.x = p.width + 10;
-    if (this.vector.x > p.width + 10) this.vector.x = this.vectorOld.x = -10;
-    if (this.vector.y < - 10) this.vector.y = this.vectorOld.y = p.height + 10;
-    if (this.vector.y > p.height + 10) this.vector.y = this.vectorOld.y = -10;
-  }
-
-  Agent.prototype.updateEnd = function() {
-      this.vectorOld = this.vector.copy();
-
-      this.noiseZ += zNoiseVelocity;
-  }
-
-  Agent.prototype.update1 = function() {
-    this.updateStart();
-
-    p.stroke(this.color);
-    p.strokeWeight(strokeWidth);
-    p.line(this.vectorOld.x, this.vectorOld.y, this.vector.x, this.vector.y);
-
-    var agentWidth = p.lerp(agentWidthMin, agentWidthMax, this.randomizer);
-    p.push();
-    p.translate(this.vectorOld.x, this.vectorOld.y);
-    p.rotate(p.atan2(this.vector.y - this.vectorOld.y, this.vector.x - this.vectorOld.x));
-    p.line(0, -agentWidth, 0, agentWidth);
-    p.pop();
-
-    this.updateEnd();
-  }
-
-  Agent.prototype.update2 = function() {
-    this.updateStart();
-
-    p.stroke(this.color);
-    p.strokeWeight(2);
-    var agentWidth = p.lerp(agentWidthMin, agentWidthMax, this.randomizer) * 2;
-    p.ellipse(this.vectorOld.x, this.vectorOld.y, agentWidth, agentWidth);
-
-    this.updateEnd();
   }
 
 };
