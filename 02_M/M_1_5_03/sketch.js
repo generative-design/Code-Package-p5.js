@@ -20,7 +20,6 @@
  * noise values (noise 3d) are used to animate a bunch of agents.
  *
  * KEYS
- * m                   : toogle menu open/close
  * 1-2                 : switch noise mode
  * space               : new noise seed
  * backspace           : clear screen
