@@ -39,7 +39,7 @@ var sketch = function( p ) {
   var drawMode = 1;
 
   p.setup = function() {
-    p.createCanvas(1280, 800);
+    p.createCanvas(p.windowWidth, p.windowHeight);
 
     for(var i = 0; i < agentCount; i++) {
       agents[i] = new Agent();
