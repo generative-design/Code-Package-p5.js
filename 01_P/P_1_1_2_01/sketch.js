@@ -39,7 +39,7 @@ function setup() {
 }
 
 function draw() {
-    background(360, 0, height);
+  background(360, 0, height);
 
   var angleStep = 360 / segmentCount;
 
