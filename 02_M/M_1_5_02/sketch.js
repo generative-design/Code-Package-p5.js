@@ -39,7 +39,7 @@ var sketch = function( p ) {
   var drawMode = 1;
 
   p.setup = function() {
-    p.createCanvas(1280, 800);
+    p.createCanvas(p.windowWidth, p.windowHeight);
 
     for(var i = 0; i < agentCount; i++) {
       agents[i] = new Agent();
@@ -54,11 +54,8 @@ var sketch = function( p ) {
     // Draw agents
     p.stroke(0, agentAlpha);
     for (var i = 0; i < agentCount; i++) {
-      if (drawMode === 1) {
-        agents[i].update1();
-      } else {
-        agents[i].update2();
-      }
+      if (drawMode === 1) agents[i].update1(noiseScale, noiseStrength, strokeWidth);
+      else agents[i].update2(noiseScale, noiseStrength, strokeWidth);
     }
   }
 
