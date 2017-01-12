@@ -45,7 +45,7 @@ function setup() {
 }
 
 function draw() {
-	if (!font) return;
+  if (!font) return;
 
   background(255);
   // margin border
@@ -92,7 +92,7 @@ function keyPressed() {
   if (keyCode === DELETE || keyCode === BACKSPACE) {
     textTyped = textTyped.substring(0,max(0,textTyped.length-1));
   } else if (keyCode === TAB || keyCode === ENTER || keyCode === RETURN || keyCode === ESCAPE) {
-  	// do nothing
+    // do nothing
   } else {
     textTyped += key;
   }
