@@ -54,14 +54,8 @@ var sketch = function( p ) {
     // Draw agents
     p.stroke(0, agentAlpha);
     for (var i = 0; i < agentCount; i++) {
-      switch (drawMode) {
-        case 1:
-          agents[i].update1(noiseScale, noiseStrength, strokeWidth);
-          break;
-        case 2:
-          agents[i].update2(noiseScale, noiseStrength, strokeWidth);
-          break;
-      }
+      if (drawMode === 1) agents[i].update1(noiseScale, noiseStrength, strokeWidth);
+      else agents[i].update2(noiseScale, noiseStrength, strokeWidth);
     }
   }
 
