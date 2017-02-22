@@ -1,4 +1,4 @@
-// P_1_2_3_02.pde
+// P_1_2_3_03.pde
 //
 // Generative Gestaltung, ISBN: 978-3-87439-759-9
 // First Edition, Hermann Schmidt, Mainz, 2009
@@ -32,6 +32,7 @@ var colorCount = 20;
 var hueValues = [];
 var saturationValues = [];
 var brightnessValues = [];
+var alphaValue = 27;
 var actRandomSeed = 0;
 
 
@@ -43,7 +44,7 @@ function setup() {
 
 function draw() {
   noLoop();
-  background("grey");
+  background(0,0,0);
   randomSeed(actRandomSeed);
 
   // ------ colors ------
@@ -101,16 +102,25 @@ function draw() {
       var x = map(sumPartsNow, 0,sumPartsTotal, 0,width);
       var y = rowHeight*i;
       var w = map(parts[ii], 0,sumPartsTotal, 0,width)*-1;
-      var h = rowHeight;
+      var h = rowHeight*1.5;
 
       var index = counter % colorCount;
-      var col = color(hueValues[index],saturationValues[index],brightnessValues[index]);
-      fill(col);
-      rect(x, y, w, h);
+      var col1 = color("black");
+      var col2 = color(hueValues[index],saturationValues[index],brightnessValues[index],alphaValue);
+      gradient(x, y, w, h, col1, col2);
 
       counter++;
     }
   }
+}
+
+function gradient(x, y, w, h, c1, c2) {
+  var ctx = drawingContext; // global canvas context p5.js var
+  var grd = ctx.createLinearGradient(x, y, x, y+h);
+  grd.addColorStop(0, c1.toString());
+  grd.addColorStop(1, c2.toString());
+	ctx.fillStyle = grd;
+	ctx.fillRect(x, y, w, h);
 }
 
 function mouseReleased() {

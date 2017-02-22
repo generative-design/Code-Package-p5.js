@@ -32,35 +32,19 @@
  * alt                 : new random layout
  * ctrl                : save png
  */
-'use strict';
+"use strict";
 
+var textTyped = "";
 var font;
-var textTyped = (
-  "Ich bin der Musikant mit Taschenrechner in der Hand!\n\n" +
-  "Ich addiere\n" +
-  "Und subtrahiere, \n\n" +
-  "Kontrolliere\nUnd komponiere\nUnd wenn ich diese Taste drück,\nSpielt er ein kleines Musikstück?\n\n" +
-  "Ich bin der Musikant mit Taschenrechner in der Hand!\n\n" +
-  "Ich addiere\n" +
-  "Und subtrahiere, \n\n" +
-  "Kontrolliere\nUnd komponiere\nUnd wenn ich diese Taste drück,\nSpielt er ein kleines Musikstück?\n\n"
-);
 
-var shapeSpace;
-var shapeSpace2;
-var shapePeriod;
-var shapeComma;
-var shapeQuestionmark;
-var shapeExclamationmark;
-var shapeReturn;
+var shapeSpace, shapeSpace2, shapePeriod, shapeComma;
+var shapeQuestionmark, shapeExclamationmark, shapeReturn;
 
-var centerX = 0;
-var centerY = 0;
-var offsetX = 0;
-var offsetY = 0;
-var zoom = 0.75;
+var centerX, centerY, offsetX, offsetY;
+var zoom;
 
-var actRandomSeed = 6;
+var actRandomSeed;
+
 
 function preload() {
   font = loadFont("data/miso-bold.ttf");
@@ -76,25 +60,38 @@ function preload() {
 function setup() {
   createCanvas(windowWidth, windowHeight);
 
-  textFont(font, 25);
-  cursor(HAND);
-  noStroke();
-  fill(0);
+  textTyped += "Ich bin der Musikant mit Taschenrechner in der Hand!\n\n";
+  textTyped += "Ich addiere\n";
+  textTyped += "Und subtrahiere, \n\n";
+  textTyped += "Kontrolliere\nUnd komponiere\nUnd wenn ich diese Taste drück,\nSpielt er ein kleines Musikstück?\n\n";
 
-  centerX = width / 2;
-  centerY = height / 2;
+  textTyped += "Ich bin der Musikant mit Taschenrechner in der Hand!\n\n";
+  textTyped += "Ich addiere\n";
+  textTyped += "Und subtrahiere, \n\n";
+  textTyped += "Kontrolliere\nUnd komponiere\nUnd wenn ich diese Taste drück,\nSpielt er ein kleines Musikstück?\n\n";
+
+  centerX = width/2;
+  centerY = height/2;
+  offsetX = 0;
+  offsetY = 0;
+  zoom = 0.75;
+  actRandomSeed = 6;
+
+  cursor(HAND);
+  textFont(font, 25);
+  textAlign(LEFT, BASELINE);
+  imageMode(CORNER);
 }
 
 function windowResized() {
-  // resize canvas when window is resized
   resizeCanvas(windowWidth, windowHeight);
 }
 
-
 function draw() {
   background(255);
+  noStroke();
 
-  if (mouseIsPressed) {
+  if (mouseIsPressed == true) {
     centerX = mouseX - offsetX;
     centerY = mouseY - offsetY;
   }
@@ -110,84 +107,97 @@ function draw() {
     var letterWidth = textWidth(letter);
 
     // ------ letter rule table ------
-    switch (letter) {
-      case " ": // space
+    switch(letter) {
+      case ' ': // space
         // 50% left, 50% right
-        if (floor(random(2)) == 0) {
-          image(shapeSpace, 0, -15);
-          translate(1.9, 0);
-          rotate(QUARTER_PI);
-        } else {
-          image(shapeSpace2, 0, -17);
-          translate(13, -5);
-          rotate(-QUARTER_PI);
+        var dir = floor(random(0, 2));
+        if(dir == 0){
+          image(shapeSpace, 1, -15);
+          translate(4, 1);
+          rotate(PI/4);
         }
-      break;
-      case ",": // comma
-        image(shapeComma, 0, -15);
-        translate(33, 15);
-        rotate(QUARTER_PI);
-      break;
-      case ".": // period
-        image(shapePeriod, 0, -58);
-        translate(58, -58);
-        rotate(-HALF_PI);
-      break;
-      case "!": // !
-        image(shapeExclamationmark, 0, -29);
-        translate(42, -18);
-        rotate(-QUARTER_PI);
-      break;
-      case "?": // ?
-        image(shapeQuestionmark, 0, -29);
-        translate(42, -18);
-        rotate(-QUARTER_PI);
-      break;
-      case "\n": // return
-        image(shapeReturn, 0, -15);
-        translate(0, 10);
+        if(dir == 1){
+          image(shapeSpace2, 1, -15);
+          translate(14, -5);
+          rotate(-PI/4);
+        }
+        break;
+
+      case ',':
+        image(shapeComma, 1, -15);
+        translate(35, 15);
+        rotate(PI/4);
+        break;
+
+      case '.':
+        image(shapePeriod, 1, -55);
+        translate(56, -56);
+        rotate(-PI/2);
+        break;
+
+      case '!':
+        image(shapeExclamationmark, 1, -27);
+        translate(42.5, -17.5);
+        rotate(-PI/4);
+        break;
+
+      case '?':
+        image(shapeQuestionmark, 1, -27);
+        translate(42.5, -17.5);
+        rotate(-PI/4);
+        break;
+
+      case '\n': // return
+        image(shapeReturn, 1, -15);
+        translate(1, 10);
         rotate(PI);
-      break;
+        break;
+
       default: // all others
+        fill(0);
         text(letter, 0, 0);
         translate(letterWidth, 0);
-      break;
     }
   }
 
   // blink cursor after text
-  if (frameCount / 6 % 2 == 0) rect(0, 0, 15, 2);
+  fill(0);
+  if (frameCount/6 % 2 == 0) rect(0, 0, 15, 2);
 }
 
-function mousePressed() {
-  offsetX = mouseX - centerX;
-  offsetY = mouseY - centerY;
+
+function mousePressed(){
+  offsetX = mouseX-centerX;
+  offsetY = mouseY-centerY;
 }
+
 
 function keyReleased() {
-  if (keyCode === CONTROL) saveCanvas(gd.timestamp(), 'png');
-  if (keyCode === ALT) {
-    actRandomSeed++;
-  }
+  if (keyCode == CONTROL) savePDF = true;
+  if (keyCode == ALT) actRandomSeed++;
+  print(actRandomSeed);
 }
 
 function keyPressed() {
-  if (keyCode === DELETE || keyCode === BACKSPACE) {
-    if (textTyped.length > 0) {
-      println(textTyped);
-      textTyped = textTyped.substring(0,max(0,textTyped.length-1));
-      return false; // prevent any default behavior
-    }
-  }
-  // insert linebreak
-  if (keyCode === ENTER || keyCode === RETURN) textTyped += "\n";
-
-  if (keyCode === UP_ARROW) zoom += 0.05;
-  if (keyCode === DOWN_ARROW) zoom -= 0.05;
-}
-
-function keyTyped(){
-  if(keyCode >= 32){
+  switch(keyCode) {
+  case DELETE:
+  case BACKSPACE:
+    textTyped = textTyped.substring(0,max(0,textTyped.length-1));
+    break;
+  case TAB:
+    break;
+  case ENTER:
+  case RETURN:
+    // enable linebreaks
+    textTyped += "\n";
+    break;
+  case ESCAPE:
+    break;
+  default:
     textTyped += key;
   }
+
+  // zoom
+  if (keyCode == UP_ARROW) zoom += 0.05;
+  if (keyCode == DOWN_ARROW) zoom -= 0.05;
 }

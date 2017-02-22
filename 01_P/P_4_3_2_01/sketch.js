@@ -25,7 +25,6 @@
  * arrow up/down     : maximal fontsize +/-
  * arrow right/left  : minimal fontsize +/-
  * s                 : save png
- * p                 : save pdf
  */
 'use strict';
 
@@ -41,7 +40,7 @@ var blackAndWhite = false;
 var img;
 
 function preload() {
-  img = loadImage('data/pic.png');
+  img = loadImage("data/pic.png");
 }
 
 function setup() {
@@ -49,7 +48,7 @@ function setup() {
   textFont("Times");
   textSize(10);
   textAlign(LEFT, CENTER);
-  print(img.width + ' • ' + img.height);
+  print(img.width + " x " + img.height);
 }
 
 function draw() {
@@ -74,21 +73,15 @@ function draw() {
 
     if (fontSizeStatic) {
       textSize(fontSizeMax);
-      if (blackAndWhite) {
-        fill(greyscale);
-      } else {
-        fill(c);
-      }
+      if (blackAndWhite) fill(greyscale);
+      else fill(c);
     } else {
       // greyscale to fontsize
       var fontSize = map(greyscale, 0, 255, fontSizeMax, fontSizeMin);
       fontSize = max(fontSize, 1);
       textSize(fontSize);
-      if (blackAndWhite) {
-        fill(0);
-      } else {
-        fill(c);
-      }
+      if (blackAndWhite) fill(0);
+      else fill(c);
     }
 
     var letter = inputText.charAt(counter);
