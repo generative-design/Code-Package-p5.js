@@ -125,7 +125,6 @@ function draw() {
 function keyReleased() {
     if (key == 's' || key == 'S') saveCanvas(gd.timestamp(), 'png');
     if (keyCode === DELETE || keyCode === BACKSPACE) background(360);
-    if (key === ' ') noLoop();
 
     if (key == '1') drawMode = 1;
     if (key == '2') drawMode = 2;
