@@ -53,89 +53,88 @@ var dStroke = 4;
 var drawMode = 1;
 
 function setup() {
-    createCanvas(600, 600);
-    colorMode(HSB, 360, 100, 100);
-    background(360, 0, 100);
+  createCanvas(600, 600);
+  colorMode(HSB, 360, 100, 100);
+  background(360, 0, 100);
 
-    angle = getRandomAngle(direction);
-    posX = floor(random(width));
-    posY = 5;
-    posXcross = posX;
-    posYcross = posY;
+  angle = getRandomAngle(direction);
+  posX = floor(random(width));
+  posY = 5;
+  posXcross = posX;
+  posYcross = posY;
 }
 
 function draw() {
-    // var speed = int(map(mouseX, 0, width, 0, 20));
+  var speed = int(map(mouseX, 0, width, 0, 20));
+  for (var i = 0; i <= speed; i++) {
 
-    for (var i = 0; i <= mouseX; i++) {
+    // ------ draw dot at current position ------
+    strokeWeight(1);
+    stroke(180, 0, 0);
+    point(posX, posY);
 
-        // ------ draw dot at current position ------
-        strokeWeight(1);
-        stroke(180, 0, 0);
-        point(posX, posY);
+    // ------ make step ------
+    posX += cos(radians(angle)) * stepSize;
+    posY += sin(radians(angle)) * stepSize;
 
-        // ------ make step ------
-        posX += cos(radians(angle)) * stepSize;
-        posY += sin(radians(angle)) * stepSize;
+    // ------ check if agent is near one of the display borders ------
+    reachedBorder = false;
 
-        // ------ check if agent is near one of the display borders ------
-        reachedBorder = false;
-
-        if (posY <= 5) {
-            direction = SOUTH;
-            reachedBorder = true;
-        } else if (posX >= width - 5) {
-            direction = WEST;
-            reachedBorder = true;
-        } else if (posY >= height - 5) {
-            direction = NORTH;
-            reachedBorder = true;
-        } else if (posX <= 5) {
-            direction = EAST;
-            reachedBorder = true;
-        }
-
-        // ------ if agent is crossing his path or border was reached ------
-        loadPixels();
-        var currentPixel = get(floor(posX), floor(posY));
-        if (
-            (
-                currentPixel[0] === 0 &&
-                currentPixel[1] === 0 &&
-                currentPixel[2] === 0
-            ) ||
-            reachedBorder
-        ) {
-            angle = getRandomAngle(direction);
-            var distance = dist(posX, posY, posXcross, posYcross);
-            if (distance >= minLength) {
-                strokeWeight(distance / dWeight);
-                if (drawMode == 1) stroke(0);
-                if (drawMode == 2) stroke(52, 100, distance / dStroke);
-                if (drawMode == 3) stroke(192, 100, 64, distance / dStroke);
-
-                line(posX, posY, posXcross, posYcross);
-            }
-            posXcross = posX;
-            posYcross = posY;
-        }
+    if (posY <= 5) {
+      direction = SOUTH;
+      reachedBorder = true;
+    } else if (posX >= width - 5) {
+      direction = WEST;
+      reachedBorder = true;
+    } else if (posY >= height - 5) {
+      direction = NORTH;
+      reachedBorder = true;
+    } else if (posX <= 5) {
+      direction = EAST;
+      reachedBorder = true;
     }
+
+    // ------ if agent is crossing his path or border was reached ------
+    loadPixels();
+    var currentPixel = get(floor(posX), floor(posY));
+    if (
+      (
+        currentPixel[0] === 0 &&
+        currentPixel[1] === 0 &&
+        currentPixel[2] === 0
+      ) ||
+      reachedBorder
+    ) {
+      angle = getRandomAngle(direction);
+      var distance = dist(posX, posY, posXcross, posYcross);
+      if (distance >= minLength) {
+          strokeWeight(distance / dWeight);
+          if (drawMode === 1) stroke(0);
+          if (drawMode === 2) stroke(52, 100, distance / dStroke);
+          if (drawMode === 3) stroke(192, 100, 64, distance / dStroke);
+
+          line(posX, posY, posXcross, posYcross);
+      }
+      posXcross = posX;
+      posYcross = posY;
+    }
+  }
 }
 
 function keyReleased() {
-    if (key == 's' || key == 'S') saveCanvas(gd.timestamp(), 'png');
-    if (keyCode === DELETE || keyCode === BACKSPACE) background(360);
+  if (key === 's' || key === 'S') saveCanvas(gd.timestamp(), 'png');
+  if (keyCode === DELETE || keyCode === BACKSPACE) background(360);
 
-    if (key == '1') drawMode = 1;
-    if (key == '2') drawMode = 2;
-    if (key == '3') drawMode = 3;
+  if (key === '1') drawMode = 1;
+  if (key === '2') drawMode = 2;
+  if (key === '3') drawMode = 3;
 }
 
 function getRandomAngle(currentDirection) {
-    var a = (floor(random(-angleCount, angleCount)) + 0.5) * 90 / angleCount;
-    if (currentDirection === NORTH) return a - 90;
-    if (currentDirection === EAST) return a;
-    if (currentDirection === SOUTH) return a + 90;
-    if (currentDirection === WEST) return a + 180;
-    return 0;
+  var a = (floor(random(-angleCount, angleCount)) + 0.5) * 90 / angleCount;
+  if (currentDirection === NORTH) return a - 90;
+  if (currentDirection === EAST) return a;
+  if (currentDirection === SOUTH) return a + 90;
+  if (currentDirection === WEST) return a + 180;
+  return 0;
 }
