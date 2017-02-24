@@ -112,7 +112,6 @@ function draw() {
           if (drawMode === 1) stroke(0);
           if (drawMode === 2) stroke(52, 100, distance / dStroke);
           if (drawMode === 3) stroke(192, 100, 64, distance / dStroke);
-
           line(posX, posY, posXcross, posYcross);
       }
       posXcross = posX;
@@ -124,7 +123,6 @@ function draw() {
 function keyReleased() {
   if (key === 's' || key === 'S') saveCanvas(gd.timestamp(), 'png');
   if (keyCode === DELETE || keyCode === BACKSPACE) background(360);
-
   if (key === '1') drawMode = 1;
   if (key === '2') drawMode = 2;
   if (key === '3') drawMode = 3;
