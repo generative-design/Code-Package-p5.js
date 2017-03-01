@@ -1,0 +1,52 @@
+{
+  "name": "Code-Package-p5-js",
+  "version": "0.0.0",
+  "description": "Code package of the book Generative Design for p5.js",
+  "scripts": {
+    "start": "npm run watch",
+    "watch": "budo --dir . --open --live --watch-glob '**/*.{html,css,js}'",
+    "setup": "cd libraries && node setup.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/generative-design/Code-Package-p5.js.git"
+  },
+  "keywords": [
+    "processing",
+    "p5",
+    "generative",
+    "computational",
+    "design"
+  ],
+  "author": "Benedikt Groß <bg@benedikt-gross.de>",
+  "bugs": {
+    "url": "https://github.com/generative-design/Code-Package-p5.js/issues"
+  },
+  "homepage": "http://www.generative-gestaltung.de",
+  "devDependencies": {
+    "budo": "^9.2.2",
+    "fs-sync": "^1.0.4",
+    "g.js": "^0.1.2",
+    "generative-design-library": "git@github.com:generative-design/generative-design-library.js.git#a7c3e35b433d5d63c6a9bbff2b6fac4abe509830",
+    "glob": "^7.1.1",
+    "opentype.js": "^0.6.8",
+    "p5": "^0.5.7"
+  },
+  "install": {
+    "sources": {
+      "p5": [
+        "node_modules/p5/lib/p5.js",
+        "node_modules/p5/lib/addons/p5.dom.js"
+      ],
+      "generative-design-library": [
+        "node_modules/generative-design-library.js/dist/generative-design-library.js"
+      ],
+      "g.js": [
+        "node_modules/g.js/dist/g.min.js"
+      ],
+      "opentype.js": [
+        "node_modules/opentype.js/dist/opentype.min.js"
+      ]
+    }
+  }
+}
