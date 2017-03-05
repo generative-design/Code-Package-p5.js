@@ -1,0 +1,16 @@
+{
+  "name": "p_2_4_1_01_multiuser_canvas",
+  "version": "0.0.1",
+  "description": "a multiuser canvas with node, express, and p5",
+  "main": "server.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node server.js"
+  },
+  "author": "@joeyklee",
+  "license": "ISC",
+  "dependencies": {
+    "express": "^4.15.0",
+    "socket.io": "^1.7.3"
+  }
+}
