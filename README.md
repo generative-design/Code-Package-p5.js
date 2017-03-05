@@ -7,15 +7,17 @@ Code package of the book Generative Design for p5.js
 
 Developer Setup
 ---------------
-Install node.js, then
+Install node.js
+
+Webserver with live reload:
 
 ```
-$ npm install bower
-$ npm install -g bower-installer
+$ npm run watch
 ```
 
-Now you can install/update dependencies with
+Manage dependencies (copy lib .js file from ./node_modules to ./libraries as defined in `package.json`) and generate `index.html` (list of all sketches):
 
 ```
-$ bower-installer
+$ npm install
+$ npm run setup
 ```
