@@ -54,7 +54,7 @@ function SubTitleObject(startTime, endTime, dialog) {
   this.endTimeStamp = endTime;
   this.startTime = getTimeInSeconds(startTime);
   this.endTime = getTimeInSeconds(endTime);
-  this.dialog = dialog.replace(/\s\d+\s$/, '').trim();
+  this.dialog = dialog.replace(/\s\d+\s$|<(?:.)*?>/g, '').trim();
   this.duration = this.endTime - this.startTime;
 }
 
@@ -83,9 +83,7 @@ function setup() {
   noStroke();
 
   searchResults = findSubtiles(searchQuery);
-
   console.log(searchResults);
-
   loopSearchResults(searchResults, 0);
 }
 
@@ -93,7 +91,8 @@ function loopSearchResults(searchResults, i) {
   var duration = searchResults[i].duration;
   video.play();
   video.time(searchResults[i].startTime);
-  timeout = window.setTimeout(playFragment, duration * 1000, searchResults, i);
+  console.log(searchResults[i].startTimeStamp, searchResults[i].dialog);
+  timeout = setTimeout(playFragment, duration * 1000, searchResults, i);
 }
 
 function playFragment(searchResults, i) {
@@ -101,14 +100,14 @@ function playFragment(searchResults, i) {
   if (i < searchResults.length - 1) {
     loopSearchResults(searchResults, i + 1);
   } else {
-    window.clearTimeout(timeout);
+    clearTimeout(timeout);
   }
 }
 
 function keyPressed() {
-  if (key == 's' || key == 'S') saveCanvas(gd.timestamp(), 'png');
+  // if (key == 's' || key == 'S') saveCanvas(gd.timestamp(), 'png');
   if (key == ' ') {
-    window.clearTimeout(timeout);
+    clearTimeout(timeout);
     loopSearchResults(searchResults, 0);
   }
 }
