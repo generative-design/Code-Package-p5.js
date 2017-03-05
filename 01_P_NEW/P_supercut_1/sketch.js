@@ -12,11 +12,12 @@
 var video;
 var subtitles = [];
 
-var searchQuery = /\b(human|klingon|romulan|vulcan)\b/i;
+var searchQuery = /\b(warp)\b/i;
 
 var searchResults = [];
+var currentResult;
 
-var timeout;
+var fragmentTimer;
 
 function preload() {
   video = createVideo('data/video.mp4');
@@ -87,12 +88,32 @@ function setup() {
   loopSearchResults(searchResults, 0);
 }
 
+function draw() {
+  for (var i = 0; i < subtitles.length; i++) {
+
+    var x = map(subtitles[i].startTime, subtitles[0].startTime, subtitles[subtitles.length - 1].endTime, 0, width);
+    var w = map(subtitles[i].endTime, subtitles[0].startTime, subtitles[subtitles.length - 1].endTime, 0, width) - x;
+    var h = map(subtitles[i].dialog.length, 0, 80, 0, height);
+
+    if (currentResult === subtitles[i]) {
+      fill(0, 255, 251);
+    } else if (searchResults.indexOf(subtitles[i]) != -1) {
+      fill(232, 65, 36);
+    } else {
+      fill(100);
+    }
+    rect(x, 0, w, h);
+
+  }
+}
+
 function loopSearchResults(searchResults, i) {
   var duration = searchResults[i].duration;
   video.play();
   video.time(searchResults[i].startTime);
+  currentResult = searchResults[i];
   console.log(searchResults[i].startTimeStamp, searchResults[i].dialog);
-  timeout = setTimeout(playFragment, duration * 1000, searchResults, i);
+  fragmentTimer = setTimeout(playFragment, duration * 1000, searchResults, i);
 }
 
 function playFragment(searchResults, i) {
@@ -100,14 +121,23 @@ function playFragment(searchResults, i) {
   if (i < searchResults.length - 1) {
     loopSearchResults(searchResults, i + 1);
   } else {
-    clearTimeout(timeout);
+    clearTimeout(fragmentTimer);
   }
 }
 
 function keyPressed() {
   // if (key == 's' || key == 'S') saveCanvas(gd.timestamp(), 'png');
   if (key == ' ') {
-    clearTimeout(timeout);
+    clearTimeout(fragmentTimer);
     loopSearchResults(searchResults, 0);
+  }
+
+  if (key == 'p' || key == 'P') {
+    clearTimeout(fragmentTimer);
+    if (video.elt.paused) {
+      video.play();
+    } else {
+      video.pause();
+    }
   }
 }
