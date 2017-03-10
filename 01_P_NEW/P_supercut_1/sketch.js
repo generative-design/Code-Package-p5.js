@@ -24,8 +24,8 @@ var currentResult;
 var fragmentTimer;
 
 function preload() {
-  video = createVideo('data2/video.mkv');
-  loadStrings('data2/subs.vtt', parseSubtitles);
+  video = createVideo('data/video.mkv');
+  loadStrings('data/subs.vtt', parseSubtitles);
 }
 
 function parseSubtitles(lines) {
