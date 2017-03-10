@@ -13,6 +13,7 @@ var video;
 var subtitles = [];
 
 var searchQuery = /\b(human|klingon|romulan|vulcan|borg)\b/i;
+var queryInputElement;
 var montageMode = 1;
 
 var searchResults = [];
@@ -69,7 +70,8 @@ function getTimeInSeconds(timeString) {
 }
 
 function findSubtiles(searchPattern) {
-  searchPattern = new RegExp(searchPattern);
+  searchPattern = new RegExp(searchPattern, 'i');
+  console.log(searchPattern);
   var results = [];
   subtitles.forEach(function(subtitle) {
     if (searchPattern.test(subtitle.dialog)) {
@@ -77,6 +79,11 @@ function findSubtiles(searchPattern) {
     };
   });
   return results;
+}
+
+function submitQueryInput() {
+  searchQuery = queryInputElement.value();
+  resetMontage(montageMode);
 }
 
 function resetMontage(mode) {
@@ -88,18 +95,21 @@ function resetMontage(mode) {
   video.elt.ontimeupdate = null;
 
   searchResults = findSubtiles(searchQuery);
-  console.log(searchResults);
+  console.log(searchQuery, searchResults);
 
-  switch (montageMode) {
-    case 1:
+  if (searchResults.length) {
+    switch (montageMode) {
+      case 1:
       queryResultMontage(searchResults, 0);
-    break;
-    case 2:
+      break;
+      case 2:
       video.play();
       video.speed(1);
       everyTimeTheyMentionQueryItGetsFaster(searchResults, 0);
-    break;
+      break;
+    }
   }
+
 }
 
 function queryResultMontage(searchResults, i) {
@@ -137,6 +147,10 @@ function setup() {
   createCanvas(windowWidth, 200);
   background(52);
   noStroke();
+
+  queryInputElement = createInput(searchQuery);
+  var searchSubmitButton = createButton('SEARCH');
+  searchSubmitButton.mousePressed(submitQueryInput);
 
   resetMontage(montageMode);
 }
