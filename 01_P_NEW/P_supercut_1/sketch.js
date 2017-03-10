@@ -12,7 +12,8 @@
 var video;
 var subtitles = [];
 
-var searchQuery = /\b(warp)\b/i;
+var searchQuery = /\b(human|klingon|romulan|vulcan|borg)\b/i;
+var montageMode = 1;
 
 var searchResults = [];
 var currentResult;
@@ -20,8 +21,8 @@ var currentResult;
 var fragmentTimer;
 
 function preload() {
-  video = createVideo('data/video.mp4');
-  loadStrings('data/subs.srt', parseSubtitles);
+  video = createVideo('data1/video.mkv');
+  loadStrings('data1/subs.srt', parseSubtitles);
 }
 
 function parseSubtitles(lines) {
@@ -78,14 +79,66 @@ function findSubtiles(searchPattern) {
   return results;
 }
 
+function resetMontage(mode) {
+  montageMode = mode;
+
+  clearTimeout(fragmentTimer);
+  video.stop();
+  video.speed(1);
+  video.elt.ontimeupdate = null;
+
+  searchResults = findSubtiles(searchQuery);
+  console.log(searchResults);
+
+  switch (montageMode) {
+    case 1:
+      queryResultMontage(searchResults, 0);
+    break;
+    case 2:
+      video.play();
+      video.speed(1);
+      everyTimeTheyMentionQueryItGetsFaster(searchResults, 0);
+    break;
+  }
+}
+
+function queryResultMontage(searchResults, i) {
+  var duration = searchResults[i].duration;
+  video.play();
+  video.time(searchResults[i].startTime);
+  currentResult = searchResults[i];
+  console.log(searchResults[i].startTimeStamp, searchResults[i].dialog);
+  fragmentTimer = setTimeout(function() {
+    video.pause();
+    if (i < searchResults.length - 1) {
+      queryResultMontage(searchResults, i + 1);
+    } else {
+      clearTimeout(fragmentTimer);
+    }
+  }, duration * 1000);
+}
+
+function everyTimeTheyMentionQueryItGetsFaster(searchResults, i) {
+  video.elt.ontimeupdate = function() {
+    if (i < searchResults.length - 1) {
+      if (video.time() > searchResults[i].startTime) {
+        video.speed(video.speed() / QUARTER_PI);
+        console.log(video.speed(), searchResults[i].startTimeStamp, searchResults[i].dialog);
+        i++;
+      }
+    } else {
+      video.elt.ontimeupdate = null;
+      return false;
+    };
+  }
+}
+
 function setup() {
   createCanvas(windowWidth, 200);
   background(52);
   noStroke();
 
-  searchResults = findSubtiles(searchQuery);
-  console.log(searchResults);
-  loopSearchResults(searchResults, 0);
+  resetMontage(montageMode);
 }
 
 function draw() {
@@ -93,11 +146,9 @@ function draw() {
 
     var x = map(subtitles[i].startTime, subtitles[0].startTime, subtitles[subtitles.length - 1].endTime, 0, width);
     var w = map(subtitles[i].endTime, subtitles[0].startTime, subtitles[subtitles.length - 1].endTime, 0, width) - x;
-    var h = map(subtitles[i].dialog.length, 0, 80, 0, height);
+    var h = map(subtitles[i].dialog.length, 0, 100, 0, height);
 
-    if (currentResult === subtitles[i]) {
-      fill(0, 255, 251);
-    } else if (searchResults.indexOf(subtitles[i]) != -1) {
+    if (video.time() > subtitles[i].startTime && video.time() < subtitles[i].endTime) {
       fill(232, 65, 36);
     } else {
       fill(100);
@@ -107,30 +158,14 @@ function draw() {
   }
 }
 
-function loopSearchResults(searchResults, i) {
-  var duration = searchResults[i].duration;
-  video.play();
-  video.time(searchResults[i].startTime);
-  currentResult = searchResults[i];
-  console.log(searchResults[i].startTimeStamp, searchResults[i].dialog);
-  fragmentTimer = setTimeout(playFragment, duration * 1000, searchResults, i);
-}
-
-function playFragment(searchResults, i) {
-  video.pause();
-  if (i < searchResults.length - 1) {
-    loopSearchResults(searchResults, i + 1);
-  } else {
-    clearTimeout(fragmentTimer);
-  }
-}
-
 function keyPressed() {
   // if (key == 's' || key == 'S') saveCanvas(gd.timestamp(), 'png');
-  if (key == ' ') {
-    clearTimeout(fragmentTimer);
-    loopSearchResults(searchResults, 0);
+  if (key == 'r' || key == 'R') {
+    resetMontage(montageMode);
   }
+
+  if (key == '1') resetMontage(1);
+  if (key == '2') resetMontage(2);
 
   if (key == 'p' || key == 'P') {
     clearTimeout(fragmentTimer);
