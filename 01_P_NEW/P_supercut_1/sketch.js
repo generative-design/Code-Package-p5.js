@@ -13,7 +13,7 @@
 var video;
 var subtitles = [];
 
-var searchQuery = /\b(human|klingon|romulan|vulcan|borg)\b/i;
+var searchQuery = /\b(comet|astroid|planet|moon|sun)\b/i;
 var queryInputElement;
 var currentDialogElement;
 var montageMode = 1;
@@ -24,12 +24,12 @@ var currentResult;
 var fragmentTimer;
 
 function preload() {
-  video = createVideo('data1/video.mkv');
-  loadStrings('data1/subs.srt', parseSubtitles);
+  video = createVideo('data2/video.mkv');
+  loadStrings('data2/subs.vtt', parseSubtitles);
 }
 
 function parseSubtitles(lines) {
-  var timecodeRegEx = new RegExp(/((\d{2}:){2}\d{2},\d{3})\s-->\s((\d{2}:){2}\d{2},\d{3})/);
+  var timecodeRegEx = new RegExp(/((\d{2}:){2}\d{2}(,|\.)\d{3})\s-->\s((\d{2}:){2}\d{2}(,|\.)\d{3})/);
   var subtitleObject;
   var startTime;
   var endTime;
@@ -47,8 +47,10 @@ function parseSubtitles(lines) {
         dialog = '';
       }
 
-    } else  {
-      dialog += lines[i] + ' ';
+    } else {
+      if (startTime && endTime) {
+        dialog += lines[i] + ' ';
+      }
     }
   }
   print(subtitles);
