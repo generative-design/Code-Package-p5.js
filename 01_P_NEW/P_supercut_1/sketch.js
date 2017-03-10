@@ -1,11 +1,12 @@
 /**
  * generates a specific color palette and some random "rect-tilings" with radial gradient
  *
- * MOUSE
- *
  *
  * KEYS
- * s                   : save png
+ * r                   : restart current montage from the beginning
+ * p                   : play/pause video
+ * 1                   : play fragments of the video where search query is mentioned in dialog
+ * 2                   : play video normally, only every time query is mentioned, playback speed increases
  */
 "use strict";
 
@@ -49,7 +50,7 @@ function parseSubtitles(lines) {
       dialog += lines[i] + ' ';
     }
   }
-  console.log(subtitles);
+  print(subtitles);
 }
 
 function SubTitleObject(startTime, endTime, dialog) {
@@ -71,7 +72,7 @@ function getTimeInSeconds(timeString) {
 
 function findSubtiles(searchPattern) {
   searchPattern = new RegExp(searchPattern, 'i');
-  console.log(searchPattern);
+  print(searchPattern);
   var results = [];
   subtitles.forEach(function(subtitle) {
     if (searchPattern.test(subtitle.dialog)) {
@@ -95,7 +96,8 @@ function resetMontage(mode) {
   video.elt.ontimeupdate = null;
 
   searchResults = findSubtiles(searchQuery);
-  console.log(searchQuery, searchResults);
+  print('Found ' + searchResults.length + ' results for search query ' + searchQuery);
+  print(searchResults);
 
   if (searchResults.length) {
     switch (montageMode) {
@@ -117,7 +119,7 @@ function queryResultMontage(searchResults, i) {
   video.play();
   video.time(searchResults[i].startTime);
   currentResult = searchResults[i];
-  console.log(searchResults[i].startTimeStamp, searchResults[i].dialog);
+  print(searchResults[i].startTimeStamp, searchResults[i].dialog);
   fragmentTimer = setTimeout(function() {
     video.pause();
     if (i < searchResults.length - 1) {
@@ -132,8 +134,8 @@ function everyTimeTheyMentionQueryItGetsFaster(searchResults, i) {
   video.elt.ontimeupdate = function() {
     if (i < searchResults.length - 1) {
       if (video.time() > searchResults[i].startTime) {
-        video.speed(video.speed() / QUARTER_PI);
-        console.log(video.speed(), searchResults[i].startTimeStamp, searchResults[i].dialog);
+        video.speed(video.speed() + 0.2);
+        print(video.speed(), searchResults[i].startTimeStamp, searchResults[i].dialog);
         i++;
       }
     } else {
@@ -173,7 +175,6 @@ function draw() {
 }
 
 function keyPressed() {
-  // if (key == 's' || key == 'S') saveCanvas(gd.timestamp(), 'png');
   if (key == 'r' || key == 'R') {
     resetMontage(montageMode);
   }
