@@ -13,7 +13,7 @@
 var video;
 var subtitles = [];
 
-var searchQuery = /\b(comet|astroid|planet|moon|sun)\b/i;
+var searchQuery = /\b(comet|asteroid|planet|moon|sun)\b/i;
 var queryInputElement;
 var currentDialogElement;
 var montageMode = 1;
