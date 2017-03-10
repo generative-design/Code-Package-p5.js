@@ -39,12 +39,9 @@ function setup() {
 
 function draw() {
   // create slider animations
-  if(sliders.length >0){
-    sliders.forEach(function(d){
-      d.update();
-    });
-
-  }
+  sliders.forEach(function(d){
+    d.update();
+  });
 
 }
 
@@ -63,17 +60,17 @@ function SliderRose(_x, _y){
 
   var counter = 0;
   var skip = 20;
-  var roseLength = random(20, 100);
+  var roseRadius = random(20, 100);
 
   for(var i =0; i < 360; i+=skip){
     var sliderAngle = radians(i);
-    var x2 = cos(sliderAngle)*roseLength;
-    var y2 = sin(sliderAngle)*roseLength;
+    var x2 = cos(sliderAngle)*roseRadius;
+    var y2 = sin(sliderAngle)*roseRadius;
 
     sliders[counter] = createSlider(0, 255, 50)
     sliders[counter].position(this.x1 + x2, this.y1 + y2);
-    sliders[counter].style('width', roseLength +'px')
-    sliders[counter].style('-webkit-transform', 'rotate('+i+'deg)');
+    sliders[counter].style('width', roseRadius +'px')
+    sliders[counter].style('transform', 'rotate('+i+'deg)');
     counter++;
 
   }
