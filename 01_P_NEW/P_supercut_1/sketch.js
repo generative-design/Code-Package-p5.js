@@ -15,6 +15,7 @@ var subtitles = [];
 
 var searchQuery = /\b(human|klingon|romulan|vulcan|borg)\b/i;
 var queryInputElement;
+var currentDialogElement;
 var montageMode = 1;
 
 var searchResults = [];
@@ -102,12 +103,12 @@ function resetMontage(mode) {
   if (searchResults.length) {
     switch (montageMode) {
       case 1:
-      queryResultMontage(searchResults, 0);
+        queryResultMontage(searchResults, 0);
       break;
       case 2:
-      video.play();
-      video.speed(1);
-      everyTimeTheyMentionQueryItGetsFaster(searchResults, 0);
+        video.play();
+        video.speed(1);
+        everyTimeTheyMentionQueryItGetsFaster(searchResults, 0);
       break;
     }
   }
@@ -154,6 +155,8 @@ function setup() {
   var searchSubmitButton = createButton('SEARCH');
   searchSubmitButton.mousePressed(submitQueryInput);
 
+  currentDialogElement = createDiv();
+
   resetMontage(montageMode);
 }
 
@@ -166,6 +169,7 @@ function draw() {
 
     if (video.time() > subtitles[i].startTime && video.time() < subtitles[i].endTime) {
       fill(232, 65, 36);
+      currentDialogElement.html('<b>' + subtitles[i].startTimeStamp + '</b> ' + subtitles[i].dialog);
     } else {
       fill(100);
     }
@@ -175,9 +179,9 @@ function draw() {
 }
 
 function keyPressed() {
-  if (key == 'r' || key == 'R') {
-    resetMontage(montageMode);
-  }
+  if (key == 'r' || key == 'R') resetMontage(montageMode);
+
+  if (keyCode === ENTER) submitQueryInput();
 
   if (key == '1') resetMontage(1);
   if (key == '2') resetMontage(2);
