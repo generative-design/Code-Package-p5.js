@@ -34,25 +34,25 @@ function parseSubtitles(lines) {
   var startTime;
   var endTime;
   var dialog;
-  for (var i = 1; i <= lines.length; i++) {
-    if (timecodeRegEx.test(lines[i]) || i === lines.length) {
+  lines.forEach(function(line, i) {
+    if (timecodeRegEx.test(line) || i === lines.length) {
 
       if (dialog) {
         subtitles.push(new SubTitleObject(startTime, endTime, dialog));
       }
 
       if (i < lines.length) {
-        startTime = lines[i].replace(/\s.+$/, '');
-        endTime = lines[i].replace(/^.+\s/, '');
+        startTime = line.replace(/\s.+$/, '');
+        endTime = line.replace(/^.+\s/, '');
         dialog = '';
       }
 
     } else {
       if (startTime && endTime) {
-        dialog += lines[i] + ' ';
+        dialog += line + ' ';
       }
     }
-  }
+  });
   print(subtitles);
 }
 
@@ -75,7 +75,6 @@ function getTimeInSeconds(timeString) {
 
 function findSubtiles(searchPattern) {
   searchPattern = new RegExp(searchPattern, 'i');
-  print(searchPattern);
   var results = [];
   subtitles.forEach(function(subtitle) {
     if (searchPattern.test(subtitle.dialog)) {
@@ -163,21 +162,19 @@ function setup() {
 }
 
 function draw() {
-  for (var i = 0; i < subtitles.length; i++) {
+  subtitles.forEach(function(subtitle) {
+    var x = map(subtitle.startTime, subtitles[0].startTime, subtitles[subtitles.length - 1].endTime, 0, width);
+    var w = map(subtitle.endTime, subtitles[0].startTime, subtitles[subtitles.length - 1].endTime, 0, width) - x;
+    var h = map(subtitle.dialog.length, 0, 100, 0, height);
 
-    var x = map(subtitles[i].startTime, subtitles[0].startTime, subtitles[subtitles.length - 1].endTime, 0, width);
-    var w = map(subtitles[i].endTime, subtitles[0].startTime, subtitles[subtitles.length - 1].endTime, 0, width) - x;
-    var h = map(subtitles[i].dialog.length, 0, 100, 0, height);
-
-    if (video.time() > subtitles[i].startTime && video.time() < subtitles[i].endTime) {
+    if (video.time() > subtitle.startTime && video.time() < subtitle.endTime) {
       fill(232, 65, 36);
-      currentDialogElement.html('<b>' + subtitles[i].startTimeStamp + '</b> ' + subtitles[i].dialog);
+      currentDialogElement.html('<b>' + subtitle.startTimeStamp + '</b> ' + subtitle.dialog);
     } else {
       fill(100);
     }
     rect(x, 0, w, h);
-
-  }
+  });
 }
 
 function keyPressed() {
