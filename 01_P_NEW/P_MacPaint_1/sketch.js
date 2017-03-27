@@ -14,17 +14,23 @@
 */
 "use strict";
 
-var lineWidth = 4;
+var gif;
+var canvasElement;
+var recording = false;
+
+var lineWidth = 1;
 
 var verticalMirror = true;
 var horizontalMirror = true;
 var diagonalMirror = true;
 
 function setup() {
-  createCanvas(800, 800);
+  canvasElement = createCanvas(800, 800);
   cursor(CROSS);
   noFill();
   strokeWeight(lineWidth);
+
+  setupGIF();
 }
 
 function draw() {
@@ -57,6 +63,10 @@ function draw() {
       line(mouseY, mirrorX, pmouseY, pMirrorX);
     }
 
+    if (recording) {
+      gif.addFrame(canvasElement.canvas, {delay: 1, copy: true});
+    }
+
   }
 
 }
@@ -71,4 +81,24 @@ function keyPressed() {
   if (key == '2') horizontalMirror = !horizontalMirror;
   if (key == '3') diagonalMirror = !diagonalMirror;
   if (key == ' ') clear();
+  if (key == 'g' || key == 'G') {
+    recording = !recording;
+    if (!recording) {
+      gif.render();
+    }
+  }
+}
+
+function setupGIF() {
+  background(255);
+  gif = new GIF({
+    workers: 16,
+    quality: 10000,
+    debug: true,
+    workerScript: '../../libraries/gif.js/gif.worker.js'
+  });
+  gif.on('finished', function(blob) {
+    saveAs(blob, gd.timestamp() + '.gif');
+    setupGIF();
+  });
 }
