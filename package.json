@@ -42,10 +42,10 @@
         "node_modules/generative-design-library.js/dist/generative-design-library.js"
       ],
       "g.js": [
-        "node_modules/g.js/dist/g.min.js"
+        "node_modules/g.js/dist/g.js"
       ],
       "opentype.js": [
-        "node_modules/opentype.js/dist/opentype.min.js"
+        "node_modules/opentype.js/dist/opentype.js"
       ]
     }
   }
