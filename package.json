@@ -30,7 +30,9 @@
     "generative-design-library": "git@github.com:generative-design/generative-design-library.js.git#18e32cc0abd487845e46a335560e0061bb2970e7",
     "glob": "^7.1.1",
     "opentype.js": "^0.6.8",
-    "p5": "^0.5.7"
+    "p5": "^0.5.7",
+    "gif.js": "^0.2.0",
+    "file-saver": "^1.3.3"
   },
   "install": {
     "sources": {
@@ -46,6 +48,13 @@
       ],
       "opentype.js": [
         "node_modules/opentype.js/dist/opentype.js"
+      ],
+      "gif.js": [
+        "node_modules/gif.js/dist/gif.js",
+        "node_modules/gif.js/dist/gif.worker.js"
+      ],
+      "filesaver": [
+        "node_modules/file-saver/FileSaver.js"
       ]
     }
   }
