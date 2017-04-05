@@ -56,7 +56,7 @@ function parseText(lines) {
 }
 
 function setup() {
-  createCanvas(2000, 2000);
+  createCanvas(1000, 800);
 
   textFont(font);
   textAlign(CENTER, CENTER);
@@ -66,12 +66,15 @@ function setup() {
     width,
     height
   );
-  console.log(boxes);
   wordMap.forEach(function(mappedWord, index) {
     mappedWord.setBoundingBox(boxes[index]);
     mappedWord.drawBox();
   });
 
+}
+
+function keyPressed() {
+  if (key == 's' || key == 'S') saveCanvas(gd.timestamp(), 'png');
 }
 
 var WordItem = function(word) {
