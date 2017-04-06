@@ -1,5 +1,5 @@
 /**
- * Sliders are
+ * Sliders arranged in a pattern
  *
  * MOUSE
  *
@@ -20,12 +20,9 @@ var sliderMax = 100;
 
 function setup() {
   createCanvas(800,800);
-  // noCanvas();
-
   // get the number of sliders based on w & h
   sliderWidth = w/2;
   sliderCount = ceil(sliderWidth/sliderHeight)
-
 
   noLoop();
 }
@@ -65,16 +62,14 @@ function draw() {
       .style("width", sliderWidth+"px").style('transform', 'rotate('+90+'deg)');
   }
 
-}
-
-function SliderGroup(){
-
 
 }
 
+
+// TODO: create circle, triangles from handles
+// TODO: slider group values all change in sync by drag handles
 
 function keyPressed() {
+  // note - save won't work for dom elements since they are not in the canvas
   if (key == 's' || key == 'S') saveCanvas(gd.timestamp(), 'png');
-
-
 }
