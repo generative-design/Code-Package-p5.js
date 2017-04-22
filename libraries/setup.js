@@ -18,7 +18,7 @@ for (var libName in sources) {
 }
 
 // generate index.html file with links to all sketches
-var sketches = glob.sync('../0*/**/sketch.js');
+var sketches = glob.sync('../0*/*_*/sketch.js');
 var html = "<ul>\n";
 sketches.forEach(function(sketchPath) {
   var url = path.dirname(path.relative('../', sketchPath));
