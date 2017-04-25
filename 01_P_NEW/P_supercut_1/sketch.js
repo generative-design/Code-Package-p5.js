@@ -1,12 +1,10 @@
 /**
- * generates a specific color palette and some random "rect-tilings" with radial gradient
+ * Play fragments of the video where search query is mentioned in dialog
  *
  *
  * KEYS
  * r                   : restart current montage from the beginning
  * p                   : play/pause video
- * 1                   : play fragments of the video where search query is mentioned in dialog
- * 2                   : play video normally, only every time query is mentioned, playback speed increases
  */
 "use strict";
 
@@ -15,8 +13,6 @@ var subtitles = [];
 
 var searchQuery = /\b(comet|asteroid|planet|moon|sun)\b/i;
 var queryInputElement;
-var currentDialogElement;
-var montageMode = 1;
 
 var searchResults = [];
 var currentResult;
@@ -86,34 +82,20 @@ function findSubtiles(searchPattern) {
 
 function submitQueryInput() {
   searchQuery = queryInputElement.value();
-  resetMontage(montageMode);
+  generateMontage();
 }
 
-function resetMontage(mode) {
-  montageMode = mode;
-
+function generateMontage() {
   clearTimeout(fragmentTimer);
   video.stop();
-  video.speed(1);
-  video.elt.ontimeupdate = null;
 
   searchResults = findSubtiles(searchQuery);
   print('Found ' + searchResults.length + ' results for search query ' + searchQuery);
   print(searchResults);
 
   if (searchResults.length) {
-    switch (montageMode) {
-      case 1:
-        queryResultMontage(searchResults, 0);
-      break;
-      case 2:
-        video.play();
-        video.speed(1);
-        everyTimeTheyMentionQueryItGetsFaster(searchResults, 0);
-      break;
-    }
+    queryResultMontage(searchResults, 0);
   }
-
 }
 
 function queryResultMontage(searchResults, i) {
@@ -132,21 +114,6 @@ function queryResultMontage(searchResults, i) {
   }, duration * 1000);
 }
 
-function everyTimeTheyMentionQueryItGetsFaster(searchResults, i) {
-  video.elt.ontimeupdate = function() {
-    if (i < searchResults.length - 1) {
-      if (video.time() > searchResults[i].startTime) {
-        video.speed(video.speed() + 0.2);
-        print(video.speed(), searchResults[i].startTimeStamp, searchResults[i].dialog);
-        i++;
-      }
-    } else {
-      video.elt.ontimeupdate = null;
-      return false;
-    };
-  }
-}
-
 function setup() {
   createCanvas(windowWidth, 200);
   background(52);
@@ -156,9 +123,7 @@ function setup() {
   var searchSubmitButton = createButton('SEARCH');
   searchSubmitButton.mousePressed(submitQueryInput);
 
-  currentDialogElement = createDiv();
-
-  resetMontage(montageMode);
+  generateMontage();
 }
 
 function draw() {
@@ -169,7 +134,6 @@ function draw() {
 
     if (video.time() > subtitle.startTime && video.time() < subtitle.endTime) {
       fill(232, 65, 36);
-      currentDialogElement.html('<b>' + subtitle.startTimeStamp + '</b> ' + subtitle.dialog);
     } else {
       fill(100);
     }
@@ -178,12 +142,9 @@ function draw() {
 }
 
 function keyPressed() {
-  if (key == 'r' || key == 'R') resetMontage(montageMode);
+  if (key == 'r' || key == 'R') generateMontage();
 
   if (keyCode === ENTER) submitQueryInput();
-
-  if (key == '1') resetMontage(1);
-  if (key == '2') resetMontage(2);
 
   if (key == 'p' || key == 'P') {
     clearTimeout(fragmentTimer);
