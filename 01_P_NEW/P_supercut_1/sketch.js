@@ -8,12 +8,12 @@
  */
 "use strict";
 
-var videoSrc = 'data1/video.mkv';
+var videoSrc = 'data/video.mkv';
 var video;
-var subtitleSrc = 'data1/subs.srt';
+var subtitleSrc = 'data/subs.vtt';
 var subtitles;
 
-var searchQuery = '\\b(warp)\\b';
+var searchQuery = '\\b(comet)\\b';
 
 var searchResults = [];
 var currentResult;
@@ -21,18 +21,6 @@ var currentResult;
 var fragmentTimer;
 
 var gui;
-
-function selectVideoFile(file) {
-  videoSrc = URL.createObjectURL(file);
-  remove();
-  new p5;
-}
-
-function selectSubtitleFile(file) {
-  subtitleSrc = URL.createObjectURL(file);
-  remove();
-  new p5;
-}
 
 function preload() {
   video = createVideo(videoSrc);
@@ -105,10 +93,6 @@ function generateMontage() {
     'Found ' + searchResults.length + ' results for search query ' + searchQuery,
     searchResults
   );
-  gui.setValue(
-    'output',
-    'Found ' + searchResults.length + ' results for search query ' + searchQuery
-  );
 
   if (searchResults.length) {
     queryResultMontage(searchResults, 0);
@@ -132,10 +116,6 @@ function queryResultMontage(searchResults, i) {
   }, duration * 1000);
 }
 
-function updateGUI() {
-  gui.setValue('output', '<pre>' + currentResult.startTimeStamp + '</pre>' + currentResult.dialog);
-}
-
 function setSearchQuery(newSearchQuery) {
   searchQuery = newSearchQuery;
 }
@@ -152,13 +132,7 @@ function togglePlayback() {
 function setup() {
   noCanvas();
 
-  gui = QuickSettings.create(10, 10, 'P_supercut_1');
-  gui.addFileChooser('video', 'video file', 'video/*', selectVideoFile);
-  gui.addFileChooser('subtitles', 'subtitle file', undefined, selectSubtitleFile);
-  gui.addText('searchQuery', searchQuery, setSearchQuery);
-  gui.addButton('generateMontage', generateMontage);
-  gui.addHTML('output', '');
-  gui.addButton('togglePlayback', togglePlayback);
+  createGUI();
 
   generateMontage(searchQuery);
 }
