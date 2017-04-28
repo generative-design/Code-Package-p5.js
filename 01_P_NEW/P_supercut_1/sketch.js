@@ -11,17 +11,18 @@
 var video;
 var subtitles = [];
 
-var searchQuery = /\b(comet|asteroid|planet|moon|sun)\b/i;
-var queryInputElement;
+var searchQuery = '\\b(warp)\\b';
 
 var searchResults = [];
 var currentResult;
 
 var fragmentTimer;
 
+var gui;
+
 function preload() {
-  video = createVideo('data/video.mkv');
-  loadStrings('data/subs.vtt', parseSubtitles);
+  video = createVideo('data1/video.mkv');
+  loadStrings('data1/subs.srt', parseSubtitles);
 }
 
 function parseSubtitles(lines) {
@@ -80,18 +81,19 @@ function findSubtiles(searchPattern) {
   return results;
 }
 
-function submitQueryInput() {
-  searchQuery = queryInputElement.value();
-  generateMontage();
-}
-
 function generateMontage() {
   clearTimeout(fragmentTimer);
   video.stop();
 
   searchResults = findSubtiles(searchQuery);
-  print('Found ' + searchResults.length + ' results for search query ' + searchQuery);
-  print(searchResults);
+  print(
+    'Found ' + searchResults.length + ' results for search query ' + searchQuery,
+    searchResults
+  );
+  gui.setValue(
+    'output',
+    'Found ' + searchResults.length + ' results for search query ' + searchQuery
+  );
 
   if (searchResults.length) {
     queryResultMontage(searchResults, 0);
@@ -99,11 +101,12 @@ function generateMontage() {
 }
 
 function queryResultMontage(searchResults, i) {
-  var duration = searchResults[i].duration;
-  video.play();
-  video.time(searchResults[i].startTime);
   currentResult = searchResults[i];
-  print(searchResults[i].startTimeStamp, searchResults[i].dialog);
+  var duration = currentResult.duration;
+  video.play();
+  video.time(currentResult.startTime);
+  print(currentResult.startTimeStamp, currentResult.dialog);
+  updateGUI();
   fragmentTimer = setTimeout(function() {
     video.pause();
     if (i < searchResults.length - 1) {
@@ -114,44 +117,31 @@ function queryResultMontage(searchResults, i) {
   }, duration * 1000);
 }
 
-function setup() {
-  createCanvas(windowWidth, 200);
-  background(52);
-  noStroke();
-
-  queryInputElement = createInput(searchQuery);
-  var searchSubmitButton = createButton('SEARCH');
-  searchSubmitButton.mousePressed(submitQueryInput);
-
-  generateMontage();
+function updateGUI() {
+  gui.setValue('output', currentResult.startTimeStamp + '<br>' + currentResult.dialog);
 }
 
-function draw() {
-  subtitles.forEach(function(subtitle) {
-    var x = map(subtitle.startTime, subtitles[0].startTime, subtitles[subtitles.length - 1].endTime, 0, width);
-    var w = map(subtitle.endTime, subtitles[0].startTime, subtitles[subtitles.length - 1].endTime, 0, width) - x;
-    var h = map(subtitle.dialog.length, 0, 100, 0, height);
-
-    if (video.time() > subtitle.startTime && video.time() < subtitle.endTime) {
-      fill(232, 65, 36);
-    } else {
-      fill(100);
-    }
-    rect(x, 0, w, h);
-  });
+function setSearchQuery() {
+  searchQuery = newSearchQuery;
 }
 
-function keyPressed() {
-  if (key == 'r' || key == 'R') generateMontage();
-
-  if (keyCode === ENTER) submitQueryInput();
-
-  if (key == 'p' || key == 'P') {
-    clearTimeout(fragmentTimer);
-    if (video.elt.paused) {
-      video.play();
-    } else {
-      video.pause();
-    }
+function togglePlayback() {
+  clearTimeout(fragmentTimer);
+  if (video.elt.paused) {
+    video.play();
+  } else {
+    video.pause();
   }
+}
+
+function setup() {
+  noCanvas();
+
+  gui = QuickSettings.create(10, 10, 'P_supercut_1');
+  gui.addText('searchQuery', searchQuery, setSearchQuery);
+  gui.addButton('generateMontage', generateMontage);
+  gui.addHTML('output', '');
+  gui.addButton('togglePlayback', togglePlayback);
+
+  generateMontage(searchQuery);
 }
