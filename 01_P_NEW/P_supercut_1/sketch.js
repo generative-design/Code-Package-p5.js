@@ -1,10 +1,5 @@
 /**
- * Play fragments of the video where search query is mentioned in dialog
- *
- *
- * KEYS
- * r                   : restart current montage from the beginning
- * p                   : play/pause video
+ * Create montage of video with a search query.
  */
 "use strict";
 
