@@ -10,10 +10,13 @@
 
 var cursorLocation = {x:50, y:50};
 var aniLetters;
+var letterPadding = 20;
+
+var typed = [];
 
 function setup() {
   createCanvas(800,800);
-  colorMode(HSB,360,100,100,100);
+  // colorMode(HSB,360,100,100,100);
 
   strokeWeight(1);
   strokeCap(ROUND);
@@ -22,7 +25,19 @@ function setup() {
 }
 
 function draw() {
-  noLoop();
+  // noLoop();
+  background(255, 255, 255, 30);
+
+
+  // aniLetters.aniB(width/2, height/2);
+  if(typed.length > 0){
+    console.log(typed.length);
+    typed.forEach(function(d){
+
+        aniLetters[d.letter](d.x, d.y);
+
+    })
+  }
 
 }
 
@@ -257,7 +272,7 @@ function AniLetters(_lwidth, _lheight){
     pop()
   }
 
-  // ------------- components ---------------
+  // ------------- components --------------- //
   this.sCurve = function(x1,y1){
     push();
     translate(x1, y1);
@@ -367,6 +382,7 @@ function AniLetters(_lwidth, _lheight){
     push();
     translate(x1,y1);
       line(0, 0, 0, this.letterHeight);
+      lineFromToInSteps(0, 0, 0, this.letterHeight, 10);
     pop();
   }
 
@@ -423,6 +439,16 @@ function AniLetters(_lwidth, _lheight){
 }
 
 
+function lineFromToInSteps(x1, y1, x2, y2, stepCount) {
+  var aniIndex = frameCount % (stepCount+1);
+  var ratio = aniIndex/stepCount;
+  var posX = lerp(x1, x2, ratio);
+  var posy = lerp(y1, y2, ratio);
+  fill(0);
+  rectMode(CENTER);
+  rect(posX, posy, 10, 10);
+}
+
 
 
 function keyPressed() {
@@ -437,16 +463,27 @@ function keyPressed() {
     cursorLocation.y += aniLetters.letterHeight + 5;
   }
 
+  if(keyCode == LEFT_ARROW ){
+    var pad = 6;
+    noStroke();
+    cursorLocation.x -= aniLetters.letterWidth + letterPadding+pad;
+    rect(cursorLocation.x, cursorLocation.y-pad, aniLetters.letterWidth+letterPadding+pad, aniLetters.letterHeight+pad)
+  }
+
 
 }
 
 function keyTyped() {
-  if(keyCode !== ENTER || keyCode !== RETURN || keyCode != 32 || key != ' '){
+
+  if(keyCode !== 13 && keyCode != ENTER && keyCode != RETURN && keyCode != 32 ){
+    stroke(0);
     console.log(key);
     console.log(keyCode);
     var thing  = 'ani' + key.toUpperCase();
-    aniLetters[thing](cursorLocation.x, cursorLocation.y);
-    cursorLocation.x += aniLetters.letterWidth+20;
+    console.log(thing);
+    // aniLetters[thing](cursorLocation.x, cursorLocation.y)
+    typed.push({letter: thing, x:cursorLocation.x, y: cursorLocation.y});
+    cursorLocation.x += aniLetters.letterWidth+letterPadding;
   }
 
 }
