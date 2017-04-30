@@ -112,7 +112,7 @@ function AniLetters(_lwidth, _lheight){
   this.aniJ = function(x,y){
     push();
     translate(x, y);
-    this.jStem(this.letterWidth, 0);
+    // this.jStem(this.letterWidth, 0);
     this.jCurve(0, 0);
     console.log("J");
     pop();
@@ -280,8 +280,8 @@ function AniLetters(_lwidth, _lheight){
     push();
     translate(x1, y1);
     noFill();
-    arc(this.letterWidth/2, this.letterHeight*0.75, this.letterWidth, this.letterHeight/2, 0, PI);
-    curve()
+    // arc(this.letterWidth/2, this.letterHeight*0.75, this.letterWidth, this.letterHeight/2, 0, PI);
+    bezier(this.letterWidth, 0, this.letterWidth+10, this.letterHeight*1.5, 0, this.letterHeight, 0, this.letterHeight*0.75)
     pop()
   }
 
