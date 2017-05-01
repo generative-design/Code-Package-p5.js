@@ -45,6 +45,7 @@ function draw() {
 function AniLetters(_lwidth, _lheight){
   this.letterWidth = _lwidth;
   this.letterHeight = _lheight;
+  this.aniSteps = 20;
 
   // -------------- letters -------------
   this.aniA = function(x, y){
@@ -319,9 +320,11 @@ function AniLetters(_lwidth, _lheight){
     translate(x1, y1);
     if(direction == 1){
       line(this.letterWidth/2, this.letterHeight/2, this.letterWidth, 0);
+      lineFromToInSteps(this.letterWidth/2, this.letterHeight/2, this.letterWidth, 0, this.aniSteps);
     }
     if (direction == -1){
       line(0, 0, this.letterWidth/2, this.letterHeight/2);
+      lineFromToInSteps(0, 0, this.letterWidth/2, this.letterHeight/2, this.aniSteps);
     }
     pop()
   }
@@ -331,9 +334,11 @@ function AniLetters(_lwidth, _lheight){
     translate(x1, y1);
     if(direction == 1){
       line(this.letterWidth, 0, 0, this.letterHeight);
+      lineFromToInSteps(this.letterWidth, 0, 0, this.letterHeight, this.aniSteps);
     }
     if (direction == -1){
       line(0, 0, this.letterWidth, this.letterHeight);
+      lineFromToInSteps(0, 0, this.letterWidth, this.letterHeight, this.aniSteps);
     }
     pop();
   }
@@ -343,9 +348,11 @@ function AniLetters(_lwidth, _lheight){
     translate(x1, y1);
     if(direction == 1){
       line(0, 0, this.letterWidth/4 , this.letterHeight);
+      lineFromToInSteps(0, 0, this.letterWidth/4 , this.letterHeight, this.aniSteps);
     }
     if(direction == -1){
       line(this.letterWidth/4, this.letterHeight, this.letterWidth/2, 0);
+      lineFromToInSteps(this.letterWidth/4, this.letterHeight, this.letterWidth/2, 0, this.aniSteps);
     }
     pop();
   }
@@ -355,9 +362,11 @@ function AniLetters(_lwidth, _lheight){
     translate(x1, y1);
     if(direction == 1){
       line(0, 0, this.letterWidth/2 , this.letterHeight);
+      lineFromToInSteps(0, 0, this.letterWidth/2 , this.letterHeight, this.aniSteps);
     }
     if(direction == -1){
       line(this.letterWidth/2, this.letterHeight, this.letterWidth, 0);
+      lineFromToInSteps(this.letterWidth/2, this.letterHeight, this.letterWidth, 0, this.aniSteps);
     }
     pop();
   }
@@ -375,6 +384,7 @@ function AniLetters(_lwidth, _lheight){
 
     line(0, 0, this.letterHeight/2, endpoint);
 
+    lineFromToInSteps(0, 0, this.letterHeight/2, endpoint, this.aniSteps);
     pop();
   }
 
@@ -382,7 +392,8 @@ function AniLetters(_lwidth, _lheight){
     push();
     translate(x1,y1);
       line(0, 0, 0, this.letterHeight);
-      lineFromToInSteps(0, 0, 0, this.letterHeight, 10);
+      // animatedBoxes
+      lineFromToInSteps(0, 0, 0, this.letterHeight, this.aniSteps);
     pop();
   }
 
@@ -390,6 +401,8 @@ function AniLetters(_lwidth, _lheight){
     push();
     translate(x1,y1);
       line(0, 0, 0, this.letterHeight/2);
+      // animatedBoxes
+      lineFromToInSteps(0, 0, 0, this.letterHeight/2, this.aniSteps);
     pop();
   }
 
@@ -397,6 +410,8 @@ function AniLetters(_lwidth, _lheight){
     push();
     translate(x1,y1);
       line(0, 0, this.letterWidth/2, 0);
+      // animatedBoxes
+      lineFromToInSteps(0, 0, this.letterWidth/2, 0, this.aniSteps);
     pop();
   }
 
@@ -433,6 +448,8 @@ function AniLetters(_lwidth, _lheight){
     push()
     translate(x1, y1);
     line(0, 0, this.letterWidth, 0);
+    // animatedBoxes
+      lineFromToInSteps(0, 0, this.letterWidth, 0, this.aniSteps);
     pop()
   }
 
