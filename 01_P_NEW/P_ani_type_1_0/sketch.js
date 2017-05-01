@@ -496,10 +496,10 @@ function keyTyped() {
     stroke(0);
     console.log(key);
     console.log(keyCode);
-    var thing  = 'ani' + key.toUpperCase();
-    console.log(thing);
-    // aniLetters[thing](cursorLocation.x, cursorLocation.y)
-    typed.push({letter: thing, x:cursorLocation.x, y: cursorLocation.y});
+    var aniLetter  = 'ani' + key.toUpperCase();
+    console.log(aniLetter);
+    aniLetters[aniLetter](cursorLocation.x, cursorLocation.y)
+    typed.push({letter: aniLetter, x:cursorLocation.x, y: cursorLocation.y});
     cursorLocation.x += aniLetters.letterWidth+letterPadding;
   }
 
