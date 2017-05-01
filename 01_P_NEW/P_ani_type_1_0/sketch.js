@@ -31,7 +31,7 @@ function draw() {
 
   // aniLetters.aniB(width/2, height/2);
   if(typed.length > 0){
-    console.log(typed.length);
+    // console.log(typed.length);
     typed.forEach(function(d){
 
         aniLetters[d.letter](d.x, d.y);
@@ -281,6 +281,7 @@ function AniLetters(_lwidth, _lheight){
     arc(this.letterWidth/2, this.letterHeight*0.25, this.letterWidth, this.letterHeight/2, PI, 0);
     arc(this.letterWidth/2, this.letterHeight*0.75, this.letterWidth, this.letterHeight/2, 0, PI);
     curve(this.letterWidth, -this.letterHeight*1.5, 0, this.letterHeight*0.25, this.letterWidth, this.letterHeight*0.75, this.letterWidth-this.letterWidth, this.letterHeight*0.75+this.letterHeight*1.5)
+    curveFromToInSteps(this.letterWidth, -this.letterHeight*1.5, 0, this.letterHeight*0.25, this.letterWidth, this.letterHeight*0.75, this.letterWidth-this.letterWidth, this.letterHeight*0.75+this.letterHeight*1.5,this.aniSteps);
     pop()
   }
 
@@ -426,6 +427,7 @@ function AniLetters(_lwidth, _lheight){
       translate(x1,y1);
     }
     curve(cPoint*direction, 0, 0,0,0,this.letterHeight/2,cPoint*direction,this.letterHeight/2)
+    curveFromToInSteps(cPoint*direction, 0, 0,0,0,this.letterHeight/2,cPoint*direction,this.letterHeight/2,this.aniSteps);
     pop();
   }
 
@@ -440,6 +442,7 @@ function AniLetters(_lwidth, _lheight){
       translate(x1,y1);
     }
     curve(cPoint*direction, 0, 0,0,0,this.letterHeight, cPoint*direction,this.letterHeight)
+    curveFromToInSteps(cPoint*direction, 0, 0,0,0,this.letterHeight, cPoint*direction,this.letterHeight, this.aniSteps);
     pop();
 
   }
@@ -449,7 +452,7 @@ function AniLetters(_lwidth, _lheight){
     translate(x1, y1);
     line(0, 0, this.letterWidth, 0);
     // animatedBoxes
-      lineFromToInSteps(0, 0, this.letterWidth, 0, this.aniSteps);
+    lineFromToInSteps(0, 0, this.letterWidth, 0, this.aniSteps);
     pop()
   }
 
@@ -466,6 +469,33 @@ function lineFromToInSteps(x1, y1, x2, y2, stepCount) {
   rect(posX, posy, 10, 10);
 }
 
+
+function curveFromToInSteps(a1, a2, b1, b2, c1, c2, d1, d2,  stepCount){
+  var points = [];
+  for (var i = 0; i <= stepCount; i++) {
+    var t = i / stepCount;
+    var cx = curvePoint(a1, b1, c1, d1, t);
+    var cy = curvePoint(a2, b2, c2, d2, t);
+    points.push({x: cx, y: cy});
+    // ellipse(cx ,cy, 10, 10);
+  }
+   var aniIndex = frameCount % (stepCount);
+    var ratio = aniIndex/stepCount;
+    var posX = lerp(points[aniIndex].x, points[aniIndex+1].x, ratio);
+    var posy = lerp(points[aniIndex].y, points[aniIndex+1].y, ratio);
+    fill(0);
+    rectMode(CENTER);
+    rect(posX, posy, 10, 10);
+
+   // for(var i =0; i < points.length-1; i++){
+   //    var posX = lerp(points[i].x, points[i+1].x, ratio);
+   //    var posy = lerp(points[i].y, points[i+1].y, ratio);
+   //    fill(0);
+   //    rectMode(CENTER);
+   //    rect(posX, posy, 10, 10);
+   // }
+
+}
 
 
 function keyPressed() {
@@ -494,11 +524,11 @@ function keyTyped() {
 
   if(keyCode !== 13 && keyCode != ENTER && keyCode != RETURN && keyCode != 32 ){
     stroke(0);
-    console.log(key);
-    console.log(keyCode);
+    // console.log(key);
+    // console.log(keyCode);
     var aniLetter  = 'ani' + key.toUpperCase();
-    console.log(aniLetter);
-    aniLetters[aniLetter](cursorLocation.x, cursorLocation.y)
+    // console.log(aniLetter);
+    // aniLetters[aniLetter](cursorLocation.x, cursorLocation.y)
     typed.push({letter: aniLetter, x:cursorLocation.x, y: cursorLocation.y});
     cursorLocation.x += aniLetters.letterWidth+letterPadding;
   }
