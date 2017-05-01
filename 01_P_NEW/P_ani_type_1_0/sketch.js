@@ -206,6 +206,7 @@ function AniLetters(_lwidth, _lheight){
   this.aniS = function(x,y){
     push();
     translate(x, y);
+    // noFill();
     this.sCurve(0,0);
     console.log("s");
     pop();
@@ -277,11 +278,15 @@ function AniLetters(_lwidth, _lheight){
   this.sCurve = function(x1,y1){
     push();
     translate(x1, y1);
+
+    arcFromToInSteps(this.letterWidth/2, this.letterHeight*0.25, this.letterWidth/2, -PI, 0, this.aniSteps);
+    arcFromToInSteps(this.letterWidth/2, this.letterHeight*0.75, this.letterWidth/2, PI, 0, this.aniSteps);
+  curveFromToInSteps(this.letterWidth, -this.letterHeight*1.5, 0, this.letterHeight*0.25, this.letterWidth, this.letterHeight*0.75, this.letterWidth-this.letterWidth, this.letterHeight*0.75+this.letterHeight*1.5,this.aniSteps);
+
     noFill();
+    curve(this.letterWidth, -this.letterHeight*1.5, 0, this.letterHeight*0.25, this.letterWidth, this.letterHeight*0.75, this.letterWidth-this.letterWidth, this.letterHeight*0.75+this.letterHeight*1.5)
     arc(this.letterWidth/2, this.letterHeight*0.25, this.letterWidth, this.letterHeight/2, PI, 0);
     arc(this.letterWidth/2, this.letterHeight*0.75, this.letterWidth, this.letterHeight/2, 0, PI);
-    curve(this.letterWidth, -this.letterHeight*1.5, 0, this.letterHeight*0.25, this.letterWidth, this.letterHeight*0.75, this.letterWidth-this.letterWidth, this.letterHeight*0.75+this.letterHeight*1.5)
-    curveFromToInSteps(this.letterWidth, -this.letterHeight*1.5, 0, this.letterHeight*0.25, this.letterWidth, this.letterHeight*0.75, this.letterWidth-this.letterWidth, this.letterHeight*0.75+this.letterHeight*1.5,this.aniSteps);
     pop()
   }
 
@@ -497,6 +502,16 @@ function curveFromToInSteps(a1, a2, b1, b2, c1, c2, d1, d2,  stepCount){
 
 }
 
+function arcFromToInSteps(x, y, radiusWidth, a1, a2, stepCount) {
+  var aniIndex = frameCount % (stepCount+1);
+  var ratio = aniIndex/stepCount;
+  var angle = lerp(a1, a2, ratio);
+  var posX = x + cos(angle) * radiusWidth;
+  var posY = y + sin(angle) * radiusWidth;
+  fill(0);
+  rectMode(CENTER);
+  rect(posX, posY, 10, 10);
+}
 
 function keyPressed() {
   if (keyCode === CONTROL) saveCanvas(gd.timestamp(), 'png');
