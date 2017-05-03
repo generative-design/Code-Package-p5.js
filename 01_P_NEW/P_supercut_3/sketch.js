@@ -75,20 +75,28 @@ function findSubtiles(searchPattern) {
   // AABBA
   searchPattern = searchPattern.split(/\s+/);
   var results = [];
+  var rhymeA = [];
+  var rhymeB = [];
   subtitles.forEach(function(subtitle) {
-    if (results.length < 5) {
-      var lastWord = subtitle.dialogWords[subtitle.dialogWords.length - 1];
-      if (results.length === 0 || results.length === 1 || results.length === 4) {
-        if (lexicon.isRhyme(lastWord, searchPattern[0])) {
-          results.push(subtitle);
-        }
-      } else {
-        if (lexicon.isRhyme(lastWord, searchPattern[1])) {
-          results.push(subtitle);
+    var lastWord = subtitle.dialogWords[subtitle.dialogWords.length - 1];
+    searchPattern.forEach(function(rhymeWord, index) {
+      if (lexicon.isRhyme(rhymeWord, lastWord)) {
+        if (index % 2 === 0) {
+          rhymeA.push(subtitle);
+        } else {
+          rhymeB.push(subtitle);
         }
       }
-    }
+    });
   });
+  var rhymesLength = rhymeA.length + rhymeB.length;
+  for (var i = 1; i <= rhymesLength - rhymesLength % 5; i++) {
+    if (i % 5 - 3 === 0 || i % 5 - 4 === 0) {
+      results.push(rhymeB.shift());
+    } else {
+      results.push(rhymeA.shift());
+    }
+  }
   return results;
 }
 
