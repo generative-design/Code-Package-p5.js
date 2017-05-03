@@ -90,13 +90,17 @@ function findSubtiles(searchPattern) {
     });
   });
   var rhymesLength = rhymeA.length + rhymeB.length;
-  for (var i = 1; i <= rhymesLength - rhymesLength % 5; i++) {
-    if (i % 5 - 3 === 0 || i % 5 - 4 === 0) {
-      results.push(rhymeB.shift());
+  for (var i = 0; i <= rhymesLength; i++) {
+    if (!rhymeA.length || !rhymeB.length) {
+      break;
+    }
+    if (i % 5 - 2 === 0 || i % 5 - 3 === 0) {
+        results.push(rhymeB.shift());
     } else {
-      results.push(rhymeA.shift());
+        results.push(rhymeA.shift());
     }
   }
+  results.splice(results.length - results.length % 5);
   return results;
 }
 
