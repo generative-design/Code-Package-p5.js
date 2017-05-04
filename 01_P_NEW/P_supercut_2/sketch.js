@@ -1,5 +1,6 @@
 /**
  * Create montage of video with a search query.
+ *
  */
 "use strict";
 
@@ -8,7 +9,8 @@ var video;
 var subtitleSrc = 'data/subs.vtt';
 var subtitles;
 
-var searchQuery = '\\b(comet)\\b';
+// List space-seperated PENN tags (see https://rednoise.org/rita/reference/PennTags.html)
+var searchQuery = 'nns jjr';
 
 var searchResults = [];
 var currentResult;
@@ -58,6 +60,7 @@ function SubTitleObject(startTime, endTime, dialog) {
   this.endTime = getTimeInSeconds(endTime);
   this.dialog = dialog.replace(/\s\d+\s$|<(?:.)*?>/g, '').trim();
   this.duration = this.endTime - this.startTime;
+  this.dialogPOS = RiTa.getPosTags(this.dialog);
 }
 
 function getTimeInSeconds(timeString) {
@@ -69,12 +72,11 @@ function getTimeInSeconds(timeString) {
 }
 
 function findSubtiles(searchPattern) {
-  searchPattern = new RegExp(searchPattern, 'i');
-  var results = [];
-  subtitles.forEach(function(subtitle) {
-    if (searchPattern.test(subtitle.dialog)) {
-      results.push(subtitle);
-    };
+  searchPattern = searchPattern.split(' ');
+  var results = subtitles.filter(function(subtitle) {
+    return searchPattern.every(function(searchGroup) {
+      return subtitle.dialogPOS.indexOf(searchGroup) !== -1;
+    });
   });
   return results;
 }
