@@ -1,5 +1,5 @@
 /**
- * Sliders arranged in a pattern
+ * Use sliders to generate a grid of adjustable shapes
  *
  * MOUSE
  *
@@ -7,69 +7,84 @@
  * s                   : save png
  */
 "use strict";
-var w = 600;
-var h = 600;
-var sliderCount;
-var sliderWidth;
-var sliderHeight = 17;
-var padding = 10;
 
-var sliderMin = 0;
-var sliderMax = 100;
-
+var mySliders = [];
+var sliderWidth = 50;
+var sliderHeight = 20;
+var xoff = 0;
 
 function setup() {
   createCanvas(800,800);
-  // get the number of sliders based on w & h
-  sliderWidth = w/2;
-  sliderCount = ceil(sliderWidth/sliderHeight)
+  rectMode(CENTER);
 
-  noLoop();
+  var counter = 0;
+  for (var x = 0; x < width - sliderWidth; x +=sliderWidth){
+    for (var y = sliderHeight; y < height - sliderHeight; y +=sliderHeight){
+      xoff = xoff + 100;
+      var n = noise(xoff) * sliderHeight;
+
+      mySliders[counter] = new MySlider(x, y, sliderWidth, sliderHeight, int(n)) ;
+      mySliders[counter].create();
+      counter++;
+    }
+  }
 }
 
 function draw() {
   background(255);
 
-  // topleft - horizontal
-  for(var i = 0; i <= sliderCount; i++){
-    var sval = map( i, sliderCount,0, sliderMin, sliderMax);
-    createSlider(sliderMin, sliderMax, sval)
-      .position(padding, i*sliderHeight + padding)
-      .style("width", sliderWidth+"px");
-  }
-
-  // bottomright - horizontal
-  for(var i = 0; i <= sliderCount; i++){
-    var sval = map( i, sliderCount,0, sliderMin, sliderMax);
-    createSlider(sliderMin, sliderMax, sval)
-      .position(sliderWidth + padding*3, sliderWidth + padding*2 + i*sliderHeight)
-      .style("width", sliderWidth+"px");
-  }
-
-  // topright - vertical
-  for(var i = 0; i <= sliderCount; i++){
-    var sval = map( i, 0,sliderCount, sliderMin, sliderMax);
-    createSlider(sliderMin, sliderMax, sval)
-      .position(sliderWidth/2 + padding*2 + i*sliderHeight, sliderWidth/2 + padding)
-      .style("width", sliderWidth+"px").style('transform', 'rotate('+90+'deg)');
-  }
-
-  // bottomleft - vertical
-  for(var i = 0; i <= sliderCount; i++){
-    var sval = map( i, sliderCount,0, sliderMin, sliderMax);
-    createSlider(sliderMin, sliderMax, sval)
-      .position(sliderWidth/2 - i*sliderHeight + padding*2, sliderWidth + sliderWidth/2 + padding*3)
-      .style("width", sliderWidth+"px").style('transform', 'rotate('+90+'deg)');
-  }
-
-
+  // loop through each slider and update if changes are made
+  mySliders.forEach(function(d){
+    d.update();
+  })
 }
 
 
-// TODO: create circle, triangles from handles
-// TODO: slider group values all change in sync by drag handles
+function MySlider(_x, _y, _sWidth, _sHeightUpper, _val){
+
+  var thisSlider,
+    x = _x,
+    y = _y,
+    sWidth = _sWidth,
+    padding = 8,
+    sHeight = 19,
+    sHeightLower= 1,
+    sHeightUpper= _sHeightUpper,
+    val = _val;
+
+  this.create = function(){
+    thisSlider = createSlider(sHeightLower, sHeightUpper, val)
+    thisSlider.style("width", sWidth +"px")
+    thisSlider.position(x,y);
+  }
+
+  this.update = function(){
+    fill(0,0,0);
+    noStroke();
+
+    // adjust the "slider track"
+    push();
+    translate(x+sWidth/2 +padding, y + sHeight/2);
+    rect(0, 0, sWidth, thisSlider.value());
+    pop();
+
+    // adjust the slider handle
+    fill(255);
+    push();
+    // use an ellipse for the handle
+    // var handleX = map(thisSlider.value(), sHeightLower, sHeightUpper, x + padding,  x+sWidth - thisSlider.value()/2 + padding)
+    // ellipse(0,0, thisSlider.value() ,thisSlider.value() )
+
+    // use a rectangle for the handle
+    var handleWidth = 4;
+    var handleX = map(thisSlider.value(), sHeightLower, sHeightUpper, x + padding,  x+sWidth - handleWidth/2 + padding)
+    translate(handleX, y + sHeight/2);
+    rect(0, 0, handleWidth, thisSlider.value())
+    pop();
+
+  }
+}
 
 function keyPressed() {
-  // note - save won't work for dom elements since they are not in the canvas
   if (key == 's' || key == 'S') saveCanvas(gd.timestamp(), 'png');
 }
