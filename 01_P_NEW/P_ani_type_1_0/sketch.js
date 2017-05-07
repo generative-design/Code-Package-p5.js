@@ -263,8 +263,6 @@ function AniLetters(_lwidth, _lheight){
   }
 
   // ------------- components --------------- //
-
-
   this.sCurve = function(x1,y1){
     push();
     translate(x1, y1);
@@ -317,7 +315,6 @@ function AniLetters(_lwidth, _lheight){
       this.static();
       this.dynamic();
     }
-
     pop()
   }
 
@@ -369,8 +366,6 @@ function AniLetters(_lwidth, _lheight){
       this.static();
       this.dynamic();
     }
-
-
     pop();
   }
 
@@ -406,7 +401,6 @@ function AniLetters(_lwidth, _lheight){
       this.static();
       this.dynamic();
     }
-
     pop()
   }
 
@@ -442,7 +436,6 @@ function AniLetters(_lwidth, _lheight){
       this.static();
       this.dynamic();
     }
-
     pop();
   }
 
@@ -477,7 +470,6 @@ function AniLetters(_lwidth, _lheight){
       this.static();
       this.dynamic();
     }
-
     pop();
   }
 
@@ -795,7 +787,6 @@ function keyPressed() {
   //   cursorLocation.x -= aniLetters.letterWidth + letterPadding+pad;
   //   rect(cursorLocation.x, cursorLocation.y-pad, aniLetters.letterWidth+letterPadding+pad, aniLetters.letterHeight+pad)
   // }
-
 
 }
 
