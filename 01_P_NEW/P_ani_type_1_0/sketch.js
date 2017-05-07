@@ -130,7 +130,6 @@ function AniLetters(_lwidth, _lheight){
     translate(x, y);
     // this.jStem(this.letterWidth, 0);
     this.jCurve(0, 0);
-    console.log("J");
     pop();
   }
 
@@ -208,7 +207,6 @@ function AniLetters(_lwidth, _lheight){
     translate(x, y);
     // noFill();
     this.sCurve(0,0);
-    console.log("s");
     pop();
   }
 
@@ -225,7 +223,6 @@ function AniLetters(_lwidth, _lheight){
     push();
     translate(x, y);
     this.uCurve(0,0);
-    console.log("u")
     pop();
   }
 
@@ -261,7 +258,6 @@ function AniLetters(_lwidth, _lheight){
     this.halfStem(this.letterWidth/2, this.letterHeight/2);
     this.halfDiagonalArm(0,0, 1);
     this.halfDiagonalArm(0,0, -1);
-
     pop()
   }
 
@@ -275,13 +271,15 @@ function AniLetters(_lwidth, _lheight){
   }
 
   // ------------- components --------------- //
+
+
   this.sCurve = function(x1,y1){
     push();
     translate(x1, y1);
 
-    arcFromToInSteps(this.letterWidth/2, this.letterHeight*0.25, this.letterWidth/2, -PI, 0, this.aniSteps);
-    arcFromToInSteps(this.letterWidth/2, this.letterHeight*0.75, this.letterWidth/2, PI, 0, this.aniSteps);
-  curveFromToInSteps(this.letterWidth, -this.letterHeight*1.5, 0, this.letterHeight*0.25, this.letterWidth, this.letterHeight*0.75, this.letterWidth-this.letterWidth, this.letterHeight*0.75+this.letterHeight*1.5,this.aniSteps);
+    arcFromToInSteps(this.letterWidth/2, this.letterHeight*0.25, this.letterWidth/2,this.letterWidth/2, -PI, 0, this.aniSteps);
+    arcFromToInSteps(this.letterWidth/2, this.letterHeight*0.75, this.letterWidth/2,this.letterWidth/2, PI, 0, this.aniSteps);
+    curveFromToInSteps(this.letterWidth, -this.letterHeight*1.5, 0, this.letterHeight*0.25, this.letterWidth, this.letterHeight*0.75, this.letterWidth-this.letterWidth, this.letterHeight*0.75+this.letterHeight*1.5,this.aniSteps);
 
     noFill();
     curve(this.letterWidth, -this.letterHeight*1.5, 0, this.letterHeight*0.25, this.letterWidth, this.letterHeight*0.75, this.letterWidth-this.letterWidth, this.letterHeight*0.75+this.letterHeight*1.5)
@@ -293,30 +291,29 @@ function AniLetters(_lwidth, _lheight){
   this.uCurve = function(x1, y1){
     push();
     translate(x1, y1);
+    arcFromToInSteps(this.letterWidth/2, 0, this.letterWidth/2, this.letterHeight, 0, PI, this.aniSteps+10)
     noFill();
     arc(this.letterWidth/2, 0, this.letterWidth, this.letterHeight*2, 0, PI);
+
     pop()
   }
 
   this.jCurve = function(x1, y1){
     push();
     translate(x1, y1);
+
+    bezierFromToInSteps(this.letterWidth, 0, this.letterWidth+10, this.letterHeight*1.5, 0, this.letterHeight, 0, this.letterHeight*0.75, this.aniSteps + 10)
+
     noFill();
-    // arc(this.letterWidth/2, this.letterHeight*0.75, this.letterWidth, this.letterHeight/2, 0, PI);
     bezier(this.letterWidth, 0, this.letterWidth+10, this.letterHeight*1.5, 0, this.letterHeight, 0, this.letterHeight*0.75)
     pop()
-  }
-
-  this.jStem = function(x1, y1){
-    push();
-    translate(x1, y1);
-    line(0,0, 0, this.letterHeight*0.75);
-    pop();
   }
 
   this.letterO = function(x1, y1){
     push();
     translate(x1, y1);
+    arcFromToInSteps(this.letterWidth/2, this.letterHeight/2, this.letterWidth/2, this.letterHeight/2, PI, -PI, this.aniSteps+10)
+    noFill();
     ellipse(this.letterWidth/2, this.letterHeight/2, this.letterWidth, this.letterHeight);
     pop();
   }
@@ -482,7 +479,6 @@ function curveFromToInSteps(a1, a2, b1, b2, c1, c2, d1, d2,  stepCount){
     var cx = curvePoint(a1, b1, c1, d1, t);
     var cy = curvePoint(a2, b2, c2, d2, t);
     points.push({x: cx, y: cy});
-    // ellipse(cx ,cy, 10, 10);
   }
    var aniIndex = frameCount % (stepCount);
     var ratio = aniIndex/stepCount;
@@ -491,23 +487,31 @@ function curveFromToInSteps(a1, a2, b1, b2, c1, c2, d1, d2,  stepCount){
     fill(0);
     rectMode(CENTER);
     rect(posX, posy, 10, 10);
-
-   // for(var i =0; i < points.length-1; i++){
-   //    var posX = lerp(points[i].x, points[i+1].x, ratio);
-   //    var posy = lerp(points[i].y, points[i+1].y, ratio);
-   //    fill(0);
-   //    rectMode(CENTER);
-   //    rect(posX, posy, 10, 10);
-   // }
-
 }
 
-function arcFromToInSteps(x, y, radiusWidth, a1, a2, stepCount) {
+function bezierFromToInSteps(a1, a2, b1, b2, c1, c2, d1, d2,  stepCount){
+  var points = [];
+  for (var i = 0; i <= stepCount; i++) {
+    var t = i / stepCount;
+    var cx = bezierPoint(a1, b1, c1, d1, t);
+    var cy = bezierPoint(a2, b2, c2, d2, t);
+    points.push({x: cx, y: cy});
+  }
+   var aniIndex = frameCount % (stepCount);
+    var ratio = aniIndex/stepCount;
+    var posX = lerp(points[aniIndex].x, points[aniIndex+1].x, ratio);
+    var posy = lerp(points[aniIndex].y, points[aniIndex+1].y, ratio);
+    fill(0);
+    rectMode(CENTER);
+    rect(posX, posy, 10, 10);
+}
+
+function arcFromToInSteps(x, y, radiusWidth, radiusHeight, a1, a2, stepCount) {
   var aniIndex = frameCount % (stepCount+1);
   var ratio = aniIndex/stepCount;
   var angle = lerp(a1, a2, ratio);
   var posX = x + cos(angle) * radiusWidth;
-  var posY = y + sin(angle) * radiusWidth;
+  var posY = y + sin(angle) * radiusHeight;
   fill(0);
   rectMode(CENTER);
   rect(posX, posY, 10, 10);
@@ -539,15 +543,11 @@ function keyTyped() {
 
   if(keyCode !== 13 && keyCode != ENTER && keyCode != RETURN && keyCode != 32 ){
     stroke(0);
-    // console.log(key);
-    // console.log(keyCode);
     var aniLetter  = 'ani' + key.toUpperCase();
-    // console.log(aniLetter);
     // aniLetters[aniLetter](cursorLocation.x, cursorLocation.y)
     typed.push({letter: aniLetter, x:cursorLocation.x, y: cursorLocation.y});
     cursorLocation.x += aniLetters.letterWidth+letterPadding;
   }
 
 }
-
 
