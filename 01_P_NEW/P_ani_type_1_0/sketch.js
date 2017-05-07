@@ -549,7 +549,6 @@ function AniLetters(_lwidth, _lheight){
     this.dynamic = function(){
       lineFromToInSteps(0, 0, 0, this.letterHeight, this.aniSteps);
     }
-
     if(this.mode === 1){
       this.static();
     }
@@ -573,7 +572,6 @@ function AniLetters(_lwidth, _lheight){
     this.dynamic = function(){
       lineFromToInSteps(0, 0, 0, this.letterHeight/2, this.aniSteps);
     }
-
     if(this.mode === 1){
       this.static();
     }
@@ -621,7 +619,6 @@ function AniLetters(_lwidth, _lheight){
     if(direction === -1){
       translate(x1,y1);
     }
-
     this.static = function(){
       noFill();
       curve(cPoint*direction, 0, 0,0,0,this.letterHeight/2,cPoint*direction,this.letterHeight/2)
@@ -640,7 +637,6 @@ function AniLetters(_lwidth, _lheight){
       this.static();
       this.dynamic();
     }
-
     pop();
   }
 
@@ -654,7 +650,6 @@ function AniLetters(_lwidth, _lheight){
     if(direction === -1){
       translate(x1,y1);
     }
-
     this.static = function(){
       noFill();
       curve(cPoint*direction, 0, 0,0,0,this.letterHeight, cPoint*direction,this.letterHeight)
@@ -673,10 +668,7 @@ function AniLetters(_lwidth, _lheight){
       this.static();
       this.dynamic();
     }
-
-
     pop();
-
   }
 
   this.crossBar = function(x1, y1){
@@ -765,44 +757,33 @@ function arcFromToInSteps(x, y, radiusWidth, radiusHeight, a1, a2, stepCount) {
 
 function keyPressed() {
   if (keyCode === CONTROL) saveCanvas(gd.timestamp(), 'png');
+  // change draw mode
   if (key === "1") aniLetters.mode = 1;
   if (key === "2") aniLetters.mode = 2;
   if (key === "3") aniLetters.mode = 3;
-
   // spacebar
-  if (keyCode == 32) {
-    cursorLocation.x += 50;
-  }
-
+  if (keyCode == 32) cursorLocation.x += 50;
   // on return
   if (keyCode == ENTER || keyCode == RETURN) {
     cursorLocation.x = 50;
     cursorLocation.y += aniLetters.letterHeight + 5;
   }
+  // type letters
+  stroke(0);
+  var aniLetter  = 'ani' + key.toUpperCase();
+  if(aniLetters[aniLetter]){
+    typed.push({letter: aniLetter, x:cursorLocation.x, y: cursorLocation.y});
+    cursorLocation.x += aniLetters.letterWidth+letterPadding;
+  } else{
+    console.log("not a letter")
+  }
 
-  // remove
+  // TODO: remove letter
   // if(keyCode == LEFT_ARROW ){
   //   var pad = 6;
   //   noStroke();
   //   cursorLocation.x -= aniLetters.letterWidth + letterPadding+pad;
   //   rect(cursorLocation.x, cursorLocation.y-pad, aniLetters.letterWidth+letterPadding+pad, aniLetters.letterHeight+pad)
   // }
-
-}
-
-function keyTyped() {
-  console.log(aniLetters.mode);
-  if(keyCode !== 13 && keyCode != ENTER && keyCode != RETURN && keyCode != 32 && key != 1 && key != 2 && key != 3){
-
-    stroke(0);
-    var aniLetter  = 'ani' + key.toUpperCase();
-    if(aniLetters[aniLetter]){
-      typed.push({letter: aniLetter, x:cursorLocation.x, y: cursorLocation.y});
-      cursorLocation.x += aniLetters.letterWidth+letterPadding;
-    } else{
-      console.log("not a letter")
-    }
-  }
-
 }
 
