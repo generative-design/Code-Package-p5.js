@@ -16,29 +16,19 @@ var typed = [];
 
 function setup() {
   createCanvas(800,800);
-  // colorMode(HSB,360,100,100,100);
-
   strokeWeight(1);
   strokeCap(ROUND);
   aniLetters = new AniLetters(40, 100);
-
 }
 
 function draw() {
   // noLoop();
   background(255, 255, 255, 30);
-
-
-  // aniLetters.aniB(width/2, height/2);
   if(typed.length > 0){
-    // console.log(typed.length);
     typed.forEach(function(d){
-
         aniLetters[d.letter](d.x, d.y);
-
     })
   }
-
 }
 
 
@@ -46,6 +36,7 @@ function AniLetters(_lwidth, _lheight){
   this.letterWidth = _lwidth;
   this.letterHeight = _lheight;
   this.aniSteps = 20;
+  this.mode = 3;
 
   // -------------- letters -------------
   this.aniA = function(x, y){
@@ -124,15 +115,12 @@ function AniLetters(_lwidth, _lheight){
     pop();
   }
 
-  // TODO - refine
   this.aniJ = function(x,y){
     push();
     translate(x, y);
-    // this.jStem(this.letterWidth, 0);
     this.jCurve(0, 0);
     pop();
   }
-
 
   this.aniK = function(x,y){
     push();
@@ -169,6 +157,7 @@ function AniLetters(_lwidth, _lheight){
     this.diagonalToEnd(0, 0, -1);
     pop();
   }
+
   this.aniO = function(x,y){
     push();
     translate(x, y);
@@ -201,7 +190,6 @@ function AniLetters(_lwidth, _lheight){
     pop();
   }
 
-  //TODO
   this.aniS = function(x,y){
     push();
     translate(x, y);
@@ -218,7 +206,6 @@ function AniLetters(_lwidth, _lheight){
     pop();
   }
 
-
   this.aniU = function(x,y){
     push();
     translate(x, y);
@@ -233,6 +220,7 @@ function AniLetters(_lwidth, _lheight){
     this.diagonalToMiddle(0, 0, -1);
     pop();
   }
+
   this.aniW = function(x,y){
     push();
     translate(x, y);
@@ -277,99 +265,248 @@ function AniLetters(_lwidth, _lheight){
     push();
     translate(x1, y1);
 
-    arcFromToInSteps(this.letterWidth/2, this.letterHeight*0.25, this.letterWidth/2,this.letterWidth/2, -PI, 0, this.aniSteps);
-    arcFromToInSteps(this.letterWidth/2, this.letterHeight*0.75, this.letterWidth/2,this.letterWidth/2, PI, 0, this.aniSteps);
-    curveFromToInSteps(this.letterWidth, -this.letterHeight*1.5, 0, this.letterHeight*0.25, this.letterWidth, this.letterHeight*0.75, this.letterWidth-this.letterWidth, this.letterHeight*0.75+this.letterHeight*1.5,this.aniSteps);
+    this.static = function(){
+      noFill();
+      curve(this.letterWidth, -this.letterHeight*1.5, 0, this.letterHeight*0.25, this.letterWidth, this.letterHeight*0.75, this.letterWidth-this.letterWidth, this.letterHeight*0.75+this.letterHeight*1.5)
+      arc(this.letterWidth/2, this.letterHeight*0.25, this.letterWidth, this.letterHeight/2, PI, 0);
+      arc(this.letterWidth/2, this.letterHeight*0.75, this.letterWidth, this.letterHeight/2, 0, PI);
+    }
 
-    noFill();
-    curve(this.letterWidth, -this.letterHeight*1.5, 0, this.letterHeight*0.25, this.letterWidth, this.letterHeight*0.75, this.letterWidth-this.letterWidth, this.letterHeight*0.75+this.letterHeight*1.5)
-    arc(this.letterWidth/2, this.letterHeight*0.25, this.letterWidth, this.letterHeight/2, PI, 0);
-    arc(this.letterWidth/2, this.letterHeight*0.75, this.letterWidth, this.letterHeight/2, 0, PI);
-    pop()
+    this.dynamic = function(){
+      arcFromToInSteps(this.letterWidth/2, this.letterHeight*0.25, this.letterWidth/2,this.letterWidth/2, -PI, 0, this.aniSteps);
+      arcFromToInSteps(this.letterWidth/2, this.letterHeight*0.75, this.letterWidth/2,this.letterWidth/2, PI, 0, this.aniSteps);
+      curveFromToInSteps(this.letterWidth, -this.letterHeight*1.5, 0, this.letterHeight*0.25, this.letterWidth, this.letterHeight*0.75, this.letterWidth-this.letterWidth, this.letterHeight*0.75+this.letterHeight*1.5,this.aniSteps);
+    }
+
+    if(this.mode === 1){
+      this.static();
+    }
+    if(this.mode === 2){
+      this.dynamic();
+    }
+    if(this.mode === 3){
+      this.static();
+      this.dynamic();
+    }
+    pop();
   }
 
   this.uCurve = function(x1, y1){
     push();
     translate(x1, y1);
-    arcFromToInSteps(this.letterWidth/2, 0, this.letterWidth/2, this.letterHeight, 0, PI, this.aniSteps+10)
-    noFill();
-    arc(this.letterWidth/2, 0, this.letterWidth, this.letterHeight*2, 0, PI);
+
+    this.static = function(){
+      noFill();
+      arc(this.letterWidth/2, 0, this.letterWidth, this.letterHeight*2, 0, PI);
+    }
+    this.dynamic = function(){
+      arcFromToInSteps(this.letterWidth/2, 0, this.letterWidth/2, this.letterHeight, 0, PI, this.aniSteps+10)
+    }
+
+    if(this.mode === 1){
+      this.static();
+    }
+    if(this.mode === 2){
+      this.dynamic();
+    }
+    if(this.mode === 3){
+      this.static();
+      this.dynamic();
+    }
 
     pop()
   }
+
 
   this.jCurve = function(x1, y1){
     push();
     translate(x1, y1);
+    this.static = function(){
+      noFill();
+      bezier(this.letterWidth, 0, this.letterWidth+10, this.letterHeight*1.5, 0, this.letterHeight, 0, this.letterHeight*0.75)
+    }
+    this.dynamic = function(){
+      bezierFromToInSteps(this.letterWidth, 0, this.letterWidth+10, this.letterHeight*1.5, 0, this.letterHeight, 0, this.letterHeight*0.75, this.aniSteps + 10)
+    }
 
-    bezierFromToInSteps(this.letterWidth, 0, this.letterWidth+10, this.letterHeight*1.5, 0, this.letterHeight, 0, this.letterHeight*0.75, this.aniSteps + 10)
-
-    noFill();
-    bezier(this.letterWidth, 0, this.letterWidth+10, this.letterHeight*1.5, 0, this.letterHeight, 0, this.letterHeight*0.75)
+    if(this.mode === 1){
+      this.static();
+    }
+    if(this.mode === 2){
+      this.dynamic();
+    }
+    if(this.mode === 3){
+      this.static();
+      this.dynamic();
+    }
     pop()
   }
+
 
   this.letterO = function(x1, y1){
     push();
     translate(x1, y1);
-    arcFromToInSteps(this.letterWidth/2, this.letterHeight/2, this.letterWidth/2, this.letterHeight/2, PI, -PI, this.aniSteps+10)
-    noFill();
-    ellipse(this.letterWidth/2, this.letterHeight/2, this.letterWidth, this.letterHeight);
+
+    this.static = function(){
+      noFill();
+      ellipse(this.letterWidth/2, this.letterHeight/2, this.letterWidth, this.letterHeight);
+    }
+    this.dynamic = function(){
+      arcFromToInSteps(this.letterWidth/2, this.letterHeight/2, this.letterWidth/2, this.letterHeight/2, PI, -PI, this.aniSteps+10)
+    }
+
+    if(this.mode === 1){
+      this.static();
+    }
+    if(this.mode === 2){
+      this.dynamic();
+    }
+    if(this.mode === 3){
+      this.static();
+      this.dynamic();
+    }
+
+
     pop();
   }
 
   this.halfDiagonalArm = function(x1, y1, direction){
     push();
     translate(x1, y1);
-    if(direction == 1){
-      line(this.letterWidth/2, this.letterHeight/2, this.letterWidth, 0);
-      lineFromToInSteps(this.letterWidth/2, this.letterHeight/2, this.letterWidth, 0, this.aniSteps);
+
+    this.static = function(){
+      noFill();
+      if(direction == 1){
+        line(this.letterWidth/2, this.letterHeight/2, this.letterWidth, 0);
+      }
+      if (direction == -1){
+        line(0, 0, this.letterWidth/2, this.letterHeight/2);
+      }
     }
-    if (direction == -1){
-      line(0, 0, this.letterWidth/2, this.letterHeight/2);
-      lineFromToInSteps(0, 0, this.letterWidth/2, this.letterHeight/2, this.aniSteps);
+    this.dynamic = function(){
+      if(direction == 1){
+        lineFromToInSteps(this.letterWidth/2, this.letterHeight/2, this.letterWidth, 0, this.aniSteps);
+      }
+      if (direction == -1){
+        lineFromToInSteps(0, 0, this.letterWidth/2, this.letterHeight/2, this.aniSteps);
+      }
     }
+
+    if(this.mode === 1){
+      this.static();
+    }
+    if(this.mode === 2){
+      this.dynamic();
+    }
+    if(this.mode === 3){
+      this.static();
+      this.dynamic();
+    }
+
     pop()
   }
 
   this.diagonalToEnd = function(x1, y1, direction){
     push();
     translate(x1, y1);
-    if(direction == 1){
-      line(this.letterWidth, 0, 0, this.letterHeight);
-      lineFromToInSteps(this.letterWidth, 0, 0, this.letterHeight, this.aniSteps);
+
+    this.static = function(){
+      noFill();
+      if(direction == 1){
+        line(this.letterWidth, 0, 0, this.letterHeight);
+      }
+      if (direction == -1){
+        line(0, 0, this.letterWidth, this.letterHeight);
+      }
     }
-    if (direction == -1){
-      line(0, 0, this.letterWidth, this.letterHeight);
-      lineFromToInSteps(0, 0, this.letterWidth, this.letterHeight, this.aniSteps);
+    this.dynamic = function(){
+      if(direction == 1){
+        lineFromToInSteps(this.letterWidth, 0, 0, this.letterHeight, this.aniSteps);
+      }
+      if (direction == -1){
+        lineFromToInSteps(0, 0, this.letterWidth, this.letterHeight, this.aniSteps);
+      }
     }
+
+    if(this.mode === 1){
+      this.static();
+    }
+    if(this.mode === 2){
+      this.dynamic();
+    }
+    if(this.mode === 3){
+      this.static();
+      this.dynamic();
+    }
+
     pop();
   }
 
   this.diagonalToQuarter = function(x1, y1, direction){
     push();
     translate(x1, y1);
-    if(direction == 1){
-      line(0, 0, this.letterWidth/4 , this.letterHeight);
-      lineFromToInSteps(0, 0, this.letterWidth/4 , this.letterHeight, this.aniSteps);
+    this.static = function(){
+      noFill();
+      if(direction == 1){
+        line(0, 0, this.letterWidth/4 , this.letterHeight);
+      }
+      if(direction == -1){
+        line(this.letterWidth/4, this.letterHeight, this.letterWidth/2, 0);
+      }
     }
-    if(direction == -1){
-      line(this.letterWidth/4, this.letterHeight, this.letterWidth/2, 0);
-      lineFromToInSteps(this.letterWidth/4, this.letterHeight, this.letterWidth/2, 0, this.aniSteps);
+    this.dynamic = function(){
+      if(direction == 1){
+        lineFromToInSteps(0, 0, this.letterWidth/4 , this.letterHeight, this.aniSteps);
+      }
+      if(direction == -1){
+        lineFromToInSteps(this.letterWidth/4, this.letterHeight, this.letterWidth/2, 0, this.aniSteps);
+      }
     }
+
+    if(this.mode === 1){
+      this.static();
+    }
+    if(this.mode === 2){
+      this.dynamic();
+    }
+    if(this.mode === 3){
+      this.static();
+      this.dynamic();
+    }
+
     pop();
   }
 
   this.diagonalToMiddle = function(x1, y1, direction){
     push();
     translate(x1, y1);
-    if(direction == 1){
-      line(0, 0, this.letterWidth/2 , this.letterHeight);
-      lineFromToInSteps(0, 0, this.letterWidth/2 , this.letterHeight, this.aniSteps);
+    this.static = function(){
+      noFill();
+      if(direction == 1){
+        line(0, 0, this.letterWidth/2 , this.letterHeight);
+      }
+      if(direction == -1){
+        line(this.letterWidth/2, this.letterHeight, this.letterWidth, 0);
+      }
     }
-    if(direction == -1){
-      line(this.letterWidth/2, this.letterHeight, this.letterWidth, 0);
-      lineFromToInSteps(this.letterWidth/2, this.letterHeight, this.letterWidth, 0, this.aniSteps);
+    this.dynamic = function(){
+      if(direction == 1){
+      lineFromToInSteps(0, 0, this.letterWidth/2 , this.letterHeight, this.aniSteps);
+      }
+      if(direction == -1){
+        lineFromToInSteps(this.letterWidth/2, this.letterHeight, this.letterWidth, 0, this.aniSteps);
+      }
+    }
+
+    if(this.mode === 1){
+      this.static();
+    }
+    if(this.mode === 2){
+      this.dynamic();
+    }
+    if(this.mode === 3){
+      this.static();
+      this.dynamic();
     }
     pop();
   }
@@ -385,36 +522,96 @@ function AniLetters(_lwidth, _lheight){
       endpoint = this.letterHeight/2;
     }
 
-    line(0, 0, this.letterHeight/2, endpoint);
+    this.static = function(){
+      noFill();
+      line(0, 0, this.letterHeight/2, endpoint);
+    }
+    this.dynamic = function(){
+      lineFromToInSteps(0, 0, this.letterHeight/2, endpoint, this.aniSteps);
+    }
 
-    lineFromToInSteps(0, 0, this.letterHeight/2, endpoint, this.aniSteps);
+    if(this.mode === 1){
+      this.static();
+    }
+    if(this.mode === 2){
+      this.dynamic();
+    }
+    if(this.mode === 3){
+      this.static();
+      this.dynamic();
+    }
     pop();
   }
 
   this.fullStem = function(x1, y1){
     push();
     translate(x1,y1);
+    this.static = function(){
+      noFill();
       line(0, 0, 0, this.letterHeight);
-      // animatedBoxes
+    }
+    this.dynamic = function(){
       lineFromToInSteps(0, 0, 0, this.letterHeight, this.aniSteps);
+    }
+
+    if(this.mode === 1){
+      this.static();
+    }
+    if(this.mode === 2){
+      this.dynamic();
+    }
+    if(this.mode === 3){
+      this.static();
+      this.dynamic();
+    }
     pop();
   }
 
   this.halfStem =function(x1, y1){
     push();
     translate(x1,y1);
+    this.static = function(){
+      noFill();
       line(0, 0, 0, this.letterHeight/2);
-      // animatedBoxes
+    }
+    this.dynamic = function(){
       lineFromToInSteps(0, 0, 0, this.letterHeight/2, this.aniSteps);
+    }
+
+    if(this.mode === 1){
+      this.static();
+    }
+    if(this.mode === 2){
+      this.dynamic();
+    }
+    if(this.mode === 3){
+      this.static();
+      this.dynamic();
+    }
     pop();
   }
 
   this.halfCrossBar = function(x1, y1){
     push();
     translate(x1,y1);
+    this.static = function(){
+      noFill();
       line(0, 0, this.letterWidth/2, 0);
-      // animatedBoxes
+    }
+    this.dynamic = function(){
       lineFromToInSteps(0, 0, this.letterWidth/2, 0, this.aniSteps);
+    }
+
+    if(this.mode === 1){
+      this.static();
+    }
+    if(this.mode === 2){
+      this.dynamic();
+    }
+    if(this.mode === 3){
+      this.static();
+      this.dynamic();
+    }
     pop();
   }
 
@@ -428,8 +625,26 @@ function AniLetters(_lwidth, _lheight){
     if(direction === -1){
       translate(x1,y1);
     }
-    curve(cPoint*direction, 0, 0,0,0,this.letterHeight/2,cPoint*direction,this.letterHeight/2)
-    curveFromToInSteps(cPoint*direction, 0, 0,0,0,this.letterHeight/2,cPoint*direction,this.letterHeight/2,this.aniSteps);
+
+    this.static = function(){
+      noFill();
+      curve(cPoint*direction, 0, 0,0,0,this.letterHeight/2,cPoint*direction,this.letterHeight/2)
+    }
+    this.dynamic = function(){
+      curveFromToInSteps(cPoint*direction, 0, 0,0,0,this.letterHeight/2,cPoint*direction,this.letterHeight/2,this.aniSteps);
+    }
+
+    if(this.mode === 1){
+      this.static();
+    }
+    if(this.mode === 2){
+      this.dynamic();
+    }
+    if(this.mode === 3){
+      this.static();
+      this.dynamic();
+    }
+
     pop();
   }
 
@@ -443,8 +658,27 @@ function AniLetters(_lwidth, _lheight){
     if(direction === -1){
       translate(x1,y1);
     }
-    curve(cPoint*direction, 0, 0,0,0,this.letterHeight, cPoint*direction,this.letterHeight)
-    curveFromToInSteps(cPoint*direction, 0, 0,0,0,this.letterHeight, cPoint*direction,this.letterHeight, this.aniSteps);
+
+    this.static = function(){
+      noFill();
+      curve(cPoint*direction, 0, 0,0,0,this.letterHeight, cPoint*direction,this.letterHeight)
+    }
+    this.dynamic = function(){
+      curveFromToInSteps(cPoint*direction, 0, 0,0,0,this.letterHeight, cPoint*direction,this.letterHeight, this.aniSteps);
+    }
+
+    if(this.mode === 1){
+      this.static();
+    }
+    if(this.mode === 2){
+      this.dynamic();
+    }
+    if(this.mode === 3){
+      this.static();
+      this.dynamic();
+    }
+
+
     pop();
 
   }
@@ -452,9 +686,24 @@ function AniLetters(_lwidth, _lheight){
   this.crossBar = function(x1, y1){
     push()
     translate(x1, y1);
-    line(0, 0, this.letterWidth, 0);
-    // animatedBoxes
-    lineFromToInSteps(0, 0, this.letterWidth, 0, this.aniSteps);
+    this.static = function(){
+      noFill();
+      line(0, 0, this.letterWidth, 0);
+    }
+    this.dynamic = function(){
+      lineFromToInSteps(0, 0, this.letterWidth, 0, this.aniSteps);
+    }
+
+    if(this.mode === 1){
+      this.static();
+    }
+    if(this.mode === 2){
+      this.dynamic();
+    }
+    if(this.mode === 3){
+      this.static();
+      this.dynamic();
+    }
     pop()
   }
 
@@ -517,36 +766,47 @@ function arcFromToInSteps(x, y, radiusWidth, radiusHeight, a1, a2, stepCount) {
   rect(posX, posY, 10, 10);
 }
 
+
 function keyPressed() {
   if (keyCode === CONTROL) saveCanvas(gd.timestamp(), 'png');
+  if (key === "1") aniLetters.mode = 1;
+  if (key === "2") aniLetters.mode = 2;
+  if (key === "3") aniLetters.mode = 3;
 
+  // spacebar
   if (keyCode == 32) {
     cursorLocation.x += 50;
   }
 
+  // on return
   if (keyCode == ENTER || keyCode == RETURN) {
     cursorLocation.x = 50;
     cursorLocation.y += aniLetters.letterHeight + 5;
   }
 
-  if(keyCode == LEFT_ARROW ){
-    var pad = 6;
-    noStroke();
-    cursorLocation.x -= aniLetters.letterWidth + letterPadding+pad;
-    rect(cursorLocation.x, cursorLocation.y-pad, aniLetters.letterWidth+letterPadding+pad, aniLetters.letterHeight+pad)
-  }
+  // remove
+  // if(keyCode == LEFT_ARROW ){
+  //   var pad = 6;
+  //   noStroke();
+  //   cursorLocation.x -= aniLetters.letterWidth + letterPadding+pad;
+  //   rect(cursorLocation.x, cursorLocation.y-pad, aniLetters.letterWidth+letterPadding+pad, aniLetters.letterHeight+pad)
+  // }
 
 
 }
 
 function keyTyped() {
+  console.log(aniLetters.mode);
+  if(keyCode !== 13 && keyCode != ENTER && keyCode != RETURN && keyCode != 32 && key != 1 && key != 2 && key != 3){
 
-  if(keyCode !== 13 && keyCode != ENTER && keyCode != RETURN && keyCode != 32 ){
     stroke(0);
     var aniLetter  = 'ani' + key.toUpperCase();
-    // aniLetters[aniLetter](cursorLocation.x, cursorLocation.y)
-    typed.push({letter: aniLetter, x:cursorLocation.x, y: cursorLocation.y});
-    cursorLocation.x += aniLetters.letterWidth+letterPadding;
+    if(aniLetters[aniLetter]){
+      typed.push({letter: aniLetter, x:cursorLocation.x, y: cursorLocation.y});
+      cursorLocation.x += aniLetters.letterWidth+letterPadding;
+    } else{
+      console.log("not a letter")
+    }
   }
 
 }
