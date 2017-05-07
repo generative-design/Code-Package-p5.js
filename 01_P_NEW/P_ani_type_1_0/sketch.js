@@ -1,10 +1,14 @@
 /**
- * description
+ * Type messages with this animated font
  *
  * MOUSE
  *
  * KEYS
- * s                   : save png
+ * CONTROL                   : save png
+ * A-Z
+ * 1                         : only letter form
+ * 2                         : only animated letter form
+ * 3                         : both letter form and animation
  */
 "use strict";
 
