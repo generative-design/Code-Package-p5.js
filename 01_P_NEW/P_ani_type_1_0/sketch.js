@@ -706,6 +706,7 @@ function lineFromToInSteps(x1, y1, x2, y2, stepCount) {
   fill(0);
   rectMode(CENTER);
   rect(posX, posy, 10, 10);
+  // ellipse(posX, posy, 10, 10);
 }
 
 
@@ -724,6 +725,7 @@ function curveFromToInSteps(a1, a2, b1, b2, c1, c2, d1, d2,  stepCount){
     fill(0);
     rectMode(CENTER);
     rect(posX, posy, 10, 10);
+    // ellipse(posX, posy, 10, 10);
 }
 
 function bezierFromToInSteps(a1, a2, b1, b2, c1, c2, d1, d2,  stepCount){
@@ -741,6 +743,7 @@ function bezierFromToInSteps(a1, a2, b1, b2, c1, c2, d1, d2,  stepCount){
     fill(0);
     rectMode(CENTER);
     rect(posX, posy, 10, 10);
+    // ellipse(posX, posy, 10, 10);
 }
 
 function arcFromToInSteps(x, y, radiusWidth, radiusHeight, a1, a2, stepCount) {
@@ -752,6 +755,7 @@ function arcFromToInSteps(x, y, radiusWidth, radiusHeight, a1, a2, stepCount) {
   fill(0);
   rectMode(CENTER);
   rect(posX, posY, 10, 10);
+  // ellipse(posX, posY, 10, 10);
 }
 
 
