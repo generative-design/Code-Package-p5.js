@@ -112,10 +112,6 @@ function queryResultMontage(searchResults, i) {
   }, duration * 1000);
 }
 
-function setSearchQuery(newSearchQuery) {
-  searchQuery = newSearchQuery;
-}
-
 function togglePlayback() {
   clearTimeout(fragmentTimer);
   if (video.elt.paused) {

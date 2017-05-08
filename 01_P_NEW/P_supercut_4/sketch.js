@@ -1,6 +1,5 @@
 /**
  * Create montage of video with a search query.
- *
  */
 "use strict";
 
@@ -9,8 +8,7 @@ var video;
 var subtitleSrc = 'data/subs.vtt';
 var subtitles;
 
-var searchQuery = 'day mission';
-var lexicon = new RiLexicon();
+var searchQuery = '\\b(comet)\\b';
 
 var searchResults = [];
 var currentResult;
@@ -60,7 +58,6 @@ function SubTitleObject(startTime, endTime, dialog) {
   this.endTime = getTimeInSeconds(endTime);
   this.dialog = dialog.replace(/\s\d+\s$|<(?:.)*?>/g, '').trim();
   this.duration = this.endTime - this.startTime;
-  this.dialogWords = RiTa.tokenize(RiTa.stripPunctuation(this.dialog.toLowerCase()));
 }
 
 function getTimeInSeconds(timeString) {
@@ -72,35 +69,13 @@ function getTimeInSeconds(timeString) {
 }
 
 function findSubtiles(searchPattern) {
-  // AABBA
-  searchPattern = searchPattern.split(/\s+/);
+  searchPattern = new RegExp(searchPattern, 'i');
   var results = [];
-  var rhymeA = [];
-  var rhymeB = [];
   subtitles.forEach(function(subtitle) {
-    var lastWord = subtitle.dialogWords[subtitle.dialogWords.length - 1];
-    searchPattern.forEach(function(rhymeWord, index) {
-      if (lexicon.isRhyme(rhymeWord, lastWord)) {
-        if (index % 2 === 0) {
-          rhymeA.push(subtitle);
-        } else {
-          rhymeB.push(subtitle);
-        }
-      }
-    });
+    if (searchPattern.test(subtitle.dialog)) {
+      results.push(subtitle);
+    };
   });
-  var rhymesLength = rhymeA.length + rhymeB.length;
-  for (var i = 0; i <= rhymesLength; i++) {
-    if (!rhymeA.length || !rhymeB.length) {
-      break;
-    }
-    if (i % 5 - 2 === 0 || i % 5 - 3 === 0) {
-        results.push(rhymeB.shift());
-    } else {
-        results.push(rhymeA.shift());
-    }
-  }
-  results.splice(results.length - results.length % 5);
   return results;
 }
 
@@ -115,24 +90,27 @@ function generateMontage() {
   );
 
   if (searchResults.length) {
+    video.play();
+    video.speed(1);
     queryResultMontage(searchResults, 0);
   }
 }
 
 function queryResultMontage(searchResults, i) {
-  currentResult = searchResults[i];
-  var duration = currentResult.duration;
-  video.play();
-  video.time(currentResult.startTime);
-  print(currentResult.startTimeStamp, currentResult.dialog);
-  fragmentTimer = setTimeout(function() {
-    video.pause();
+  video.elt.ontimeupdate = function() {
+    updateGUI();
     if (i < searchResults.length - 1) {
-      queryResultMontage(searchResults, i + 1);
+      if (video.time() > searchResults[i].startTime) {
+        currentResult = searchResults[i];
+        video.speed(video.speed() / QUARTER_PI);
+        print(video.speed(), currentResult.startTimeStamp, currentResult.dialog);
+        i++;
+      }
     } else {
-      clearTimeout(fragmentTimer);
-    }
-  }, duration * 1000);
+      video.elt.ontimeupdate = null;
+      return false;
+    };
+  }
 }
 
 function togglePlayback() {

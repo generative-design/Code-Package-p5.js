@@ -14,16 +14,20 @@ function createGUI() {
 }
 
 function updateGUI() {
+  gui.setProgressMax('searchResults', searchResults.length);
+  gui.setValue('searchResults', searchResults.indexOf(currentResult) + 1);
+  gui.setProgressMax('video time', round(video.duration()));
+  gui.setValue('video time', round(video.time()));
   subtitles.forEach(function(subtitle) {
     if (video.time() > subtitle.startTime && video.time() < subtitle.endTime) {
-      gui.setProgressMax('searchResults', searchResults.length);
-      gui.setValue('searchResults', searchResults.indexOf(currentResult) + 1);
-      gui.setProgressMax('video time', round(video.duration()));
-      gui.setValue('video time', round(video.time()));
       gui.setValue('time', '<code>' + subtitle.startTimeStamp + '</code>');
       gui.setValue('dialog', '<code>' + subtitle.dialog + '</code>');
     }
   });
+}
+
+function setSearchQuery(newSearchQuery) {
+  searchQuery = newSearchQuery;
 }
 
 function selectVideoFile(file) {
