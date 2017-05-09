@@ -2,11 +2,10 @@
  * P_moire_1
  *
  * MOUSE
- *
+ * mouseX              : shift horizontal position of overlay
  *
  * KEYS
  * s                   : save png
- * c                   : save color palette
  */
 "use strict";
 
