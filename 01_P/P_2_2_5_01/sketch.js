@@ -73,7 +73,7 @@ function draw() {
       return dist(circle.x, circle.y, otherCircle.x, otherCircle.y) <= circle.r + otherCircle.r + 1;
     })[0];
     if (closestCircle) {
-      stroke(255, 200, 0);
+      stroke(100, 230, 100);
       strokeWeight(0.75);
       line(circle.x, circle.y, closestCircle.x, closestCircle.y);
     }
@@ -86,9 +86,9 @@ function draw() {
 
   // Visualise the random range of the current mouse position
   if (mouseIsPressed) {
-    stroke(255,200,0)
+    stroke(100, 230, 100);
     strokeWeight(2);
-    rect(mouseX, mouseY, mouseRect, mouseRect);;
+    rect(mouseX, mouseY, mouseRect, mouseRect);
   }
 }
 

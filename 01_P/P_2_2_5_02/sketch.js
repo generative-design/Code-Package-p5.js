@@ -156,7 +156,7 @@ function draw() {
 
   // visualise the random range of the new positions
   if (mouseIsPressed) {
-    stroke(255,200,0);
+    stroke(100, 230, 100);
     strokeWeight(2);
     rect(mouseX - mouseRect / 2, mouseY - mouseRect / 2, mouseRect,mouseRect);
   }
