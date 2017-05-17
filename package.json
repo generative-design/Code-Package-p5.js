@@ -46,7 +46,19 @@
       ],
       "opentype.js": [
         "node_modules/opentype.js/dist/opentype.js"
+      ],
+      "tooltipster": [
+        "node_modules/tooltipster/dist/js/tooltipster.bundle.js",
+        "node_modules/tooltipster/dist/css/tooltipster.bundle.css",
+        "node_modules/tooltipster/dist/css/plugins/tooltipster/sideTip/themes/tooltipster-sideTip-noir.min.css"
+      ],
+      "jquery": [
+        "node_modules/jquery/dist/jquery.js"
       ]
     }
+  },
+  "dependencies": {
+    "jquery": "^3.2.1",
+    "tooltipster": "^4.2.5"
   }
 }
