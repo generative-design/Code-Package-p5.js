@@ -1,8 +1,9 @@
+// P_moire_7
 /**
- * P_moire_7
+ * Draw path shapes that generate a moire effect
  *
  * MOUSE
- * mouse               : place moire effect rectangle
+ * mouse               : click and drag to draw moire pattern path
  *
  * KEYS
  * 1                   : set color to red
