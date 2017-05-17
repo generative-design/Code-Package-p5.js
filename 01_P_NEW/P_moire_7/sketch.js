@@ -9,6 +9,8 @@
  * 2                   : set color to green
  * 3                   : set color to blue
  * 4                   : set color to black
+ * arrow right         : increase smoothness
+ * arrow left          : decrease smoothness
  * arrow up            : increase rectangle width
  * arrow down          : decrease rectangle width
  * s                   : save png
@@ -19,11 +21,12 @@ var shapes = [];
 var density = 2.5;
 var shapeHeight = 64;
 var shapeColor;
+var smoothness = 0;
 
 var newShape;
 
 function setup() {
-  createCanvas(600, 600);
+  createCanvas(800, 800);
   noFill();
   strokeWeight(1);
   shapeColor = color(0);
@@ -54,7 +57,7 @@ function Shape(h, c) {
     var lastPos = this.getLastPos();
     if (
       this.shapePath.length === 0 ||
-      lastPos && p5.Vector.dist(newPos, lastPos) > shapeHeight
+      lastPos && p5.Vector.dist(newPos, lastPos) > smoothness
     ) {
       this.shapePath.push(newPos);
     }
@@ -86,10 +89,6 @@ function Shape(h, c) {
 
 function mousePressed() {
   newShape = new Shape(shapeHeight, shapeColor);
-  var lastShape = shapes[shapes.length - 1];
-  if (lastShape) {
-    newShape.addPos(lastShape.getLastPos());
-  }
   newShape.addPos(mouseX, mouseY);
 }
 
@@ -105,6 +104,14 @@ function keyPressed() {
   if (key == '2') shapeColor = color(0, 255, 0);
   if (key == '3') shapeColor = color(0, 0, 255);
   if (key == '4') shapeColor = color(0);
+
+  if (key == ' ') {
+    shapes = [];
+    redraw();
+  }
+
+  if (keyCode === RIGHT_ARROW) smoothness += density;
+  if (keyCode === LEFT_ARROW) smoothness -= density;
 
   if (keyCode === UP_ARROW) shapeHeight += density;
   if (keyCode === DOWN_ARROW) shapeHeight -= density;
