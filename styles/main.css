@@ -6,3 +6,29 @@ body {
 canvas {
   vertical-align: top;
 }
+
+#help {
+  cursor: help;
+  position: absolute;
+  right: 15px;
+  top: 15px;
+  background-color: black;
+  color: white;
+  padding: 4px;
+  font-family: sans-serif;
+  font-size: 15px;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+}
+
+#help-content {
+  font-family: monospace;
+  font-size: 13px;
+  font-style: normal;
+  font-variant: normal;
+  font-weight: 400;
+  line-height: 17px;
+  white-space: pre;
+}
