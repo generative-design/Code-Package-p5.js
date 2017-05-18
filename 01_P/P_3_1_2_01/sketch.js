@@ -173,31 +173,42 @@ function mousePressed(){
 
 
 function keyReleased() {
-  if (keyCode == CONTROL) savePDF = true;
+  // export png
+  if (keyCode == CONTROL) saveCanvas(gd.timestamp(), 'png');
   if (keyCode == ALT) actRandomSeed++;
   print(actRandomSeed);
 }
 
 function keyPressed() {
   switch(keyCode) {
-  case DELETE:
-  case BACKSPACE:
-    textTyped = textTyped.substring(0,max(0,textTyped.length-1));
-    break;
-  case TAB:
-    break;
-  case ENTER:
-  case RETURN:
-    // enable linebreaks
-    textTyped += "\n";
-    break;
-  case ESCAPE:
-    break;
-  default:
+    case DELETE:
+    case BACKSPACE:
+      if (textTyped.length > 0) {
+        println(textTyped);
+        textTyped = textTyped.substring(0,max(0,textTyped.length-1));
+        fontSizes = shorten(fontSizes);
+        return false; // prevent any default behavior
+      }
+      break;
+    case TAB:
+    case ESCAPE:
+      break;
+    case ENTER:
+    case RETURN:
+      // enable linebreaks
+      textTyped += '\n';
+      break;
+    case UP_ARROW:
+      zoom += 0.05;
+      break;
+    case DOWN_ARROW:
+      zoom -= 0.05;
+      break;
+  }
+}
+
+function keyTyped(){
+  if(keyCode >= 32){
     textTyped += key;
   }
-
-  // zoom
-  if (keyCode == UP_ARROW) zoom += 0.05;
-  if (keyCode == DOWN_ARROW) zoom -= 0.05;
 }
