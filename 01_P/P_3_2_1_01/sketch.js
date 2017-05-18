@@ -87,14 +87,14 @@ function draw() {
 
 
 function keyPressed() {
-  if (keyCode === CONTROL) saveCanvas(gd.timestamp(), 'png');
-
+  if (/\w/.test(key)) {
+    textTyped += key;
+  }
   if (keyCode === DELETE || keyCode === BACKSPACE) {
     textTyped = textTyped.substring(0,max(0,textTyped.length-1));
-  } else if (keyCode === TAB || keyCode === ENTER || keyCode === RETURN || keyCode === ESCAPE) {
-    // do nothing
-  } else {
-    textTyped += key;
+  }
+  if (keyCode === CONTROL) {
+    saveCanvas(gd.timestamp(), 'png');
   }
   loop();
 }
