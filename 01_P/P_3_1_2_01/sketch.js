@@ -37,14 +37,21 @@
 var textTyped = "";
 var font;
 
-var shapeSpace, shapeSpace2, shapePeriod, shapeComma;
-var shapeQuestionmark, shapeExclamationmark, shapeReturn;
+var shapeSpace
+var shapeSpace2;
+var shapePeriod
+var shapeComma;
+var shapeQuestionmark
+var shapeExclamationmark
+var shapeReturn;
 
-var centerX, centerY, offsetX, offsetY;
+var centerX
+var centerY;
+var offsetX;
+var offsetY;
 var zoom;
 
 var actRandomSeed;
-
 
 function preload() {
   font = loadFont("data/miso-bold.ttf");
@@ -167,8 +174,8 @@ function draw() {
 
 
 function mousePressed(){
-  offsetX = mouseX-centerX;
-  offsetY = mouseY-centerY;
+  offsetX = mouseX - centerX;
+  offsetY = mouseY - centerY;
 }
 
 
@@ -183,11 +190,8 @@ function keyPressed() {
   switch (keyCode) {
     case DELETE:
     case BACKSPACE:
-      if (textTyped.length > 0) {
-        print(textTyped);
-        textTyped = textTyped.substring(0, max(0, textTyped.length - 1));
-        return false; // prevent any default behavior
-      }
+      textTyped = textTyped.substring(0, max(0, textTyped.length - 1));
+      print(textTyped);
       break;
     case TAB:
     case ESCAPE:
