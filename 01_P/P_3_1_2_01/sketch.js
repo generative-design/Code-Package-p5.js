@@ -70,8 +70,8 @@ function setup() {
   textTyped += "Und subtrahiere, \n\n";
   textTyped += "Kontrolliere\nUnd komponiere\nUnd wenn ich diese Taste drück,\nSpielt er ein kleines Musikstück?\n\n";
 
-  centerX = width/2;
-  centerY = height/2;
+  centerX = width / 2;
+  centerY = height / 2;
   offsetX = 0;
   offsetY = 0;
   zoom = 0.75;
@@ -91,7 +91,7 @@ function draw() {
   background(255);
   noStroke();
 
-  if (mouseIsPressed == true) {
+  if (mouseIsPressed) {
     centerX = mouseX - offsetX;
     centerY = mouseY - offsetY;
   }
@@ -107,44 +107,44 @@ function draw() {
     var letterWidth = textWidth(letter);
 
     // ------ letter rule table ------
-    switch(letter) {
+    switch (letter) {
       case ' ': // space
         // 50% left, 50% right
         var dir = floor(random(0, 2));
-        if(dir == 0){
+        if (dir === 0) {
           image(shapeSpace, 1, -15);
           translate(4, 1);
-          rotate(PI/4);
+          rotate(QUARTER_PI);
         }
-        if(dir == 1){
+        if (dir === 1) {
           image(shapeSpace2, 1, -15);
           translate(14, -5);
-          rotate(-PI/4);
+          rotate(-QUARTER_PI);
         }
         break;
 
       case ',':
         image(shapeComma, 1, -15);
         translate(35, 15);
-        rotate(PI/4);
+        rotate(QUARTER_PI);
         break;
 
       case '.':
         image(shapePeriod, 1, -55);
         translate(56, -56);
-        rotate(-PI/2);
+        rotate(-HALF_PI);
         break;
 
       case '!':
         image(shapeExclamationmark, 1, -27);
         translate(42.5, -17.5);
-        rotate(-PI/4);
+        rotate(-QUARTER_PI);
         break;
 
       case '?':
         image(shapeQuestionmark, 1, -27);
         translate(42.5, -17.5);
-        rotate(-PI/4);
+        rotate(-QUARTER_PI);
         break;
 
       case '\n': // return
@@ -162,7 +162,7 @@ function draw() {
 
   // blink cursor after text
   fill(0);
-  if (frameCount/6 % 2 == 0) rect(0, 0, 15, 2);
+  if (frameCount / 6 % 2 === 0) rect(0, 0, 15, 2);
 }
 
 
@@ -174,19 +174,18 @@ function mousePressed(){
 
 function keyReleased() {
   // export png
-  if (keyCode == CONTROL) saveCanvas(gd.timestamp(), 'png');
-  if (keyCode == ALT) actRandomSeed++;
+  if (keyCode === CONTROL) saveCanvas(gd.timestamp(), 'png');
+  if (keyCode === ALT) actRandomSeed++;
   print(actRandomSeed);
 }
 
 function keyPressed() {
-  switch(keyCode) {
+  switch (keyCode) {
     case DELETE:
     case BACKSPACE:
       if (textTyped.length > 0) {
-        println(textTyped);
-        textTyped = textTyped.substring(0,max(0,textTyped.length-1));
-        fontSizes = shorten(fontSizes);
+        print(textTyped);
+        textTyped = textTyped.substring(0, max(0, textTyped.length - 1));
         return false; // prevent any default behavior
       }
       break;
@@ -208,7 +207,7 @@ function keyPressed() {
 }
 
 function keyTyped(){
-  if(keyCode >= 32){
+  if (keyCode >= 32) {
     textTyped += key;
   }
 }
