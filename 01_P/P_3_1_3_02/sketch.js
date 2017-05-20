@@ -35,7 +35,6 @@
 
 var joinedText;
 var alphabet = "ABCDEFGHIJKLMNOPQRSTUVWXYZÄÖÜß,.;:!? ";
-var counters = [];
 var drawLetters = [];
 
 var posX;
@@ -56,11 +55,8 @@ function setup() {
 
   joinedText = joinedText.join(/\s+/);
   for (var i = 0; i < alphabet.length; i++) {
-    counters[i] = 0;
     drawLetters[i] = true;
   }
-
-  countCharacters();
 }
 
 function draw() {
@@ -107,15 +103,6 @@ function draw() {
       posY += 30;
       posX = 20;
     }
-  }
-}
-
-function countCharacters() {
-  for (var i = 0; i < joinedText.length; i++) {
-    // get one character from the text and turn it to uppercase
-    var index = alphabet.indexOf(joinedText.charAt(i).toUpperCase());
-    // increacre the respective counter
-    if (index >= 0) counters[index]++;
   }
 }
 
