@@ -87,7 +87,7 @@ function draw() {
   var oldY = 0;
 
   // draw counters
-  if (mouseX >= width - 50 && mouseX <= width) {
+  if (mouseX >= width - 50) {
     textSize(10);
     for (var i = 0; i < alphabet.length; i++) {
       textAlign(LEFT);
