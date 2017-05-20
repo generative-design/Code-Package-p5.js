@@ -53,7 +53,7 @@ function setup() {
   textFont("monospace", 18);
   fill(87, 35, 129);
 
-  joinedText = joinedText.join(/\s+/);
+  joinedText = joinedText.join(" ");
   for (var i = 0; i < alphabet.length; i++) {
     drawLetters[i] = true;
   }
