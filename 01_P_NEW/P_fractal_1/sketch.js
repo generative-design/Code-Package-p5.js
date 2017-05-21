@@ -111,6 +111,7 @@ function keyPressed() {
 
   if (key == ' ') {
     shapes = [];
-    redraw();
+    background(64);
+    loop();
   }
 }
