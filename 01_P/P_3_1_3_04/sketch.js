@@ -35,7 +35,7 @@
 'use strict';
 
 var joinedText;
-var alphabet = "ABCDEFGHIJKLMNOPQRSTUVWXYZÄÖÜß,.;:!? ";
+var charSet;
 var counters = [];
 var drawLetters = [];
 
@@ -58,7 +58,8 @@ function setup() {
   fill(0);
 
   joinedText = joinedText.join(" ");
-  for (var i = 0; i < alphabet.length; i++) {
+  charSet = getUniqCharacters();
+  for (var i = 0; i < charSet.length; i++) {
     counters[i] = 0;
     drawLetters[i] = true;
   }
@@ -89,9 +90,9 @@ function draw() {
   // draw counters
   if (mouseX >= width - 50) {
     textSize(10);
-    for (var i = 0; i < alphabet.length; i++) {
+    for (var i = 0; i < charSet.length; i++) {
       textAlign(LEFT);
-      text(alphabet.charAt(i), -15, i * 20 + 40);
+      text(charSet.charAt(i), -15, i * 20 + 40);
       textAlign(RIGHT);
       text(counters[i], -20, i * 20 + 40);
     }
@@ -101,9 +102,9 @@ function draw() {
 
   // go through all characters in the text to draw them
   for (var i = 0; i < joinedText.length; i++) {
-    // again, find the index of the current letter in the alphabet
+    // again, find the index of the current letter in the character set
     var upperCaseChar = joinedText.charAt(i).toUpperCase();
-    var index = alphabet.indexOf(upperCaseChar);
+    var index = charSet.indexOf(upperCaseChar);
     if (index < 0) continue;
 
     var m = map(mouseX, 50, width - 50, 0, 1);
@@ -151,10 +152,18 @@ function draw() {
   }
 }
 
+function getUniqCharacters() {
+  var charsArray = joinedText.toUpperCase().split('');
+  var uniqCharsArray = charsArray.filter(function(char, index) {
+    return charsArray.indexOf(char) === index;
+  }).sort();
+  return uniqCharsArray.join('');
+}
+
 function countCharacters() {
   for (var i = 0; i < joinedText.length; i++) {
     // get one character from the text and turn it to uppercase
-    var index = alphabet.indexOf(joinedText.charAt(i).toUpperCase());
+    var index = charSet.indexOf(joinedText.charAt(i).toUpperCase());
     // increacre the respective counter
     if (index >= 0) counters[index]++;
   }
@@ -167,17 +176,17 @@ function keyReleased() {
   if (key == '2') drawColoredLines = !drawColoredLines;
   if (key == '3') drawText = !drawText;
   if (key == '4') {
-    for (var i = 0; i < alphabet.length; i++) {
+    for (var i = 0; i < charSet.length; i++) {
       drawLetters[i] = false;
     }
   }
   if (key == '5') {
-    for (var i = 0; i < alphabet.length; i++) {
+    for (var i = 0; i < charSet.length; i++) {
       drawLetters[i] = true;
     }
   }
 
-  var index = alphabet.indexOf(key.toUpperCase());
+  var index = charSet.indexOf(key.toUpperCase());
   if (index >= 0) {
     drawLetters[index] = !drawLetters[index];
   }
