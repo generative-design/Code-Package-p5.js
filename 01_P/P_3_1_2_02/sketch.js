@@ -184,7 +184,7 @@ function draw() {
         fill(0);
         var station = textTyped.substring(i - 10, i - 1);
         station = station.toLowerCase();
-        station = station.replace(/\s+/, '');
+        station = station.replace(/\s+/g, '');
         station = station.substring(0, 1).toUpperCase() + station.substring(1, station.length - 1);
         text(station, -10, 40);
         ellipse(-5, -7, 33, 33);
@@ -244,7 +244,7 @@ function keyPressed() {
   switch (keyCode) {
     case DELETE:
     case BACKSPACE:
-      textTyped = textTyped.substring(0,max(0,textTyped.length-1));
+      textTyped = textTyped.substring(0, textTyped.length - 1);
       print(textTyped);
       break;
     case TAB:
@@ -260,13 +260,12 @@ function keyPressed() {
     case DOWN_ARROW:
       zoom -= 0.05;
       break;
-    default:
-    textTyped = textTyped+ keyCode;
   }
 }
 
 function keyTyped(){
   if (keyCode >= 32) {
     textTyped += key;
+    print(textTyped);
   }
 }
