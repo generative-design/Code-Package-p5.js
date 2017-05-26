@@ -37,7 +37,7 @@ function setup() {
 
 function draw() {
   if (!font) return;
-  background(255, 255, 255, 30);
+  background(255, 255, 255, 20);
   // margin border
   translate(20,220);
 
