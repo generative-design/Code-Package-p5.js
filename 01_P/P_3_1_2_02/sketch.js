@@ -37,7 +37,7 @@
 'use strict';
 
 var font;
-var textTyped =  "Was hier folgt ist Tet!";
+var textTyped =  "Was hier folgt ist Tet! So asnt, und mag. Ich mag Tet sehr.";
 
 var shapeSpace;
 var shapeSpace2;
