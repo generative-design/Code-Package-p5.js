@@ -1,8 +1,4 @@
 <?xml version="1.0" encoding="utf-8"?>
-<!-- Generator: Adobe Illustrator 16.0.4, SVG Export Plug-In . SVG Version: 6.00 Build 0)  -->
-<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
-<svg version="1.1" id="Ebene_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
-	 width="100px" height="100px" viewBox="0 0 100 100" enable-background="new 0 0 100 100" xml:space="preserve">
-<path fill="#572381" d="M42.33-17.966L31.683-28.515l-1.414,1.437l-0.002-0.002c-7.195,7.448-17.212,12.056-28.379,12.06H0v14.988
-	h1.888v0.013h0.007c15.358,0,29.295-6.398,39.167-16.646l-0.011-0.011L42.33-17.966z"/>
+<svg id="Ebene_1" x="0px" y="0px" width="100px" height="100px" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+  <path d="M 44.497 10.34 L 41.121 13.658 C 31.246 23.908 17.306 30.307 1.945 30.305 L 0 30.305 L 0 15.365 L 1.945 15.303 C 13.112 15.299 23.13 10.691 30.325 3.244 L 30.33 3.249 L 33.705 0.009 L 44.497 10.34 Z" style="fill: rgb(87, 35, 129);"/>
 </svg>

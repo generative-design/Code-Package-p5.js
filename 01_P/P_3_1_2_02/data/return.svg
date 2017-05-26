@@ -1,9 +1,4 @@
 <?xml version="1.0" encoding="utf-8"?>
-<!-- Generator: Adobe Illustrator 16.0.4, SVG Export Plug-In . SVG Version: 6.00 Build 0)  -->
-<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
-<svg version="1.1" id="Ebene_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
-	 width="100px" height="100px" viewBox="0 0 100 100" enable-background="new 0 0 100 100" xml:space="preserve">
-<path d="M-0.363,10h2.121c2.756-0.004,4.993-2.24,4.999-4.999l0,0C6.751,2.242,4.515,0.005,1.758,0l0,0h-2.121v-15h2.121
-	c11.047,0.006,19.993,8.952,19.999,20.001l0,0C21.751,16.048,12.805,24.996,1.758,25l0,0l-2.121,0.002V10L-0.363,10z M-0.363,0
-	v0.002V0L-0.363,0z"/>
+<svg id="Ebene_1" x="0px" y="0px" width="100px" height="100px" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+  <path d="M 0.009 25 L 2.13 25 C 4.886 24.996 7.123 22.76 7.129 20.001 L 7.129 20.001 C 7.123 17.242 4.887 15.005 2.13 15 L 2.13 15 L 0.009 15 L 0.009 0 L 2.13 0 C 13.177 0.006 22.123 8.952 22.129 20.001 L 22.129 20.001 C 22.123 31.048 13.177 39.996 2.13 40 L 2.13 40 L 0.009 40.002 L 0.009 25 L 0.009 25 Z M 0.009 15 L 0.009 15.002 L 0.009 15 L 0.009 15 Z"/>
 </svg>

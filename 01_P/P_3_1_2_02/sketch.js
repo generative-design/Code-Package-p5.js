@@ -37,7 +37,7 @@
 'use strict';
 
 var font;
-var textTyped =  "Was hier folgt ist Tet! So asnt, und mag. Ich mag Tet sehr.";
+var textTyped =  "Was hier folgt ist Tet!";
 
 var shapeSpace;
 var shapeSpace2;
@@ -138,33 +138,33 @@ function draw() {
         var dir = floor(random(5));
         if (dir === 0) {
           image(shapeSpace, 0, -15);
-          translate(1.9, 0);
+          translate(2, 0);
           rotate(QUARTER_PI);
         }
         if (dir === 1) {
-          image(shapeSpace2, 0, -17);
+          image(shapeSpace2, 0, -15);
           translate(13, -5);
           rotate(-QUARTER_PI);
         }
         break;
       case ",":
-        image(shapeComma, 0, 0);
-        translate(34, 15);
+        image(shapeComma, 0, -15);
+        translate(33, 15);
         rotate(QUARTER_PI);
         break;
       case ".":
-        image(shapePeriod, 0, -58);
-        translate(56, -54);
+        image(shapePeriod, 0, -56);
+        translate(56, -56);
         rotate(-HALF_PI);
         break;
       case "!":
-        image(shapeExclamationmark, 0, 0);
-        translate(42, -18);
+        image(shapeExclamationmark, 0, -30);
+        translate(43, -18);
         rotate(-QUARTER_PI);
         break;
       case "?":
-        image(shapeQuestionmark, 0, 0);
-        translate(42, -18);
+        image(shapeQuestionmark, 0, -30);
+        translate(43, -18);
         rotate(-QUARTER_PI);
         break;
       case "\n":
@@ -213,7 +213,7 @@ function draw() {
         image(icon3, 0, -60, 30, 30);
         break;
       case 'x': // icon
-        image(icon4 ,0 ,-60, 30, 30);
+        image(icon4, 0, -60, 30, 30);
         break;
       case 'z': // icon
         image(icon5, 0, -60, 30, 30);
