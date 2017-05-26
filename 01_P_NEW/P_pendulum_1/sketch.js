@@ -14,21 +14,22 @@ var shapes = [];
 
 var newShape;
 
+var joints = 8;
 var amplitude = 16;
-var resolution = 16;
-
-var showPath = false;
-var showPendulum = false;
-var showPendulumPath = true;
+var speed = 16;
+var resolution = 0.2;
 
 function setup() {
-  createCanvas(800, 800);
+  createCanvas(windowWidth, windowHeight);
+  colorMode(HSB);
   noFill();
-  strokeWeight(0.2);
-  background(255);
+  strokeWeight(1);
+  background(220);
 }
 
 function draw() {
+  background(45, 11, 15);
+
   shapes.forEach(function(shape) {
     shape.draw();
     shape.update();
@@ -41,12 +42,14 @@ function draw() {
   }
 }
 
-function Shape(shapeAmplitude, shapeResolution) {
+function Shape() {
   this.shapePath = [];
   this.pendulumPath = [];
   this.iterator = 0;
-  this.shapeAmplitude = shapeAmplitude;
-  this.shapeResolution = shapeResolution;
+
+  for (var i = 0; i < joints; i++) {
+    this.pendulumPath.push([]);
+  }
 
   Shape.prototype.addPos = function(x, y) {
     var newPos = createVector(x, y);
@@ -54,66 +57,67 @@ function Shape(shapeAmplitude, shapeResolution) {
   };
 
   Shape.prototype.draw = function() {
-    if (showPath) {
-      stroke(100, 230, 100);
-      beginShape();
-      this.shapePath.forEach(function(pos) {
-        curveVertex(pos.x, pos.y);
-      });
-      endShape();
-    }
+    strokeWeight(0.8);
+    stroke(62, 19, 80);
+    beginShape();
+    this.shapePath.forEach(function(pos) {
+      vertex(pos.x, pos.y);
+    });
+    endShape();
 
-    var currentPos = this.shapePath[this.iterator];
-    var previousPos = this.shapePath[this.iterator - 1];
+    var currentIndex = floor(this.iterator);
+
+    var currentPos = this.shapePath[currentIndex];
+    var previousPos = this.shapePath[currentIndex - 1];
     if (previousPos) {
-      var a = atan2(previousPos.y - currentPos.y, previousPos.x - currentPos.x) + HALF_PI;
-
-      var offsetPosA = currentPos.copy();
-      for (var i = 0; i < this.shapeResolution; i++) {
-        a = i % 2 === 0 ? a : -a;
-        var offsetPosB = p5.Vector.fromAngle(a + (this.iterator * (this.shapeResolution - i)));
-        offsetPosB.setMag(this.shapeAmplitude / (i + 1));
+      var offsetPosA = p5.Vector.lerp(previousPos, currentPos, this.iterator - currentIndex);
+      for (var i = 0; i < joints; i++) {
+        var offsetPosB = p5.Vector.fromAngle(
+          (PI / (i + 1)) +
+          this.iterator /
+          pow(-2, joints - i) * speed
+        );
+        offsetPosB.setMag((joints - i) * amplitude);
         offsetPosB.add(offsetPosA);
-        if (showPendulum) {
-          stroke(100);
-          line(offsetPosA.x, offsetPosA.y, offsetPosB.x, offsetPosB.y);
-        }
+        line(offsetPosA.x, offsetPosA.y, offsetPosB.x, offsetPosB.y);
 
-        offsetPosA = offsetPosB.copy();
+        offsetPosA = offsetPosB;
+
+        this.pendulumPath[i].push(offsetPosA);
       }
 
-      this.pendulumPath[this.iterator] = offsetPosA;
-
-      if (showPendulumPath) {
-        stroke(100);
+      strokeWeight(2);
+      this.pendulumPath.forEach(function(path, index) {
         beginShape();
-        this.pendulumPath.forEach(function(pos) {
+        stroke(map(index, 0, joints, 0, 360), 60, 60);
+        path.forEach(function(pos) {
           curveVertex(pos.x, pos.y);
         });
         endShape();
-      }
-
+      });
     }
   };
 
   Shape.prototype.update = function() {
-    this.iterator++;
+    this.iterator += resolution;
     if (this.iterator >= this.shapePath.length - 1) {
       this.iterator = 0;
+      this.pendulumPath = [];
+      for (var i = 0; i < joints; i++) {
+        this.pendulumPath.push([]);
+      }
     }
   };
 }
 
 function mousePressed() {
-  newShape = new Shape(amplitude, resolution);
+  newShape = new Shape();
   newShape.addPos(mouseX, mouseY);
-  loop();
 }
 
 function mouseReleased() {
   shapes.push(newShape);
   newShape = undefined;
-  noLoop();
 }
 
 function keyPressed() {
@@ -124,14 +128,4 @@ function keyPressed() {
     background(255);
     loop();
   }
-
-  if (key == '1') showPath = !showPath;
-  if (key == '2') showPendulum = !showPendulum;
-  if (key == '3') showPendulumPath = !showPendulumPath;
-
-  if (keyCode === RIGHT_ARROW) resolution += 4;
-  if (keyCode === LEFT_ARROW) resolution -= 4;
-
-  if (keyCode === UP_ARROW) amplitude += 4;
-  if (keyCode === DOWN_ARROW) amplitude -= 4;
 }
