@@ -9,6 +9,8 @@
  * 1                         : only letter form
  * 2                         : only animated letter form
  * 3                         : both letter form and animation
+ * 4                         : use squares for animation
+ * 5                         : use ellipses for animation
  */
 "use strict";
 
