@@ -138,33 +138,33 @@ function draw() {
         var dir = floor(random(5));
         if (dir === 0) {
           image(shapeSpace, 0, -15);
-          translate(1.9, 0);
+          translate(2, 0);
           rotate(QUARTER_PI);
         }
         if (dir === 1) {
-          image(shapeSpace2, 0, -17);
+          image(shapeSpace2, 0, -15);
           translate(13, -5);
           rotate(-QUARTER_PI);
         }
         break;
       case ",":
-        image(shapeComma, 0, 0);
-        translate(34, 15);
+        image(shapeComma, 0, -15);
+        translate(33, 15);
         rotate(QUARTER_PI);
         break;
       case ".":
-        image(shapePeriod, 0, -58);
-        translate(56, -54);
+        image(shapePeriod, 0, -56);
+        translate(56, -56);
         rotate(-HALF_PI);
         break;
       case "!":
-        image(shapeExclamationmark, 0, 0);
-        translate(42, -18);
+        image(shapeExclamationmark, 0, -30);
+        translate(43, -18);
         rotate(-QUARTER_PI);
         break;
       case "?":
-        image(shapeQuestionmark, 0, 0);
-        translate(42, -18);
+        image(shapeQuestionmark, 0, -30);
+        translate(43, -18);
         rotate(-QUARTER_PI);
         break;
       case "\n":
@@ -184,7 +184,7 @@ function draw() {
         fill(0);
         var station = textTyped.substring(i - 10, i - 1);
         station = station.toLowerCase();
-        station = station.replace(/\s+/, '');
+        station = station.replace(/\s+/g, '');
         station = station.substring(0, 1).toUpperCase() + station.substring(1, station.length - 1);
         text(station, -10, 40);
         ellipse(-5, -7, 33, 33);
@@ -213,7 +213,7 @@ function draw() {
         image(icon3, 0, -60, 30, 30);
         break;
       case 'x': // icon
-        image(icon4 ,0 ,-60, 30, 30);
+        image(icon4, 0, -60, 30, 30);
         break;
       case 'z': // icon
         image(icon5, 0, -60, 30, 30);
@@ -244,7 +244,7 @@ function keyPressed() {
   switch (keyCode) {
     case DELETE:
     case BACKSPACE:
-      textTyped = textTyped.substring(0,max(0,textTyped.length-1));
+      textTyped = textTyped.substring(0, textTyped.length - 1);
       print(textTyped);
       break;
     case TAB:
@@ -260,13 +260,12 @@ function keyPressed() {
     case DOWN_ARROW:
       zoom -= 0.05;
       break;
-    default:
-    textTyped = textTyped+ keyCode;
   }
 }
 
 function keyTyped(){
   if (keyCode >= 32) {
     textTyped += key;
+    print(textTyped);
   }
 }
