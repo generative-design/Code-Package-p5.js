@@ -19,7 +19,7 @@ var video;
 var slider;
 
 var cols = 40;
-var rows = 40;
+var rows = 33;
 
 var boxes = [];
 
@@ -30,6 +30,7 @@ function preload(){
 function setup() {
   noCanvas();
   pixelDensity(1);
+  console.log(video.width, video.height);
   // video = createCapture(VIDEO);
   video.size(cols, rows);
   slider = createSlider(0, 255, 77);
@@ -56,8 +57,8 @@ function draw() {
   video.loadPixels();
   for (var y = 0; y < video.height; y++) {
     for (var x = 0; x < video.width; x++) {
-      var index = ( x + y * video.width);
-      // var index = (video.width - x + 1 + (y * video.width))*4;
+      // var index = (x  + (y * video.height))*4;
+      var index = (video.width - x + 1 + (y * video.width))*4;
       var r = video.pixels[index+0];
       var g = video.pixels[index+1];
       var b = video.pixels[index+2];
