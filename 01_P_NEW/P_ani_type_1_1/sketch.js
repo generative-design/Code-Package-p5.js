@@ -2,7 +2,8 @@
  * Animated type fade away text
  *
  * KEYS
- * s                   : save png
+ * A-Z
+ * CONTROL                  : save png
  */
 "use strict";
 
