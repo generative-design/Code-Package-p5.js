@@ -7,7 +7,9 @@
  * click               : click on the checkboxes
  *
  * KEYS
- * s                   : save png
+ * 1                   : image 1 shapes
+ * 2                   : image 2 letters
+ * 3                   : image 3 map
  *
  * SLIDER
  * drag                : drag the slider to adjust the image threshold
@@ -45,8 +47,8 @@ function setup() {
       box.parent('mirror');
       boxes.push(box);
     }
-    // var linebreak = createSpan('<br/>');
-    // linebreak.parent('mirror');
+    var linebreak = createSpan('<br/>');
+    linebreak.parent('mirror');
   }
 
 }
@@ -73,6 +75,7 @@ function image2boxes(){
 
 
   img.loadPixels();
+
   for (var y = 0; y < img.height; y++) {
     for (var x = 0; x < img.height; x++) {
       var index = (x + (y * img.height))*4;
@@ -93,6 +96,8 @@ function image2boxes(){
       }
     }
   }
+
+
 
 }
 
