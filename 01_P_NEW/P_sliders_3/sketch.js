@@ -10,7 +10,7 @@
  */
 "use strict";
 
-var mySliders = [];
+const mySliders = [];
 var sliderWidth = 50;
 var sliderHeight = 20;
 var xoff = 0;
@@ -67,7 +67,8 @@ function MySlider(_x, _y, _sWidth, _sHeightUpper, _val){
     // adjust the "slider track"
     push();
     translate(x+sWidth/2 +padding, y + sHeight/2);
-    rect(0, 0, sWidth, thisSlider.value());
+    // rect(0, 0, sWidth, thisSlider.value());
+    ellipse(0, 0, sWidth, thisSlider.value());
     pop();
 
     // adjust the slider handle
