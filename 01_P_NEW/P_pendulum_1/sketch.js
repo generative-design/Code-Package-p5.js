@@ -6,6 +6,9 @@
  * mouse               : click and drag to create a path to draw a pendulum along with
  *
  * KEYS
+ * 1                   : toggle path line
+ * 2                   : toggle pendulum
+ * 3                   : toggle pendulum path
  * s                   : save png
  */
 "use strict";
@@ -15,9 +18,13 @@ var shapes = [];
 var newShape;
 
 var joints = 8;
-var amplitude = 16;
+var amplitude = 32;
 var speed = 16;
 var resolution = 0.2;
+
+var showPath = false;
+var showPendulum = false;
+var showPendulumPath = true;
 
 function setup() {
   createCanvas(windowWidth, windowHeight);
@@ -59,11 +66,14 @@ function Shape() {
   Shape.prototype.draw = function() {
     strokeWeight(0.8);
     stroke(62, 19, 80);
-    beginShape();
-    this.shapePath.forEach(function(pos) {
-      vertex(pos.x, pos.y);
-    });
-    endShape();
+
+    if (showPath) {
+      beginShape();
+      this.shapePath.forEach(function(pos) {
+        vertex(pos.x, pos.y);
+      });
+      endShape();
+    }
 
     var currentIndex = floor(this.iterator);
 
@@ -77,24 +87,29 @@ function Shape() {
           this.iterator /
           pow(-2, joints - i) * speed
         );
-        offsetPosB.setMag((joints - i) * amplitude);
+        offsetPosB.setMag((amplitude / joints) * (joints - i));
         offsetPosB.add(offsetPosA);
-        line(offsetPosA.x, offsetPosA.y, offsetPosB.x, offsetPosB.y);
+
+        if (showPendulum) {
+          line(offsetPosA.x, offsetPosA.y, offsetPosB.x, offsetPosB.y);
+        }
 
         offsetPosA = offsetPosB;
 
         this.pendulumPath[i].push(offsetPosA);
       }
 
-      strokeWeight(2);
-      this.pendulumPath.forEach(function(path, index) {
-        beginShape();
-        stroke(map(index, 0, joints, 0, 360), 60, 60);
-        path.forEach(function(pos) {
-          curveVertex(pos.x, pos.y);
+      if (showPendulumPath) {
+        strokeWeight(2);
+        this.pendulumPath.forEach(function(path, index) {
+          beginShape();
+          stroke(map(index, 0, joints, 0, 360), 60, 60);
+          path.forEach(function(pos) {
+            curveVertex(pos.x, pos.y);
+          });
+          endShape();
         });
-        endShape();
-      });
+      }
     }
   };
 
@@ -128,4 +143,8 @@ function keyPressed() {
     background(255);
     loop();
   }
+
+  if (key == '1') showPath = !showPath;
+  if (key == '2') showPendulum = !showPendulum;
+  if (key == '3') showPendulumPath = !showPendulumPath;
 }
