@@ -100,7 +100,6 @@ function Shape() {
       }
 
       if (showPendulumPath) {
-        // strokeWeight(2);
         this.pendulumPath.forEach(function(path, index) {
           beginShape();
           stroke(map(index, 0, joints, 0, 360), 60, 80);
