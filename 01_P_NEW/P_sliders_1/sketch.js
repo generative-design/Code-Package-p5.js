@@ -4,7 +4,7 @@
  * MOUSE
  *
  * KEYS
- * s                   : save png
+ * DRAG                  : move the sliders around
  */
 "use strict";
 var w = 600;
@@ -70,6 +70,5 @@ function draw() {
 // TODO: slider group values all change in sync by drag handles
 
 function keyPressed() {
-  // note - save won't work for dom elements since they are not in the canvas
-  if (key == 's' || key == 'S') saveCanvas(gd.timestamp(), 'png');
+
 }
