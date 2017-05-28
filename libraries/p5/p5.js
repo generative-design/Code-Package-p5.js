@@ -1,4 +1,4 @@
-/*! p5.js v0.5.8 March 25, 2017 */
+/*! p5.js v0.5.9 May 10, 2017 */
 (function(f){if(typeof exports==="object"&&typeof module!=="undefined"){module.exports=f()}else if(typeof define==="function"&&define.amd){define([],f)}else{var g;if(typeof window!=="undefined"){g=window}else if(typeof global!=="undefined"){g=global}else if(typeof self!=="undefined"){g=self}else{g=this}g.p5 = f()}})(function(){var define,module,exports;return (function e(t,n,r){function s(o,u){if(!n[o]){if(!t[o]){var a=typeof require=="function"&&require;if(!u&&a)return a(o,!0);if(i)return i(o,!0);var f=new Error("Cannot find module '"+o+"'");throw f.code="MODULE_NOT_FOUND",f}var l=n[o]={exports:{}};t[o][0].call(l.exports,function(e){var n=t[o][1][e];return s(n?n:e)},l,l.exports,e,t,n,r)}return n[o].exports}var i=typeof require=="function"&&require;for(var o=0;o<r.length;o++)s(r[o]);return s})({1:[function(_dereq_,module,exports){
 
 },{}],2:[function(_dereq_,module,exports){
@@ -9431,6 +9431,9 @@ p5.Color._parseInputs = function() {
         return parseInt(color, 10) / 100;
       });
     }
+    results = results.map(function(value) {
+      return Math.max(Math.min(value, 1), 0);
+    });
     if (results.length) {
       return color_conversion._hslaToRGBA(results);
     }
@@ -9457,6 +9460,10 @@ p5.Color._parseInputs = function() {
         return parseInt(color, 10) / 100;
       });
     }
+    results = results.map(function(value) {
+      return Math.max(Math.min(value, 1), 0);
+    });
+
     if (results.length) {
       return color_conversion._hsbaToRGBA(results);
     }
@@ -11744,7 +11751,7 @@ var p5 = function(sketch, node, sync) {
     var f = this['_on'+e];
     if (f) {
       var m = f.bind(this);
-      window.addEventListener(e, m);
+      window.addEventListener(e, m, {passive: false});
       this._events[e] = m;
     }
   }
@@ -13528,7 +13535,9 @@ p5.Element.prototype.class = function(c) {
  */
 p5.Element.prototype.mousePressed = function (fxn) {
   attachListener('mousedown', fxn, this);
-  attachListener('touchstart', fxn, this);
+  if (!window.PointerEvent) {
+    attachListener('touchstart', fxn, this);
+  }
   return this;
 };
 
@@ -13643,7 +13652,9 @@ p5.Element.prototype.mouseWheel = function (fxn) {
  */
 p5.Element.prototype.mouseReleased = function (fxn) {
   attachListener('mouseup', fxn, this);
-  attachListener('touchend', fxn, this);
+  if (!window.PointerEvent) {
+    attachListener('touchend', fxn, this);
+  }
   return this;
 };
 
@@ -13750,7 +13761,9 @@ p5.Element.prototype.mouseClicked = function (fxn) {
  */
 p5.Element.prototype.mouseMoved = function (fxn) {
   attachListener('mousemove', fxn, this);
-  attachListener('touchmove', fxn, this);
+  if (!window.PointerEvent) {
+    attachListener('touchmove', fxn, this);
+  }
   return this;
 };
 
@@ -13978,7 +13991,9 @@ p5.Element.prototype.mouseOut = function (fxn) {
  */
 p5.Element.prototype.touchStarted = function (fxn) {
   attachListener('touchstart', fxn, this);
-  attachListener('mousedown', fxn, this);
+  if (!window.PointerEvent) {
+    attachListener('mousedown', fxn, this);
+  }
   return this;
 };
 
@@ -14017,7 +14032,9 @@ p5.Element.prototype.touchStarted = function (fxn) {
  */
 p5.Element.prototype.touchMoved = function (fxn) {
   attachListener('touchmove', fxn, this);
-  attachListener('mousemove', fxn, this);
+  if (!window.PointerEvent) {
+    attachListener('mousemove', fxn, this);
+  }
   return this;
 };
 
@@ -14065,7 +14082,9 @@ p5.Element.prototype.touchMoved = function (fxn) {
  */
 p5.Element.prototype.touchEnded = function (fxn) {
   attachListener('touchend', fxn, this);
-  attachListener('mouseup', fxn, this);
+  if (!window.PointerEvent) {
+    attachListener('mouseup', fxn, this);
+  }
   return this;
 };
 
@@ -15791,7 +15810,7 @@ p5.Renderer2D.prototype._applyTextProperties = function() {
   }
 
   this.drawingContext.font = this._textStyle + ' ' +
-  this._textSize + 'px ' + font;
+    this._textSize + 'px ' + font;
 
   return p;
 };
@@ -19091,7 +19110,7 @@ p5.prototype._onmousemove = function(e){
       if(executeDefault === false) {
         e.preventDefault();
       }
-    } else if (typeof context.touchMoved === 'function') {
+    } else if (!window.PointerEvent && typeof context.touchMoved === 'function') {
       executeDefault = context.touchMoved(e);
       if(executeDefault === false) {
         e.preventDefault();
@@ -19159,7 +19178,7 @@ p5.prototype._onmousedown = function(e) {
     if(executeDefault === false) {
       e.preventDefault();
     }
-  } else if (typeof context.touchStarted === 'function') {
+  } else if (!window.PointerEvent && typeof context.touchStarted === 'function') {
     executeDefault = context.touchStarted(e);
     if(executeDefault === false) {
       e.preventDefault();
@@ -19224,7 +19243,7 @@ p5.prototype._onmouseup = function(e) {
     if(executeDefault === false) {
       e.preventDefault();
     }
-  } else if (typeof context.touchEnded === 'function') {
+  } else if (!window.PointerEvent && typeof context.touchEnded === 'function') {
     executeDefault = context.touchEnded(e);
     if(executeDefault === false) {
       e.preventDefault();
@@ -19362,6 +19381,9 @@ var p5 = _dereq_('../core/core');
  * unique touch as it moves. Each element in the array is an object with x, y,
  * and id properties.
  *
+ * The touches[] array is not supported on Safari and IE on touch-based
+ * desktops (laptops).
+ *
  * @property {Object[]} touches
  */
 p5.prototype.touches = [];
@@ -19447,12 +19469,11 @@ p5.prototype._ontouchstart = function(e) {
     if(executeDefault === false) {
       e.preventDefault();
     }
-  } else if (typeof context.mousePressed === 'function') {
+  } else if (!window.PointerEvent && typeof context.mousePressed === 'function') {
     executeDefault = context.mousePressed(e);
     if(executeDefault === false) {
       e.preventDefault();
     }
-    //this._setMouseButton(e);
   }
 };
 
@@ -19510,7 +19531,7 @@ p5.prototype._ontouchmove = function(e) {
     if(executeDefault === false) {
       e.preventDefault();
     }
-  } else if (typeof context.mouseDragged === 'function') {
+  } else if (!window.PointerEvent && typeof context.mouseDragged === 'function') {
     executeDefault = context.mouseDragged(e);
     if(executeDefault === false) {
       e.preventDefault();
@@ -19576,14 +19597,11 @@ p5.prototype._ontouchend = function(e) {
     if(executeDefault === false) {
       e.preventDefault();
     }
-  } else if (typeof context.mouseReleased === 'function') {
+  } else if (!window.PointerEvent && typeof context.mouseReleased === 'function') {
     executeDefault = context.mouseReleased(e);
     if(executeDefault === false) {
       e.preventDefault();
     }
-  } else {
-    e.preventDefault();
-    return false;
   }
 };
 
@@ -20730,10 +20748,8 @@ p5.prototype.image =
   var defH = img.height;
 
   if (img.elt && img.elt.videoWidth && !img.canvas) { // video no canvas
-    var actualW = img.elt.videoWidth;
-    var actualH = img.elt.videoHeight;
     defW = img.elt.videoWidth;
-    defH = img.elt.width*actualH/actualW;
+    defH = img.elt.videoHeight;
   }
 
   var _dx = dx;
@@ -20754,11 +20770,17 @@ p5.prototype.image =
   // and https://github.com/processing/p5.js/issues/1673
   var pd = 1;
 
-  if (img.elt && img.elt.videoWidth && img.elt.style.width && !img.canvas) {
-    pd = img.elt.videoWidth / parseInt(img.elt.style.width, 10);
-  }
-  else if (img.elt && img.elt.width && img.elt.style.width) {
-    pd = img.elt.width / parseInt(img.elt.style.width, 10);
+  if (img.elt && !img.canvas && img.elt.style.width) {
+    //if img is video and img.elt.size() has been used and
+    //no width passed to image()
+    if(img.elt.videoWidth && !dWidth){
+      pd = img.elt.videoWidth;
+    }
+    //all other cases
+    else {
+      pd = img.elt.width;
+    }
+    pd /= parseInt(img.elt.style.width, 10);
   }
 
   _sx *= pd;
@@ -21526,9 +21548,9 @@ p5.Image.prototype.mask = function(p5Image) {
  * Applies an image filter to a p5.Image
  *
  * @method filter
- * @param {String} operation one of threshold, gray, invert, posterize and
- *                           opaque see Filters.js for docs on each available
- *                           filter
+ * @param {String} operation one of threshold, gray, invert, posterize, opaque
+ *                           erode, dilate and blur. See Filters.js for docs on
+ *                           each available filter
  * @param {Number|undefined} value
  * @example
  * <div><code>
@@ -21720,7 +21742,7 @@ _dereq_('../color/p5.Color');
  * factor for pixelDensity) of the display window x4,
  * representing the R, G, B, A values in order for each pixel, moving from
  * left to right across each row, then down each column. Retina and other
- * high denisty displays will have more pixels[] (by a factor of
+ * high density displays will have more pixels[] (by a factor of
  * pixelDensity^2).
  * For example, if the image is 100x100 pixels, there will be 40,000. On a
  * retina display, there will be 160,000.
@@ -22161,6 +22183,8 @@ p5.prototype.get = function(x, y, w, h){
 /**
  * Loads the pixel data for the display window into the pixels[] array. This
  * function must always be called before reading from or writing to pixels[].
+ * Note that only changes made with set() or direct manipulation of pixels[]
+ * will occur.
  *
  * @method loadPixels
  * @example
@@ -22272,7 +22296,8 @@ p5.prototype.set = function (x, y, imgOrCol) {
  * Use in conjunction with loadPixels(). If you're only reading pixels from
  * the array, there's no need to call updatePixels() — updating is only
  * necessary to apply changes. updatePixels() should be called anytime the
- * pixels array is manipulated or set() is called.
+ * pixels array is manipulated or set() is called, and only changes made with
+ * set() or direct changes to pixels[] will occur.
  *
  * @method updatePixels
  * @param  {Number} [x]    x-coordinate of the upper-left corner of region
@@ -22324,6 +22349,7 @@ module.exports = p5;
  */
 
 /* globals Request: false */
+/* globals Headers: false */
 
 'use strict';
 
@@ -22474,21 +22500,6 @@ p5.prototype.loadFont = function (path, onSuccess, onError) {
   return p5Font;
 };
 
-//BufferedReader
-p5.prototype.createInput = function () {
-  // TODO
-  throw 'not yet implemented';
-};
-
-p5.prototype.createReader = function () {
-  // TODO
-  throw 'not yet implemented';
-};
-
-p5.prototype.loadBytes = function () {
-  // TODO
-  throw 'not yet implemented';
-};
 
 /**
  * Loads a JSON file from a file or a URL, and returns an Object or Array.
@@ -22580,7 +22591,7 @@ p5.prototype.loadJSON = function () {
       if (arg === 'jsonp' || arg === 'json') {
         t = arg;
       }
-    } else if (typeof arg === 'function') {
+    } else if (typeof arg === 'function' && arg !== decrementPreload) {
       if(!callback){
         callback = arg;
       }else{
@@ -22667,11 +22678,23 @@ p5.prototype.loadJSON = function () {
  * randomly generated text from a file, for example "i have three feet"
  *
  */
-p5.prototype.loadStrings = function (path, callback, errorCallback) {
+p5.prototype.loadStrings = function () {
   var ret = [];
   var decrementPreload = p5._getDecrementPreload.apply(this, arguments);
+  var callback, errorCallback;
 
-  p5.prototype.httpDo(path, 'GET', 'text', function(data){
+  for(var i=1; i<arguments.length; i++){
+    var arg = arguments[i];
+    if(typeof arg === 'function' && arg !== decrementPreload){
+      if(typeof callback === 'undefined'){
+        callback = arg;
+      }else{
+        errorCallback = arg;
+      }
+    }
+  }
+
+  p5.prototype.httpDo(arguments[0], 'GET', 'text', function(data){
     var arr = data.match(/[^\r\n]+/g);
     for (var k in arr) {
       ret[k] = arr[k];
@@ -22931,9 +22954,9 @@ p5.prototype.loadTable = function (path) {
     var row;
     for (i = 0; i < records.length; i++) {
       //Handles row of 'undefined' at end of some CSVs
-      if (i === records.length - 1 && records[i].length === 1) {
-        if (records[i][0] === 'undefined') {
-          break;
+      if (records[i].length === 1) {
+        if (records[i][0] === 'undefined' || records[i][0] === '') {
+          continue;
         }
       }
       row = new p5.TableRow();
@@ -22953,9 +22976,9 @@ p5.prototype.loadTable = function (path) {
     p5._friendlyFileLoadError(2, path);
 
     if(errorCallback){
-      errorCallback(err.status + ' ' + err.statusText);
+      errorCallback(err);
     }else{
-      console.log(err.status + ' ' + err.statusText);
+      throw err;
     }
   });
 
@@ -23031,11 +23054,23 @@ p5.prototype.parseXML = function (two) {
  *                               in as first argument
  * @return {Object}              XML object containing data
  */
-p5.prototype.loadXML = function (path, callback, errorCallback) {
+p5.prototype.loadXML = function() {
   var ret = {};
   var decrementPreload = p5._getDecrementPreload.apply(this, arguments);
+  var callback, errorCallback;
 
-  p5.prototype.httpDo(path, 'GET', 'xml', function(xml){
+  for(var i=1; i<arguments.length; i++){
+    var arg = arguments[i];
+    if(typeof arg === 'function' && arg !== decrementPreload){
+      if(typeof callback === 'undefined'){
+        callback = arg;
+      }else{
+        errorCallback = arg;
+      }
+    }
+  }
+
+  p5.prototype.httpDo(arguments[0], 'GET', 'xml', function(xml){
     for(var key in xml) {
       ret[key] = xml[key];
     }
@@ -23050,23 +23085,6 @@ p5.prototype.loadXML = function (path, callback, errorCallback) {
   return ret;
 };
 
-// name clash with window.open
-// p5.prototype.open = function() {
-//   // TODO
-
-// };
-
-p5.prototype.selectFolder = function () {
-  // TODO
-  throw 'not yet implemented';
-
-};
-
-p5.prototype.selectInput = function () {
-  // TODO
-  throw 'not yet implemented';
-
-};
 
 /**
  * Method for executing an HTTP GET request. If data type is not specified,
@@ -23085,12 +23103,8 @@ p5.prototype.selectInput = function () {
  *                                    in as first argument
  */
 p5.prototype.httpGet = function () {
-  var args = new Array(arguments.length);
-  args[0] = arguments[0];
-  args[1] = 'GET';
-  for (var i = 2; i < args.length; ++i) {
-    args[i] = arguments[i];
-  }
+  var args = Array.prototype.slice.call(arguments);
+  args.splice(1, 0, 'GET');
   p5.prototype.httpDo.apply(this, args);
 };
 
@@ -23111,12 +23125,8 @@ p5.prototype.httpGet = function () {
  *                                    in as first argument
  */
 p5.prototype.httpPost = function () {
-  var args = new Array(arguments.length);
-  args[0] = arguments[0];
-  args[1] = 'POST';
-  for (var i = 2; i < args.length; ++i) {
-    args[i] = arguments[i];
-  }
+  var args = Array.prototype.slice.call(arguments);
+  args.splice(1, 0, 'POST');
   p5.prototype.httpDo.apply(this, args);
 };
 
@@ -23157,6 +23167,7 @@ p5.prototype.httpDo = function () {
   var request;
   var jsonpOptions = {};
   var cbCount = 0;
+  var contentType = 'text/plain';
   // Trim the callbacks off the end to get an idea of how many arguments are passed
   for (var i = arguments.length-1; i > 0; i--){
     if(typeof arguments[i] === 'function'){
@@ -23208,6 +23219,7 @@ p5.prototype.httpDo = function () {
           }
         }else{
           data = JSON.stringify(a);
+          contentType = 'application/json';
         }
       } else if (typeof a === 'function') {
         if (!callback) {
@@ -23231,7 +23243,10 @@ p5.prototype.httpDo = function () {
     request = new Request(path, {
       method: method,
       mode: 'cors',
-      body: data
+      body: data,
+      headers: new Headers({
+        'Content-Type': contentType
+      })
     });
   }
 
@@ -23248,7 +23263,7 @@ p5.prototype.httpDo = function () {
         if (errorCallback) {
           errorCallback(err);
         } else {
-          console.log(err.status + ' ' + err.statusText);
+          throw err;
         }
       });
   }else{
@@ -23275,7 +23290,7 @@ p5.prototype.httpDo = function () {
         if (errorCallback) {
           errorCallback(err);
         } else {
-          console.log(err.status + ' ' + err.statusText);
+          throw err;
         }
       });
   }
@@ -23292,23 +23307,6 @@ window.URL = window.URL || window.webkitURL;
 // private array of p5.PrintWriter objects
 p5.prototype._pWriters = [];
 
-p5.prototype.beginRaw = function () {
-  // TODO
-  throw 'not yet implemented';
-
-};
-
-p5.prototype.beginRecord = function () {
-  // TODO
-  throw 'not yet implemented';
-
-};
-
-p5.prototype.createOutput = function () {
-  // TODO
-
-  throw 'not yet implemented';
-};
 
 p5.prototype.createWriter = function (name, extension) {
   var newPW;
@@ -23328,23 +23326,13 @@ p5.prototype.createWriter = function (name, extension) {
   return newPW;
 };
 
-p5.prototype.endRaw = function () {
-  // TODO
-
-  throw 'not yet implemented';
-};
-
-p5.prototype.endRecord = function () {
-  // TODO
-  throw 'not yet implemented';
-
-};
 
 p5.PrintWriter = function (filename, extension) {
   var self = this;
   this.name = filename;
   this.content = '';
-  this.print = function (data) {
+  //Changed to write because it was being overloaded by function below.
+  this.write = function (data) {
     this.content += data;
   };
   this.print = function (data) {
@@ -23370,13 +23358,7 @@ p5.PrintWriter = function (filename, extension) {
   };
 };
 
-p5.prototype.saveBytes = function () {
-  // TODO
-  throw 'not yet implemented';
-
-};
-
-// object, filename, options --> saveJSON, saveStrings, saveTable
+// object, filename, options --> saveJSON, saveStrings,
 // filename, [extension] [canvas] --> saveImage
 
 /**
@@ -23543,18 +23525,12 @@ p5.prototype.saveJSON = function (json, filename, opt) {
   } else {
     stringify = JSON.stringify(json, undefined, 2);
   }
-  console.log(stringify);
   this.saveStrings(stringify.split('\n'), filename, 'json');
 };
 
 p5.prototype.saveJSONObject = p5.prototype.saveJSON;
 p5.prototype.saveJSONArray = p5.prototype.saveJSON;
 
-p5.prototype.saveStream = function () {
-  // TODO
-  throw 'not yet implemented';
-
-};
 
 /**
  *  Writes an array of Strings to a text file, one line per String.
@@ -23600,17 +23576,6 @@ p5.prototype.saveStrings = function (list, filename, extension) {
   pWriter.flush();
 };
 
-p5.prototype.saveXML = function () {
-  // TODO
-  throw 'not yet implemented';
-
-};
-
-p5.prototype.selectOutput = function () {
-  // TODO
-  throw 'not yet implemented';
-
-};
 
 // =======
 // HELPERS
@@ -23666,24 +23631,31 @@ function escapeHelper(content) {
  *
  */
 p5.prototype.saveTable = function (table, filename, options) {
-  var pWriter = this.createWriter(filename, options);
+  var ext;
+  if(options === undefined){
+    ext = filename.substring(filename.lastIndexOf('.')+1,filename.length);
+  }else{
+    ext = options;
+  }
+  var pWriter = this.createWriter(filename, ext);
 
   var header = table.columns;
 
   var sep = ','; // default to CSV
-  if (options === 'tsv') {
+  if (ext === 'tsv') {
     sep = '\t';
   }
-  if (options !== 'html') {
+  if (ext !== 'html') {
     // make header if it has values
     if (header[0] !== '0') {
       for (var h = 0; h < header.length; h++) {
         if (h < header.length - 1) {
-          pWriter.print(header[h] + sep);
+          pWriter.write(header[h] + sep);
         } else {
-          pWriter.print(header[h]);
+          pWriter.write(header[h]);
         }
       }
+      pWriter.write('\n');
     }
 
     // make rows
@@ -23691,13 +23663,14 @@ p5.prototype.saveTable = function (table, filename, options) {
       var j;
       for (j = 0; j < table.rows[i].arr.length; j++) {
         if (j < table.rows[i].arr.length - 1) {
-          pWriter.print(table.rows[i].arr[j] + sep);
+          pWriter.write(table.rows[i].arr[j] + sep);
         } else if (i < table.rows.length - 1) {
-          pWriter.print(table.rows[i].arr[j]);
+          pWriter.write(table.rows[i].arr[j]);
         } else {
-          pWriter.print(table.rows[i].arr[j]); // no line break
+          pWriter.write(table.rows[i].arr[j]);
         }
       }
+      pWriter.write('\n');
     }
   }
 
@@ -25233,7 +25206,7 @@ var p5 = _dereq_('../core/core');
  *   var children = xml.getChildren("animal");
  *
  *   for (var i = 0; i < children.length; i++) {
- *     var id = children[i].getNumber("id");
+ *     var id = children[i].getNum("id");
  *     var coloring = children[i].getString("species");
  *     var name = children[i].getContent();
  *     print(id + ", " + coloring + ", " + name);
@@ -25761,7 +25734,7 @@ p5.XML.prototype.hasAttribute = function(name) {
  * is returned. If no defaultValue is specified and the attribute doesn't
  * exist, the value 0 is returned.
  *
- * @method getNumber
+ * @method getNum
  * @param {String} name            the non-null full name of the attribute
  * @param {Number} [defaultValue]  the default value of the attribute
  * @return {Number}
@@ -25785,14 +25758,14 @@ p5.XML.prototype.hasAttribute = function(name) {
  *
  * function setup() {
  *   var firstChild = xml.getChild("animal");
- *   print(firstChild.getNumber("id"));
+ *   print(firstChild.getNum("id"));
  * }
  *
  * // Sketch prints:
  * // 0
  * </code></div>
  */
-p5.XML.prototype.getNumber = function(name, defaultValue) {
+p5.XML.prototype.getNum = function(name, defaultValue) {
   return Number(this.attributes[name]) || defaultValue || 0;
 };
 
@@ -29116,8 +29089,8 @@ p5.prototype.text = function(str, x, y, maxWidth, maxHeight) {
  * @method textFont
  * @param {Object|String} f a font loaded via loadFont(), or a String
  * representing a <a href="https://mzl.la/2dOw8WD">web safe font</a> (a font
- * that is generally available across all systems).
- * @return {Object} this
+ * that is generally available across all systems)
+ * @return {Object|String} the current font
  * @example
  * <div>
  * <code>
@@ -29175,7 +29148,7 @@ p5.prototype.textFont = function(theFont, theSize) {
     return this._renderer._applyTextProperties();
   }
 
-  return this;
+  return this._renderer._textFont;
 };
 
 module.exports = p5;
@@ -32254,7 +32227,7 @@ var p5 = _dereq_('../core/core');
 /**
  * Normal material for geometry. You can view all
  * possible materials in this
- * <a href="https://http://p5js.org/examples/3d-materials.html">example</a>.
+ * <a href="https://p5js.org/examples/3d-materials.html">example</a>.
  * @method normalMaterial
  * @return {p5}                the p5 object
  * @example
@@ -32283,7 +32256,7 @@ p5.prototype.normalMaterial = function(){
 
 /**
  * Texture for geometry.  You can view other possible materials in this
- * <a href="https://http://p5js.org/examples/3d-materials.html">example</a>.
+ * <a href="https://p5js.org/examples/3d-materials.html">example</a>.
  * @method texture
  * @param {p5.Image | p5.MediaElement | p5.Graphics} tex 2-dimensional graphics
  *                    to render as texture
@@ -32362,6 +32335,7 @@ p5.prototype.texture = function(){
     args[i] = arguments[i];
   }
   var gl = this._renderer.GL;
+  this._renderer.drawMode = 'texture';
   var shaderProgram = this._renderer._getShader('lightVert',
     'lightTextureFrag');
   gl.useProgram(shaderProgram);
@@ -32456,7 +32430,7 @@ p5.RendererGL.prototype._bind = function(tex, data){
 /**
  * Ambient material for geometry with a given color. You can view all
  * possible materials in this
- * <a href="https://http://p5js.org/examples/3d-materials.html">example</a>.
+ * <a href="https://p5js.org/examples/3d-materials.html">example</a>.
  * @method  ambientMaterial
  * @param  {Number|Array|String|p5.Color} v1  gray value,
  * red or hue value (depending on the current color mode),
@@ -32510,7 +32484,7 @@ p5.prototype.ambientMaterial = function(v1, v2, v3, a) {
 /**
  * Specular material for geometry with a given color. You can view all
  * possible materials in this
- * <a href="https://http://p5js.org/examples/3d-materials.html">example</a>.
+ * <a href="https://p5js.org/examples/3d-materials.html">example</a>.
  * @method specularMaterial
  * @param  {Number|Array|String|p5.Color} v1  gray value,
  * red or hue value (depending on the current color mode),
@@ -33555,7 +33529,7 @@ function(mode, isCurve, isBezier,isQuadratic, isContour, shapeKind){
     this.immediateMode.vertexPositions,
     this.immediateMode.vertexColors);
   if(mode){
-    if(this.drawMode === 'fill'){
+    if(this.drawMode === 'fill' || this.drawMode ==='texture'){
       switch(this.immediateMode.shapeMode){
         case constants.LINE_STRIP:
           this.immediateMode.shapeMode = constants.TRIANGLE_FAN;
