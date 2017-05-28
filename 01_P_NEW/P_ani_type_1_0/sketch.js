@@ -9,12 +9,15 @@
  * 1                         : only letter form
  * 2                         : only animated letter form
  * 3                         : both letter form and animation
+ * 4                         : use squares for animation
+ * 5                         : use ellipses for animation
  */
 "use strict";
 
 var cursorLocation = {x:50, y:50};
 var aniLetters;
 var letterPadding = 20;
+var style = 4;
 
 var typed = [];
 
@@ -705,7 +708,12 @@ function lineFromToInSteps(x1, y1, x2, y2, stepCount) {
   var posy = lerp(y1, y2, ratio);
   fill(0);
   rectMode(CENTER);
-  rect(posX, posy, 10, 10);
+  if(style == 4){
+    rect(posX, posy, 10, 10);
+  }
+  if(style == 5){
+    ellipse(posX, posy, 10, 10);
+  }
   // ellipse(posX, posy, 10, 10);
 }
 
@@ -724,8 +732,13 @@ function curveFromToInSteps(a1, a2, b1, b2, c1, c2, d1, d2,  stepCount){
     var posy = lerp(points[aniIndex].y, points[aniIndex+1].y, ratio);
     fill(0);
     rectMode(CENTER);
-    rect(posX, posy, 10, 10);
-    // ellipse(posX, posy, 10, 10);
+    if(style == 4){
+      rect(posX, posy, 10, 10);
+    }
+    if(style == 5){
+      ellipse(posX, posy, 10, 10);
+    }
+
 }
 
 function bezierFromToInSteps(a1, a2, b1, b2, c1, c2, d1, d2,  stepCount){
@@ -742,8 +755,13 @@ function bezierFromToInSteps(a1, a2, b1, b2, c1, c2, d1, d2,  stepCount){
     var posy = lerp(points[aniIndex].y, points[aniIndex+1].y, ratio);
     fill(0);
     rectMode(CENTER);
-    rect(posX, posy, 10, 10);
-    // ellipse(posX, posy, 10, 10);
+    if(style == 4){
+      rect(posX, posy, 10, 10);
+    }
+    if(style == 5){
+      ellipse(posX, posy, 10, 10);
+    }
+
 }
 
 function arcFromToInSteps(x, y, radiusWidth, radiusHeight, a1, a2, stepCount) {
@@ -754,8 +772,13 @@ function arcFromToInSteps(x, y, radiusWidth, radiusHeight, a1, a2, stepCount) {
   var posY = y + sin(angle) * radiusHeight;
   fill(0);
   rectMode(CENTER);
-  rect(posX, posY, 10, 10);
-  // ellipse(posX, posY, 10, 10);
+  if(style == 4){
+    rect(posX, posY, 10, 10);
+  }
+  if(style == 5){
+    ellipse(posX, posy, 10, 10);
+  }
+
 }
 
 
@@ -765,6 +788,8 @@ function keyPressed() {
   if (key === "1") aniLetters.mode = 1;
   if (key === "2") aniLetters.mode = 2;
   if (key === "3") aniLetters.mode = 3;
+  if (key === "4") style = 4;
+  if (key === "5") style = 5;
   // spacebar
   if (keyCode == 32) cursorLocation.x += 50;
   // on return
