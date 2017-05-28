@@ -1,13 +1,7 @@
 /**
- * Use an image to check on/off a grid of checkboxes
+ * Use a video to check on/off a grid of checkmyboxes
  * Shout out to Dan Shiffman's checkbox mirror example
- * Image credits: Map tiles by Stamen Design, under CC BY 3.0. Data by OpenStreetMap, under ODbL.
  *
- * MOUSE
- * click               : click on the checkboxes
- *
- * KEYS
- * s                   : save png
  *
  * SLIDER
  * drag                : drag the slider to adjust the image threshold
@@ -18,10 +12,10 @@ var video;
 
 var slider;
 
-var cols = 40;
-var rows = 40;
+var cols = 30;
+var rows = 30;
 
-var boxes = [];
+const myboxes = [];
 
 function preload(){
   video = createVideo('data/ball.mov');
@@ -30,7 +24,7 @@ function preload(){
 function setup() {
   noCanvas();
   pixelDensity(1);
-  console.log(video.width, video.height);
+  // console.log(video.width, video.height);
   // video = createCapture(VIDEO);
   video.size(cols, rows);
   slider = createSlider(0, 255, 200);
@@ -40,14 +34,14 @@ function setup() {
       var box = createCheckbox();
       box.style('display', 'inline');
       box.parent('mirror');
-      boxes.push(box);
+      myboxes.push(box);
     }
     var linebreak = createSpan('<br/>');
     linebreak.parent('mirror');
   }
 
   video.loop();
-  console.log(boxes.length);
+  console.log(myboxes.length);
 }
 
 function draw() {
@@ -66,10 +60,19 @@ function draw() {
 
       var checkIndex = x + y * cols;
 
-      if (bright > threshold) {
-        boxes[checkIndex].checked(false);
-      } else {
-        boxes[checkIndex].checked(true);
+      if(myboxes[checkIndex] == undefined){
+        // console.log(checkIndex, myboxes[checkIndex]);
+        // console.log(myboxes.length);
+        break;
+      }
+
+      if(myboxes){
+
+        if (bright > threshold) {
+          myboxes[checkIndex].checked(false);
+        } else {
+          myboxes[checkIndex].checked(true);
+        }
       }
 
     }
