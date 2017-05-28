@@ -22,8 +22,8 @@ var amplitude = 32;
 var speed = 16;
 var resolution = 0.2;
 
-var showPath = false;
-var showPendulum = false;
+var showPath = true;
+var showPendulum = true;
 var showPendulumPath = true;
 
 function setup() {
@@ -35,7 +35,7 @@ function setup() {
 }
 
 function draw() {
-  background(45, 11, 15);
+  background(0, 0, 100);
 
   shapes.forEach(function(shape) {
     shape.draw();
@@ -100,10 +100,10 @@ function Shape() {
       }
 
       if (showPendulumPath) {
-        strokeWeight(2);
+        // strokeWeight(2);
         this.pendulumPath.forEach(function(path, index) {
           beginShape();
-          stroke(map(index, 0, joints, 0, 360), 60, 60);
+          stroke(map(index, 0, joints, 0, 360), 60, 80);
           path.forEach(function(pos) {
             curveVertex(pos.x, pos.y);
           });
