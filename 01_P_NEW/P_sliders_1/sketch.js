@@ -1,9 +1,6 @@
 /**
  * Sliders arranged in a pattern
  *
- * MOUSE
- *
- * KEYS
  * DRAG                  : move the sliders around
  */
 "use strict";
