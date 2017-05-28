@@ -3,6 +3,8 @@
  *
  * MOUSE
  *
+ * DRAG                : drag the handles to adjust the size of the slider
+ *
  * KEYS
  * s                   : save png
  */
