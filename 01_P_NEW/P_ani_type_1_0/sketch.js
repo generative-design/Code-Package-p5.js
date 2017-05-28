@@ -20,20 +20,30 @@ var aniLetters;
 var letterPadding = 20;
 var style = 4;
 
-var typed = [];
+const aniMessage = [];
 
 function setup() {
   createCanvas(800,800);
   strokeWeight(1);
   strokeCap(ROUND);
   aniLetters = new AniLetters(40, 100);
+
+  // initialize with letter A
+  aniMessage.push({letter: 'aniT', x:cursorLocation.x, y: cursorLocation.y});
+  cursorLocation.x += aniLetters.letterWidth+letterPadding;
+  aniMessage.push({letter: 'aniY', x:cursorLocation.x, y: cursorLocation.y});
+  cursorLocation.x += aniLetters.letterWidth+letterPadding;
+  aniMessage.push({letter: 'aniP', x:cursorLocation.x, y: cursorLocation.y});
+  cursorLocation.x += aniLetters.letterWidth+letterPadding;
+  aniMessage.push({letter: 'aniE', x:cursorLocation.x, y: cursorLocation.y});
+  cursorLocation.x += aniLetters.letterWidth+letterPadding;
 }
 
 function draw() {
   // noLoop();
   background(255, 255, 255, 30);
-  if(typed.length > 0){
-    typed.forEach(function(d){
+  if(aniMessage.length > 0){
+    aniMessage.forEach(function(d){
         aniLetters[d.letter](d.x, d.y);
     })
   }
@@ -802,7 +812,7 @@ function keyPressed() {
   stroke(0);
   var aniLetter  = 'ani' + key.toUpperCase();
   if(aniLetters[aniLetter]){
-    typed.push({letter: aniLetter, x:cursorLocation.x, y: cursorLocation.y});
+    aniMessage.push({letter: aniLetter, x:cursorLocation.x, y: cursorLocation.y});
     cursorLocation.x += aniLetters.letterWidth+letterPadding;
   } else{
     console.log("not a letter")
@@ -810,7 +820,7 @@ function keyPressed() {
 
   // Remove the letter
   if(keyCode == LEFT_ARROW ){
-    typed.pop();
+    aniMessage.pop();
     cursorLocation.x -= aniLetters.letterWidth + letterPadding;
   }
 }
