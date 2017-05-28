@@ -1,50 +1,27 @@
-// P_2_4_1_01
-//
-// Generative Gestaltung, ISBN: 978-3-87439-759-9
-// First Edition, Hermann Schmidt, Mainz, 2009
-// Hartmut Bohnacker, Benedikt Gross, Julia Laub, Claudius Lazzeroni
-// Copyright 2009 Hartmut Bohnacker, Benedikt Gross, Julia Laub, Claudius Lazzeroni
-//
-// http://www.generative-gestaltung.de
-//
-// Licensed under the Apache License, Version 2.0 (the "License");
-// you may not use this file except in compliance with the License.
-// You may obtain a copy of the License at http://www.apache.org/licenses/LICENSE-2.0
-// Unless required by applicable law or agreed to in writing, software
-// distributed under the License is distributed on an "AS IS" BASIS,
-// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-// See the License for the specific language governing permissions and
-// limitations under the License.
-
 /**
- * draw tool. draw with a mutating line.
+ * Simple Collaborative Conditional Drawing Exercise
+ * 1. draw a circle in the middle of the canvas (press 'a' for circle)
+ * 2. draw a line (press 'b' for line) of any length from that circle in any direction
+ * 3. draw a circle (press 'a' for circle) at the end of the last line
+ * 4. repeat steps 1 & 2 until the canvas is full
+ * do not overlap lines or circles
  *
  * MOUSE
  * drag                : draw
  *
  * KEYS
  * 1-4                 : switch default colors
- * del, backspace      : clear screen
+ * enter               : clear screen
  * space               : new random color
- * arrow left          : change origin along x axis
- * arrow right         : change origin along y axis
- * arrow up            : line size +
- * arrow down          : line size -
  * s                   : save png
+ * a, A                : create a circle
+ * b, B                : create a line
 */
 
 'use strict';
 
 var socket;
-var params = {
-  x1:0,
-  y1:0,
-  x2:0,
-  y2:0,
-  lineModuleSize:1,
-  c: null,
-  shape: "circle"
-};
+var params;
 
 var circleSize = 20;
 
@@ -58,7 +35,16 @@ function setup(){
   cursor(CROSS);
   rectMode(CENTER);
   stroke(0);
-  params.c = color(181,157,0,100);
+
+  params = {
+    x1:0,
+    y1:0,
+    x2:0,
+    y2:0,
+    lineModuleSize:1,
+    c: color(181,157,0,100),
+    shape: "circle"
+  };
 
   // include the socket connection
   socket = io.connect('http://localhost:3000')
@@ -76,7 +62,7 @@ function setup(){
   getUsers();
   setInterval(getUsers, 2000);
 
-  instruct();
+  // instruct();
 
 }
 
@@ -91,13 +77,13 @@ function getUsers(){
 }
 
 // *** create instructions ***
-function instruct(){
-  httpGet("/instructions",'json', function(resp){
-    console.log(resp.text);
-    instructions.html(resp.text);
-  })
+// function instruct(){
+//   httpGet("/instructions",'json', function(resp){
+//     console.log(resp.text);
+//     instructions.html(resp.text);
+//   })
 
-}
+// }
 
 function newDrawing(data){
 
