@@ -19,12 +19,12 @@ var video;
 var slider;
 
 var cols = 40;
-var rows = 33;
+var rows = 40;
 
 var boxes = [];
 
 function preload(){
-  video = createVideo('data/rect2.mov');
+  video = createVideo('data/ball.mov');
 }
 
 function setup() {
@@ -33,7 +33,7 @@ function setup() {
   console.log(video.width, video.height);
   // video = createCapture(VIDEO);
   video.size(cols, rows);
-  slider = createSlider(0, 255, 77);
+  slider = createSlider(0, 255, 200);
 
   for (var y = 0; y < rows; y++) {
     for (var x = 0; x < cols; x++) {
@@ -42,23 +42,20 @@ function setup() {
       box.parent('mirror');
       boxes.push(box);
     }
-    // var linebreak = createSpan('<br/>');
-    // linebreak.parent('mirror');
+    var linebreak = createSpan('<br/>');
+    linebreak.parent('mirror');
   }
 
-  console.log(video.width, video.height);
-
   video.loop();
-
+  console.log(boxes.length);
 }
 
 function draw() {
-
   video.loadPixels();
   for (var y = 0; y < video.height; y++) {
     for (var x = 0; x < video.width; x++) {
-      // var index = (x  + (y * video.height))*4;
-      var index = (video.width - x + 1 + (y * video.width))*4;
+      var index = (x + (y * video.height))*4;
+      // var index = (video.width - x + 1 + (y * video.width))*4;
       var r = video.pixels[index+0];
       var g = video.pixels[index+1];
       var b = video.pixels[index+2];
@@ -69,14 +66,12 @@ function draw() {
 
       var checkIndex = x + y * cols;
 
-
       if (bright > threshold) {
         boxes[checkIndex].checked(false);
       } else {
         boxes[checkIndex].checked(true);
       }
+
     }
   }
-
-
 }
