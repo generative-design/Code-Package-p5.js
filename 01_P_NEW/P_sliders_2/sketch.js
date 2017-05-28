@@ -8,17 +8,17 @@
 
 'use strict';
 
-var sliders = [];
+const mySliders = [];
 
 function setup() {
   createCanvas(windowWidth, windowHeight);
   // init canvas with slider rose to the middle
-  sliders.push(new SliderRose(width/2, height/2));
+  mySliders.push(new SliderRose(width/2, height/2));
 }
 
 function draw() {
   // create slider animations
-  sliders.forEach(function(d){
+  mySliders.forEach(function(d){
     d.update();
   });
 
@@ -26,14 +26,14 @@ function draw() {
 
 // add a new slider rose when mouse pressed
 function mousePressed(){
-  sliders.push(new SliderRose(mouseX, mouseY));
+  mySliders.push(new SliderRose(mouseX, mouseY));
 }
 
 // define a SliderRose object
 function SliderRose(_x, _y){
   this.x1 = _x;
   this.y1 = _y;
-  var sliders = [];
+  var mySliders = [];
   this.sliderBackgrounds = [];
   var sinAngle = 0;
 
@@ -46,10 +46,10 @@ function SliderRose(_x, _y){
     var x2 = cos(sliderAngle)*roseRadius;
     var y2 = sin(sliderAngle)*roseRadius;
 
-    sliders[counter] = createSlider(0, 255, 50)
-    sliders[counter].position(this.x1 + x2, this.y1 + y2);
-    sliders[counter].style('width', roseRadius +'px')
-    sliders[counter].style('transform', 'rotate('+i+'deg)');
+    mySliders[counter] = createSlider(0, 255, 50)
+    mySliders[counter].position(this.x1 + x2, this.y1 + y2);
+    mySliders[counter].style('width', roseRadius +'px')
+    mySliders[counter].style('transform', 'rotate('+i+'deg)');
     counter++;
 
   }
@@ -57,9 +57,9 @@ function SliderRose(_x, _y){
   this.update = function(){
     var offset = 0;
 
-    for(var i = 0; i < sliders.length; i++){
+    for(var i = 0; i < mySliders.length; i++){
       var x = map(sin(sinAngle + offset), -1, 1, 0, 255);
-      sliders[i].value(x);
+      mySliders[i].value(x);
       offset += 0.050;
     }
 
