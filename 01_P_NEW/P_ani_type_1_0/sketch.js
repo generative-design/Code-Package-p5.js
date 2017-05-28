@@ -28,7 +28,7 @@ function setup() {
   strokeCap(ROUND);
   aniLetters = new AniLetters(40, 100);
 
-  // initialize with letter A
+  // initialize with "Type" message
   aniMessage.push({letter: 'aniT', x:cursorLocation.x, y: cursorLocation.y});
   cursorLocation.x += aniLetters.letterWidth+letterPadding;
   aniMessage.push({letter: 'aniY', x:cursorLocation.x, y: cursorLocation.y});
