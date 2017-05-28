@@ -24,8 +24,7 @@ function preload(){
 function setup() {
   noCanvas();
   pixelDensity(1);
-  // console.log(video.width, video.height);
-  // video = createCapture(VIDEO);
+
   video.size(cols, rows);
   slider = createSlider(0, 255, 200);
 
@@ -41,7 +40,6 @@ function setup() {
   }
 
   video.loop();
-  console.log(myboxes.length);
 }
 
 function draw() {
@@ -61,13 +59,10 @@ function draw() {
       var checkIndex = x + y * cols;
 
       if(myboxes[checkIndex] == undefined){
-        // console.log(checkIndex, myboxes[checkIndex]);
-        // console.log(myboxes.length);
         break;
       }
 
       if(myboxes){
-
         if (bright > threshold) {
           myboxes[checkIndex].checked(false);
         } else {
