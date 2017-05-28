@@ -7,9 +7,9 @@
  * click               : click on the checkboxes
  *
  * KEYS
- * 1                   : image 1 shapes
- * 2                   : image 2 letters
- * 3                   : image 3 map
+ * 1                   : load image shapes
+ * 2                   : load image letters
+ * 3                   : load image map
  *
  * SLIDER
  * drag                : drag the slider to adjust the image threshold
