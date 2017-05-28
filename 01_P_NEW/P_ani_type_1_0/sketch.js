@@ -11,6 +11,7 @@
  * 3                         : both letter form and animation
  * 4                         : use squares for animation
  * 5                         : use ellipses for animation
+ * left arrow                : remove the letter
  */
 "use strict";
 
@@ -807,12 +808,10 @@ function keyPressed() {
     console.log("not a letter")
   }
 
-  // TODO: remove letter
-  // if(keyCode == LEFT_ARROW ){
-  //   var pad = 6;
-  //   noStroke();
-  //   cursorLocation.x -= aniLetters.letterWidth + letterPadding+pad;
-  //   rect(cursorLocation.x, cursorLocation.y-pad, aniLetters.letterWidth+letterPadding+pad, aniLetters.letterHeight+pad)
-  // }
+  // Remove the letter
+  if(keyCode == LEFT_ARROW ){
+    typed.pop();
+    cursorLocation.x -= aniLetters.letterWidth + letterPadding;
+  }
 }
 
