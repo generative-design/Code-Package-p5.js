@@ -1,6 +1,5 @@
+// P_MacPaint_1
 /**
- * P_MacPaint_1
- *
  * Simple drawing tool where mouse input gets mirrored over multiple axis
  *
  * CREDITS
