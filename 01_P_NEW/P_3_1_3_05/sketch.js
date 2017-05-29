@@ -1,8 +1,11 @@
 // P_3_1_3_05
-
 /**
  * analysing and sorting the words of a text by Part of Speech
  * connecting subsequent letters with lines.
+ *
+ * CREDITS
+ * Niels Poldervaart
+ * Adapted from P_3_1_3_04
  *
  * MOUSE
  * position x          : interpolate between normal text and sorted position
