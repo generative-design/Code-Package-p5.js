@@ -20,7 +20,83 @@
 
 var joinedText;
 var textPOSTags = [];
-var allPOSTags = [];
+var allPOSTags = [
+  'cc',
+  'cd',
+  'dt',
+  'ex',
+  'fw',
+  'in',
+  'jj',
+  'jjr',
+  'jjs',
+  'ls',
+  'md',
+  'nn',
+  'nns',
+  'nnp',
+  'nnps',
+  'pdt',
+  'pos',
+  'prp',
+  'prp$',
+  'rb',
+  'rbr',
+  'rbs',
+  'rp',
+  'sym',
+  'to',
+  'uh',
+  'vb',
+  'vbd',
+  'vbg',
+  'vbn',
+  'vbp',
+  'vbz',
+  'wdt',
+  'wp',
+  'wp$',
+  'wrb'
+];
+var allPOSTagsFull = [
+  'Coordinating conjunction',
+  'Cardinal number',
+  'Determiner',
+  'Existential there',
+  'Foreign word',
+  'Preposition or subordinating conjunction',
+  'Adjective',
+  'Adjective, comparative',
+  'Adjective, superlative',
+  'List item marker',
+  'Modal',
+  'Noun, singular or mass',
+  'Noun, plural',
+  'Proper noun, singular',
+  'Proper noun, plural',
+  'Predeterminer',
+  'Possessive ending',
+  'Personal pronoun',
+  'Possessive pronoun',
+  'Adverb',
+  'Adverb, comparative',
+  'Adverb, superlative',
+  'Particle',
+  'Symbol',
+  'to',
+  'Interjection',
+  'Verb, base form',
+  'Verb, past tense',
+  'Verb, gerund or present participle',
+  'Verb, past participle',
+  'Verb, non-3rd person singular present',
+  'Verb, 3rd person singular present',
+  'Wh-determiner',
+  'Wh-pronoun',
+  'Possessive wh-pronoun',
+  'Wh-adverb'
+];
+
 var counters = [];
 
 var posX;
@@ -41,6 +117,10 @@ function setup() {
   textFont("monospace", 18);
   fill(0);
 
+  for (var i = 0; i < allPOSTags.length; i++) {
+    counters.push(0);
+  }
+
   joinedText = joinedText.join(" ");
   joinedText = joinedText.split(/\s+/);
   for (var i = 0; i < joinedText.length; i++) {
@@ -52,9 +132,6 @@ function setup() {
     var tagIndex = allPOSTags.indexOf(wordPOSTag);
     if (tagIndex >= 0) {
       counters[tagIndex]++;
-    } else {
-      allPOSTags.push(wordPOSTag);
-      counters.push(1);
     }
 
     joinedText[i] += ' ';
@@ -87,7 +164,7 @@ function draw() {
     textSize(10);
     for (var i = 0; i < allPOSTags.length; i++) {
       textAlign(LEFT);
-      text(allPOSTags[i], -20, i * 20 + 40);
+      text(allPOSTags[i] + ' (' + allPOSTagsFull[i] + ')', -20, i * 20 + 40);
       textAlign(RIGHT);
       text(counters[i], -25, i * 20 + 40);
     }
@@ -95,7 +172,7 @@ function draw() {
     textSize(18);
   }
 
-  translate(20, 0);
+  translate(256, 0);
 
   // go through all characters in the text to draw them
   for (var i = 0; i < joinedText.length; i++) {
