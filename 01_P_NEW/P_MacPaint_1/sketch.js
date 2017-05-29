@@ -1,16 +1,21 @@
 /**
-* Simple drawing tool where mouse input gets mirrored over multiple axis
-*
-* MOUSE
-* left click          : draw line
-* scroll wheel        : change stroke weight
-*
-* KEYS
-* space               : new composition
-* s                   : save png
-* 1                   : toggle vertical mirror
-* 2                   : toggle horizontal mirror
-* 3                   : toggle diagonal mirror
+ * P_MacPaint_1
+ *
+ * Simple drawing tool where mouse input gets mirrored over multiple axis
+ *
+ * CREDITS
+ * Niels Poldervaart
+ *
+ * MOUSE
+ * left click          : draw line
+ * scroll wheel        : change stroke weight
+ *
+ * KEYS
+ * space               : new composition
+ * s                   : save png
+ * 1                   : toggle vertical mirror
+ * 2                   : toggle horizontal mirror
+ * 3                   : toggle diagonal mirror
 */
 "use strict";
 
