@@ -2,7 +2,7 @@
  * P_moire_2
  *
  * MOUSE
- * mouseX              : overlay rotation
+ * mouseX              : overlay horizontal shear
  *
  * KEYS
  * s                   : save png
@@ -22,7 +22,7 @@ function draw() {
   overlay();
   translate(width / 2, height / 2);
   scale(0.8);
-  rotate(map(mouseX, 0, width / 2, 0, PI));
+  shearX(map(mouseX, 0, width, 0, PI));
   strokeWeight(1);
   overlay();
   pop();

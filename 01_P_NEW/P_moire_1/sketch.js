@@ -2,7 +2,7 @@
  * P_moire_1
  *
  * MOUSE
- * mouseX              : shift horizontal position of overlay
+ * mouseX              : overlay rotation
  *
  * KEYS
  * s                   : save png
@@ -17,42 +17,21 @@ function draw() {
   background(255);
 
   push();
-  translate(width * 0.37, height / 2);
-  for (var i = 0; i < 360; i += 12) {
-    var x = cos(radians(i)) * 200;
-    var y = sin(radians(i)) * 200;
-    push();
-    translate(x, y);
-    triangleLines();
-    pop();
-  }
-  pop();
-
-  push()
-  translate(mouseX, 0);
+  translate(width / 2, height / 2);
+  strokeWeight(4);
+  overlay();
+  translate(width / 2, height / 2);
+  scale(0.8);
+  rotate(map(mouseX, 0, width / 2, 0, PI));
+  strokeWeight(1);
   overlay();
   pop();
 }
 
 function overlay() {
-  strokeWeight(4);
-
+  translate(-width / 2, -height / 2);
   for (var i = 0; i < width; i += 5) {
     line(i, 0, i, height);
-  }
-}
-
-function triangleLines() {
-  stroke(0);
-  strokeWeight(2);
-
-  var theight = 150;
-  for (var i = 0; i < theight; i += 5) {
-    if (i < theight / 2) {
-      line(i, 0, i, -i);
-    } else {
-      line(i, 0, i, -(-i + theight))
-    }
   }
 }
 
