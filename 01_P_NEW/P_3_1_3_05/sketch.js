@@ -111,7 +111,7 @@ function preload() {
 }
 
 function setup() {
-  createCanvas(1200, windowHeight);
+  createCanvas(windowWidth, windowHeight);
   colorMode(HSB, 360, 100, 100, 100);
 
   textFont("monospace", 18);
@@ -147,7 +147,7 @@ function draw() {
   noStroke();
 
   posX = 0;
-  posY = 200;
+  posY = 50;
   var sortPositionsX = [];
   var oldPositionsX = [];
   var oldPositionsY = [];
@@ -214,7 +214,7 @@ function draw() {
 
     sortPositionsX[index] += textWidth(joinedText[i]);
     posX += textWidth(joinedText[i]);
-    if (posX >= width - 200) {
+    if (posX >= min(width, 1000)) {
       posY += 40;
       posX = 0;
     }
