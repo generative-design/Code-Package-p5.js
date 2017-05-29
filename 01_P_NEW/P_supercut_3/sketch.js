@@ -1,5 +1,9 @@
+// P_supercut_3
 /**
- * Create montage of video with a search query.
+ * Create montage of video with two root words to build limericks,
+ *
+ * CREDITS
+ * Niels Poldervaart
  *
  */
 "use strict";

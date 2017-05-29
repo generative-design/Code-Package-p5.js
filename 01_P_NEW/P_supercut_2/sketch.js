@@ -1,6 +1,9 @@
+// P_supercut_2
 /**
- * Create montage of video with a search query.
+ * Create montage of video with a search query for Part Of Speech.
  *
+ * CREDITS
+ * Niels Poldervaart
  */
 "use strict";
 

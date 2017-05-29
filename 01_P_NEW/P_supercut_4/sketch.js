@@ -1,5 +1,10 @@
+// P_supercut_4
 /**
- * Create montage of video with a search query.
+ * Play the movie normally and increase playback speed every time when something matching
+ * the search query (either a string or a Regular Expression) is encounterd .
+ *
+ * CREDITS
+ * Niels Poldervaart
  */
 "use strict";
 
