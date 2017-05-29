@@ -2,7 +2,7 @@
 
 /**
  * analysing and sorting the words of a text by Part of Speech
- * connecting subsequent letters with lines
+ * connecting subsequent letters with lines.
  *
  * MOUSE
  * position x          : interpolate between normal text and sorted position
@@ -20,6 +20,9 @@
 
 var joinedText;
 var textPOSTags = [];
+
+// Alphabetical list of PENN part-of-speech tags
+// source: https://rednoise.org/rita/reference/PennTags.html
 var allPOSTags = [
   'cc',
   'cd',
