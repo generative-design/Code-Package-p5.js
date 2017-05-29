@@ -1,6 +1,11 @@
-// P_pendulum_1
 /**
- * Fractal line drawing tool
+ * P_pendulum_1
+ *
+ * Drawing tool that moves a pendulum-esq contraption along paths drawn by the mouse.
+ * Each joint of the pendulum leaves behind its own path.
+ *
+ * CREDITS
+ * Niels Poldervaart
  *
  * MOUSE
  * mouse               : click and drag to create a path to draw a pendulum along with
