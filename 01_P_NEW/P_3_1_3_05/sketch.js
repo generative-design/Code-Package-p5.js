@@ -95,6 +95,8 @@ function draw() {
     textSize(18);
   }
 
+  translate(20, 0);
+
   // go through all characters in the text to draw them
   for (var i = 0; i < joinedText.length; i++) {
     // again, find the index of the current letter in the alphabet
