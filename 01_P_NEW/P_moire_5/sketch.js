@@ -1,6 +1,12 @@
 /**
  * P_moire_5
  *
+ * Place stacked circles of randomised heights at the mouse position
+ * to create a moire effect drawing
+ *
+ * CREDITS
+ * Niels Poldervaart
+ *
  * MOUSE
  * mouseX              : draw moire circle patterns
  *

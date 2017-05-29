@@ -1,6 +1,11 @@
 /**
  * P_moire_4
  *
+ * Stacked circles in front of each other to create a moire effect.
+ *
+ * CREDITS
+ * Niels Poldervaart
+ *
  * MOUSE
  * mouseX              : overlay circle moire pattern
  *

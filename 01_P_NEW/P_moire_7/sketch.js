@@ -1,6 +1,10 @@
 // P_moire_7
 /**
- * Draw path shapes that generate a moire effect
+ * Drawing tool for creating moire effect compositions using
+ * smooth path of any length, width, smoothness and colour.
+ *
+ * CREDITS
+ * Niels Poldervaart
  *
  * MOUSE
  * mouse               : click and drag to draw moire pattern path

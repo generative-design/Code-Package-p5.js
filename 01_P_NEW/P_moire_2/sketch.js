@@ -1,6 +1,12 @@
 /**
  * P_moire_2
  *
+ * Simple moire effect demonstration by shearing a rectangle of densely
+ * packed lines over a background also consisting of densely packed lines.
+ *
+ * CREDITS
+ * Niels Poldervaart
+ *
  * MOUSE
  * mouseX              : overlay horizontal shear
  *
