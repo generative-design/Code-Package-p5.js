@@ -1,6 +1,5 @@
+// P_moire_6
 /**
- * P_moire_6
- *
  * Drawing tool for creating moire effect compositions using
  * rectangles of various widths, lengths, angles and colours.
  *

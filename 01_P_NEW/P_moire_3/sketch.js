@@ -1,6 +1,5 @@
+// P_moire_3
 /**
- * P_moire_3
- *
  * Simple moire effect demonstration moving a rectangle of densely packed
  * lines in front of geometry drawn with similiar densely packed lines.
  *

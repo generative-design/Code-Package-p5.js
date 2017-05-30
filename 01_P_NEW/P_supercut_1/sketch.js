@@ -1,5 +1,9 @@
+// P_supercut_1
 /**
- * Create montage of video with a search query.
+ * Create montage of video with a search query consisting of a string or a Regular Expression.
+ *
+ * CREDITS
+ * Niels Poldervaart
  */
 "use strict";
 

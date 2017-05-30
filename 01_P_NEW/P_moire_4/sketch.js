@@ -1,6 +1,5 @@
+// P_moire_4
 /**
- * P_moire_4
- *
  * Stacked circles in front of each other to create a moire effect.
  *
  * CREDITS

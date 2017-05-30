@@ -1,6 +1,5 @@
+// P_moire_1
 /**
- * P_moire_1
- *
  * Simple moire effect demonstration by rotating a rectangle of densely
  * packed lines over a background also consisting of densely packed lines.
  *
