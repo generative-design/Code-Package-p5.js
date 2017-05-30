@@ -9,9 +9,9 @@
 "use strict";
 
 // Download video file from https://github.com/generative-design/Code-Package-Data/blob/master/P_supercut_media/video.mp4
-var videoSrc = 'data/video.mp4';
+var videoSrc = '../../data/P_supercut_media/video.mp4';
 var video;
-var subtitleSrc = 'data/subs.vtt';
+var subtitleSrc = '../../data/P_supercut_media/subs.vtt';
 var subtitles;
 
 var searchQuery = '\\b(comet)\\b';
