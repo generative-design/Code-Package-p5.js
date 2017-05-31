@@ -1,8 +1,7 @@
+// P_pendulum_1
 /**
- * P_pendulum_1
- *
  * Drawing tool that moves a pendulum-esq contraption along paths drawn by the mouse.
- * Each joint of the pendulum leaves behind its own path.
+ * Each joint of the pendulum leaves behind its own trail.
  *
  * CREDITS
  * Niels Poldervaart
@@ -58,12 +57,16 @@ function draw() {
   }
 }
 
-function Shape() {
+function Shape(amplitude, speed, resolution, joints) {
   this.shapePath = [];
   this.pendulumPath = [];
   this.iterator = 0;
+  this.amplitude = amplitude;
+  this.speed = speed;
+  this.resolution = resolution;
+  this.joints = joints;
 
-  for (var i = 0; i < joints; i++) {
+  for (var i = 0; i < this.joints; i++) {
     this.pendulumPath.push([]);
   }
 
@@ -90,13 +93,13 @@ function Shape() {
     var previousPos = this.shapePath[currentIndex - 1];
     if (previousPos) {
       var offsetPosA = p5.Vector.lerp(previousPos, currentPos, this.iterator - currentIndex);
-      for (var i = 0; i < joints; i++) {
+      for (var i = 0; i < this.joints; i++) {
         var offsetPosB = p5.Vector.fromAngle(
           (PI / (i + 1)) +
           this.iterator /
-          pow(-2, joints - i) * speed
+          pow(-2, this.joints - i) * this.speed
         );
-        offsetPosB.setMag((amplitude / joints) * (joints - i));
+        offsetPosB.setMag((this.amplitude / this.joints) * (this.joints - i));
         offsetPosB.add(offsetPosA);
 
         if (showPendulum) {
@@ -115,30 +118,24 @@ function Shape() {
         strokeWeight(1.6);
         this.pendulumPath.forEach(function(path, index) {
           beginShape();
-          stroke(360 / joints * index, 80, 60, 50);
+          stroke(360 / this.joints * index, 80, 60, 50);
           path.forEach(function(pos) {
             curveVertex(pos.x, pos.y);
           });
           endShape();
-        });
+        }.bind(this));
       }
     }
   };
 
   Shape.prototype.update = function() {
-    this.iterator += resolution;
-    if (this.iterator >= this.shapePath.length - 1) {
-      this.iterator = 0;
-      this.pendulumPath = [];
-      for (var i = 0; i < joints; i++) {
-        this.pendulumPath.push([]);
-      }
-    }
+    this.iterator += this.resolution;
+    this.iterator = constrain(this.iterator, 0, this.shapePath.length);
   };
 }
 
 function mousePressed() {
-  newShape = new Shape();
+  newShape = new Shape(amplitude, speed, resolution, joints);
   newShape.addPos(mouseX, mouseY);
 }
 
@@ -162,6 +159,6 @@ function keyPressed() {
 
   if (keyCode == UP_ARROW) amplitude += 2;
   if (keyCode == DOWN_ARROW) amplitude -= 2;
-  if (keyCode == LEFT_ARROW) speed++;
-  if (keyCode == RIGHT_ARROW) speed--;
+  if (keyCode == LEFT_ARROW) speed--;
+  if (keyCode == RIGHT_ARROW) speed++;
 }
