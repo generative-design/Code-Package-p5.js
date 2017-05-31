@@ -33,7 +33,7 @@ var showPendulumPath = true;
 
 function setup() {
   createCanvas(windowWidth, windowHeight);
-  colorMode(HSB);
+  colorMode(HSB, 360, 100, 100, 100);
   noFill();
   strokeWeight(1);
   background(220);
@@ -70,7 +70,7 @@ function Shape() {
 
   Shape.prototype.draw = function() {
     strokeWeight(0.8);
-    stroke(62, 19, 80);
+    stroke(0, 10);
 
     if (showPath) {
       beginShape();
@@ -105,9 +105,10 @@ function Shape() {
       }
 
       if (showPendulumPath) {
+        strokeWeight(1.6);
         this.pendulumPath.forEach(function(path, index) {
           beginShape();
-          stroke(map(index, 0, joints, 0, 360), 60, 80);
+          stroke(360 / joints * index, 80, 60, 50);
           path.forEach(function(pos) {
             curveVertex(pos.x, pos.y);
           });
