@@ -96,6 +96,9 @@ function Shape() {
         offsetPosB.add(offsetPosA);
 
         if (showPendulum) {
+          fill(0, 10);
+          ellipse(offsetPosA.x, offsetPosA.y, 4, 4);
+          noFill();
           line(offsetPosA.x, offsetPosA.y, offsetPosB.x, offsetPosB.y);
         }
 
