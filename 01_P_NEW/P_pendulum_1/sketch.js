@@ -14,6 +14,10 @@
  * 1                   : toggle path line
  * 2                   : toggle pendulum
  * 3                   : toggle pendulum path
+ * arrow up            : increase amplitude
+ * arrow down          : decrease amplitude
+ * arrow left          : decrease speed
+ * arrow right         : increase speed
  * s                   : save png
  */
 "use strict";
@@ -155,4 +159,9 @@ function keyPressed() {
   if (key == '1') showPath = !showPath;
   if (key == '2') showPendulum = !showPendulum;
   if (key == '3') showPendulumPath = !showPendulumPath;
+
+  if (keyCode == UP_ARROW) amplitude += 2;
+  if (keyCode == DOWN_ARROW) amplitude -= 2;
+  if (keyCode == LEFT_ARROW) speed++;
+  if (keyCode == RIGHT_ARROW) speed--;
 }
