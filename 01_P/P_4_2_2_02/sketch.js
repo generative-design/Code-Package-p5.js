@@ -49,7 +49,7 @@ function draw() {
     var interval = int(secondsSinceStart % intervalTime);
 
     if (interval == 0 && doSave == true) {
-      var saveFileName = startTime + "-" + nf(counter, 5, 0);
+      var saveFileName = startTime + '-' + nf(counter, 5, 0);
       saveCanvas(saveFileName, 'png');
       doSave = false;
       counter++;
