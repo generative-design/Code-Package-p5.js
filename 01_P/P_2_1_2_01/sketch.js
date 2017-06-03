@@ -31,8 +31,8 @@
 
 var tileCount = 20;
 var actRandomSeed = 0;
-var circleAlpha = 0.5;
-var circleColor
+var circleAlpha = 130;
+var circleColor;
 
 function setup(){
   createCanvas(600, 600);
@@ -48,6 +48,7 @@ function draw() {
   randomSeed(actRandomSeed);
 
   stroke(circleColor);
+  // stroke(0);
   strokeWeight(mouseY/60);
 
   for (var gridY=0; gridY<tileCount; gridY++) {
