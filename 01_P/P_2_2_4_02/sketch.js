@@ -27,8 +27,8 @@
 
 var maxCount = 5000; //max count of the cirlces
 var currentCount = 1;
-var newx = [maxCount];
-var newy = [maxCount];
+var newx;
+var newy;
 var x;
 var y;
 var r;
@@ -37,6 +37,9 @@ var drawGhosts = false;
 
 function setup() {
   createCanvas(800, 800);
+
+  newx = [maxCount];
+  newy = [maxCount];
 
   x = [maxCount];
   y = [maxCount];
