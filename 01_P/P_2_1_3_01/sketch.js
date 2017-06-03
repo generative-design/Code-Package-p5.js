@@ -60,10 +60,10 @@ function draw() {
   endSize = map(mouseX,0,width,tileWidth / 2,0);
   endOffset = map(mouseY,0,height,0,(tileWidth - endSize) / 2);
 
-  for (var girdY = 0; girdY <= tileCountY; girdY++) {
-    for (var girdX = 0; girdX <= tileCountX; girdX++) {
+  for (var gridY = 0; gridY <= tileCountY; gridY++) {
+    for (var gridX = 0; gridX <= tileCountX; gridX++) {
       push();
-      translate(tileWidth * girdX,tileHeight * girdY);
+      translate(tileWidth * gridX,tileHeight * gridY);
       scale(1,tileHeight / tileWidth);
 
       var toggle = int(random(0,4));
