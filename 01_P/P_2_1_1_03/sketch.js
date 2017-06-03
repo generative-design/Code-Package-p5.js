@@ -72,12 +72,12 @@ function draw() {
       if (transparentLeft == true) alphaLeft = gridY*2;
       else alphaLeft = 0;
 
-      colorLeft = color(colorLeft.getHue(), colorLeft.getSaturation(), colorLeft.getBrightness(), alphaLeft)
+      colorLeft = color(hue(colorLeft), saturation(colorLeft), brightness(colorLeft), alphaLeft)
 
       if (transparentRight == true) alphaRight = 100-gridY*10;
       else alphaRight = 100;
 
-      colorRight = color(colorRight.getHue(), colorRight.getSaturation(), colorRight.getBrightness(), alphaRight )
+      colorLeft = color(hue(colorRight), saturation(colorRight), brightness(colorRight), alphaRight)
 
       var toggle = int(random(0,2));
 
