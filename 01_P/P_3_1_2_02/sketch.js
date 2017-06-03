@@ -1,5 +1,5 @@
 // P_3_1_2_02.pde
-// 
+//
 // Generative Gestaltung, ISBN: 978-3-87439-759-9
 // First Edition, Hermann Schmidt, Mainz, 2009
 // Hartmut Bohnacker, Benedikt Gross, Julia Laub, Claudius Lazzeroni
@@ -17,25 +17,24 @@
 // limitations under the License.
 
 /**
- * typewriter. uses input (text) as blueprint for a visual composition.
- * 
- * MOUSE
- * click + drag        : move canvas
- * 
- * KEYS
- * a-z                 : text input (keyboard)
- * space               : random straight / small curve
- * ,.!?                : curves
- * :+-xz               : icons
- * o                   : station with the last 7 typed letters as name
- * a u                 : stop
- * del, backspace      : remove last letter
- * arrow up            : zoom canvas +
- * arrow down          : zoom canvas -
- * ctrl                : save png + pdf
- */
- 'use strict';
-var savePDF = false;
+* typewriter. uses input (text) as blueprint for a visual composition.
+*
+* MOUSE
+* click + drag        : move canvas
+*
+* KEYS
+* a-z                 : text input (keyboard)
+* space               : random straight / small curve
+* ,.!?                : curves
+* :+-xz               : icons
+* o                   : station with the last 7 typed letters as name
+* a u                 : stop
+* del, backspace      : remove last letter
+* arrow up            : zoom canvas +
+* arrow down          : zoom canvas -
+* ctrl                : save png
+*/
+'use strict';
 
 var font;
 var textTyped =  "Was hier folgt ist Tet! So asnt, und mag. Ich mag Tet sehr.";
@@ -61,13 +60,15 @@ var offsetY = 0;
 var zoom = 0.75;
 
 //new RGBColour(0, 130, 164);
-var palette = [[253, 195, 0], 
-				[0,0,0], 
-				[0, 158, 224],
-				[99, 33, 129], 
-				[121, 156, 19], 
-				[226, 0, 26], 
-				[224, 134, 178]];
+var palette = [
+  [253, 195, 0],
+  [0, 0, 0],
+  [0, 158, 224],
+  [99, 33, 129],
+  [121, 156, 19],
+  [226, 0, 26],
+  [224, 134, 178]
+];
 
 var actColorIndex = 0;
 
@@ -86,14 +87,6 @@ function preload() {
   icon3 = loadImage("data/icon3.svg");
   icon4 = loadImage("data/icon4.svg");
   icon5 = loadImage("data/icon5.svg");
-
- /* shapeSpace.disableStyle();
-  shapeSpace2.disableStyle();
-  shapePeriod.disableStyle();
-  shapeComma.disableStyle();
-  shapeExclamationmark.disableStyle();
-  shapeQuestionmark.disableStyle();
-  shapeReturn.disableStyle();*/
 }
 
 function setup() {
@@ -114,144 +107,128 @@ function windowResized() {
 }
 
 function draw() {
-	background(255);
-	smooth();
-	noStroke();
-	textAlign('LEFT');
+  background(255);
 
-	if (mouseIsPressed) {
-	    centerX = mouseX - offsetX;
-	    centerY = mouseY - offsetY;
-	}
+  if (mouseIsPressed) {
+    centerX = mouseX - offsetX;
+    centerY = mouseY - offsetY;
+  }
 
-	translate(centerX, centerY);
-	scale(zoom);
+  translate(centerX, centerY);
+  scale(zoom);
 
-	push();
+  push();
 
-	randomSeed(0);
+  randomSeed(0);
 
-	actColorIndex = 0;
-	fill(palette[actColorIndex][0], palette[actColorIndex][1], palette[actColorIndex][2]);
-	rect(0, -25, 10, 35);
+  actColorIndex = 0;
+  fill(palette[actColorIndex][0], palette[actColorIndex][1], palette[actColorIndex][2]);
+  rect(0, -25, 10, 35);
 
-	for (var i = 0; i < textTyped.length; i++) {
-		var fontSize = 25;
-		textFont(font, fontSize);
-		var letter = textTyped.charAt(i);
-		var letterWidth = textWidth(letter);
+  for (var i = 0; i < textTyped.length; i++) {
+    var fontSize = 25;
+    textFont(font, fontSize);
+    var letter = textTyped.charAt(i);
+    var letterWidth = textWidth(letter);
 
-		// ------ letter rule table ------
-		switch(letter){
-			case " ": //space
-				//60% notrun, 20% left, 20% right
-				var dir = floor(random(5));
-				if(dir == 0){
-					image(shapeSpace, 0, -15);
-					translate(1.9, 0);
-					rotate(QUARTER_PI);
-				}
-				if(dir == 1){
-					image(shapeSpace2, 0, -17);
-					translate(13, -5);
-					rotate(-QUARTER_PI);
-				}
-			break;
-			case ",":
-				image(shapeComma, 0, 0);
-        		translate(34, 15);
-        		rotate(QUARTER_PI);
-        	break;
-        	case ".": 
-		        image(shapePeriod, 0, -58);
-		        translate(56, -54);
-		        rotate(-HALF_PI);
-		    break;
-		    case "!": 
-		        image(shapeExclamationmark, 0, 0);
-		        translate(42, -18);
-		        rotate(-QUARTER_PI);
-		    break;
-		    case "?": 
-		        image(shapeQuestionmark, 0, 0);
-		        translate(42, -18);
-		        rotate(-QUARTER_PI);
-		    break;
-		    case "\n": 
-		    	// start a new line at a random position near the center
-		        rect(0, -25, 10, 35);
-		        pop();
-		        push();
-		        translate(random(-300, 300), random(-300, 300));
-		        rotate(floor(random(8))*QUARTER_PI);
-		        actColorIndex = actColorIndex + 1;
-		        fill(palette[actColorIndex][0], palette[actColorIndex][1], palette[actColorIndex][2]);
-		        rect(0, -25, 10, 35);
-		    break;
+    // ------ letter rule table ------
+    switch (letter) {
+      case " ": //space
+        //60% notrun, 20% left, 20% right
+        var dir = floor(random(5));
+        if (dir === 0) {
+          image(shapeSpace, 0, -15);
+          translate(2, 0);
+          rotate(QUARTER_PI);
+        }
+        if (dir === 1) {
+          image(shapeSpace2, 0, -15);
+          translate(13, -5);
+          rotate(-QUARTER_PI);
+        }
+        break;
+      case ",":
+        image(shapeComma, 0, -15);
+        translate(33, 15);
+        rotate(QUARTER_PI);
+        break;
+      case ".":
+        image(shapePeriod, 0, -56);
+        translate(56, -56);
+        rotate(-HALF_PI);
+        break;
+      case "!":
+        image(shapeExclamationmark, 0, -30);
+        translate(43, -18);
+        rotate(-QUARTER_PI);
+        break;
+      case "?":
+        image(shapeQuestionmark, 0, -30);
+        translate(43, -18);
+        rotate(-QUARTER_PI);
+        break;
+      case "\n":
+        // start a new line at a random position near the center
+        rect(0, -25, 10, 35);
+        pop();
+        push();
+        translate(random(-300, 300), random(-300, 300));
+        rotate(floor(random(8))*QUARTER_PI);
+        actColorIndex = actColorIndex + 1;
+        fill(palette[actColorIndex][0], palette[actColorIndex][1], palette[actColorIndex][2]);
+        rect(0, -25, 10, 35);
+        break;
+      case "o": // Station big
+        rect(0, -15, letterWidth+1, 15);
+        push();
+        fill(0);
+        var station = textTyped.substring(i - 10, i - 1);
+        station = station.toLowerCase();
+        station = station.replace(/\s+/g, '');
+        station = station.substring(0, 1).toUpperCase() + station.substring(1, station.length - 1);
+        text(station, -10, 40);
+        ellipse(-5, -7, 33, 33);
+        fill(255);
+        ellipse(-5, -7, 25, 25);
+        pop();
+        translate(letterWidth, 0);
+        break;
+      case "a": // Station small left
+        rect(0, 0 - 15, letterWidth + 1, 25);
+        rect(0, 0 - 15, letterWidth + 1, 15);
+        translate(letterWidth, 0);
+        break;
+      case "u":  // Station small right
+        rect(0, 0 - 25, letterWidth + 1, 25);
+        rect(0, 0 - 15, letterWidth + 1, 15);
+        translate(letterWidth, 0);
+        break;
+      case ':': // icon
+        image(icon1, 0, -60, 30, 30);
+        break;
+      case '+': // icon
+        image(icon2, 0, -60, 35, 30);
+        break;
+      case '-': // icon
+        image(icon3, 0, -60, 30, 30);
+        break;
+      case 'x': // icon
+        image(icon4, 0, -60, 30, 30);
+        break;
+      case 'z': // icon
+        image(icon5, 0, -60, 30, 30);
+        break;
+      default: // all others
+        rect(0, -15, letterWidth + 1, 15);
+        translate(letterWidth, 0);
+    }
+  }
 
-		    case "o": // Station big
-		    	rect(0, -15, letterWidth+1, 15);
-		    	push();
-		    	fill(0);
-		    	var station = textTyped.substring(i-10, i-1);
-		    	station = station.toLowerCase();
-		    	station = station.replace(" ", "");
-		    	station = station.substring(0, 1).toUpperCase() + station.substring(1, station.length -1)
-		    	text(station, -10, 40);
+  // blink cursor after text
+  fill(200, 30, 40);
+  if (frameCount / 6 % 2 === 0) rect(0, 0, 15, 2);
 
-		    	ellipse(-5, -7, 33, 33);
-		    	fill(255);
-		    	ellipse(-5, -7, 25, 25);
-		    	pop();
-		    	translate(letterWidth, 0);
-			break;
-
-			case "a": // Station small left
-				rect(0,0-15,letterWidth+1,25);
-			    rect(0,0-15,letterWidth+1,15);
-			    translate(letterWidth, 0);
-			break;
-
-			case "u":  // Station small right
-		     	rect(0,0-25,letterWidth+1,25);
-		      	rect(0,0-15,letterWidth+1,15);
-		      	translate(letterWidth, 0);
-		     break;
-
-		     case ':': // icon
-		      	image(icon1,0,-60,30,30);
-		     break;
-
-		    case '+': // icon
-		      	image(icon2,0,-60,35,30); 
-		    break;
-
-		    case '-': // icon
-		      	image(icon3,0,-60,30,30);
-		    break;
-
-		    case 'x': // icon
-		      	image(icon4,0,-60,30,30);
-		    break;
-
-		    case 'z': // icon
-		      	image(icon5,0,-60,30,30);
-		    break;
-
-		    default: // all others
-		      	//text(letter, 0, 0);
-
-		      	rect(0,0-15,letterWidth+1,15);
-		      	translate(letterWidth, 0);
-		      	//  rotate(-0.05);
-    	}
-	}
-
-	// blink cursor after text
- 	fill(200, 30, 40);
- 	if (frameCount / 6 % 2 == 0) rect(0, 0, 15, 2);
-
-	pop();	
+  pop();
 }
 
 function mousePressed() {
@@ -264,34 +241,31 @@ function keyReleased() {
 }
 
 function keyPressed() {
-  	switch(keyCode){
-  		case DELETE:
-  		case BACKSPACE:
-  			textTyped = textTyped.substring(0,max(0,textTyped.length-1));
-  		break;
-  		case TAB:
-  		break;
-  		case ENTER:
-  		case RETURN:
-  			textTyped += "\n";
-  		break;
-  		
-  		default:
-  			textTyped = textTyped+ keyCode;
-  	}
-  
-
-  if (keyCode == UP_ARROW) {
-  	zoom = zoom + 0.05;
+  switch (keyCode) {
+    case DELETE:
+    case BACKSPACE:
+      textTyped = textTyped.substring(0, textTyped.length - 1);
+      print(textTyped);
+      break;
+    case TAB:
+    case ESCAPE:
+      break;
+    case ENTER:
+    case RETURN:
+      textTyped += "\n";
+      break;
+    case UP_ARROW:
+      zoom += 0.05;
+      break;
+    case DOWN_ARROW:
+      zoom -= 0.05;
+      break;
   }
-  if (keyCode == DOWN_ARROW) {
-  	zoom = zoom - 0.05;
-  }
-  
 }
 
 function keyTyped(){
-  if(keyCode >= 32){
+  if (keyCode >= 32) {
     textTyped += key;
+    print(textTyped);
   }
 }

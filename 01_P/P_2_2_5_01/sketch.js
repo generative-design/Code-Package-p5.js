@@ -28,95 +28,78 @@
  */
 'use strict';
 
-var maxCount = 5000; // max number of circles
-var currentCount = 1;
-var x = [];
-var y = [];
-var r = [];
-var closestIndex = [];
+var circles = [];
 
 var minRadius = 3;
 var maxRadius = 50;
 
 // for mouse and up/down-arrow interaction
-var mouseRect = 30;
+var mouseRect = 15;
 
 function setup() {
   createCanvas(800,800);
   noFill();
   cursor(CROSS);
-
-  // first circle
-  x[0] = 200;
-  y[0] = 100;
-  r[0] = 50;
-  closestIndex[0] = 0;
+  ellipseMode(RADIUS);
+  rectMode(RADIUS);
 }
 
 function draw() {
   background(255);
 
+  // Choose a random or the current mouse position
+  var newX = random(maxRadius, width - maxRadius);
+  var newY = random(maxRadius, height - maxRadius);
   if (mouseIsPressed) {
-    // create a random position according to mouse position
-    newX = random(mouseX - mouseRect / 2,mouseX + mouseRect / 2);
-    newY = random(mouseY - mouseRect / 2,mouseY + mouseRect / 2);
-    newR = 1;
-  } else {
-    // create random position
-    var newX = random(maxRadius,width - maxRadius);
-    var newY = random(maxRadius,height - maxRadius);
-    var newR = minRadius;
+    newX = random(mouseX - mouseRect, mouseX + mouseRect);
+    newY = random(mouseY - mouseRect, mouseY + mouseRect);
   }
 
-  var intersection = false;
-
-  // find out if new circle intersects with one of the others
-  for (var i = 0; i < currentCount; i++) {
-    if (dist(newX,newY,x[i],y[i]) < newR + r[i]) {
-      intersection = true;
+  // Try to fit the largest possible circle at the current location without overlapping
+  for (var newR = maxRadius; newR >= minRadius; newR--) {
+    var intersection = circles.some(function(circle) {
+      return dist(newX, newY, circle.x, circle.y) < circle.r + newR;
+    });
+    if (!intersection) {
+      circles.push(new Circle(newX, newY, newR));
       break;
     }
   }
 
-  // if no intersection, add a new circle
-  if (!intersection) {
-    // get closest neighbour and closest possible radius
-    var newRadius = width;
-    for (var i = 0; i < currentCount; i++) {
-      var d = dist(newX,newY, x[i],y[i]);
-      if (newRadius > d - r[i]) {
-        newRadius = d - r[i];
-        closestIndex[currentCount] = i;
-      }
+  // Draw all circles
+  circles.forEach(function(circle) {
+    // Try to find an adjacent circle to the current one and draw a connecting line between the two
+    var closestCircle = circles.filter(function(otherCircle) {
+      return dist(circle.x, circle.y, otherCircle.x, otherCircle.y) <= circle.r + otherCircle.r + 1;
+    })[0];
+    if (closestCircle) {
+      stroke(100, 230, 100);
+      strokeWeight(0.75);
+      line(circle.x, circle.y, closestCircle.x, closestCircle.y);
     }
 
-    if (newRadius > maxRadius) newRadius = maxRadius;
-
-    x[currentCount] = newX;
-    y[currentCount] = newY;
-    r[currentCount] = newRadius;
-    currentCount++;
-  }
-
-  // draw circles
-  for (var i = 0; i < currentCount; i++) {
+    // Draw the circle itself.
     stroke(0);
     strokeWeight(1.5);
-    ellipse(x[i],y[i],r[i] * 2,r[i] * 2);
-    stroke(226,185,0);
-    strokeWeight(0.75);
-    line(x[i],y[i], x[closestIndex[i]],y[closestIndex[i]]);
-  }
+    circle.draw();
+  });
 
-  // visualise the random range of the new positions
+  // Visualise the random range of the current mouse position
   if (mouseIsPressed) {
-    stroke(255,200,0);
+    stroke(100, 230, 100);
     strokeWeight(2);
-    rect(mouseX - mouseRect / 2,mouseY - mouseRect / 2,mouseRect,mouseRect);
+    rect(mouseX, mouseY, mouseRect, mouseRect);
   }
+}
 
-  if (currentCount >= maxCount) noLoop();
+function Circle(x, y, r) {
+  this.x = x;
+  this.y = y;
+  this.r = r;
 
+  Circle.prototype.draw = function() {
+    ellipse(this.x, this.y, this.r);
+  }
 }
 
 function keyPressed() {
