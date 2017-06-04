@@ -1,8 +1,7 @@
+// P_pendulum_1
 /**
- * P_pendulum_1
- *
  * Drawing tool that moves a pendulum-esq contraption along paths drawn by the mouse.
- * Each joint of the pendulum leaves behind its own path.
+ * Each joint of the pendulum leaves behind its own trail.
  *
  * CREDITS
  * Niels Poldervaart
@@ -14,6 +13,10 @@
  * 1                   : toggle path line
  * 2                   : toggle pendulum
  * 3                   : toggle pendulum path
+ * arrow up            : increase amplitude
+ * arrow down          : decrease amplitude
+ * arrow left          : decrease speed
+ * arrow right         : increase speed
  * s                   : save png
  */
 "use strict";
@@ -33,7 +36,7 @@ var showPendulumPath = true;
 
 function setup() {
   createCanvas(windowWidth, windowHeight);
-  colorMode(HSB);
+  colorMode(HSB, 360, 100, 100, 100);
   noFill();
   strokeWeight(1);
   background(220);
@@ -54,12 +57,16 @@ function draw() {
   }
 }
 
-function Shape() {
+function Shape(amplitude, speed, resolution, joints) {
   this.shapePath = [];
   this.pendulumPath = [];
   this.iterator = 0;
+  this.amplitude = amplitude;
+  this.speed = speed;
+  this.resolution = resolution;
+  this.joints = joints;
 
-  for (var i = 0; i < joints; i++) {
+  for (var i = 0; i < this.joints; i++) {
     this.pendulumPath.push([]);
   }
 
@@ -70,7 +77,7 @@ function Shape() {
 
   Shape.prototype.draw = function() {
     strokeWeight(0.8);
-    stroke(62, 19, 80);
+    stroke(0, 10);
 
     if (showPath) {
       beginShape();
@@ -86,16 +93,19 @@ function Shape() {
     var previousPos = this.shapePath[currentIndex - 1];
     if (previousPos) {
       var offsetPosA = p5.Vector.lerp(previousPos, currentPos, this.iterator - currentIndex);
-      for (var i = 0; i < joints; i++) {
+      for (var i = 0; i < this.joints; i++) {
         var offsetPosB = p5.Vector.fromAngle(
           (PI / (i + 1)) +
           this.iterator /
-          pow(-2, joints - i) * speed
+          pow(-2, this.joints - i) * this.speed
         );
-        offsetPosB.setMag((amplitude / joints) * (joints - i));
+        offsetPosB.setMag((this.amplitude / this.joints) * (this.joints - i));
         offsetPosB.add(offsetPosA);
 
         if (showPendulum) {
+          fill(0, 10);
+          ellipse(offsetPosA.x, offsetPosA.y, 4, 4);
+          noFill();
           line(offsetPosA.x, offsetPosA.y, offsetPosB.x, offsetPosB.y);
         }
 
@@ -105,32 +115,27 @@ function Shape() {
       }
 
       if (showPendulumPath) {
+        strokeWeight(1.6);
         this.pendulumPath.forEach(function(path, index) {
           beginShape();
-          stroke(map(index, 0, joints, 0, 360), 60, 80);
+          stroke(360 / this.joints * index, 80, 60, 50);
           path.forEach(function(pos) {
             curveVertex(pos.x, pos.y);
           });
           endShape();
-        });
+        }.bind(this));
       }
     }
   };
 
   Shape.prototype.update = function() {
-    this.iterator += resolution;
-    if (this.iterator >= this.shapePath.length - 1) {
-      this.iterator = 0;
-      this.pendulumPath = [];
-      for (var i = 0; i < joints; i++) {
-        this.pendulumPath.push([]);
-      }
-    }
+    this.iterator += this.resolution;
+    this.iterator = constrain(this.iterator, 0, this.shapePath.length);
   };
 }
 
 function mousePressed() {
-  newShape = new Shape();
+  newShape = new Shape(amplitude, speed, resolution, joints);
   newShape.addPos(mouseX, mouseY);
 }
 
@@ -151,4 +156,9 @@ function keyPressed() {
   if (key == '1') showPath = !showPath;
   if (key == '2') showPendulum = !showPendulum;
   if (key == '3') showPendulumPath = !showPendulumPath;
+
+  if (keyCode == UP_ARROW) amplitude += 2;
+  if (keyCode == DOWN_ARROW) amplitude -= 2;
+  if (keyCode == LEFT_ARROW) speed--;
+  if (keyCode == RIGHT_ARROW) speed++;
 }

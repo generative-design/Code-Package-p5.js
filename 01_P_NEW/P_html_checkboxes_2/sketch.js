@@ -15,7 +15,7 @@ var slider;
 var cols = 30;
 var rows = 30;
 
-const myboxes = [];
+var myboxes = [];
 
 function preload(){
   video = createVideo('data/ball.mov');
@@ -46,30 +46,22 @@ function draw() {
   video.loadPixels();
   for (var y = 0; y < video.height; y++) {
     for (var x = 0; x < video.width; x++) {
-      var index = (x + (y * video.height))*4;
-      // var index = (video.width - x + 1 + (y * video.width))*4;
-      var r = video.pixels[index+0];
-      var g = video.pixels[index+1];
-      var b = video.pixels[index+2];
+      var index = (x + (y * video.height)) * 4;
+      var r = video.pixels[index];
+      var g = video.pixels[index + 1];
+      var b = video.pixels[index + 2];
 
-      var bright = (r+g+b)/3;
+      var bright = (r + g + b) / 3;
 
       var threshold = slider.value();
 
       var checkIndex = x + y * cols;
 
-      if(myboxes[checkIndex] == undefined){
-        break;
+      if (bright > threshold - 1) {
+        myboxes[checkIndex].checked(false);
+      } else {
+        myboxes[checkIndex].checked(true);
       }
-
-      if(myboxes){
-        if (bright > threshold) {
-          myboxes[checkIndex].checked(false);
-        } else {
-          myboxes[checkIndex].checked(true);
-        }
-      }
-
     }
   }
 }
