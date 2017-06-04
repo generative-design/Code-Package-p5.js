@@ -30,7 +30,7 @@
     "generative-design-library": "git@github.com:generative-design/generative-design-library.js.git#18e32cc0abd487845e46a335560e0061bb2970e7",
     "glob": "^7.1.1",
     "opentype.js": "^0.6.8",
-    "p5": "^0.5.7"
+    "p5": "^0.5.11"
   },
   "install": {
     "sources": {
