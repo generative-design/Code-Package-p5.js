@@ -1,4 +1,4 @@
-/*! p5.js v0.5.9 May 10, 2017 */
+/*! p5.js v0.5.11 June 01, 2017 */
 (function(f){if(typeof exports==="object"&&typeof module!=="undefined"){module.exports=f()}else if(typeof define==="function"&&define.amd){define([],f)}else{var g;if(typeof window!=="undefined"){g=window}else if(typeof global!=="undefined"){g=global}else if(typeof self!=="undefined"){g=self}else{g=this}g.p5 = f()}})(function(){var define,module,exports;return (function e(t,n,r){function s(o,u){if(!n[o]){if(!t[o]){var a=typeof require=="function"&&require;if(!u&&a)return a(o,!0);if(i)return i(o,!0);var f=new Error("Cannot find module '"+o+"'");throw f.code="MODULE_NOT_FOUND",f}var l=n[o]={exports:{}};t[o][0].call(l.exports,function(e){var n=t[o][1][e];return s(n?n:e)},l,l.exports,e,t,n,r)}return n[o].exports}var i=typeof require=="function"&&require;for(var o=0;o<r.length;o++)s(r[o]);return s})({1:[function(_dereq_,module,exports){
 
 },{}],2:[function(_dereq_,module,exports){
@@ -12460,7 +12460,11 @@ if (window.console && console.log) {
         console.log.apply(console, arguments);
       } else {
         var newArgs = JSON.parse(JSON.stringify(args));
-        console.log(newArgs);
+        if (JSON.stringify(newArgs)==='{}'){
+          console.log(args);
+        } else {
+          console.log(newArgs);
+        }
       }
     } catch(err) {
       console.log(args);
@@ -13449,7 +13453,7 @@ p5.Element.prototype.parent = function(p) {
  * @param  {String} [id] ID of the element
  * @return {p5.Element|String}
  * @example
- * <div><code class='norender'>
+ * <div class='norender'><code>
  * function setup() {
  *   var cnv = createCanvas(100, 100);
  *   // Assigns a CSS selector ID to
@@ -13535,9 +13539,7 @@ p5.Element.prototype.class = function(c) {
  */
 p5.Element.prototype.mousePressed = function (fxn) {
   attachListener('mousedown', fxn, this);
-  if (!window.PointerEvent) {
-    attachListener('touchstart', fxn, this);
-  }
+  attachListener('touchstart', fxn, this);
   return this;
 };
 
@@ -13652,9 +13654,7 @@ p5.Element.prototype.mouseWheel = function (fxn) {
  */
 p5.Element.prototype.mouseReleased = function (fxn) {
   attachListener('mouseup', fxn, this);
-  if (!window.PointerEvent) {
-    attachListener('touchend', fxn, this);
-  }
+  attachListener('touchend', fxn, this);
   return this;
 };
 
@@ -13669,9 +13669,12 @@ p5.Element.prototype.mouseReleased = function (fxn) {
  *                    clicked over the element.
  * @return {p5.Element}
  * @example
+ * <div class="norender">
+ * <code>
  * var cnv;
  * var d;
  * var g;
+ *
  * function setup() {
  *   cnv = createCanvas(100, 100);
  *   cnv.mouseClicked(changeGray); // attach listener for
@@ -13696,8 +13699,8 @@ p5.Element.prototype.mouseReleased = function (fxn) {
  * function changeGray() {
  *   g = random(0, 255);
  * }
- * </code></div>
- *
+ * </code>
+ * </div>
  *
  * @alt
  * no display.
@@ -13761,9 +13764,7 @@ p5.Element.prototype.mouseClicked = function (fxn) {
  */
 p5.Element.prototype.mouseMoved = function (fxn) {
   attachListener('mousemove', fxn, this);
-  if (!window.PointerEvent) {
-    attachListener('touchmove', fxn, this);
-  }
+  attachListener('touchmove', fxn, this);
   return this;
 };
 
@@ -13991,9 +13992,7 @@ p5.Element.prototype.mouseOut = function (fxn) {
  */
 p5.Element.prototype.touchStarted = function (fxn) {
   attachListener('touchstart', fxn, this);
-  if (!window.PointerEvent) {
-    attachListener('mousedown', fxn, this);
-  }
+  attachListener('mousedown', fxn, this);
   return this;
 };
 
@@ -14032,9 +14031,7 @@ p5.Element.prototype.touchStarted = function (fxn) {
  */
 p5.Element.prototype.touchMoved = function (fxn) {
   attachListener('touchmove', fxn, this);
-  if (!window.PointerEvent) {
-    attachListener('mousemove', fxn, this);
-  }
+  attachListener('mousemove', fxn, this);
   return this;
 };
 
@@ -14082,9 +14079,7 @@ p5.Element.prototype.touchMoved = function (fxn) {
  */
 p5.Element.prototype.touchEnded = function (fxn) {
   attachListener('touchend', fxn, this);
-  if (!window.PointerEvent) {
-    attachListener('mouseup', fxn, this);
-  }
+  attachListener('mouseup', fxn, this);
   return this;
 };
 
@@ -14267,20 +14262,20 @@ p5.Graphics = function(w, h, renderer, pInst) {
 
   var r = renderer || constants.P2D;
 
-  var c = document.createElement('canvas');
+  this.canvas = document.createElement('canvas');
   var node = this._userNode || document.body;
-  node.appendChild(c);
+  node.appendChild(this.canvas);
 
-  p5.Element.call(this, c, pInst, false);
+  p5.Element.call(this, this.canvas, pInst, false);
   this._styles = [];
   this.width = w;
   this.height = h;
   this._pixelDensity = pInst._pixelDensity;
 
   if (r === constants.WEBGL) {
-    this._renderer = new p5.RendererGL(c, this, false);
+    this._renderer = new p5.RendererGL(this.canvas, this, false);
   } else {
-    this._renderer = new p5.Renderer2D(c, this, false);
+    this._renderer = new p5.Renderer2D(this.canvas, this, false);
   }
 
   this._renderer.resize(w, h);
@@ -18950,7 +18945,6 @@ p5.prototype.mouseButton = 0;
  *
  */
 p5.prototype.mouseIsPressed = false;
-p5.prototype.isMousePressed = false; // both are supported
 
 p5.prototype._updateNextMouseCoords = function(e) {
   if(this._curElement !== null && (!e.touches || e.touches.length>0)) {
@@ -19096,7 +19090,7 @@ p5.prototype._onmousemove = function(e){
   var context = this._isGlobal ? window : this;
   var executeDefault;
   this._updateNextMouseCoords(e);
-  if (!this.isMousePressed) {
+  if (!this.mouseIsPressed) {
     if (typeof context.mouseMoved === 'function') {
       executeDefault = context.mouseMoved(e);
       if(executeDefault === false) {
@@ -19110,7 +19104,7 @@ p5.prototype._onmousemove = function(e){
       if(executeDefault === false) {
         e.preventDefault();
       }
-    } else if (!window.PointerEvent && typeof context.touchMoved === 'function') {
+    } else if (typeof context.touchMoved === 'function') {
       executeDefault = context.touchMoved(e);
       if(executeDefault === false) {
         e.preventDefault();
@@ -19169,7 +19163,6 @@ p5.prototype._onmousemove = function(e){
 p5.prototype._onmousedown = function(e) {
   var context = this._isGlobal ? window : this;
   var executeDefault;
-  this._setProperty('isMousePressed', true);
   this._setProperty('mouseIsPressed', true);
   this._setMouseButton(e);
   this._updateNextMouseCoords(e);
@@ -19178,7 +19171,7 @@ p5.prototype._onmousedown = function(e) {
     if(executeDefault === false) {
       e.preventDefault();
     }
-  } else if (!window.PointerEvent && typeof context.touchStarted === 'function') {
+  } else if (typeof context.touchStarted === 'function') {
     executeDefault = context.touchStarted(e);
     if(executeDefault === false) {
       e.preventDefault();
@@ -19236,14 +19229,13 @@ p5.prototype._onmousedown = function(e) {
 p5.prototype._onmouseup = function(e) {
   var context = this._isGlobal ? window : this;
   var executeDefault;
-  this._setProperty('isMousePressed', false);
   this._setProperty('mouseIsPressed', false);
   if (typeof context.mouseReleased === 'function') {
     executeDefault = context.mouseReleased(e);
     if(executeDefault === false) {
       e.preventDefault();
     }
-  } else if (!window.PointerEvent && typeof context.touchEnded === 'function') {
+  } else if (typeof context.touchEnded === 'function') {
     executeDefault = context.touchEnded(e);
     if(executeDefault === false) {
       e.preventDefault();
@@ -19257,6 +19249,9 @@ p5.prototype._ondragover = p5.prototype._onmousemove;
 /**
  * The mouseClicked() function is called once after a mouse button has been
  * pressed and then released.<br><br>
+ * Browsers handle clicks differently, so this function is only guaranteed to be
+ * run when the left mouse button is clicked. To handle other mouse buttons
+ * being pressed or released, see mousePressed() or mouseReleased().<br><br>
  * Browsers may have different default
  * behaviors attached to various mouse events. To prevent any default
  * behavior for this event, add "return false" to the end of the method.
@@ -19274,6 +19269,7 @@ p5.prototype._ondragover = p5.prototype._onmousemove;
  *   fill(value);
  *   rect(25, 25, 50, 50);
  * }
+ *
  * function mouseClicked() {
  *   if (value == 0) {
  *     value = 255;
@@ -19462,6 +19458,7 @@ function getTouchInfo(canvas, w, h, e, i) {
 p5.prototype._ontouchstart = function(e) {
   var context = this._isGlobal ? window : this;
   var executeDefault;
+  this._setProperty('mouseIsPressed', true);
   this._updateTouchCoords(e);
   this._updateNextMouseCoords(e);
   if(typeof context.touchStarted === 'function') {
@@ -19469,7 +19466,7 @@ p5.prototype._ontouchstart = function(e) {
     if(executeDefault === false) {
       e.preventDefault();
     }
-  } else if (!window.PointerEvent && typeof context.mousePressed === 'function') {
+  } else if (typeof context.mousePressed === 'function') {
     executeDefault = context.mousePressed(e);
     if(executeDefault === false) {
       e.preventDefault();
@@ -19531,7 +19528,7 @@ p5.prototype._ontouchmove = function(e) {
     if(executeDefault === false) {
       e.preventDefault();
     }
-  } else if (!window.PointerEvent && typeof context.mouseDragged === 'function') {
+  } else if (typeof context.mouseDragged === 'function') {
     executeDefault = context.mouseDragged(e);
     if(executeDefault === false) {
       e.preventDefault();
@@ -19585,11 +19582,9 @@ p5.prototype._ontouchmove = function(e) {
  *
  */
 p5.prototype._ontouchend = function(e) {
+  this._setProperty('mouseIsPressed', false);
   this._updateTouchCoords(e);
   this._updateNextMouseCoords(e);
-  if (this.touches.length === 0) {
-    this._setProperty('touchIsDown', false);
-  }
   var context = this._isGlobal ? window : this;
   var executeDefault;
   if (typeof context.touchEnded === 'function') {
@@ -19597,7 +19592,7 @@ p5.prototype._ontouchend = function(e) {
     if(executeDefault === false) {
       e.preventDefault();
     }
-  } else if (!window.PointerEvent && typeof context.mouseReleased === 'function') {
+  } else if (typeof context.mouseReleased === 'function') {
     executeDefault = context.mouseReleased(e);
     if(executeDefault === false) {
       e.preventDefault();
@@ -22526,11 +22521,14 @@ p5.prototype.loadFont = function (path, onSuccess, onError) {
  * operation before setup() and draw() are called.</p>
  *
  * <div><code>
- * var weather;
+ * // Examples use USGS Earthquake API:
+ * //   https://earthquake.usgs.gov/fdsnws/event/1/#methods
+ * var earthquakes;
  * function preload() {
- *   var url = 'http://api.openweathermap.org/data/2.5/weather?q=London,UK'+
- *    '&APPID=7bbbb47522848e8b9c26ba35c226c734';
- *   weather = loadJSON(url);
+ *   // Get the most recent earthquake in the database
+ *   var url = 'https://earthquake.usgs.gov/fdsnws/event/1/query?' +
+ *     'format=geojson&limit=1&orderby=time';
+ *   earthquakes = loadJSON(url);
  * }
  *
  * function setup() {
@@ -22539,10 +22537,12 @@ p5.prototype.loadFont = function (path, onSuccess, onError) {
  *
  * function draw() {
  *   background(200);
- *   // get the humidity value out of the loaded JSON
- *   var humidity = weather.main.humidity;
- *   fill(0, humidity); // use the humidity value to set the alpha
- *   ellipse(width/2, height/2, 50, 50);
+ *   // Get the magnitude and name of the earthquake out of the loaded JSON
+ *   var earthquakeMag = earthquakes.features[0].properties.mag;
+ *   var earthquakeName = earthquakes.features[0].properties.place;
+ *   ellipse(width/2, height/2, earthquakeMag * 10, earthquakeMag * 10);
+ *   textAlign(CENTER);
+ *   text(earthquakeName, 0, height - 30, width, 30);
  * }
  * </code></div>
  *
@@ -22552,20 +22552,22 @@ p5.prototype.loadFont = function (path, onSuccess, onError) {
  * <div><code>
  * function setup() {
  *   noLoop();
- *   var url = 'http://api.openweathermap.org/data/2.5/weather?q=NewYork'+
- *    '&APPID=7bbbb47522848e8b9c26ba35c226c734';
- *   loadJSON(url, drawWeather);
+ *   var url = 'https://earthquake.usgs.gov/fdsnws/event/1/query?' +
+ *     'format=geojson&limit=1&orderby=time';
+ *   loadJSON(url, drawEarthquake);
  * }
  *
  * function draw() {
  *   background(200);
  * }
  *
- * function drawWeather(weather) {
- *   // get the humidity value out of the loaded JSON
- *   var humidity = weather.main.humidity;
- *   fill(0, humidity); // use the humidity value to set the alpha
- *   ellipse(width/2, height/2, 50, 50);
+ * function drawEarthquake(earthquakes) {
+ *   // Get the magnitude and name of the earthquake out of the loaded JSON
+ *   var earthquakeMag = earthquakes.features[0].properties.mag;
+ *   var earthquakeName = earthquakes.features[0].properties.place;
+ *   ellipse(width/2, height/2, earthquakeMag * 10, earthquakeMag * 10);
+ *   textAlign(CENTER);
+ *   text(earthquakeName, 0, height - 30, width, 30);
  * }
  * </code></div>
  *
@@ -22805,16 +22807,21 @@ p5.prototype.loadTable = function (path) {
   var errorCallback = null;
   var options = [];
   var header = false;
+  var ext = path.substring(path.lastIndexOf('.')+1,path.length);
   var sep = ',';
   var separatorSet = false;
   var decrementPreload = p5._getDecrementPreload.apply(this, arguments);
+
+  if(ext === 'tsv'){ //Only need to check extension is tsv because csv is default
+    sep = '\t';
+  }
 
   for (var i = 1; i < arguments.length; i++) {
     if ((typeof (arguments[i]) === 'function') &&
       (arguments[i] !== decrementPreload)) {
       if(!callback){
         callback = arguments[i];
-      }else{
+      } else {
         errorCallback = arguments[i];
       }
     } else if (typeof (arguments[i]) === 'string') {
@@ -23196,7 +23203,7 @@ p5.prototype.httpDo = function () {
         type = 'text';
       }
     }
-  }else{
+  } else {
     // Provided with arguments
     var path = arguments[0];
     var method = 'GET';
@@ -23212,6 +23219,8 @@ p5.prototype.httpDo = function () {
         } else {
           data = a;
         }
+      } else if (typeof a === 'number') {
+        data = a.toString();
       } else if (typeof a === 'object') {
         if(a.hasOwnProperty('jsonpCallback')){
           for (var attr in a) {
@@ -27721,6 +27730,32 @@ p5.Vector.prototype.rotate = function (a) {
 };
 
 /**
+ * Calculates and returns the angle (in radians) between two vectors.
+ * @method angleBetween
+ * @param  {p5.Vector}    the x, y, and z components of a p5.Vector
+ * @return {Number}       the angle between (in radians)
+ * @example
+ * <div class="norender">
+ * <code>
+ * var v1 = createVector(1, 0, 0);
+ * var v2 = createVector(0, 1, 0);
+ *
+ * var angle = v1.angleBetween(v2);
+ * // angle is PI/2
+ * </code>
+ * </div>
+ */
+p5.Vector.prototype.angleBetween = function (v) {
+  var angle = Math.acos(this.dot(v) / (this.mag() * v.mag()));
+  if (this.p5) {
+    if (this.p5._angleMode === constants.DEGREES) {
+      angle = polarGeometry.radiansToDegrees(angle);
+    }
+  }
+  return angle;
+};
+
+/**
  * Linear interpolate the vector to another vector
  *
  * @method lerp
@@ -28104,34 +28139,6 @@ p5.Vector.lerp = function (v1, v2, amt, target) {
   }
   target.lerp(v2, amt);
   return target;
-};
-
-/**
- * Calculates and returns the angle (in radians) between two vectors.
- * @method angleBetween
- * @static
- * @param  {p5.Vector} v1 the x, y, and z components of a p5.Vector
- * @param  {p5.Vector} v2 the x, y, and z components of a p5.Vector
- * @return {Number}       the angle between (in radians)
- * @example
- * <div class="norender">
- * <code>
- * var v1 = createVector(1, 0, 0);
- * var v2 = createVector(0, 1, 0);
- *
- * var angle = p5.Vector.angleBetween(v1, v2);
- * // angle is PI/2
- * </code>
- * </div>
- */
-p5.Vector.angleBetween = function (v1, v2) {
-  var angle = Math.acos(v1.dot(v2) / (v1.mag() * v2.mag()));
-  if (this.p5) {
-    if (this.p5._angleMode === constants.DEGREES) {
-      angle = polarGeometry.radiansToDegrees(angle);
-    }
-  }
-  return angle;
 };
 
 /**
