@@ -4,6 +4,9 @@
  * KEYS
  * A-Z
  * CONTROL                  : save png
+ * 1                        : style 1
+ * 2                        : style 2
+ * 3                        : style 3
  */
 "use strict";
 
@@ -67,7 +70,7 @@ function draw() {
           var angle = -frameCount%360;
         }
 
-        rotate(radians(angle));
+
         fill(255);
         stroke(0);
         var rectSize = fontSize*0.1;
@@ -81,15 +84,18 @@ function draw() {
         var shiftY4 = mouseY/100 * random(-1, 1);
 
         if(style === 1){
+          rotate(radians(angle));
           point(0+shiftX1, 0+shiftY1);
           point(0+rectSize+shiftX2, 0+shiftY2);
           point(0+rectSize+shiftX3, 0+rectSize+shiftY3);
           point(0+shiftX4, 0+rectSize+shiftY4);
         }
         if(style === 2){
+          rotate(radians(0));
           line(0+shiftX2, 0+shiftY2, 0+rectSize+shiftX3, 0+rectSize+shiftY3)
         }
         if(style === 3){
+          rotate(radians(angle));
           beginShape();
           vertex(0+shiftX1, 0+shiftY1);
           vertex(0+rectSize+shiftX2, 0+shiftY2);
