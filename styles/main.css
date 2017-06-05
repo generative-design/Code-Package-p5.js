@@ -32,3 +32,7 @@ canvas {
   line-height: 17px;
   white-space: pre;
 }
+
+#help-content a {
+  color: black;
+}
