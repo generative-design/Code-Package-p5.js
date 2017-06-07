@@ -29,8 +29,9 @@
 // take care of the aspect ratio ... here 4:3
 var tileCountX = 12;
 var tileCountY = 16;
-var tileWidth, tileHeight;
-var imageCount = tileCountX*tileCountY;
+var tileWidth;
+var tileHeight;
+var imageCount = tileCountX * tileCountY;
 var currentImage = 0;
 var gridX = 0;
 var gridY = 0;
@@ -42,47 +43,50 @@ var moviePos;
 
 var videoLoaded = false;
 
-function setup() {
-  createCanvas(1024, 1024);
-  background(0);
-
+function preload() {
   // specify a path to load a video
-  var path = "data/video.mp4";
-  movie = createVideo(path);
-  movie.hide();
-  movie.volume(0);
-  movie.play();
-  movie.id("movie");
-  document.getElementById("movie").addEventListener("canplay", function(){ videoLoaded = true });
+  var path = 'data/video.mp4';
+  movie = createVideo( path );
+}
 
-  tileWidth = width / float(tileCountX);
-  tileHeight = height / float(tileCountY);
+function setup() {
+  createCanvas( 1024, 1024 );
+  background( 0 );
+  movie.hide();
+  movie.volume( 0 );
+  movie.play();
+  movie.id( 'movie' );
+  movie.elt.addEventListener( 'canplay', function(){ videoLoaded = true } );
+
+  tileWidth = width / float( tileCountX );
+  tileHeight = height / float( tileCountY );
+  console.log(movie);
 }
 
 function draw() {
-  if(videoLoaded){
-    posX = tileWidth*gridX;
-    posY = tileHeight*gridY;
+  if( videoLoaded ) {
+    posX = tileWidth * gridX;
+    posY = tileHeight * gridY;
 
     // calculate the current time in movieclip
-    moviePos = map(currentImage, 0, imageCount, 0, movie.duration());
-    movie.time(int(moviePos));
-    image(movie, posX, posY, tileWidth, tileHeight);
+    moviePos = map( currentImage, 0, imageCount, 0, movie.duration() );
+    movie.time( int( moviePos ) );
+    image( movie, posX, posY, tileWidth, tileHeight );
 
     videoLoaded = false;
 
     // new grid position
     gridX++;
-    if (gridX >= tileCountX) {
+    if ( gridX >= tileCountX ) {
       gridX = 0;
       gridY++;
     }
 
     currentImage++;
-    if (currentImage >= imageCount) noLoop();
+    if ( currentImage >= imageCount ) noLoop();
   }
 }
 
-function keyReleased(){
-  if (key == 's' || key == 'S') saveCanvas(gd.timestamp(), 'png');
+function keyReleased() {
+  if ( key == 's' || key == 'S' ) saveCanvas( gd.timestamp(), 'png' );
 }

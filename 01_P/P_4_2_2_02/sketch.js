@@ -26,7 +26,7 @@
 var cam;
 
 // intervalTime in sec. here 5 min
-var intervalTime = 5*60;
+var intervalTime = 5 * 60;
 
 var secondsSinceStart = 0;
 var startTime = gd.timestamp();
@@ -35,31 +35,31 @@ var doSave = true;
 var streamReady = false;
 
 function setup() {
-  createCanvas(640, 480);
-  cam = createCapture(VIDEO, function(){ streamReady = true });
+  createCanvas( 640, 480 );
+  cam = createCapture( VIDEO, function(){ streamReady = true } );
   cam.hide();
   noStroke();
 }
 
 function draw() {
-  if(streamReady) {
-    image(cam, 0, 0, width, width*cam.height/cam.width);
+  if( streamReady ) {
+    image( cam, 0, 0, width, width * cam.height / cam.width );
 
     secondsSinceStart = millis() / 1000;
-    var interval = int(secondsSinceStart % intervalTime);
+    var interval = int( secondsSinceStart % intervalTime );
 
-    if (interval == 0 && doSave == true) {
-      var saveFileName = startTime + '-' + nf(counter, 5, 0);
-      saveCanvas(saveFileName, 'png');
+    if ( interval == 0 && doSave == true ) {
+      var saveFileName = startTime + '-' + nf( counter, 5, 0 );
+      saveCanvas( saveFileName, 'png' );
       doSave = false;
       counter++;
     }
-    else if (interval != 0) {
+    else if ( interval != 0 ) {
       doSave = true;
     }
 
     // visualize the time to the next shot
-    fill(random(0,255),random(0,255),random(0,255));
-    rect(map(interval, 0, intervalTime, 0, width), 0, 5, 5);
+    fill( random( 0, 255 ), random( 0, 255 ), random( 0, 255 ) );
+    rect( map( interval, 0, intervalTime, 0, width ), 0, 5, 5 );
   }
 }
