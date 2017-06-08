@@ -17,7 +17,7 @@
 // limitations under the License.
 
 /**
- * simple overview of a video file.
+ * simple tabular overview of a video file.
  *
  * KEYS
  * s                  : save png
@@ -37,56 +37,46 @@ var gridX = 0;
 var gridY = 0;
 
 var movie;
-var posX;
-var posY;
-var moviePos;
-
-var videoLoaded = false;
 
 function preload() {
-  // specify a path to load a video
-  var path = 'data/video.mp4';
-  movie = createVideo( path );
+  movie = createVideo('data/video.mp4');
+  movie.hide();
 }
 
 function setup() {
-  createCanvas( 1024, 1024 );
-  background( 0 );
-  movie.hide();
-  movie.volume( 0 );
-  movie.play();
-  movie.id( 'movie' );
-  movie.elt.addEventListener( 'canplay', function(){ videoLoaded = true } );
+  createCanvas(1024, 1024);
+  background(0);
 
-  tileWidth = width / float( tileCountX );
-  tileHeight = height / float( tileCountY );
-  console.log(movie);
+  tileWidth = width / tileCountX;
+  tileHeight = height / tileCountY;
+  print(movie.width +' x '+ movie.height);
 }
 
 function draw() {
-  if( videoLoaded ) {
-    posX = tileWidth * gridX;
-    posY = tileHeight * gridY;
+  if(movie.elt.readyState === 4) {
+    var posX = tileWidth * gridX;
+    var posY = tileHeight * gridY;
 
-    // calculate the current time in movieclip
-    moviePos = map( currentImage, 0, imageCount, 0, movie.duration() );
-    movie.time( int( moviePos ) );
-    image( movie, posX, posY, tileWidth, tileHeight );
+    // draw video
+    image(movie, posX, posY, tileWidth, tileHeight);
 
-    videoLoaded = false;
+    // seek the video to next time
+    var nextTime = map(currentImage, 0, imageCount, 0, movie.duration());
+    print('seek to: ' + movie.time());
+    movie.time(nextTime);
 
     // new grid position
     gridX++;
-    if ( gridX >= tileCountX ) {
+    if (gridX >= tileCountX) {
       gridX = 0;
       gridY++;
     }
 
     currentImage++;
-    if ( currentImage >= imageCount ) noLoop();
+    if (currentImage >= imageCount) noLoop();
   }
 }
 
 function keyReleased() {
-  if ( key == 's' || key == 'S' ) saveCanvas( gd.timestamp(), 'png' );
+  if (key == 's' || key == 'S') saveCanvas(gd.timestamp(), 'png');
 }
