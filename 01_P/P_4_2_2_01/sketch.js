@@ -39,7 +39,7 @@ var gridY = 0;
 var movie;
 
 function preload() {
-  movie = createVideo('data/video.mp4');
+  movie = createVideo(['data/video.mp4', 'data/video.ogg']);
   movie.hide();
 }
 
