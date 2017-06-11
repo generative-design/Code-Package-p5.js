@@ -27,10 +27,15 @@
     return dir[dir.length-2];
   }
 
+  function linkMarkdown2Html(text) {
+    // replace [link text](http://example.com) with ahref link
+    return String(text).replace(/\[([^\]]*)\]\(([^(]*)\)/, '<a href="$2">$1</a>');
+  }
+
   function createHelp(helpText) {
     var text = helpText.split('\n');
-    var lines = text.map(function (s) {
-      return s.trim();
+    var lines = text.map(function (l) {
+      return linkMarkdown2Html(l).trim();
     });
 
     var htmlString = [
@@ -49,7 +54,8 @@
       animation: 'fade',
       animationDuration: 100,
       distance: '10',
-      trigger: 'click'
+      trigger: 'click',
+      interactive: true
     });
   }
 
