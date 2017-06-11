@@ -1,4 +1,4 @@
-// P_2_1_1_04.js
+// P_2_1_1_04
 //
 // Generative Gestaltung, ISBN: 978-3-87439-759-9
 // First Edition, Hermann Schmidt, Mainz, 2009
@@ -26,12 +26,12 @@
  * 1-7                 : choose shapes
  * arrow up/down       : scale of shapes
  * arrow left/right    : additional rotation of shapes
- * d                   : toggle. size depending on distance
- * g                   : toggle. grid resolution
+ * d                   : toggle size depending on distance
+ * g                   : toggle grid resolution
  * s                   : save png
  */
-
 'use strict';
+
 var currentShape;
 var shapes = [];
 
