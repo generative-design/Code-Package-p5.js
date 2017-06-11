@@ -1,12 +1,14 @@
 /**
  * Animated type fade away on each character
  *
+ * MOUSE
+ * position x/y             : affect randomness
+ *
  * KEYS
- * A-Z
+ * A-Z                      : type letters
+ * 1-5                      : toggle through type styles
  * CONTROL                  : save png
- * 1                        : style 1
- * 2                        : style 2
- * 3                        : style 3
+ *
  */
 "use strict";
 
