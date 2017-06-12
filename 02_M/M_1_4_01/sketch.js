@@ -1,5 +1,4 @@
-// M_1_4_01.pde
-// TileSaver.pde
+// M_1_4_01
 //
 // Generative Gestaltung, ISBN: 978-3-87439-759-9
 // First Edition, Hermann Schmidt, Mainz, 2009
@@ -34,8 +33,6 @@
  * +                          : zoom in
  * -                          : zoom out
  * s                          : save png
- * p                          : high resolution export (please update to processing 1.0.8 or
- *                              later. otherwise this will not work properly)
  */
 
 
@@ -74,9 +71,6 @@ var qualityFactor;
 // TileSaver tiler;
 var showStroke;
 
-
-
-
 function setup() {
   createCanvas(600, 600, WEBGL);
   colorMode(HSB, 360, 100, 100);
@@ -108,9 +102,8 @@ function setup() {
   zoom = -300;
   rotationX = 0;
   rotationZ = 0;
-  targetRotationX = -PI/3
+  targetRotationX = -PI/3;
   targetRotationZ = 0;
-
 
   // ------ image output ------
   qualityFactor = 4;
@@ -122,9 +115,6 @@ function setup() {
 
 
 function draw() {
-  // if (tiler==null) return;
-  // tiler.pre();
-
   if (showStroke){
     stroke(strokeColor);
   }
@@ -150,7 +140,6 @@ function draw() {
   rotateX(-rotationX);
   rotateZ(-rotationZ);
 
-
   // ------ mesh noise ------
   if (mouseIsPressed && mouseButton==LEFT) {
     noiseXRange = mouseX/10;
@@ -162,7 +151,6 @@ function draw() {
 
   var tileSizeY = height/tileCount;
   var noiseStepY = noiseYRange/tileCount;
-
 
   for (var meshY=0; meshY<=tileCount; meshY++) {
     beginShape(TRIANGLE_STRIP);
@@ -179,12 +167,13 @@ function draw() {
       noiseYMax = max(noiseYMax, z1);
       var interColor;
       colorMode(RGB);
+      var amount;
       if (z1 <= threshold) {
-        var amount = map(z1, 0, threshold, 0.15, 1);
+        amount = map(z1, 0, threshold, 0.15, 1);
         interColor = lerpColor(bottomColor, midColor, amount);
       }
       else {
-        var amount = map(z1, threshold, noiseYMax, 0, 1);
+        amount = map(z1, threshold, noiseYMax, 0, 1);
         interColor = lerpColor(midColor, topColor, amount);
       }
       colorMode(HSB, 360, 100, 100);
@@ -198,7 +187,7 @@ function draw() {
     endShape();
   }
   pop();
-  // tiler.post();
+
 }
 
 function mousePressed() {
@@ -224,12 +213,6 @@ function keyPressed() {
 
 function keyReleased() {
   if (key == 's' || key == 'S') saveCanvas(gd.timestamp(), 'png');
-  // if (key == 'p' || key == 'P') tiler.init(timestamp()+".png", qualityFactor);
   if (key == 'l' || key == 'L') showStroke = !showStroke;
   if (key == ' ') noiseSeed( floor(random(100000)));
 }
-
-function timestamp() {
-  return String.format("%1$ty%1$tm%1$td_%1$tH%1$tM%1$tS", Calendar.getInstance());
-}
-
