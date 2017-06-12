@@ -31,6 +31,7 @@ canvas {
   font-weight: 400;
   line-height: 17px;
   white-space: pre;
+  z-index: 10;
 }
 
 #help-content a {
