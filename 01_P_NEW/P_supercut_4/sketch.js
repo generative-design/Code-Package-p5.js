@@ -1,10 +1,10 @@
 // P_supercut_4
 /**
  * Play the movie normally and increase playback speed every time when something matching
- * the search query (either a string or a Regular Expression) is encounterd .
+ * the search query (either a string or a Regular Expression) is encounterd.
  *
- * CREDITS
- * Niels Poldervaart
+ * CONTRIBUTED BY
+ * [Niels Poldervaart](http://NielsPoldervaart.nl)
  */
 "use strict";
 

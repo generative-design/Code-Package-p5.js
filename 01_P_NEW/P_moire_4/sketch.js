@@ -2,14 +2,14 @@
 /**
  * Stacked circles in front of each other to create a moire effect.
  *
- * CREDITS
- * Niels Poldervaart
- *
  * MOUSE
  * mouseX              : overlay circle moire pattern
  *
  * KEYS
  * s                   : save png
+ *
+ * CONTRIBUTED BY
+ * [Niels Poldervaart](http://NielsPoldervaart.nl)
  */
 "use strict";
 

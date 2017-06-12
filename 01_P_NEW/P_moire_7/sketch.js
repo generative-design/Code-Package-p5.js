@@ -3,9 +3,6 @@
  * Drawing tool for creating moire effect compositions using
  * smooth path of any length, width, smoothness and colour.
  *
- * CREDITS
- * Niels Poldervaart
- *
  * MOUSE
  * mouse               : click and drag to draw moire pattern path
  *
@@ -19,6 +16,9 @@
  * arrow up            : increase rectangle width
  * arrow down          : decrease rectangle width
  * s                   : save png
+ *
+ * CONTRIBUTED BY
+ * [Niels Poldervaart](http://NielsPoldervaart.nl)
  */
 "use strict";
 

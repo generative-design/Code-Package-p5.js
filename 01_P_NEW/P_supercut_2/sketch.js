@@ -2,8 +2,8 @@
 /**
  * Create montage of video with a search query for Part Of Speech.
  *
- * CREDITS
- * Niels Poldervaart
+ * CONTRIBUTED BY
+ * [Niels Poldervaart](http://NielsPoldervaart.nl)
  */
 "use strict";
 

@@ -3,9 +3,6 @@
  * Drawing tool that moves a pendulum-esq contraption along paths drawn by the mouse.
  * Each joint of the pendulum leaves behind its own trail.
  *
- * CREDITS
- * Niels Poldervaart
- *
  * MOUSE
  * mouse               : click and drag to create a path to draw a pendulum along with
  *
@@ -18,6 +15,9 @@
  * arrow left          : decrease speed
  * arrow right         : increase speed
  * s                   : save png
+ *
+ * CONTRIBUTED BY
+ * [Niels Poldervaart](http://NielsPoldervaart.nl)
  */
 "use strict";
 

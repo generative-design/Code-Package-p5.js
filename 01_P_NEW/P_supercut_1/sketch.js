@@ -2,8 +2,8 @@
 /**
  * Create montage of video with a search query consisting of a string or a Regular Expression.
  *
- * CREDITS
- * Niels Poldervaart
+ * CONTRIBUTED BY
+ * [Niels Poldervaart](http://NielsPoldervaart.nl)
  */
 "use strict";
 

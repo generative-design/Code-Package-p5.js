@@ -2,9 +2,6 @@
 /**
  * Simple drawing tool where mouse input gets mirrored over multiple axis
  *
- * CREDITS
- * Niels Poldervaart
- *
  * MOUSE
  * left click          : draw line
  * scroll wheel        : change stroke weight
@@ -15,6 +12,9 @@
  * 1                   : toggle vertical mirror
  * 2                   : toggle horizontal mirror
  * 3                   : toggle diagonal mirror
+ *
+ * CONTRIBUTED BY
+ * [Niels Poldervaart](http://NielsPoldervaart.nl)
 */
 "use strict";
 

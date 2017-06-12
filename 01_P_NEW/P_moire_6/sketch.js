@@ -3,9 +3,6 @@
  * Drawing tool for creating moire effect compositions using
  * rectangles of various widths, lengths, angles and colours.
  *
- * CREDITS
- * Niels Poldervaart
- *
  * MOUSE
  * mouse               : place moire effect rectangle
  *
@@ -17,6 +14,9 @@
  * arrow up            : increase rectangle width
  * arrow down          : decrease rectangle width
  * s                   : save png
+ *
+ * CONTRIBUTED BY
+ * [Niels Poldervaart](http://NielsPoldervaart.nl)
  */
 "use strict";
 

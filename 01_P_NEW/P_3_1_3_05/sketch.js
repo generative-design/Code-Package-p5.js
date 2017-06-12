@@ -3,10 +3,6 @@
  * analysing and sorting the words of a text by Part of Speech
  * connecting subsequent letters with lines.
  *
- * CREDITS
- * Niels Poldervaart
- * Adapted from P_3_1_3_04
- *
  * MOUSE
  * position x          : interpolate between normal text and sorted position
  *
@@ -18,6 +14,10 @@
  * 5                   : switch all letters on
  * a-z                 : switch letter on/off
  * ctrl                : save png
+ *
+ * CONTRIBUTED BY
+ * [Niels Poldervaart](http://NielsPoldervaart.nl)
+ * Adapted from P_3_1_3_04
  */
 'use strict';
 

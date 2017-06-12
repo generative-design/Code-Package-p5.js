@@ -2,9 +2,8 @@
 /**
  * Create montage of video with two root words to build limericks,
  *
- * CREDITS
- * Niels Poldervaart
- *
+ * CONTRIBUTED BY
+ * [Niels Poldervaart](http://NielsPoldervaart.nl)
  */
 "use strict";
 

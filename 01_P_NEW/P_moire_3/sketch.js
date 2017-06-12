@@ -3,15 +3,15 @@
  * Simple moire effect demonstration moving a rectangle of densely packed
  * lines in front of geometry drawn with similiar densely packed lines.
  *
- * CREDITS
- * Joey Lee
- * Niels Poldervaart
- *
  * MOUSE
  * mouseX              : shift horizontal position of overlay
  *
  * KEYS
  * s                   : save png
+ *
+ * CONTRIBUTED BY
+ * [Joey Lee](http://jk-lee.com)
+ * [Niels Poldervaart](http://NielsPoldervaart.nl)
  */
 "use strict";
 
