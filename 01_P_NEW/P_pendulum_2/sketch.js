@@ -25,7 +25,7 @@ var shapes = [];
 
 var newShape;
 
-var joints = 16;
+var joints = 11;
 var amplitude = 64;
 var speed = 16;
 var resolution = 0.1;
@@ -165,6 +165,10 @@ function Pendulum(size, hierarchy) {
     vertex(this.origin.x, this.origin.y);
     vertex(this.end.x, this.end.y);
     endShape();
+
+    fill(0, 20);
+    ellipse(this.end.x, this.end.y, 2, 2);
+    noFill();
 
     if (this.pendulumArm) {
       push();
