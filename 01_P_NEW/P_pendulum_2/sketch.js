@@ -28,7 +28,7 @@ var newShape;
 var joints = 12;
 var amplitude = 32;
 var resolution = 0.01;
-var gravity = 0.04;
+var gravity = 0.094;
 var damping = 0.998;
 
 var showPath = true;
@@ -104,6 +104,8 @@ function Shape() {
     }
 
     if (showPendulumPath) {
+      strokeWeight(1);
+      stroke(156, 80, 60, 50);
       beginShape();
       this.pendulumPath.forEach(function(pos) {
         curveVertex(pos.x, pos.y);
@@ -206,6 +208,6 @@ function keyPressed() {
 
   if (keyCode == UP_ARROW) amplitude += 2;
   if (keyCode == DOWN_ARROW) amplitude -= 2;
-  if (keyCode == LEFT_ARROW) gravity -= 0.01;
-  if (keyCode == RIGHT_ARROW) gravity += 0.01;
+  if (keyCode == LEFT_ARROW) gravity -= 0.001;
+  if (keyCode == RIGHT_ARROW) gravity += 0.001;
 }
