@@ -24,7 +24,6 @@
  * position x/y + right drag  : camera controls
  *
  * KEYS
- * l                          : toogle display strokes on/off
  * arrow up                   : noise falloff +
  * arrow down                 : noise falloff -
  * arrow left                 : noise octaves -
@@ -47,34 +46,29 @@ var octaves;
 var falloff;
 
 // ------ mesh coloring ------
-var midColor,
-    topColor,
-    bottomColor;
+var midColor;
+var topColor;
+var bottomColor;
 var strokeColor;
 var threshold;
 
 // ------ mouse interaction ------
-var offsetX,
-   offsetY,
-   clickX,
-   clickY,
-   zoom;
-var rotationX,
-   rotationZ,
-   targetRotationX,
-   targetRotationZ,
-   clickRotationX,
-   clickRotationZ;
+var offsetX;
+var offsetY;
+var clickX;
+var clickY;
+var zoom;
+var rotationX;
+var rotationZ;
+var targetRotationX;
+var targetRotationZ;
+var clickRotationX;
+var clickRotationZ;
 
-// ------ image output ------
-var qualityFactor;
-// TileSaver tiler;
-var showStroke;
 
 function setup() {
   createCanvas(600, 600, WEBGL);
   colorMode(HSB, 360, 100, 100);
-  // tiler = new TileSaver(this);
   cursor(CROSS);
 
    // ------ mesh ------
@@ -91,7 +85,7 @@ function setup() {
   topColor = color(0, 0, 100);
   midColor = color(191, 99, 63);
   bottomColor = color(0, 0, 0);
-  strokeColor = color(0, 0, 0);
+  strokeColor = color(180, 100, 100);
   threshold = 0.30;
 
   // ------ mouse interaction ------
@@ -102,46 +96,31 @@ function setup() {
   zoom = -300;
   rotationX = 0;
   rotationZ = 0;
-  targetRotationX = -PI/3;
+  targetRotationX = PI/3;
   targetRotationZ = 0;
-
-  // ------ image output ------
-  qualityFactor = 4;
-  // TileSaver tiler;
-  showStroke = true;
-
 }
 
-
-
 function draw() {
-  if (showStroke){
-    stroke(strokeColor);
-  }
-  else{
-    noStroke();
-  }
-
   background(0, 0, 100);
   ambientLight(150);
 
   // ------ set view ------
   push();
-  translate(width*0.05, height*0.05, zoom);
+  translate(width * 0.05, height * 0.05, zoom);
 
-  if (mouseIsPressed && mouseButton==RIGHT) {
-    offsetX = mouseX-clickX;
-    offsetY = mouseY-clickY;
+  if (mouseIsPressed && mouseButton == RIGHT) {
+    offsetX = mouseX - clickX;
+    offsetY = mouseY - clickY;
     targetRotationX = min(max(clickRotationX + offsetY/float(width) * TWO_PI, -HALF_PI), HALF_PI);
     targetRotationZ = clickRotationZ + offsetX/float(height) * TWO_PI;
   }
-  rotationX += (targetRotationX-rotationX)*0.25;
-  rotationZ += (targetRotationZ-rotationZ)*0.25;
+  rotationX += (targetRotationX - rotationX) * 0.25;
+  rotationZ += (targetRotationZ - rotationZ) * 0.25;
   rotateX(-rotationX);
   rotateZ(-rotationZ);
 
   // ------ mesh noise ------
-  if (mouseIsPressed && mouseButton==LEFT) {
+  if (mouseIsPressed && mouseButton == LEFT) {
     noiseXRange = mouseX/10;
     noiseYRange = mouseY/10;
   }
@@ -149,12 +128,12 @@ function draw() {
   noiseDetail(octaves, falloff);
   var noiseYMax = 0;
 
-  var tileSizeY = height/tileCount;
-  var noiseStepY = noiseYRange/tileCount;
+  var tileSizeY = height / tileCount;
+  var noiseStepY = noiseYRange / tileCount;
 
-  for (var meshY=0; meshY<=tileCount; meshY++) {
+  for (var meshY = 0; meshY <= tileCount; meshY++) {
     beginShape(TRIANGLE_STRIP);
-    for (var meshX=0; meshX<=tileCount; meshX++) {
+    for (var meshX = 0; meshX <= tileCount; meshX++) {
 
       var x = map(meshX, 0, tileCount, -width/2, width/2);
       var y = map(meshY, 0, tileCount, -height/2, height/2);
@@ -162,7 +141,7 @@ function draw() {
       var noiseX = map(meshX, 0, tileCount, 0, noiseXRange);
       var noiseY = map(meshY, 0, tileCount, 0, noiseYRange);
       var z1 = noise(noiseX, noiseY);
-      var z2 = noise(noiseX, noiseY+noiseStepY);
+      var z2 = noise(noiseX, noiseY + noiseStepY);
 
       noiseYMax = max(noiseYMax, z1);
       var interColor;
@@ -176,11 +155,9 @@ function draw() {
         amount = map(z1, threshold, noiseYMax, 0, 1);
         interColor = lerpColor(midColor, topColor, amount);
       }
-      colorMode(HSB, 360, 100, 100);
       fill(interColor);
-      // stroke() and strokeweight() not implemented in P5 OPENGL yet
-      strokeWeight(10);
-      stroke(0, 0, 0);
+      stroke(strokeColor);
+      strokeWeight(1);
       vertex(x, y, z1*zScale);
       vertex(x, y+tileSizeY, z2*zScale);
     }
@@ -197,7 +174,7 @@ function mousePressed() {
   clickRotationZ = rotationZ;
 }
 
-function keyPressed() {
+function keyReleased() {
   if (keyCode == UP_ARROW) falloff += 0.05;
   if (keyCode == DOWN_ARROW) falloff -= 0.05;
   if (falloff > 1.0) falloff = 1.0;
@@ -207,12 +184,9 @@ function keyPressed() {
   if (keyCode == RIGHT_ARROW) octaves++;
   if (octaves < 0) octaves = 0;
 
-  if (key == '+') zoom += 20;
-  if (key == '-') zoom -= 20;
-}
+  if (keyCode == 187) zoom += 20; // '+'
+  if (keyCode == 189) zoom -= 20; // '-'
 
-function keyReleased() {
   if (key == 's' || key == 'S') saveCanvas(gd.timestamp(), 'png');
-  if (key == 'l' || key == 'L') showStroke = !showStroke;
-  if (key == ' ') noiseSeed( floor(random(100000)));
+  if (key == ' ') noiseSeed(floor(random(100000)));
 }
