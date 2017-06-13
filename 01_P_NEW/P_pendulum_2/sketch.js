@@ -58,13 +58,14 @@ function draw() {
   }
 }
 
-function Shape() {
+function Shape(pendulumPathColor) {
   this.shapePath = [];
   this.iterator = 0;
   this.resolution = resolution;
   this.amplitude = amplitude;
   this.pendulum = new Pendulum(this.amplitude, joints);
   this.pendulumPath = [];
+  this.pendulumPathColor = pendulumPathColor;
 
   Shape.prototype.addPos = function(x, y) {
     var newPos = createVector(x, y);
@@ -105,7 +106,7 @@ function Shape() {
 
     if (showPendulumPath) {
       strokeWeight(1);
-      stroke(156, 80, 60, 50);
+      stroke(this.pendulumPathColor);
       beginShape();
       this.pendulumPath.forEach(function(pos) {
         vertex(pos.x, pos.y);
@@ -184,7 +185,7 @@ function Pendulum(size, hierarchy) {
 }
 
 function mousePressed() {
-  newShape = new Shape();
+  newShape = new Shape(color(random(360), 80, 60, 50));
   newShape.addPos(mouseX, mouseY);
 }
 
