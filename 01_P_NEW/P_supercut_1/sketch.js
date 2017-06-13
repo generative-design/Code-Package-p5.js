@@ -108,7 +108,7 @@ function generateMontage() {
   );
 
   if (searchResults.length) {
-    resizeCanvas(windowWidth, ceil(searchResults.length / 4) * video.size().height);
+    resizeCanvas(windowWidth, searchResults.length * video.size().height);
     queryResultMontage(searchResults, 0);
   }
 }
