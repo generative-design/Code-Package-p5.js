@@ -27,7 +27,7 @@ var newShape;
 
 var joints = 12;
 var amplitude = 32;
-var resolution = 0.01;
+var resolution = 0.04;
 var gravity = 0.094;
 var damping = 0.998;
 
