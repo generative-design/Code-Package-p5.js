@@ -27,16 +27,23 @@
 
 var maxCount = 5000; //max count of the cirlces
 var currentCount = 1;
-var newx = [maxCount];
-var newy = [maxCount];
-var x = [maxCount];
-var y = [maxCount];
-var r = [maxCount]; // radius
+var newx;
+var newy;
+var x;
+var y;
+var r;
 
 var drawGhosts = false;
 
 function setup() {
   createCanvas(800, 800);
+
+  newx = [maxCount];
+  newy = [maxCount];
+
+  x = [maxCount];
+  y = [maxCount];
+  r = [maxCount]; // radius
 
   // first circle
   x[0] = width/2;
@@ -67,7 +74,7 @@ function draw() {
     }
   }
 
-  // aline it to the closest circle outline
+  // align it to the closest circle outline
   var angle = atan2(newY-y[closestIndex], newX-x[closestIndex]);
 
   newx[currentCount] = newX;
