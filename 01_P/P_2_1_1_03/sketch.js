@@ -60,6 +60,7 @@ function draw() {
   background(colorWhite);
   randomSeed(actRandomSeed);
   strokeWeight(mouseX/15);
+  noFill();
 
   tileCount = mouseY/15;
 
@@ -69,15 +70,15 @@ function draw() {
       var posX = width/tileCount*gridX;
       var posY = height/tileCount*gridY;
 
-      if (transparentLeft == true) alphaLeft = gridY*2;
-      else alphaLeft = 0;
+      if (transparentLeft == true) alphaLeft = gridY*10;
+      else alphaLeft = 100;
 
-      colorLeft = color(colorLeft.getHue(), colorLeft.getSaturation(), colorLeft.getBrightness(), alphaLeft)
+      colorLeft = color(hue(colorLeft), saturation(colorLeft), brightness(colorLeft), alphaLeft)
 
       if (transparentRight == true) alphaRight = 100-gridY*10;
       else alphaRight = 100;
 
-      colorRight = color(colorRight.getHue(), colorRight.getSaturation(), colorRight.getBrightness(), alphaRight )
+      colorRight = color(hue(colorRight), saturation(colorRight), brightness(colorRight), alphaRight)
 
       var toggle = int(random(0,2));
 

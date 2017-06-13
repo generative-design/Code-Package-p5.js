@@ -26,12 +26,16 @@
 
 var maxCount = 5000; //max count of the cirlces
 var currentCount = 1;
-var x = [];
-var y = [];
-var r = []; // radius
+var x;
+var y;
+var r; // radius
 
 function setup() {
   createCanvas(600,600);
+
+  x = [];
+  y = [];
+  r = [];
 
   // first circle
   x[0] = width/2;
