@@ -108,7 +108,7 @@ function Shape() {
       stroke(156, 80, 60, 50);
       beginShape();
       this.pendulumPath.forEach(function(pos) {
-        curveVertex(pos.x, pos.y);
+        vertex(pos.x, pos.y);
       });
       endShape();
     }
