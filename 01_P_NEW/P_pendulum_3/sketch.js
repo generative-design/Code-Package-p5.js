@@ -75,16 +75,28 @@ function Shape(pendulumPathColor) {
   };
 
   Shape.prototype.draw = function() {
-      strokeWeight(0.8);
-      stroke(0, 10);
+    strokeWeight(0.8);
+    stroke(0, 10);
 
-      if (showPath) {
+    if (showPath) {
+      beginShape();
+      this.shapePath.forEach(function(pos) {
+        vertex(pos.x, pos.y);
+      });
+      endShape();
+    }
+
+    if (showPendulumPath && this.pendulumPath.length) {
+      strokeWeight(1);
+      stroke(this.pendulumPathColor);
+      this.pendulumPath[0].forEach(function(undefined, column) {
         beginShape();
-        this.shapePath.forEach(function(pos) {
-          vertex(pos.x, pos.y);
+        this.pendulumPath.forEach(function(pos) {
+          vertex(pos[column].x, pos[column].y);
         });
         endShape();
-      }
+      }.bind(this));
+    }
 
     if (this.iterator < this.shapePath.length) {
       var currentIndex = floor(this.iterator);
@@ -105,18 +117,6 @@ function Shape(pendulumPathColor) {
 
         this.pendulumPath.push(this.pendulum.getTrail(offsetPos));
       }
-    }
-
-    if (showPendulumPath && this.pendulumPath.length) {
-      strokeWeight(1);
-      stroke(this.pendulumPathColor);
-      this.pendulumPath[0].forEach(function(undefined, column) {
-        beginShape();
-        this.pendulumPath.forEach(function(pos) {
-          vertex(pos[column].x, pos[column].y);
-        });
-        endShape();
-      }.bind(this));
     }
   };
 
