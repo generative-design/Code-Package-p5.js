@@ -29,7 +29,7 @@ var joints = 5;
 var amplitude = 32;
 var resolution = 0.04;
 var gravity = 0.099;
-var damping = 0.999;
+var damping = 0.995;
 var maxArms = 2;
 var armSizeDeviation = 0.2;
 
@@ -93,10 +93,11 @@ function Shape(pendulumPathColor) {
       var previousPos = this.shapePath[currentIndex - 1];
       if (previousPos) {
         var offsetPos = p5.Vector.lerp(previousPos, currentPos, this.iterator - currentIndex);
+        var heading = atan2(currentPos.y - previousPos.y, currentPos.x - previousPos.x) - HALF_PI;
 
         push();
         translate(offsetPos.x, offsetPos.y);
-        this.pendulum.update();
+        this.pendulum.update(heading);
         if (showPendulum) {
           this.pendulum.draw();
         }
@@ -132,7 +133,7 @@ function Pendulum(size, hierarchy) {
   this.size = size;
   this.angle = random(TAU);
   this.origin = createVector(0, 0);
-  this.end = this.origin.copy().setMag(this.size);
+  this.end = createVector(0, 0);
   this.gravity = gravity;
   this.damping = damping;
   this.angularAcceleration = 0;
@@ -142,21 +143,22 @@ function Pendulum(size, hierarchy) {
     this.pendulumArms.push(new Pendulum(this.size / randomGaussian(1.5, armSizeDeviation), this.hierarchy));
   }
 
-  Pendulum.prototype.update = function() {
+  Pendulum.prototype.update = function(heading) {
     this.end.set(this.origin.x + this.size * sin(this.angle), this.origin.y + this.size * cos(this.angle));
 
-    this.angularAcceleration = (-this.gravity / this.size) * sin(this.angle);
+    this.angularAcceleration = (-this.gravity / this.size) * sin(this.angle + heading);
     this.angle += this.angularVelocity;
     this.angularVelocity += this.angularAcceleration;
     this.angularVelocity *= this.damping;
 
     this.pendulumArms.forEach(function(pendulumArm) {
-      pendulumArm.update();
+      pendulumArm.update(heading);
     });
   };
 
   Pendulum.prototype.getTrail = function(offset, pendulumTrailPaths) {
     pendulumTrailPaths = pendulumTrailPaths || [];
+
     offset = offset.copy().add(this.end);
 
     this.pendulumArms.forEach(function(pendulumArm) {
