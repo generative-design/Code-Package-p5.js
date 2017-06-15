@@ -1,15 +1,17 @@
 /**
- * Animated type using loadPixels() method to get font area
- *
- * MOUSE
- * position x/y             : affect randomness
- *
- * KEYS
- * A-Z                      : type letters
- * 1-4                      : toggle through type styles
- * CONTROL                  : save png
- *
- */
+* Animated type using loadPixels() method to get font area
+*
+* MOUSE
+* position x/y             : affect randomness
+*
+* KEYS
+* A-Z                      : type letters
+* 1-4                      : toggle through type styles
+* CONTROL                  : save png
+*
+* CONTRIBUTED BY
+* [Joey Lee](http://jk-lee.com)
+*/
 "use strict";
 
 var textTyped = "TYPE & CODE"

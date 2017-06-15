@@ -11,7 +11,13 @@
  * enter               : clear screen
  * space               : new random color
  * s                   : save png
-*/
+ *
+ * CONTRIBUTED BY
+ * [Joey Lee](http://jk-lee.com)
+ *
+ * INSPIRED BY
+ * [Dan Shiffman](http://shiffman.net/)
+ */
 
 'use strict';
 

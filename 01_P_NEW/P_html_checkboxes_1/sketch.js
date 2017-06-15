@@ -1,19 +1,26 @@
 /**
- * Use an image to check on/off a grid of checkboxes
- * Shout out to Dan Shiffman's checkbox mirror example
- * Image credits: Map tiles by Stamen Design, under CC BY 3.0. Data by OpenStreetMap, under ODbL.
- *
- * MOUSE
- * click               : click on the checkboxes
- *
- * KEYS
- * 1                   : load image shapes
- * 2                   : load image letters
- * 3                   : load image map
- *
- * SLIDER
- * drag                : drag the slider to adjust the image threshold
- */
+* Use an image to check on/off a grid of checkboxes
+* Shout out to Dan Shiffman's checkbox mirror example
+* Image credits: Map tiles by Stamen Design, under CC BY 3.0. Data by OpenStreetMap, under ODbL.
+*
+* MOUSE
+* click               : click on the checkboxes
+*
+* KEYS
+* 1                   : load image shapes
+* 2                   : load image letters
+* 3                   : load image map
+*
+* SLIDER
+* drag                : drag the slider to adjust the image threshold
+*
+* CONTRIBUTED BY
+* [Joey Lee](http://jk-lee.com)
+*
+* INSPIRED BY
+* [Dan Shiffman](http://shiffman.net/)
+*/
+
 "use strict";
 
 var selected = 1;

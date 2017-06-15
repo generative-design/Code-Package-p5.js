@@ -7,6 +7,9 @@
  *
  * KEYS
  * s                   : save png
+ *
+ * CONTRIBUTED BY
+ * [Joey Lee](http://jk-lee.com)
  */
 "use strict";
 

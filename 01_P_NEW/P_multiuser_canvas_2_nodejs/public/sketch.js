@@ -16,7 +16,13 @@
  * s                   : save png
  * a, A                : create a circle
  * b, B                : create a line
-*/
+ *
+ * CONTRIBUTED BY
+ * [Joey Lee](http://jk-lee.com)
+ *
+ * INSPIRED BY
+ * [Dan Shiffman](http://shiffman.net/)
+ */
 
 'use strict';
 

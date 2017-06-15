@@ -2,6 +2,12 @@
  * Sliders arranged in a pattern
  *
  * DRAG                  : move the sliders around
+ *
+ * CONTRIBUTED BY
+ * [Joey Lee](http://jk-lee.com)
+ *
+ * INSPIRED BY
+ * [Dan Shiffman](http://shiffman.net/)
  */
 "use strict";
 var w = 600;

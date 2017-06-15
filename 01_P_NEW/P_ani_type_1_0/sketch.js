@@ -12,7 +12,11 @@
  * 4                         : use squares for animation
  * 5                         : use ellipses for animation
  * left arrow                : remove the letter
+ *
+ * CONTRIBUTED BY
+ * [Joey Lee](http://jk-lee.com)
  */
+
 "use strict";
 
 var cursorLocation = {x:50, y:50};
