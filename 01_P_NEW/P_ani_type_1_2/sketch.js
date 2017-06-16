@@ -9,7 +9,10 @@
  * 1-5                      : toggle through type styles
  * CONTROL                  : save png
  *
+ * CONTRIBUTED BY
+ * [Joey Lee](http://jk-lee.com)
  */
+
 "use strict";
 
 var textTyped = "TYPE...!"

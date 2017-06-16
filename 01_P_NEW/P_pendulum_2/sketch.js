@@ -92,15 +92,17 @@ function Shape(pendulumPathColor) {
       if (previousPos) {
         var offsetPos = p5.Vector.lerp(previousPos, currentPos, this.iterator - currentIndex);
 
-        this.pendulumPath.push(this.pendulum.getTrail(offsetPos));
+        var heading = atan2(currentPos.y - previousPos.y, currentPos.x - previousPos.x) - HALF_PI;
 
         push();
         translate(offsetPos.x, offsetPos.y);
-        this.pendulum.update();
+        this.pendulum.update(heading);
         if (showPendulum) {
           this.pendulum.draw();
         }
         pop();
+
+        this.pendulumPath.push(this.pendulum.getTrail(offsetPos));
       }
     }
 
@@ -127,7 +129,7 @@ function Pendulum(size, hierarchy) {
   this.size = size;
   this.angle = random(TAU);
   this.origin = createVector(0, 0);
-  this.end = this.origin.copy().setMag(this.size);
+  this.end = createVector(0, 0);
   this.gravity = gravity;
   this.damping = damping;
   this.angularAcceleration = 0;
@@ -137,16 +139,16 @@ function Pendulum(size, hierarchy) {
     this.pendulumArm = new Pendulum(this.size / 1.5, this.hierarchy);
   }
 
-  Pendulum.prototype.update = function() {
+  Pendulum.prototype.update = function(heading) {
     this.end.set(this.origin.x + this.size * sin(this.angle), this.origin.y + this.size * cos(this.angle));
 
-    this.angularAcceleration = (-this.gravity / this.size) * sin(this.angle);
+    this.angularAcceleration = (-this.gravity / this.size) * sin(this.angle + heading);
     this.angle += this.angularVelocity;
     this.angularVelocity += this.angularAcceleration;
     this.angularVelocity *= this.damping;
 
     if (this.pendulumArm) {
-      this.pendulumArm.update();
+      this.pendulumArm.update(heading);
     }
   };
 

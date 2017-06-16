@@ -13,7 +13,13 @@
  * arrow up            : line size +
  * arrow down          : line size -
  * s                   : save png
-*/
+ *
+ * CONTRIBUTED BY
+ * [Joey Lee](http://jk-lee.com)
+ *
+ * INSPIRED BY
+ * [Dan Shiffman](http://shiffman.net/)
+ */
 
 'use strict';
 
