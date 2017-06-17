@@ -1,7 +1,8 @@
 // P_pendulum_4
 /**
  * Drawing tool that moves a branching pendulum contraption along paths drawn by the mouse.
- * The last joint of the pendulum leaves behind its own trail.
+ * The last joint of the pendulum leaves behind its own vertex, which is used to draw a
+ * shape on each iteration.
  *
  * MOUSE
  * mouse               : click and drag to create a path to draw a pendulum along with
