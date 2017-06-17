@@ -28,11 +28,11 @@ var newShape;
 
 var joints = 4;
 var amplitude = 64;
-var resolution = 0.08;
+var resolution = 0.2;
 var gravity = 0.099;
 var damping = 0.995;
 var maxArms = 3;
-var armSizeDeviation = 0.5;
+var armSizeDeviation = 0.25;
 
 var showPath = true;
 var showPendulum = true;
@@ -182,7 +182,7 @@ function Pendulum(size, hierarchy) {
     vertex(this.end.x, this.end.y);
     endShape();
 
-    fill(0, 4);
+    fill(0, 20);
     ellipse(this.end.x, this.end.y, 2, 2);
     noFill();
 
@@ -196,7 +196,7 @@ function Pendulum(size, hierarchy) {
 }
 
 function mousePressed() {
-  newShape = new Shape(color(random(360), 80, 60, 50));
+  newShape = new Shape(color(random(360), 80, 60, 10));
   newShape.addPos(mouseX, mouseY);
 }
 
