@@ -25,13 +25,13 @@ var shapes = [];
 
 var newShape;
 
-var joints = 5;
-var amplitude = 32;
-var resolution = 0.04;
+var joints = 4;
+var amplitude = 64;
+var resolution = 0.08;
 var gravity = 0.099;
 var damping = 0.995;
-var maxArms = 2;
-var armSizeDeviation = 0.2;
+var maxArms = 3;
+var armSizeDeviation = 0.5;
 
 var showPath = true;
 var showPendulum = true;
@@ -130,7 +130,7 @@ function Shape(pendulumPathColor) {
 
 function Pendulum(size, hierarchy) {
   this.hierarchy = hierarchy - 1;
-  this.armCount = floor(random(1, maxArms + 1));
+  this.armCount = floor(random(2, maxArms + 1));
   this.pendulumArms = [];
   this.size = size;
   this.angle = random(TAU);
@@ -181,7 +181,7 @@ function Pendulum(size, hierarchy) {
     vertex(this.end.x, this.end.y);
     endShape();
 
-    fill(0, 20);
+    fill(0, 4);
     ellipse(this.end.x, this.end.y, 2, 2);
     noFill();
 
