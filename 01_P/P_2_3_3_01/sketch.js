@@ -45,7 +45,6 @@ function setup() {
   // use full screen size
   createCanvas(displayWidth, displayHeight);
   background(255);
-  smooth();
   cursor(CROSS);
 
   x = mouseX;
@@ -58,13 +57,13 @@ function setup() {
 
 function draw() {
   if (mouseIsPressed) {
-    var d = dist(x,y, mouseX,mouseY);
-    textFont(font,fontSizeMin+d/2);
+    var d = dist(x, y, mouseX, mouseY);
+    textSize(fontSizeMin + d / 2);
     var newLetter = letters.charAt(counter);
     stepSize = textWidth(newLetter);
 
     if (d > stepSize) {
-      var angle = atan2(mouseY-y, mouseX-x);
+      var angle = atan2(mouseY - y, mouseX - x);
 
       push();
       translate(x, y);
@@ -73,7 +72,7 @@ function draw() {
       pop();
 
       counter++;
-      if (counter > letters.length-1) counter = 0;
+      if (counter >= letters.length) counter = 0;
 
       x = x + cos(angle) * stepSize;
       y = y + sin(angle) * stepSize;
