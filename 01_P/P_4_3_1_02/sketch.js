@@ -79,5 +79,4 @@ function draw(){
 
 function keyReleased(){
   if (key == 's' || key == 'S') saveCanvas(gd.timestamp(), 'png');
-  if (key == 'p' || key == 'P') savePDF = true;
 }
