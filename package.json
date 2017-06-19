@@ -23,7 +23,7 @@
     "url": "https://github.com/generative-design/Code-Package-p5.js/issues"
   },
   "homepage": "http://www.generative-gestaltung.de",
-  "devDependencies": {
+  "dependencies": {
     "budo": "^9.2.2",
     "fs-sync": "^1.0.4",
     "g.js": "^0.1.2",
@@ -31,9 +31,9 @@
     "glob": "^7.1.1",
     "opentype.js": "^0.6.8",
     "p5": "^0.5.11",
-    "gif.js": "^0.2.0",
-    "file-saver": "^1.3.3",
-    "rita": "^1.1.61"
+    "jquery": "^3.2.1",
+    "tooltipster": "^4.2.5",
+    "chroma-js": "^1.3.4"
   },
   "install": {
     "sources": {
@@ -58,20 +58,9 @@
       "jquery": [
         "node_modules/jquery/dist/jquery.js"
       ],
-      "gif.js": [
-        "node_modules/gif.js/dist/gif.js",
-        "node_modules/gif.js/dist/gif.worker.js"
-      ],
-      "filesaver": [
-        "node_modules/file-saver/FileSaver.js"
-      ],
-      "rita": [
-        "node_modules/rita/lib/rita-tiny.js"
+      "chroma-js": [
+        "node_modules/chroma-js/chroma.js"
       ]
     }
-  },
-  "dependencies": {
-    "jquery": "^3.2.1",
-    "tooltipster": "^4.2.5"
   }
 }
