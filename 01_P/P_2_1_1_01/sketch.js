@@ -39,31 +39,30 @@ var actStrokeCap;
 
 function setup() {
   createCanvas(600, 600);
-  noFill();
   actStrokeCap = ROUND;
 }
 
 function draw() {
-  background(255);
+  clear();
   strokeCap(actStrokeCap);
 
   randomSeed(actRandomSeed);
 
-  for (var gridY=0; gridY<tileCount; gridY++) {
-    for (var gridX=0; gridX<tileCount; gridX++) {
+  for (var gridY = 0; gridY < tileCount; gridY++) {
+    for (var gridX = 0; gridX < tileCount; gridX++) {
 
-      var posX = width/tileCount*gridX;
-      var posY = height/tileCount*gridY;
+      var posX = width / tileCount * gridX;
+      var posY = height / tileCount * gridY;
 
-      var toggle = int(random(0,2));
+      var toggle = int(random(0, 2));
 
-      if (toggle == 0) {
-        strokeWeight(mouseX/20);
-        line(posX, posY, posX+width/tileCount, posY+height/tileCount);
+      if (toggle === 0) {
+        strokeWeight(mouseX / 20);
+        line(posX, posY, posX + width / tileCount, posY + height / tileCount);
       }
-      if (toggle == 1) {
-        strokeWeight(mouseY/20);
-        line(posX, posY+width/tileCount, posX+height/tileCount, posY);
+      if (toggle === 1) {
+        strokeWeight(mouseY / 20);
+        line(posX, posY + width / tileCount, posX + height / tileCount, posY);
       }
     }
   }
@@ -71,7 +70,7 @@ function draw() {
 
 
 function mousePressed() {
-  actRandomSeed = int(random(100000));
+  actRandomSeed = random(100000);
 }
 
 function keyReleased(){
