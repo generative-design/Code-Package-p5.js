@@ -64,8 +64,7 @@ function setup() {
 }
 
 function draw() {
-  background(255);
-  smooth();
+  clear();
 
   for (var gridY = 0; gridY < tileCount; gridY++) {
     for (var gridX = 0; gridX < tileCount; gridX++) {
