@@ -66,7 +66,7 @@ function draw() {
       var posX = width / tileCount * gridX;
       var posY = height / tileCount * gridY;
 
-      var toggle = int(random(0,2));
+      var toggle = int(random(0, 2));
 
       if (toggle === 0) {
         stroke(colorLeft);
@@ -94,14 +94,14 @@ function keyReleased(){
   if (key == '3') actStrokeCap = PROJECT;
 
   var black = color(0, 0, 0, 100);
-  if (key == '4'){
+  if (key == '4') {
     if (colorsEqual(colorLeft, black)) {
       colorLeft = color(197, 0, 123, alphaLeft);
     } else {
       colorLeft = color(0, 0, 0, alphaLeft);
     }
   }
-  if (key == '5'){
+  if (key == '5') {
     if (colorsEqual(colorRight, black)) {
       colorRight = color(87, 35, 129, alphaRight);
     } else {
