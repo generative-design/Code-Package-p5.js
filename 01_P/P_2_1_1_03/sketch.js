@@ -34,7 +34,6 @@
  */
 'use strict';
 
-var colorWhite;
 var colorLeft;
 var colorRight;
 
@@ -49,48 +48,44 @@ var actRandomSeed = 0;
 function setup() {
   createCanvas(600, 600);
   colorMode(HSB, 360, 100, 100, 100);
-  noFill();
 
-  colorWhite = color(255);
   colorRight = color(0, 0, 0, alphaRight);
   colorLeft = color(323, 100, 77, alphaLeft);
 }
 
 function draw() {
-  background(colorWhite);
+  clear();
+  strokeWeight(mouseX / 15);
+
   randomSeed(actRandomSeed);
-  strokeWeight(mouseX/15);
-  noFill();
 
-  tileCount = mouseY/15;
+  tileCount = mouseY / 15;
 
-  for (var gridY=0; gridY<=tileCount; gridY++) {
-    for (var gridX=0; gridX<tileCount; gridX++) {
+  for (var gridY = 0; gridY < tileCount; gridY++) {
+    for (var gridX = 0; gridX < tileCount; gridX++) {
 
-      var posX = width/tileCount*gridX;
-      var posY = height/tileCount*gridY;
+      var posX = width / tileCount * gridX;
+      var posY = height / tileCount * gridY;
 
-      if (transparentLeft == true) alphaLeft = gridY*10;
-      else alphaLeft = 100;
+      alphaLeft = transparentLeft ? gridY * 10 : 100;
 
-      colorLeft = color(hue(colorLeft), saturation(colorLeft), brightness(colorLeft), alphaLeft)
+      colorLeft = color(hue(colorLeft), saturation(colorLeft), brightness(colorLeft), alphaLeft);
 
-      if (transparentRight == true) alphaRight = 100-gridY*10;
-      else alphaRight = 100;
+      alphaRight = transparentRight ? 100 - gridY * 10 : 100;
 
-      colorRight = color(hue(colorRight), saturation(colorRight), brightness(colorRight), alphaRight)
+      colorRight = color(hue(colorRight), saturation(colorRight), brightness(colorRight), alphaRight);
 
       var toggle = int(random(0,2));
 
-      if (toggle == 0) {
+      if (toggle === 0) {
         stroke(colorLeft);
-        line(posX, posY, posX+(width/tileCount)/2, posY+height/tileCount);
-        line(posX+(width/tileCount)/2, posY, posX+(width/tileCount), posY+height/tileCount);
+        line(posX, posY, posX + (width / tileCount) / 2, posY + height / tileCount);
+        line(posX + (width / tileCount) / 2, posY, posX + (width / tileCount), posY + height / tileCount);
       }
       if (toggle == 1) {
         stroke(colorRight);
-        line(posX, posY+width/tileCount, posX+(height/tileCount)/2, posY);
-        line(posX+(height/tileCount)/2, posY+width/tileCount, posX+(height/tileCount), posY);
+        line(posX, posY + width / tileCount, posX + (height / tileCount) / 2, posY);
+        line(posX + (height / tileCount) / 2, posY + width / tileCount, posX + (height / tileCount), posY);
       }
     }
   }
@@ -98,35 +93,34 @@ function draw() {
 }
 
 function mousePressed() {
-  actRandomSeed = int(random(100000));
+  actRandomSeed = random(100000);
 }
 
 function keyReleased(){
   if (key == 's' || key == 'S') saveCanvas(gd.timestamp(), 'png');
 
-  if (key == '1'){
+  if (key == '1') {
     if (colorsEqual(colorLeft, color(273, 73, 51, alphaLeft))) {
       colorLeft = color(323, 100, 77, alphaLeft);
     } else {
       colorLeft = color(273, 73, 51, alphaLeft);
     }
   }
-  if (key == '2'){
+  if (key == '2') {
     if (colorsEqual(colorRight, color(0, 0, 0, alphaRight))) {
       colorRight = color(192, 100, 64, alphaRight);
     } else {
       colorRight = color(0, 0, 0, alphaRight);
     }
   }
-  if (key == '3'){
-    console.info(colorLeft);
-    transparentLeft =! transparentLeft;
+  if (key == '3') {
+    transparentLeft = !transparentLeft;
   }
-  if (key == '4'){
-    transparentRight =! transparentRight;
+  if (key == '4') {
+    transparentRight = !transparentRight;
   }
 
-  if (key == '0'){
+  if (key == '0') {
     transparentLeft = false;
     transparentRight = false;
     colorLeft = color(323, 100, 77, alphaLeft);
