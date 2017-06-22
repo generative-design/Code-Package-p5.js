@@ -38,57 +38,52 @@
 'use strict';
 
 var tileCount = 20;
+var actRandomSeed = 0;
 
+var actStrokeCap = ROUND;
 var colorLeft;
 var colorRight;
 
 var alphaLeft = 100;
 var alphaRight = 100;
 
-var actRandomSeed = 0;
-var actStrokeCap;
-
 function setup() {
   createCanvas(600, 600);
-  colorMode(RGB, 255, 255, 255, 100);
-  noFill();
 
   colorLeft = color(197, 0, 123, alphaLeft);
   colorRight = color(87, 35, 129, alphaRight);
-
-  actStrokeCap = ROUND;
 }
 
 function draw() {
-  background(255);
+  clear();
   strokeCap(actStrokeCap);
 
   randomSeed(actRandomSeed);
 
-  for (var gridY=0; gridY<tileCount; gridY++) {
-    for (var gridX=0; gridX<tileCount; gridX++) {
+  for (var gridY = 0; gridY < tileCount; gridY++) {
+    for (var gridX = 0; gridX < tileCount; gridX++) {
 
-      var posX = width/tileCount*gridX;
-      var posY = height/tileCount*gridY;
+      var posX = width / tileCount * gridX;
+      var posY = height / tileCount * gridY;
 
       var toggle = int(random(0,2));
 
-      if (toggle == 0) {
+      if (toggle === 0) {
         stroke(colorLeft);
-        strokeWeight(mouseX/10);
-        line(posX, posY, posX+width/tileCount, posY+height/tileCount);
+        strokeWeight(mouseX / 10);
+        line(posX, posY, posX + width / tileCount, posY + height / tileCount);
       }
-      if (toggle == 1) {
+      if (toggle === 1) {
         stroke(colorRight);
-        strokeWeight(mouseY/10);
-        line(posX, posY+width/tileCount, posX+height/tileCount, posY);
+        strokeWeight(mouseY / 10);
+        line(posX, posY + width / tileCount, posX + height / tileCount, posY);
       }
     }
   }
 }
 
 function mousePressed() {
-  actRandomSeed = int(random(100000));
+  actRandomSeed = random(100000);
 }
 
 function keyReleased(){
@@ -112,7 +107,6 @@ function keyReleased(){
     } else {
       colorRight = color(0, 0, 0, alphaRight);
     }
-    console.info(colorRight);
   }
 
   if (key == '6') {
@@ -121,7 +115,7 @@ function keyReleased(){
     } else {
       alphaLeft = 100;
     }
-    colorLeft = color(colorLeft.getRed(), colorLeft.getGreen(), colorLeft.getBlue(), alphaLeft)
+    colorLeft = color(red(colorLeft), green(colorLeft), blue(colorLeft), alphaLeft);
   }
   if (key == '7') {
     if (alphaRight == 100) {
@@ -129,14 +123,14 @@ function keyReleased(){
     } else {
       alphaRight = 100;
     }
-    colorRight = color(colorRight.getRed(), colorRight.getGreen(), colorRight.getBlue(), alphaRight)
+    colorRight = color(red(colorRight), green(colorRight), blue(colorRight), alphaRight);
   }
 
-  if (key == '0'){
+  if (key == '0') {
     actStrokeCap = ROUND;
     alphaLeft = 100;
     alphaRight = 100;
-    colorLeft = color(0 , 0, 0, alphaLeft);
+    colorLeft = color(0, 0, 0, alphaLeft);
     colorRight = color(0, 0, 0, alphaRight);
   }
 }
