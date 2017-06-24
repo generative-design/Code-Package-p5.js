@@ -39,8 +39,8 @@ var backgroundColor = 0;
 
 var drawMode = 1;
 
-function setup(){
-  createCanvas(600,600);
+function setup() {
+  createCanvas(windowWidth, windowHeight);
 }
 
 function draw() {
@@ -51,8 +51,8 @@ function draw() {
   var tileWidth  = width / tileCountX;
   var tileHeight = height / tileCountY;
 
-  for (var gridY = 0; gridY<= tileCountY; gridY++) {
-    for (var gridX = 0; gridX<= tileCountX; gridX++) {
+  for (var gridY = 0; gridY <= tileCountY; gridY++) {
+    for (var gridX = 0; gridX <= tileCountX; gridX++) {
       var posX = tileWidth * gridX;
       var posY = tileHeight * gridY;
 
@@ -62,7 +62,7 @@ function draw() {
       var y2 = 0;
 
       push();
-      translate(posX,posY);
+      translate(posX, posY);
 
       for (var side = 0; side < 4; side++) {
         for (var i = 0; i < count; i++) {
@@ -109,7 +109,7 @@ function draw() {
             case 3:
               backgroundColor = 0;
               stroke(strokeColor);
-              strokeWeight(mouseX/100);
+              strokeWeight(mouseX / 100);
               break;
           }
 
@@ -122,7 +122,7 @@ function draw() {
   }
 }
 
-function keyReleased(){
+function keyReleased() {
   if (key == 's' || key == 'S') saveCanvas(gd.timestamp(), 'png');
   if (key == '1') drawMode = 1;
   if (key == '2') drawMode = 2;
