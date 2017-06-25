@@ -37,13 +37,13 @@ var count = 0;
 
 var drawMode = 1;
 
-function setup(){
-  createCanvas(550,550);
+function setup() {
+  createCanvas(windowWidth, windowHeight);
   rectMode(CENTER);
 }
 
 function draw() {
-  background(255);
+  clear();
   noFill();
   stroke(0);
 
@@ -60,13 +60,13 @@ function draw() {
       var posY = tileHeight * gridY + tileHeight / 2;
 
       push();
-      translate(posX,posY);
+      translate(posX, posY);
 
       // switch between modules
       switch (drawMode) {
         case 1:
           for (var i = 0; i < count; i++) {
-            rect(0,0,tileWidth,tileHeight);
+            rect(0, 0, tileWidth, tileHeight);
             scale(1 - 3 / count);
             rotate(para * 0.1);
           }
@@ -74,10 +74,10 @@ function draw() {
         case 2:
           noStroke();
           for (var i = 0; i < count; i++) {
-            var gradient = lerpColor(color(0,0),color(166,141,5),i / count);
-            fill(gradient,i / count * 200);
+            var gradient = lerpColor(color(0, 0), color(166, 141, 5), i / count);
+            fill(gradient, i / count * 200);
             rotate(QUARTER_PI);
-            rect(0,0,tileWidth,tileHeight);
+            rect(0, 0, tileWidth, tileHeight);
             scale(1 - 3 / count);
             rotate(para * 1.5);
           }
@@ -85,17 +85,17 @@ function draw() {
         case 3:
           noStroke();
           for (var i = 0; i < count; i++) {
-            var gradient = lerpColor(color(0,130,164),color(255),i / count);
-            fill(gradient,170);
+            var gradient = lerpColor(color(0, 130, 164), color(255), i / count);
+            fill(gradient, 170);
 
             push();
-            translate(4 * i,0);
-            ellipse(0,0,tileWidth / 4, tileHeight / 4);
+            translate(4 * i, 0);
+            ellipse(0, 0, tileWidth / 4, tileHeight / 4);
             pop();
 
             push();
-            translate(-4 * i,0);
-            ellipse(0,0,tileWidth / 4, tileHeight / 4);
+            translate(-4 * i, 0);
+            ellipse(0, 0, tileWidth / 4, tileHeight / 4);
             pop();
 
             scale(1 - 1.5 / count);
@@ -110,13 +110,13 @@ function draw() {
   }
 }
 
-function keyReleased(){
+function keyReleased() {
   if (key == 's' || key == 'S') saveCanvas(gd.timestamp(), 'png');
   if (key == '1') drawMode = 1;
   if (key == '2') drawMode = 2;
   if (key == '3') drawMode = 3;
-  if (keyCode === DOWN_ARROW) tileCountY = max(tileCountY - 1,1);
+  if (keyCode === DOWN_ARROW) tileCountY = max(tileCountY - 1, 1);
   if (keyCode === UP_ARROW) tileCountY += 1;
-  if (keyCode === LEFT_ARROW) tileCountX = max(tileCountX - 1,1);
+  if (keyCode === LEFT_ARROW) tileCountX = max(tileCountX - 1, 1);
   if (keyCode === RIGHT_ARROW) tileCountX += 1;
 }
