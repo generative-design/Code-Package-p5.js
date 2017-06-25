@@ -30,87 +30,107 @@
  * 7                   : sort colors on brightness
  * 8                   : sort colors on grayscale (luminance)
  * s                   : save png
- * p                   : save pdf
  * c                   : save color palette
  */
+
 'use strict';
 
 var img;
+var imgLoaded = false;
+var imgCopied = false;
 var colors = [];
 
 function preload(){
-  img = loadImage("data/pic1.jpg");
+  img = loadImage("data/pic1.jpg", function(){ imgLoaded = true  });
 }
 
 function setup() {
   createCanvas(600, 600);
   noCursor();
-  colorMode(HSB, 360, 100, 100, 100);
   noStroke();
 }
 
 function draw() {
-  img.loadPixels();
-  // image(img,0,0);
-  // clear();
   var tileCount = width / max(mouseX, 5);
-  var rectSize = int(width / float(tileCount));
-  // console.log("width:" + width);
-  // console.log("tileCount: " + tileCount + "rectSize: " + rectSize);
-  // rectSize = 7;
-  // get colors from image
-  var i = 0;
-  // colors = [];
-  // for (var gridY=0; gridY<int(tileCount/5); gridY++) {
-  //   for (var gridX=0; gridX<int(tileCount/5); gridX++) {
-  //     var px = int(gridX * rectSize);
-  //     var py = int(gridY * rectSize);
-  //     // console.log(px);
-  //     // console.log(py);
-  //     // colors.push(1);
-  //     colors[i] = img.get(px, py);
-  //     //console.log(colors[i]);
-  //     i++;
-  //   }
-  // }
-  // console.log(i);
-  // console.log(colors.length);
-    
- // // sort colors
- // if (sortMode != null) colors = GenerativeDesign.sortColors(this, colors, sortMode);
+  var rectSize = width / tileCount;
 
-  for(var gridY = 0; gridY < width; gridY+=rectSize){
-    i=width*4*gridY;
-    for(var gridX = 0; gridX < width; gridX+=rectSize){
-      fill('rgba('+img.pixels[i]+', '+img.pixels[i+1]+', '+img.pixels[i+2]+', '+img.pixels[i+3]+')');
-      rect(gridX, gridY, rectSize, rectSize);
-      i+=rectSize*4;
-    }
+  if(imgCopied == false && imgLoaded == true){
+    loadPixelsAndCopyToColorsArray();
   }
 
-  // draw grid
-  // i = 0;
-  // for (var gridY=0; gridY<tileCount; gridY++) {
-  //   for (var gridX=0; gridX<tileCount; gridX++) {
-  //     fill(img.pixels[i], img.pixels[i+1], img.pixels[i+2], img.pixels[i+3]);
-  //     rect(gridX*rectSize, gridY*rectSize, rectSize, rectSize);
-  //     i+=4;
-  //   }
-  // }
+  if(!imgCopied){
+    for (var gridY = 0; gridY < tileCount; gridY++) {
+      for (var gridX = 0; gridX < tileCount; gridX++) {
+        var pos = gridY * 120 * int(120 / tileCount) + gridX * int(120 / tileCount);
+        fill(red(colors[pos]), green(colors[pos]), blue(colors[pos]), alpha(colors[pos]));
+        rect(gridX*rectSize, gridY*rectSize, rectSize, rectSize);
+      }
+    }
+  }
+}
+
+function loadPixelsAndCopyToColorsArray(){
+    imgCopied = true;
+    img.loadPixels();
+    colors = [];
+    for(var j = 0; j < img.pixels.length; j += 20){
+        if(j % 600 * 4 == 0) j += 600 * 4;
+        var pixel;
+        colors.push(pixel = color(img.pixels[j], img.pixels[j + 1], img.pixels[j + 2], img.pixels[j + 3]));
+    }
+    imgLoaded = false;
+    imgCopied = false;
+}
+
+function sortHue(){
+  colors.sort(function (a, b) {
+    //convert a and b from RGB to HSV
+    var aHSV = chroma(red(a), green(a), blue(a));
+    var bHSV = chroma(red(b), green(b), blue(b));
+
+    return aHSV.get('hsv.h') < bHSV.get('hsv.h');
+  })
+}
+
+function sortSaturation(){
+  colors.sort(function (a, b) {
+    //convert a and b from RGB to HSV
+    var aHSV = chroma(red(a), green(a), blue(a));
+    var bHSV = chroma(red(b), green(b), blue(b));
+
+    return aHSV.get('hsv.s') < bHSV.get('hsv.s');
+  })
+}
+
+function sortBrightness(){
+  colors.sort(function (a, b) {
+    //convert a and b from RGB to HSV
+    var aHSV = chroma(red(a), green(a), blue(a));
+    var bHSV = chroma(red(b), green(b), blue(b));
+
+    return aHSV.get('hsv.v') < bHSV.get('hsv.v');
+  })
+}
+
+function sortGreyscale(){
+  colors.sort(function (a, b) {
+    var aGreyscale = round(red(a) * 0.222 + green(a) * 0.707 + blue(a) * 0.071);
+    var bGreyscale = round(red(b) * 0.222 + green(b) * 0.707 + blue(b) * 0.071);
+
+    return aGreyscale < bGreyscale;
+  })
 }
 
 function keyReleased(){
-//  if (key=='c' || key=='C') GenerativeDesign.saveASE(this, colors, timestamp()+".ase");
-//  if (key=='s' || key=='S') saveFrame(timestamp()+"_##.png");
-//  if (key=='p' || key=='P') savePDF = true;
+  if (key=='c' || key=='C') writeFile([gd.ase.encode( colors )], 'my-palette', 'ase');
+  if (key == 's' || key == 'S') saveCanvas(gd.timestamp(), 'png');
+  if (key == '1') img = loadImage("data/pic1.jpg", function(){ imgLoaded = true  });
+  if (key == '2') img = loadImage("data/pic2.jpg", function(){ imgLoaded = true  });
+  if (key == '3') img = loadImage("data/pic3.jpg", function(){ imgLoaded = true  }); 
 
-  if (key == '1') img = loadImage("data/pic1.jpg");
-  if (key == '2') img = loadImage("data/pic2.jpg"); 
-  if (key == '3') img = loadImage("data/pic3.jpg"); 
-
-//  if (key == '4') sortMode = null;
-//  if (key == '5') sortMode = GenerativeDesign.HUE;
-//  if (key == '6') sortMode = GenerativeDesign.SATURATION;
-//  if (key == '7') sortMode = GenerativeDesign.BRIGHTNESS;
-//  if (key == '8') sortMode = GenerativeDesign.GRAYSCALE;
+  if (key == '4') loadPixelsAndCopyToColorsArray();
+  if (key == '5') sortHue();
+  if (key == '6') sortSaturation();
+  if (key == '7') sortBrightness();
+  if (key == '8') sortGreyscale();
 }
