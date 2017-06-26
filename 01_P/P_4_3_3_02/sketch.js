@@ -1,5 +1,5 @@
 // P_4_3_3_02.pde
-// 
+//
 // Generative Gestaltung, ISBN: 978-3-87439-759-9
 // First Edition, Hermann Schmidt, Mainz, 2009
 // Hartmut Bohnacker, Benedikt Gross, Julia Laub, Claudius Lazzeroni
@@ -17,8 +17,8 @@
 // limitations under the License.
 
 /**
- * generating a drawing with 3 brushes by analysing live video
- * 
+ * generating a drawing with 3 brushes by analysing the pixels of a live video input
+ *
  * KEYS
  * q                   : stop drawing
  * w                   : continue drawing
@@ -27,21 +27,16 @@
 
 'use strict';
 
-var SPACEBAR = 32;
-
 var video;
-
 var pixelIndex;
 var c;
-
 var x1, x2, x3, y1, y2, y3;
 var curvePointX = 0;
 var curvePointY = 0;
-
 var counter;
 var maxCounter = 100000;
-
 var streamReady = false;
+
 
 function setup() {
   createCanvas(640, 480);
@@ -56,7 +51,7 @@ function setup() {
   y2 = 0;
   x3 = width;
   y3 = height / 2;
-} 
+}
 
 function draw() {
   if(streamReady) {
@@ -64,7 +59,6 @@ function draw() {
 
     // get actual webcam image
     video.loadPixels();
-
 
     // first line
     pixelIndex = int(((video.width - 1 - int(x1)) + int(y1) * video.width) * 4);
@@ -88,7 +82,6 @@ function draw() {
     x1 = curvePointX;
     y1 = curvePointY;
 
-
     // second line
     pixelIndex = int(((video.width - 1 - int(x2)) + int(y2) * video.width) * 4);
     c = color(video.pixels[pixelIndex], video.pixels[pixelIndex + 1], video.pixels[pixelIndex + 2], video.pixels[pixelIndex + 3]);
@@ -110,7 +103,6 @@ function draw() {
     endShape();
     x2 = curvePointX;
     y2 = curvePointY;
-
 
     // third line
     pixelIndex = int(((video.width - 1 - int(x3)) + int(y3) * video.width) * 4);
@@ -134,21 +126,13 @@ function draw() {
     x3 = curvePointX;
     y3 = curvePointY;
 
-
     counter++;
     if (counter >= maxCounter) noLoop();
   }
 }
 
-function keyPressed(){
-  switch(keyCode){
-  case SPACEBAR:
-    background(360);
-    break;
-  }
-}
-
 function keyReleased(){
+  if (key == ' ') background(360);
   if (key == 's' || key == 'S') saveCanvas(gd.timestamp(), 'png');
   if (key == 'q' || key == 'Q') noLoop();
   if (key == 'w' || key == 'W') loop();

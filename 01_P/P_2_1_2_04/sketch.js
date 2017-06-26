@@ -34,7 +34,7 @@ var rectSize = 30;
 
 var actRandomSeed = 0;
 
-function setup(){
+function setup() {
   createCanvas(600, 600);
   colorMode(HSB, 360, 100, 100, 100);
   noStroke();
@@ -42,39 +42,42 @@ function setup(){
 }
 
 function draw() {
-  background(0, 0, 360);
+  clear();
 
   randomSeed(actRandomSeed);
 
-  for (var gridY=0; gridY<tileCount; gridY++) {
-    for (var gridX=0; gridX<tileCount; gridX++) {
+  for (var gridY = 0; gridY < tileCount; gridY++) {
+    for (var gridX = 0; gridX < tileCount; gridX++) {
 
-      var posX = width/tileCount * gridX;
-      var posY = height/tileCount * gridY;
+      var posX = width / tileCount * gridX;
+      var posY = height / tileCount * gridY;
 
-      var shiftX1 = mouseX/20 * random(-1, 1);
-      var shiftY1 = mouseY/20 * random(-1, 1);
-      var shiftX2 = mouseX/20 * random(-1, 1);
-      var shiftY2 = mouseY/20 * random(-1, 1);
-      var shiftX3 = mouseX/20 * random(-1, 1);
-      var shiftY3 = mouseY/20 * random(-1, 1);
-      var shiftX4 = mouseX/20 * random(-1, 1);
-      var shiftY4 = mouseY/20 * random(-1, 1);
+      var shiftX1 = mouseX / 20 * random(-1, 1);
+      var shiftY1 = mouseY / 20 * random(-1, 1);
+      var shiftX2 = mouseX / 20 * random(-1, 1);
+      var shiftY2 = mouseY / 20 * random(-1, 1);
+      var shiftX3 = mouseX / 20 * random(-1, 1);
+      var shiftY3 = mouseY / 20 * random(-1, 1);
+      var shiftX4 = mouseX / 20 * random(-1, 1);
+      var shiftY4 = mouseY / 20 * random(-1, 1);
 
+      push();
+      translate(posX, posY);
       beginShape();
-      vertex(posX+shiftX1, posY+shiftY1);
-      vertex(posX+rectSize+shiftX2, posY+shiftY2);
-      vertex(posX+rectSize+shiftX3, posY+rectSize+shiftY3);
-      vertex(posX+shiftX4, posY+rectSize+shiftY4);
-      endShape(CLOSE);
+      vertex(shiftX1, shiftY1);
+      vertex(rectSize + shiftX2, shiftY2);
+      vertex(rectSize + shiftX3, rectSize + shiftY3);
+      vertex(shiftX4, rectSize + shiftY4);
+      endShape();
+      pop();
     }
   }
 }
 
 function mousePressed() {
-  actRandomSeed = int(random(100000));
+  actRandomSeed = random(100000);
 }
 
-function keyReleased(){
+function keyReleased() {
   if (key == 's' || key == 'S') saveCanvas(gd.timestamp(), 'png');
 }

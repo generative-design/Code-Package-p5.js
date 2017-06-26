@@ -1,5 +1,5 @@
 // P_4_3_3_01.pde
-// 
+//
 // Generative Gestaltung, ISBN: 978-3-87439-759-9
 // First Edition, Hermann Schmidt, Mainz, 2009
 // Hartmut Bohnacker, Benedikt Gross, Julia Laub, Claudius Lazzeroni
@@ -17,8 +17,8 @@
 // limitations under the License.
 
 /**
- * generating a drawing by analysing live video
- * 
+ * generating a drawing by analysing the pixels of a live video input
+ *
  * MOUSE
  * position x          : drawing speed
  * position y          : diffusion
@@ -33,8 +33,6 @@
 
 'use strict';
 
-const SPACEBAR = 32;
-
 var video;
 var x;
 var y;
@@ -43,6 +41,7 @@ var curvePointY = 0;
 var pointCount = 1;
 var diffusion = 50;
 var streamReady = false;
+
 
 function setup() {
   createCanvas(640, 480);
@@ -93,20 +92,11 @@ function draw() {
   }
 }
 
-function keyPressed() {
-  switch(keyCode){
-  case SPACEBAR:
-    background(360);
-    break;
-  }
-}
-
 function keyReleased() {
+  if (key == ' ') background(360);
   if (key == 's' || key == 'S') saveCanvas(gd.timestamp(), 'png');
-
   if (key == 'q' || key == 'Q') noLoop();
   if (key == 'w' || key == 'W') loop();
-
   if (keyCode == UP_ARROW) pointCount = min(pointCount + 1, 30);
   if (keyCode == DOWN_ARROW) pointCount = max(pointCount - 1, 1);
 }

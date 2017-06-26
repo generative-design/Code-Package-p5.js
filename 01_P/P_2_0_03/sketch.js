@@ -31,7 +31,7 @@
  */
 'use strict';
 
-var strokeColor = [];
+var strokeColor;
 
 function setup() {
   createCanvas(720, 720);
@@ -40,6 +40,7 @@ function setup() {
   background(0,0,100);
   strokeWeight(2);
 
+  strokeColor = [];
   strokeColor = color(0, 10);
 }
 

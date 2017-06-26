@@ -34,8 +34,7 @@
 'use strict';
 
 var joinedText;
-var alphabet = "ABCDEFGHIJKLMNOPQRSTUVWXYZÄÖÜß,.;:!? ";
-var counters = [];
+var charSet;
 var drawLetters = [];
 
 var posX;
@@ -55,12 +54,10 @@ function setup() {
   fill(87, 35, 129);
 
   joinedText = joinedText.join(" ");
-  for (var i = 0; i < alphabet.length; i++) {
-    counters[i] = 0;
+  charSet = getUniqCharacters();
+  for (var i = 0; i < charSet.length; i++) {
     drawLetters[i] = true;
   }
-
-  countCharacters();
 }
 
 function draw() {
@@ -73,9 +70,9 @@ function draw() {
 
   // go through all characters in the text to draw them
   for (var i = 0; i < joinedText.length; i++) {
-    // again, find the index of the current letter in the alphabet
+    // again, find the index of the current letter in the character set
     var upperCaseChar = joinedText.charAt(i).toUpperCase();
-    var index = alphabet.indexOf(upperCaseChar);
+    var index = charSet.indexOf(upperCaseChar);
     if (index < 0) continue;
 
     var sortY = index * 20 + 40;
@@ -110,13 +107,12 @@ function draw() {
   }
 }
 
-function countCharacters() {
-  for (var i = 0; i < joinedText.length; i++) {
-    // get one character from the text and turn it to uppercase
-    var index = alphabet.indexOf(joinedText.charAt(i).toUpperCase());
-    // increacre the respective counter
-    if (index >= 0) counters[index]++;
-  }
+function getUniqCharacters() {
+  var charsArray = joinedText.toUpperCase().split('');
+  var uniqCharsArray = charsArray.filter(function(char, index) {
+    return charsArray.indexOf(char) === index;
+  }).sort();
+  return uniqCharsArray.join('');
 }
 
 function keyReleased() {
@@ -125,18 +121,18 @@ function keyReleased() {
   if (key == '1') drawLines = !drawLines;
   if (key == '2') drawText = !drawText;
   if (key == '3') {
-    for (var i = 0; i < alphabet.length; i++) {
+    for (var i = 0; i < charSet.length; i++) {
       drawLetters[i] = false;
     }
   }
   if (key == '4') {
     drawText = true;
-    for (var i = 0; i < alphabet.length; i++) {
+    for (var i = 0; i < charSet.length; i++) {
       drawLetters[i] = true;
     }
   }
 
-  var index = alphabet.indexOf(key.toUpperCase());
+  var index = charSet.indexOf(key.toUpperCase());
   if (index >= 0) {
     drawLetters[index] = !drawLetters[index];
   }
