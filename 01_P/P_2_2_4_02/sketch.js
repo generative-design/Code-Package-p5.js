@@ -46,28 +46,28 @@ function setup() {
   r = [maxCount]; // radius
 
   // first circle
-  x[0] = width/2;
-  y[0] = height/2;
+  x[0] = width / 2;
+  y[0] = height / 2;
   r[0] = 360;
 }
 
 
 function draw() {
-  background(255);
+  clear();
 
   strokeWeight(0.5);
-  //noFill();
+  noFill();
 
   // create a random set of parameters
   var newR = random(1, 7);
-  var newX = random(0+newR, width-newR);
-  var newY = random(0+newR, height-newR);
+  var newX = random(0 + newR, width - newR);
+  var newY = random(0 + newR, height - newR);
 
   var closestDist = 100000000;
   var closestIndex = 0;
   // which circle is the closest?
-  for(var i=0; i < currentCount; i++) {
-    var newDist = dist(newX,newY, x[i],y[i]);
+  for(var i = 0; i < currentCount; i++) {
+    var newDist = dist(newX, newY, x[i], y[i]);
     if (newDist < closestDist) {
       closestDist = newDist;
       closestIndex = i;
@@ -75,28 +75,31 @@ function draw() {
   }
 
   // align it to the closest circle outline
-  var angle = atan2(newY-y[closestIndex], newX-x[closestIndex]);
+  var angle = atan2(newY - y[closestIndex], newX - x[closestIndex]);
 
   newx[currentCount] = newX;
   newy[currentCount] = newY;
-  x[currentCount] = x[closestIndex] + cos(angle) * (r[closestIndex]+newR);
-  y[currentCount] = y[closestIndex] + sin(angle) * (r[closestIndex]+newR);
+  x[currentCount] = x[closestIndex] + cos(angle) * (r[closestIndex] + newR);
+  y[currentCount] = y[closestIndex] + sin(angle) * (r[closestIndex] + newR);
   r[currentCount] = newR;
   currentCount++;
 
   // draw circles at random position and lines
   if (drawGhosts) {
-    for (var i=1 ; i < currentCount; i++) {
+    for (var i = 1; i < currentCount; i++) {
       fill(230);
-      ellipse(newx[i],newy[i], r[i]*2,r[i]*2);
-      line(newx[i],newy[i], x[i],y[i]);
+      ellipse(newx[i], newy[i], r[i] * 2, r[i] * 2);
+      line(newx[i], newy[i], x[i], y[i]);
     }
   }
 
-  for (var i=0 ; i < currentCount; i++) {
-    if (i == 0) noFill();
-    else fill(50);
-    ellipse(x[i],y[i], r[i]*2,r[i]*2);
+  for (var i = 0; i < currentCount; i++) {
+    if (i === 0) {
+      noFill();
+    } else {
+      fill(50);
+    }
+    ellipse(x[i], y[i], r[i] * 2, r[i] * 2);
   }
 
   if (currentCount >= maxCount) noLoop();
