@@ -37,7 +37,7 @@ var maxRadius = 50;
 var mouseRect = 15;
 
 function setup() {
-  createCanvas(800,800);
+  createCanvas(800, 800);
   noFill();
   cursor(CROSS);
   ellipseMode(RADIUS);
@@ -69,9 +69,9 @@ function draw() {
   // Draw all circles
   circles.forEach(function(circle) {
     // Try to find an adjacent circle to the current one and draw a connecting line between the two
-    var closestCircle = circles.filter(function(otherCircle) {
+    var closestCircle = circles.find(function(otherCircle) {
       return dist(circle.x, circle.y, otherCircle.x, otherCircle.y) <= circle.r + otherCircle.r + 1;
-    })[0];
+    });
     if (closestCircle) {
       stroke(100, 230, 100);
       strokeWeight(0.75);
