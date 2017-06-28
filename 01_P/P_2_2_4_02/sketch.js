@@ -27,23 +27,16 @@
 
 var maxCount = 5000; //max count of the cirlces
 var currentCount = 1;
-var newx;
-var newy;
-var x;
-var y;
-var r;
+var newx = [];
+var newy = [];
+var x = [];
+var y = [];
+var r = [];
 
 var drawGhosts = false;
 
 function setup() {
   createCanvas(800, 800);
-
-  newx = [maxCount];
-  newy = [maxCount];
-
-  x = [maxCount];
-  y = [maxCount];
-  r = [maxCount]; // radius
 
   // first circle
   x[0] = width / 2;
@@ -60,8 +53,8 @@ function draw() {
 
   // create a random set of parameters
   var newR = random(1, 7);
-  var newX = random(0 + newR, width - newR);
-  var newY = random(0 + newR, height - newR);
+  var newX = random(newR, width - newR);
+  var newY = random(newR, height - newR);
 
   var closestDist = 100000000;
   var closestIndex = 0;
