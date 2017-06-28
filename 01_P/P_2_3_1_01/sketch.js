@@ -41,21 +41,21 @@ var angle = 0;
 var angleSpeed = 1;
 
 function setup() {
-  createCanvas(windowWidth,windowHeight);
+  createCanvas(windowWidth, windowHeight);
   background(255);
   cursor(CROSS);
 
-  c = color(181,157,0,100);
+  c = color(181, 157, 0, 100);
   strokeWeight(1);
 }
 
 function draw() {
   if (mouseIsPressed) {
     push();
-    translate(mouseX,mouseY);
+    translate(mouseX, mouseY);
     rotate(radians(angle));
     stroke(c);
-    line(0,0,lineLength,0);
+    line(0, 0, lineLength, 0);
     pop();
 
     angle += angleSpeed;
@@ -64,7 +64,7 @@ function draw() {
 
 function mousePressed() {
   // create a new random line length each new press
-  lineLength = random(70,200);
+  lineLength = random(70, 200);
 }
 
 function keyPressed() {
@@ -85,10 +85,10 @@ function keyReleased() {
   }
 
   // change color
-  if (key == ' ') c = color(random(255),random(255),random(255),random(80, 150));
+  if (key == ' ') c = color(random(255), random(255), random(255), random(80, 150));
   //default colors from 1 to 4
-  if (key == '1') c = color(181,157,0,100);
-  if (key == '2') c = color(0,130,164,100);
-  if (key == '3') c = color(87,35,129,100);
-  if (key == '4') c = color(197,0,123,100);
+  if (key == '1') c = color(181, 157, 0, 100);
+  if (key == '2') c = color(0, 130, 164, 100);
+  if (key == '3') c = color(87, 35, 129, 100);
+  if (key == '4') c = color(197, 0, 123, 100);
 }
