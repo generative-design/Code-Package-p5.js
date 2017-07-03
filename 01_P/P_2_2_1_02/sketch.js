@@ -49,10 +49,10 @@ var posY;
 var drawMode = 1;
 var counter = 0;
 
-function setup(){
-  createCanvas(550,550);
-  colorMode(HSB,360,100,100,100);
-  background(360,0,100);
+function setup() {
+  createCanvas(windowWidth, windowHeight);
+  colorMode(HSB, 360, 100, 100, 100);
+  clear();
   noStroke();
   posX = width / 2;
   posY = height / 2;
@@ -96,22 +96,22 @@ function draw() {
     if (posY < 0) posY = height;
     if (posY > height) posY = 0;
 
-    if (drawMode == 3) {
+    if (drawMode === 3) {
       if (counter >= 100){
         counter = 0;
-        fill(192,100,64,80);
-        ellipse(posX + stepSize / 2,posY + stepSize / 2,diameter + 7,diameter + 7);
+        fill(192, 100, 64, 80);
+        ellipse(posX + stepSize / 2, posY + stepSize / 2, diameter + 7, diameter + 7);
       }
     }
 
-    fill(0,40);
-    ellipse(posX + stepSize / 2,posY + stepSize / 2,diameter,diameter);
+    fill(0, 40);
+    ellipse(posX + stepSize / 2, posY + stepSize / 2, diameter, diameter);
   }
 }
 
-function keyReleased(){
+function keyReleased() {
   if (key == 's' || key == 'S') saveCanvas(gd.timestamp(), 'png');
-  if (keyCode === DELETE || keyCode === BACKSPACE) background(360,0,100);
+  if (keyCode === DELETE || keyCode === BACKSPACE) clear();
 
   if (key == '1') {
     drawMode = 1;

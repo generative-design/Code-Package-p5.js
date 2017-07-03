@@ -33,8 +33,8 @@
 var font = "Arial";
 var letter = "A";
 
-function setup(){
-  createCanvas(800, 800);
+function setup() {
+  createCanvas(windowWidth, windowHeight);
   background(255);
   fill(0);
 
@@ -42,22 +42,21 @@ function setup(){
   textAlign(CENTER, CENTER);
 }
 
-function mouseMoved(){
-  background(255);
-  textSize((mouseX-width/2)*5+1);
-  text(letter, width/2, mouseY);
+function mouseMoved() {
+  clear();
+  textSize((mouseX - width / 2) * 5 + 1);
+  text(letter, width / 2, mouseY);
 }
 
-function mouseDragged(){
-  textSize((mouseX-width/2)*5+1);
-  text(letter, width/2, mouseY);
+function mouseDragged() {
+  textSize((mouseX - width / 2) * 5 + 1);
+  text(letter, width / 2, mouseY);
 }
 
 function keyReleased() {
-  if (keyCode == CONTROL) saveCanvas(gd.timestamp(), 'png');
+  if (keyCode === CONTROL) saveCanvas(gd.timestamp(), 'png');
 }
 
 function keyTyped() {
   letter = key;
-  return false;
 }

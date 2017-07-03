@@ -44,18 +44,18 @@ var diameter = 1;
 var posX;
 var posY;
 
-function setup(){
-  createCanvas(800,800);
-  background(255);
+function setup() {
+  createCanvas(windowWidth, windowHeight);
+  clear();
   noStroke();
-  fill(0,40);
+  fill(0, 40);
   posX = width / 2;
   posY = height / 2;
 }
 
 function draw() {
   for (var i = 0; i <= mouseX; i++) {
-    direction = int(random(0,8));
+    direction = int(random(0, 8));
 
     if (direction === NORTH) {
       posY -= stepSize;
@@ -84,11 +84,11 @@ function draw() {
     if (posY < 0) posY = height;
     if (posY > height) posY = 0;
 
-    ellipse(posX + stepSize / 2,posY + stepSize / 2,diameter,diameter);
+    ellipse(posX + stepSize / 2, posY + stepSize / 2, diameter, diameter);
   }
 }
 
-function keyReleased(){
+function keyReleased() {
   if (key == 's' || key == 'S') saveCanvas(gd.timestamp(), 'png');
-  if (keyCode === DELETE || keyCode === BACKSPACE) background(255);
+  if (keyCode === DELETE || keyCode === BACKSPACE) clear();
 }

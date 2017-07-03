@@ -47,9 +47,9 @@ var posXcross;
 var posYcross;
 
 function setup() {
-  createCanvas(600,600);
-  colorMode(HSB,360,100,100);
-  background(360,0,100);
+  createCanvas(600, 600);
+  colorMode(HSB, 360, 100, 100);
+  background(360, 0, 100);
 
   angle = getRandomAngle(direction);
   posX = floor(random(width));
@@ -112,14 +112,14 @@ function draw() {
   }
 }
 
-function keyReleased(){
+function keyReleased() {
   if (key == 's' || key == 'S') saveCanvas(gd.timestamp(), 'png');
   if (keyCode === DELETE || keyCode === BACKSPACE) background(360);
   if (key === ' ') noLoop();
 }
 
 function getRandomAngle(currentDirection) {
-  var a = (floor(random(-angleCount,angleCount)) + 0.5) * 90 / angleCount;
+  var a = (floor(random(-angleCount, angleCount)) + 0.5) * 90 / angleCount;
   if (currentDirection === NORTH) return a - 90;
   if (currentDirection === EAST) return a;
   if (currentDirection === SOUTH) return a + 90;
