@@ -4,7 +4,7 @@
   "description": "Code package of the book Generative Design for p5.js",
   "scripts": {
     "start": "npm run watch",
-    "watch": "budo --dir . --open --live --watch-glob '**/*.{html,css,js}'",
+    "watch": "budo --host localhost --dir . --open --live --watch-glob '**/*.{html,css,js}'",
     "setup": "cd libraries && node setup.js"
   },
   "repository": {
