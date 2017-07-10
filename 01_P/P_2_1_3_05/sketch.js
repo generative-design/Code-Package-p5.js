@@ -38,8 +38,8 @@ var endSize = 0;
 var stepSize = 30;
 var actRandomSeed = 0;
 
-function setup(){
-  createCanvas(600,600);
+function setup() {
+  createCanvas(600, 600);
   noStroke();
   tileWidth = width / tileCountX;
   tileHeight = height / tileCountY;
@@ -51,7 +51,7 @@ function draw() {
   randomSeed(actRandomSeed);
 
   stepSize = mouseX / 10;
-  endSize  = mouseY / 10;
+  endSize = mouseY / 10;
 
   for (var gridY = 0; gridY <= tileCountY; gridY++) {
     for (var gridX = 0; gridX <= tileCountX; gridX++) {
@@ -62,24 +62,23 @@ function draw() {
       // modules
       var heading = int(random(4));
       for (var i = 0; i < stepSize; i++) {
-        var diameter = map(i,0,stepSize,tileWidth,endSize);
+        var diameter = map(i, 0, stepSize, tileWidth, endSize);
         fill(255 - i * colorStep);
         switch (heading) {
-          case 0: ellipse(posX + i,posY,diameter,diameter); break;
-          case 1: ellipse(posX,posY + i,diameter,diameter); break;
-          case 2: ellipse(posX - i,posY,diameter,diameter); break;
-          case 3: ellipse(posX,posY - i,diameter,diameter); break;
+          case 0: ellipse(posX + i, posY, diameter, diameter); break;
+          case 1: ellipse(posX, posY + i, diameter, diameter); break;
+          case 2: ellipse(posX - i, posY, diameter, diameter); break;
+          case 3: ellipse(posX, posY - i, diameter, diameter); break;
         }
       }
-
     }
   }
 }
 
 function mousePressed() {
-  actRandomSeed = int(random(100000));
+  actRandomSeed = random(100000);
 }
 
-function keyReleased(){
+function keyReleased() {
   if (key == 's' || key == 'S') saveCanvas(gd.timestamp(), 'png');
 }

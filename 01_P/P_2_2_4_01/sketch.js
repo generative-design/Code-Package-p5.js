@@ -26,22 +26,17 @@
 
 var maxCount = 5000; //max count of the cirlces
 var currentCount = 1;
-var x;
-var y;
-var r; // radius
+var x = [];
+var y = [];
+var r = []; // radius
 
 function setup() {
-  createCanvas(600,600);
-
-  x = [];
-  y = [];
-  r = [];
+  createCanvas(600, 600);
 
   // first circle
-  x[0] = width/2;
-  y[0] = height/2;
+  x[0] = width / 2;
+  y[0] = height / 2;
   r[0] = 10;
-  //r[0] = 400;
 }
 
 
@@ -49,42 +44,35 @@ function draw() {
   background(255);
 
   strokeWeight(0.5);
-  //noFill();
 
   // create a random set of parameters
   var newR = random(1, 7);
-  var newX = random(0+newR, width-newR);
-  var newY = random(0+newR, height-newR);
+  var newX = random(newR, width - newR);
+  var newY = random(newR, height - newR);
 
   var closestDist = 100000000;
   var closestIndex = 0;
   // which circle is the closest?
-  for(var i=0; i < currentCount; i++) {
-    var newDist = dist(newX,newY, x[i],y[i]);
+  for(var i = 0; i < currentCount; i++) {
+    var newDist = dist(newX, newY, x[i], y[i]);
     if (newDist < closestDist) {
       closestDist = newDist;
       closestIndex = i;
     }
   }
 
-  // show random position and line
-  // fill(230);
-  // ellipse(newX,newY,newR*2,newR*2);
-  // line(newX,newY,x[closestIndex],y[closestIndex]);
-
   // aline it to the closest circle outline
-  var angle = atan2(newY-y[closestIndex], newX-x[closestIndex]);
+  var angle = atan2(newY - y[closestIndex], newX - x[closestIndex]);
 
-  x[currentCount] = x[closestIndex] + cos(angle) * (r[closestIndex]+newR);
-  y[currentCount] = y[closestIndex] + sin(angle) * (r[closestIndex]+newR);
+  x[currentCount] = x[closestIndex] + cos(angle) * (r[closestIndex] + newR);
+  y[currentCount] = y[closestIndex] + sin(angle) * (r[closestIndex] + newR);
   r[currentCount] = newR;
   currentCount++;
 
   // draw them
-  for (var i=0 ; i < currentCount; i++) {
-    //fill(50,150);
+  for (var i = 0; i < currentCount; i++) {
     fill(50);
-    ellipse(x[i],y[i], r[i]*2,r[i]*2);
+    ellipse(x[i], y[i], r[i] * 2, r[i] * 2);
   }
 
   if (currentCount >= maxCount) noLoop();

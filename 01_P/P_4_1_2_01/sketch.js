@@ -32,24 +32,24 @@ function preload() {
 }
 
 function setup() {
-  createCanvas(1024,780);
-  image(img,0,100);
+  createCanvas(1024, 780);
+  image(img, 0, 100);
 }
 
 function draw() {
-  var x1 = floor(random(0,width));
+  var x1 = floor(random(0, width));
   var y1 = -100;
-  var x2 = round(x1 + random(-7,7));
-  var y2 = round(random(-16,16));
-  var w = floor(random(2,4));
+  var x2 = round(x1 + random(-7, 7));
+  var y2 = round(random(-16, 16));
+  var w = floor(random(2, 4));
   var h = height;
-  copy(img,x1,y1,w,h,x2,y2,w,h);
+  copy(img, x1, y1, w, h, x2, y2, w, h);
 }
 
 function keyReleased() {
   if (key == 's' || key == 'S') saveCanvas(gd.timestamp(), 'png');
   if (keyCode === DELETE || keyCode === BACKSPACE) {
     clear();
-    image(img,0,100);
+    image(img, 0, 100);
   }
 }

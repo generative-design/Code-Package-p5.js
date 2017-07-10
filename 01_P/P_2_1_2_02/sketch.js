@@ -47,7 +47,7 @@ var backgroundColor;
 var tileCount = 20;
 var actRandomSeed = 0;
 
-function setup(){
+function setup() {
   createCanvas(600, 600);
   colorMode(HSB, 360, 100, 100, 100);
   noStroke();
@@ -59,30 +59,30 @@ function setup(){
 }
 
 function draw() {
-  translate(width/tileCount/2, height/tileCount/2);
+  translate(width / tileCount / 2, height / tileCount / 2);
 
   background(backgroundColor);
 
   randomSeed(actRandomSeed);
 
-  for (var gridY=0; gridY<tileCount; gridY++) {
-    for (var gridX=0; gridX<tileCount; gridX++) {
-      var posX = width/tileCount * gridX;
-      var posY = height/tileCount * gridY;
+  for (var gridY = 0; gridY < tileCount; gridY++) {
+    for (var gridX = 0; gridX < tileCount; gridX++) {
+      var posX = width / tileCount * gridX;
+      var posY = height / tileCount * gridY;
 
-      var shiftX =  random(-1, 1) * mouseX/20;
-      var shiftY =  random(-1, 1) * mouseY/20;
+      var shiftX =  random(-1, 1) * mouseX / 20;
+      var shiftY =  random(-1, 1) * mouseY / 20;
 
       fill(moduleColorBackground);
-      ellipse(posX+shiftX, posY+shiftY, moduleRadiusBackground, moduleRadiusBackground);
+      ellipse(posX + shiftX, posY + shiftY, moduleRadiusBackground, moduleRadiusBackground);
     }
   }
 
-  for (var gridY=0; gridY<tileCount; gridY++) {
-    for (var gridX=0; gridX<tileCount; gridX++) {
+  for (var gridY = 0; gridY < tileCount; gridY++) {
+    for (var gridX = 0; gridX < tileCount; gridX++) {
 
-      var posX = width/tileCount * gridX;
-      var posY = height/tileCount * gridY;
+      var posX = width / tileCount * gridX;
+      var posY = height / tileCount * gridY;
 
       fill(moduleColorForeground);
       ellipse(posX, posY, moduleRadiusForeground, moduleRadiusForeground);
@@ -92,55 +92,52 @@ function draw() {
 }
 
 function mousePressed() {
-  actRandomSeed = int(random(100000));
+  actRandomSeed = random(100000);
 }
 
-function keyReleased(){
+function keyReleased() {
 
   if (key == 's' || key == 'S') saveCanvas(gd.timestamp(), 'png');
 
-  if (key == '1'){
+  if (key == '1') {
     if (colorsEqual(moduleColorBackground, color(0, 0, 0, moduleAlphaBackground))) {
       moduleColorBackground = color(273, 73, 51, moduleAlphaBackground);
-    }
-    else {
+    } else {
       moduleColorBackground = color(0, 0, 0, moduleAlphaBackground);
     }
   }
-  if (key == '2'){
+  if (key == '2') {
     if (colorsEqual(moduleColorForeground, color(360, 100, 100, moduleAlphaForeground))) {
       moduleColorForeground = color(323, 100, 77, moduleAlphaForeground);
-    }
-    else {
+    } else {
       moduleColorForeground = color(360, 100, 100, moduleAlphaForeground);
     }
   }
 
-  if (key == '3'){
+  if (key == '3') {
     if (moduleAlphaBackground == 100) {
       moduleAlphaBackground = 50;
       moduleAlphaForeground = 50;
-    }
-    else {
+    } else {
       moduleAlphaBackground = 100;
       moduleAlphaForeground = 100;
     }
 
     moduleColorBackground = color(
-      moduleColorBackground.getHue(),
-      moduleColorBackground.getSaturation(),
-      moduleColorBackground.getBrightness(),
+      hue(moduleColorBackground),
+      saturation(moduleColorBackground),
+      brightness(moduleColorBackground),
       moduleAlphaBackground
     );
     moduleColorForeground = color(
-      moduleColorForeground.getHue(),
-      moduleColorForeground.getSaturation(),
-      moduleColorForeground.getBrightness(),
+      hue(moduleColorForeground),
+      saturation(moduleColorForeground),
+      brightness(moduleColorForeground),
       moduleAlphaForeground
     );
   }
 
-  if (key == '0'){
+  if (key == '0') {
     moduleRadiusBackground = 20;
     moduleRadiusForeground = 10;
     moduleAlphaBackground = 100;
@@ -150,8 +147,8 @@ function keyReleased(){
   }
 
   if (keyCode == UP_ARROW) moduleRadiusBackground += 2;
-  if (keyCode == DOWN_ARROW) moduleRadiusBackground = max(moduleRadiusBackground-2, 10);
-  if (keyCode == LEFT_ARROW) moduleRadiusForeground = max(moduleRadiusForeground-2, 5);
+  if (keyCode == DOWN_ARROW) moduleRadiusBackground = max(moduleRadiusBackground - 2, 10);
+  if (keyCode == LEFT_ARROW) moduleRadiusForeground = max(moduleRadiusForeground - 2, 5);
   if (keyCode == RIGHT_ARROW) moduleRadiusForeground += 2;
 }
 

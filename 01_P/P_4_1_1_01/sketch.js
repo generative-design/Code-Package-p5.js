@@ -45,13 +45,13 @@ var selectMode = true;
 var randomMode = false;
 
 function preload() {
-  img = loadImage("data/image.jpg");
+  img = loadImage('data/image.jpg');
 }
 
 function setup() {
-  createCanvas(800,600);
+  createCanvas(800, 600);
 
-  image(img,0,0);
+  image(img, 0, 0);
   tileWidth = width / tileCountY;
   tileHeight = height / tileCountX;
 
@@ -63,15 +63,15 @@ function setup() {
 function draw() {
   if (selectMode) {
     // in selection mode, a white selection rectangle is drawn over the image
-    cropX = constrain(mouseX,0,width - tileWidth);
-    cropY = constrain(mouseY,0,height - tileHeight);
-    image(img,0,0);
-    rect(cropX,cropY,tileWidth,tileHeight);
+    cropX = constrain(mouseX, 0, width - tileWidth);
+    cropY = constrain(mouseY, 0, height - tileHeight);
+    image(img, 0, 0);
+    rect(cropX, cropY, tileWidth, tileHeight);
   } else {
     // reassemble image
     var imgIndex = 0;
-    for (var gridY = 0; gridY < tileCountY; gridY++){
-      for (var gridX = 0; gridX < tileCountX; gridX++){
+    for (var gridY = 0; gridY < tileCountY; gridY++) {
+      for (var gridX = 0; gridX < tileCountX; gridX++) {
         image(imgTiles[imgIndex], gridX * tileWidth, gridY * tileHeight);
         imgIndex++;
       }
@@ -85,15 +85,15 @@ function cropTiles() {
   tileCount = tileCountX * tileCountY;
   imgTiles = [];
 
-  for (var gridY = 0; gridY < tileCountY; gridY++){
-    for (var gridX = 0; gridX < tileCountX; gridX++){
+  for (var gridY = 0; gridY < tileCountY; gridY++) {
+    for (var gridX = 0; gridX < tileCountX; gridX++) {
       if (randomMode) {
-        cropX = int(random(mouseX - tileWidth / 2,mouseX + tileWidth / 2));
-        cropY = int(random(mouseY - tileHeight / 2,mouseY + tileHeight / 2));
+        cropX = int(random(mouseX - tileWidth / 2, mouseX + tileWidth / 2));
+        cropY = int(random(mouseY - tileHeight / 2, mouseY + tileHeight / 2));
       }
-      cropX = constrain(cropX,0,width - tileWidth);
-      cropY = constrain(cropY,0,height - tileHeight);
-      imgTiles.push(img.get(cropX,cropY,tileWidth,tileHeight));
+      cropX = constrain(cropX, 0, width - tileWidth);
+      cropY = constrain(cropY, 0, height - tileHeight);
+      imgTiles.push(img.get(cropX, cropY, tileWidth, tileHeight));
     }
   }
 }

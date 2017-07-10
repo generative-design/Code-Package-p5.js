@@ -42,31 +42,31 @@ var endOffset = 0;
 
 var actRandomSeed = 0;
 
-function setup(){
-  createCanvas(800,800);
+function setup() {
+  createCanvas(800, 800);
   tileWidth = width / tileCountX;
   tileHeight = height / tileCountY;
   noFill();
-  stroke(0,128);
+  stroke(0, 128);
 }
 
 function draw() {
   background(255);
   randomSeed(actRandomSeed);
 
-  translate(tileWidth / 2,tileHeight / 2);
+  translate(tileWidth / 2, tileHeight / 2);
 
   circleCount = mouseX / 30 + 1;
-  endSize = map(mouseX,0,width,tileWidth / 2,0);
-  endOffset = map(mouseY,0,height,0,(tileWidth - endSize) / 2);
+  endSize = map(mouseX, 0, width, tileWidth / 2, 0);
+  endOffset = map(mouseY, 0, max(height, mouseY), 0, (tileWidth - endSize) / 2);
 
   for (var gridY = 0; gridY <= tileCountY; gridY++) {
     for (var gridX = 0; gridX <= tileCountX; gridX++) {
       push();
-      translate(tileWidth * gridX,tileHeight * gridY);
-      scale(1,tileHeight / tileWidth);
+      translate(tileWidth * gridX, tileHeight * gridY);
+      scale(1, tileHeight / tileWidth);
 
-      var toggle = int(random(0,4));
+      var toggle = int(random(0, 4));
       if (toggle === 0) rotate(-HALF_PI);
       if (toggle === 1) rotate(0);
       if (toggle === 2) rotate(HALF_PI);
@@ -74,9 +74,9 @@ function draw() {
 
       // draw module
       for (var i = 0; i < circleCount; i++) {
-        var diameter = map(i,0,circleCount,tileWidth,endSize);
-        var offset = map(i,0,circleCount,0,endOffset);
-        ellipse(offset,0,diameter,diameter);
+        var diameter = map(i, 0, circleCount, tileWidth, endSize);
+        var offset = map(i, 0, circleCount, 0, endOffset);
+        ellipse(offset, 0, diameter, diameter);
       }
       pop();
     }
@@ -84,9 +84,9 @@ function draw() {
 }
 
 function mousePressed() {
-  actRandomSeed = int(random(100000));
+  actRandomSeed = random(100000);
 }
 
-function keyReleased(){
+function keyReleased() {
   if (key == 's' || key == 'S') saveCanvas(gd.timestamp(), 'png');
 }

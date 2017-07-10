@@ -44,7 +44,7 @@ var filled = false;
 var freeze = false;
 
 function setup() {
-  createCanvas(windowWidth,windowHeight);
+  createCanvas(windowWidth, windowHeight);
 
   // init shape
   centerX = width / 2;
@@ -55,7 +55,7 @@ function setup() {
     y.push(sin(angle * i) * initRadius);
   }
 
-  stroke(0,50);
+  stroke(0, 50);
   strokeWeight(0.75);
   background(255);
 }
@@ -68,22 +68,28 @@ function draw() {
 
   // calculate new points
   for (var i = 0; i < formResolution; i++) {
-    x[i] += random(-stepSize,stepSize);
-    y[i] += random(-stepSize,stepSize);
+    x[i] += random(-stepSize, stepSize);
+    y[i] += random(-stepSize, stepSize);
   }
 
-  filled ? fill(random(255)) : noFill();
+  if (filled) {
+    fill(random(255));
+  } else {
+    noFill();
+  }
 
   beginShape();
   // first controlpoint
-  curveVertex(x[formResolution - 1] + centerX,y[formResolution - 1] + centerY);
+  curveVertex(x[formResolution - 1] + centerX, y[formResolution - 1] + centerY);
 
   // only these points are drawn
-  for (var i = 0; i < formResolution; i++) curveVertex(x[i] + centerX,y[i] + centerY);
-  curveVertex(x[0] + centerX,y[0] + centerY);
+  for (var i = 0; i < formResolution; i++) {
+    curveVertex(x[i] + centerX, y[i] + centerY);
+  }
+  curveVertex(x[0] + centerX, y[0] + centerY);
 
   // end controlpoint
-  curveVertex(x[1] + centerX,y[1] + centerY);
+  curveVertex(x[1] + centerX, y[1] + centerY);
   endShape();
 }
 
@@ -92,7 +98,7 @@ function mousePressed() {
   centerX = mouseX;
   centerY = mouseY;
   var angle = radians(360 / formResolution);
-  var radius = initRadius * random(0.5,1);
+  var radius = initRadius * random(0.5, 1);
   for (var i = 0; i < formResolution; i++) {
     x[i] = cos(angle * i) * initRadius;
     y[i] = sin(angle * i) * initRadius;
@@ -107,5 +113,9 @@ function keyReleased() {
 
   // pauze/play draw loop
   if (key == 'f' || key == 'F') freeze = !freeze;
-  freeze ? noLoop() : loop();
+  if (freeze) {
+    noLoop();
+  } else {
+    loop();
+  }
 }
