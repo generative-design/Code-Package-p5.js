@@ -31,23 +31,23 @@
 var img;
 
 function preload() {
-  img = loadImage("data/image.jpg");
+  img = loadImage('data/image.jpg');
 }
 
 function setup() {
-  createCanvas(650,450);
+  createCanvas(650, 450);
 }
 
 function draw() {
   var stepX = width  / (mouseX / 3 + 1);
   var stepY = height / (mouseY / 3 + 1);
-  for (var gridY = 0; gridY < height; gridY += stepY){
-    for (var gridX = 0; gridX < width; gridX += stepX){
+  for (var gridY = 0; gridY < height; gridY += stepY) {
+    for (var gridX = 0; gridX < width; gridX += stepX) {
       image(img, gridX, gridY, stepX, stepY);
     }
   }
 }
 
-function keyReleased(){
+function keyReleased() {
   if (key == 's' || key == 'S') saveCanvas(gd.timestamp(), 'png');
 }
