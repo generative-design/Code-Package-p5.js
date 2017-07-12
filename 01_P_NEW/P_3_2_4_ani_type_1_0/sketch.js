@@ -725,16 +725,16 @@ function lineFromToInSteps(x1, y1, x2, y2, stepCount) {
   var aniIndex = frameCount % (stepCount+1);
   var ratio = aniIndex/stepCount;
   var posX = lerp(x1, x2, ratio);
-  var posy = lerp(y1, y2, ratio);
+  var posY = lerp(y1, y2, ratio);
   fill(0);
   rectMode(CENTER);
   if(style == 4){
-    rect(posX, posy, 10, 10);
+    rect(posX, posY, 10, 10);
   }
   if(style == 5){
-    ellipse(posX, posy, 10, 10);
+    ellipse(posX, posY, 10, 10);
   }
-  // ellipse(posX, posy, 10, 10);
+  // ellipse(posX, posY, 10, 10);
 }
 
 
@@ -749,14 +749,14 @@ function curveFromToInSteps(a1, a2, b1, b2, c1, c2, d1, d2,  stepCount){
    var aniIndex = frameCount % (stepCount);
     var ratio = aniIndex/stepCount;
     var posX = lerp(points[aniIndex].x, points[aniIndex+1].x, ratio);
-    var posy = lerp(points[aniIndex].y, points[aniIndex+1].y, ratio);
+    var posY = lerp(points[aniIndex].y, points[aniIndex+1].y, ratio);
     fill(0);
     rectMode(CENTER);
     if(style == 4){
-      rect(posX, posy, 10, 10);
+      rect(posX, posY, 10, 10);
     }
     if(style == 5){
-      ellipse(posX, posy, 10, 10);
+      ellipse(posX, posY, 10, 10);
     }
 
 }
@@ -772,14 +772,14 @@ function bezierFromToInSteps(a1, a2, b1, b2, c1, c2, d1, d2,  stepCount){
    var aniIndex = frameCount % (stepCount);
     var ratio = aniIndex/stepCount;
     var posX = lerp(points[aniIndex].x, points[aniIndex+1].x, ratio);
-    var posy = lerp(points[aniIndex].y, points[aniIndex+1].y, ratio);
+    var posY = lerp(points[aniIndex].y, points[aniIndex+1].y, ratio);
     fill(0);
     rectMode(CENTER);
     if(style == 4){
-      rect(posX, posy, 10, 10);
+      rect(posX, posY, 10, 10);
     }
     if(style == 5){
-      ellipse(posX, posy, 10, 10);
+      ellipse(posX, posY, 10, 10);
     }
 
 }
@@ -796,7 +796,7 @@ function arcFromToInSteps(x, y, radiusWidth, radiusHeight, a1, a2, stepCount) {
     rect(posX, posY, 10, 10);
   }
   if(style == 5){
-    ellipse(posX, posy, 10, 10);
+    ellipse(posX, posY, 10, 10);
   }
 
 }
