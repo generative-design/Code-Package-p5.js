@@ -15,17 +15,23 @@
 
 "use strict";
 
-var textTyped = "TYPE...!"
+var textTyped;
 var font;
 var paths;
 var lineHeight;
-var style = 1;
-var fontSize = 120;
-var padding = 10;
+var style;
+var fontSize;
+var padding;
 
 function setup() {
   createCanvas(windowWidth, windowHeight);
   noLoop();
+
+  // assign globals
+  textTyped = "TYPE...!"
+  style = 1;
+  fontSize = 120;
+  padding = 10;
 
   rectMode(CENTER);
 

@@ -32,7 +32,6 @@ function setup() {
 
   // assign globals
   cursorLocation = {x:50, y:50};
-  aniLetters;
   letterPadding = 20;
   style = 4;
   aniMessage = [];

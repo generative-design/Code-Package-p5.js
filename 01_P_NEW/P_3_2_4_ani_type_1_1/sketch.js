@@ -29,12 +29,9 @@ function setup() {
 
   // assign globals
   textTyped = "Type ...!"
-  font;
   fontSize = 120;
   style = 1;
-  path;
   ranges = [];
-  breaks;
   counter = 0;
 
   rectMode(CENTER);
