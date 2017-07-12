@@ -16,13 +16,10 @@
 "use strict";
 
 var video;
-
 var slider;
-
-var cols = 30;
-var rows = 30;
-
-var myboxes ;
+var cols;
+var rows;
+var myboxes;
 
 function preload(){
   video = createVideo('data/ball.mov');
@@ -32,6 +29,9 @@ function setup() {
   noCanvas();
   pixelDensity(1);
 
+  // assign globals
+  cols = 30;
+  rows = 30;
   myboxes = [];
   video.size(cols, rows);
   slider = createSlider(0, 255, 200);
