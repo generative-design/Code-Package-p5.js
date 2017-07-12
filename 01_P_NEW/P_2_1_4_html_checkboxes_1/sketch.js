@@ -23,16 +23,14 @@
 
 "use strict";
 
-var selected = 1;
+var selected;
 var img1;
 var img2;
 var img3;
 var slider;
-
-var cols = 40;
-var rows = 40;
-
-var boxes = [];
+var cols;
+var rows;
+var boxes;
 
 function preload(){
   img1 = loadImage('data/shapes.png');
@@ -44,6 +42,11 @@ function setup() {
   noCanvas();
   pixelDensity(1);
 
+  // assign globals
+  selected = 1;
+  cols = 40;
+  rows = 40;
+  boxes = [];
 
   slider = createSlider(0, 255, 0);
 
@@ -61,8 +64,6 @@ function setup() {
 }
 
 function draw() {
-  // noLoop();
-
   image2boxes();
 }
 
@@ -79,8 +80,6 @@ function image2boxes(){
   }
 
   img.resize(cols, rows);
-
-
   img.loadPixels();
 
   for (var y = 0; y < img.height; y++) {
@@ -103,8 +102,6 @@ function image2boxes(){
       }
     }
   }
-
-
 
 }
 
