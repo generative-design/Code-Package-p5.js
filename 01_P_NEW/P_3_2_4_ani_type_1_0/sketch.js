@@ -19,17 +19,23 @@
 
 "use strict";
 
-var cursorLocation = {x:50, y:50};
+var cursorLocation;
 var aniLetters;
-var letterPadding = 20;
-var style = 4;
-
-const aniMessage = [];
+var letterPadding;
+var style;
+var aniMessage;
 
 function setup() {
   createCanvas(800,800);
   strokeWeight(1);
   strokeCap(ROUND);
+
+  // assign globals
+  cursorLocation = {x:50, y:50};
+  aniLetters;
+  letterPadding = 20;
+  style = 4;
+  aniMessage = [];
   aniLetters = new AniLetters(40, 100);
 
   // initialize with "Type" message
