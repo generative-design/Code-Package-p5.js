@@ -2,26 +2,40 @@
  * Animated type fade away text
  *
  * KEYS
+ * CONTROL                   : save png
  * A-Z
- * CONTROL                  : save png
+ * 1                         : animated circles
+ * 2                         : animated squares
+ * 3                         : animated lines
+ * left arrow                : remove the letter
+ *
+ * CONTRIBUTED BY
+ * [Joey Lee](http://jk-lee.com)
  */
 "use strict";
 
-var textTyped = "Type ...!"
+var textTyped;
 var font;
-var fontSize = 120;
-var style = 1;
-
+var fontSize;
+var style;
 var path;
-var ranges = [];
+var ranges;
 var breaks;
-
-var counter = 0;
+var counter;
 
 function setup() {
-
   createCanvas(windowWidth, windowHeight);
   noLoop();
+
+  // assign globals
+  textTyped = "Type ...!"
+  font;
+  fontSize = 120;
+  style = 1;
+  path;
+  ranges = [];
+  breaks;
+  counter = 0;
 
   rectMode(CENTER);
 
@@ -43,7 +57,6 @@ function draw() {
   translate(20,220);
 
   fill(0);
-  // noStroke();
 
   if (textTyped.length > 0) {
     // get a path from OpenType.js
