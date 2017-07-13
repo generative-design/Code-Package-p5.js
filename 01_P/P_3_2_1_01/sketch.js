@@ -49,7 +49,7 @@ function draw() {
 
   background(255);
   // margin border
-  translate(20,220);
+  translate(20, 220);
 
   if (textTyped.length > 0) {
     // get a path from OpenType.js
@@ -66,7 +66,7 @@ function draw() {
     var l = 5;
     for (var i = 0; i < path.commands.length; i++) {
       var cmd = path.commands[i];
-      line(cmd.x-l, cmd.y-l, cmd.x+l, cmd.y+l);
+      line(cmd.x - l, cmd.y - l, cmd.x + l, cmd.y + l);
     }
 
     // dots
@@ -76,7 +76,7 @@ function draw() {
     for (var i = 0; i < path.commands.length; i++) {
       var cmd = path.commands[i];
       // on every 2nd point
-      if (i%2 === 0) {
+      if (i % 2 === 0) {
         ellipse(cmd.x, cmd.y, diameter, diameter);
       }
     }
@@ -91,23 +91,12 @@ function keyReleased() {
 }
 
 function keyPressed() {
-  switch(keyCode) {
-    case DELETE:
-    case BACKSPACE:
-      if (textTyped.length > 0) {
-        textTyped = textTyped.substring(0,max(0,textTyped.length-1));
-        loop();
-        return false; // prevent any default behavior
-      }
-      break;
-      // disable those keys
-    case TAB:
-    case ENTER:
-    case RETURN:
-    case ESCAPE:
-      break;
+  if (keyCode === DELETE || keyCode === BACKSPACE) {
+    if (textTyped.length > 0) {
+      textTyped = textTyped.substring(0, textTyped.length - 1);
+      loop();
+    }
   }
-
 }
 
 function keyTyped() {
