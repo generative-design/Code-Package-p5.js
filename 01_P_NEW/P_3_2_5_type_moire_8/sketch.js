@@ -24,7 +24,7 @@ var density = 2.5;
 var ribbonWidth = 92;
 var shapeColor;
 var smoothness = 8;
-var fontSize = 800;
+var fontSize = 1000;
 var pathSimplification = 0.5;
 var randomPathSimplification = true;
 
@@ -76,7 +76,6 @@ function Shape(x, y, h, color, char) {
       simplifyThreshold: randomPathSimplification ? random(pathSimplification) : pathSimplification
     }
   );
-  this.shapePath.push(this.shapePath[2]);
 
   Shape.prototype.draw = function() {
     stroke(this.color);
