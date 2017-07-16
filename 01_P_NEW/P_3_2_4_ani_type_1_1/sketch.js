@@ -53,7 +53,7 @@ function setup() {
 // create an array of strings
 // each string is the line
 // if enter is pressed, create a new string,
-// and move to a new line by editing the svg "m" values
+// and move to a new line using on the cmd.x, cmd.y
 
 function draw() {
   // noLoop();
@@ -111,10 +111,35 @@ function keyPressed() {
   if (keyCode === CONTROL) saveCanvas(gd.timestamp(), 'png');
 
   if (keyCode === DELETE || keyCode === BACKSPACE || keyCode === LEFT_ARROW) {
-    textTyped = textTyped.substring(0,max(0,textTyped.length-1));
+    // textTyped = textTyped.substring(0,max(0,textTyped.length-1));
 
     // remove the last letter and destroy each string in the array
     // until you kill all the strings
+    console.log("counter:", textTypedCounter)
+    console.log("textyped", textTyped)
+    console.log("textyped length", textTyped.length)
+    // if at index 0 and length == 0; don't do anything
+    // otherwise, keep removing items
+
+    if (textTypedCounter >= 0 && textTyped[0].length > 0){
+     textTyped[textTypedCounter] = textTyped[textTypedCounter].substring(0,max(0,textTyped[textTypedCounter].length-1));
+    } else{
+      console.log("nada")
+    }
+
+    if(textTyped[textTypedCounter].length == 0){
+        textTypedCounter--;
+
+        if(textTypedCounter < 0){
+          console.log("nothing left")
+          textTypedCounter = 0;
+        }else{
+          textTyped.pop();
+        }
+
+    }
+
+
   } else if (keyCode === TAB || keyCode === ENTER || keyCode === RETURN || keyCode === ESCAPE) {
     // do nothing
     console.log("enter!")
