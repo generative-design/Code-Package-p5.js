@@ -113,7 +113,7 @@ var drawColoredLines = true;
 var drawText = true;
 
 function preload() {
-  joinedText = loadStrings("data/Part_of_Speech.txt");
+  joinedText = loadStrings('data/AllTheWorldsAStage.txt');
 }
 
 function setup() {
