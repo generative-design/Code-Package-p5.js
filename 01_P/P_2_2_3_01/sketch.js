@@ -70,6 +70,7 @@ function draw() {
   for (var i = 0; i < formResolution; i++) {
     x[i] += random(-stepSize, stepSize);
     y[i] += random(-stepSize, stepSize);
+    // ellipse(x[i] + centerX, y[i] + centerY, 5, 5);
   }
 
   if (filled) {

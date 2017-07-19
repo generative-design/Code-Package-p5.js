@@ -33,6 +33,8 @@ var r = []; // radius
 function setup() {
   createCanvas(600, 600);
 
+  strokeWeight(0.5);
+
   // first circle
   x[0] = width / 2;
   y[0] = height / 2;
@@ -43,8 +45,6 @@ function setup() {
 function draw() {
   background(255);
 
-  strokeWeight(0.5);
-
   // create a random set of parameters
   var newR = random(1, 7);
   var newX = random(newR, width - newR);
@@ -53,13 +53,18 @@ function draw() {
   var closestDist = 100000000;
   var closestIndex = 0;
   // which circle is the closest?
-  for(var i = 0; i < currentCount; i++) {
+  for (var i = 0; i < currentCount; i++) {
     var newDist = dist(newX, newY, x[i], y[i]);
     if (newDist < closestDist) {
       closestDist = newDist;
       closestIndex = i;
     }
   }
+
+  // show random position and line
+  // fill(230);
+  // ellipse(newX, newY, newR * 2, newR * 2); 
+  // line(newX, newY, x[closestIndex], y[closestIndex]);
 
   // aline it to the closest circle outline
   var angle = atan2(newY - y[closestIndex], newX - x[closestIndex]);

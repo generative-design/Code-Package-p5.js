@@ -57,7 +57,7 @@ function draw() {
   translate(tileWidth / 2, tileHeight / 2);
 
   circleCount = mouseX / 30 + 1;
-  endSize = map(mouseX, 0, width, tileWidth / 2, 0);
+  endSize = map(mouseX, 0, max(width, mouseX), tileWidth / 2, 0);
   endOffset = map(mouseY, 0, max(height, mouseY), 0, (tileWidth - endSize) / 2);
 
   for (var gridY = 0; gridY <= tileCountY; gridY++) {

@@ -91,21 +91,18 @@ function draw() {
     // ------ if agent is crossing his path or border was reached ------
     loadPixels();
     var currentPixel = get(floor(posX), floor(posY));
-    if (
-      (
-        currentPixel[0] === 0 &&
-        currentPixel[1] === 0 &&
-        currentPixel[2] === 0
-      ) ||
-      reachedBorder
-    ) {
+    if ((currentPixel[0] != 255 && currentPixel[1] != 255 &&
+         currentPixel[2] != 255) || reachedBorder) {
+
       angle = getRandomAngle(direction);
+
       var distance = dist(posX, posY, posXcross, posYcross);
       if (distance >= minLength) {
         strokeWeight(3);
         stroke(0, 0, 0);
         line(posX, posY, posXcross, posYcross);
       }
+
       posXcross = posX;
       posYcross = posY;
     }
