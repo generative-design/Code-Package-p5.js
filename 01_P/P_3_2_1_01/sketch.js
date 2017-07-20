@@ -64,8 +64,8 @@ function draw() {
     strokeWeight(1.0);
     var l = 5;
     for (var i = 0; i < path.commands.length; i++) {
-      var cmd = path.commands[i];
-      line(cmd.x - l, cmd.y - l, cmd.x + l, cmd.y + l);
+      var pnt = path.commands[i];
+      line(pnt.x - l, pnt.y - l, pnt.x + l, pnt.y + l);
     }
 
     // dots
@@ -73,10 +73,10 @@ function draw() {
     noStroke();
     var diameter = 7;
     for (var i = 0; i < path.commands.length; i++) {
-      var cmd = path.commands[i];
+      var pnt = path.commands[i];
       // on every 2nd point
       if (i % 2 === 0) {
-        ellipse(cmd.x, cmd.y, diameter, diameter);
+        ellipse(pnt.x, pnt.y, diameter, diameter);
       }
     }
   }
