@@ -41,7 +41,7 @@ var imgCopied = false;
 var colors = [];
 
 function preload(){
-  img = loadImage("data/pic1.jpg", function(){ imgLoaded = true  });
+  img = loadImage("data/pic1.jpg", function(){ imgLoaded = true });
 }
 
 function setup() {
@@ -54,7 +54,7 @@ function draw() {
   var tileCount = width / max(mouseX, 5);
   var rectSize = width / tileCount;
 
-  if(imgCopied == false && imgLoaded == true){
+  if(!imgCopied && imgLoaded){
     loadPixelsAndCopyToColorsArray();
   }
 
@@ -122,8 +122,9 @@ function sortGreyscale(){
 }
 
 function keyReleased(){
-  if (key=='c' || key=='C') writeFile([gd.ase.encode( colors )], 'my-palette', 'ase');
+  if (key == 'c' || key == 'C') writeFile([gd.ase.encode( colors )], gd.timestamp(), 'ase');
   if (key == 's' || key == 'S') saveCanvas(gd.timestamp(), 'png');
+
   if (key == '1') img = loadImage("data/pic1.jpg", function(){ imgLoaded = true  });
   if (key == '2') img = loadImage("data/pic2.jpg", function(){ imgLoaded = true  });
   if (key == '3') img = loadImage("data/pic3.jpg", function(){ imgLoaded = true  }); 

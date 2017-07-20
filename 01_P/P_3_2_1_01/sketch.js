@@ -36,7 +36,7 @@ function setup() {
 
   opentype.load('data/FreeSans.otf', function(err, f) {
     if (err) {
-      print('Font could not be loaded: ' + err);
+      print(err);
     } else {
       font = f;
       loop();
@@ -59,7 +59,6 @@ function draw() {
     // resample it with equidistant points
     path = g.resampleByLength(path, 11);
     // path = g.resampleByAmount(path, 500);
-
     // lines
     stroke(181, 157, 0);
     strokeWeight(1.0);
