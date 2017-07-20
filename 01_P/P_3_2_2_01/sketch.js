@@ -79,8 +79,7 @@ function draw() {
     // map mouse axis
     var addToAngle = map(mouseX, 0, width, -PI, +PI);
     var curveHeight = map(mouseY, 0, height, 0.1, 2);
-
-
+     
     for (var i = 0; i < path.commands.length-1; i++) {
       var pnt0 = path.commands[i];
       var pnt1 = path.commands[i+1];
@@ -99,7 +98,6 @@ function draw() {
 
       bezier(pnt0.x,pnt0.y,  cx,cy, cx,cy,  pnt1.x,pnt1.y);
     }
-
   }
 }
 
