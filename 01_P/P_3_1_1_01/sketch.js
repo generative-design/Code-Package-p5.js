@@ -91,11 +91,11 @@ function draw() {
 
   // blinking cursor after text
   var timeDelta = millis() - pMillis;
-  newFontSize = map(timeDelta, 0,maxTimeDelta, minFontSize, maxFontSize);
+  newFontSize = map(timeDelta, 0, maxTimeDelta, minFontSize, maxFontSize);
   newFontSize = min(newFontSize, maxFontSize);
 
   fill(200, 30, 40);
-  if (frameCount / 10 % 2 === 0) fill(255);
+  if (int(frameCount / 10) % 2 === 0) fill(255);
   rect(x, y, newFontSize / 2, newFontSize / 20);
 }
 
@@ -111,9 +111,8 @@ function keyPressed() {
     case DELETE:
     case BACKSPACE:
       if (textTyped.length > 0) {
-        println(textTyped);
         textTyped = textTyped.substring(0, max(0, textTyped.length - 1));
-        fontSizes = shorten(fontSizes);
+        fontSizes.pop();
       }
       break;
   }
@@ -125,6 +124,6 @@ function keyPressed() {
 function keyTyped(){
   if(keyCode >= 32){
     textTyped += key;
-    fontSizes = append(fontSizes, newFontSize);
+    fontSizes.push(newFontSize);
   }
 }
