@@ -40,7 +40,7 @@ var stepSize = 5.0;
 var lineLength = 25;
 
 function setup() {
-  col = color(random(255),random(255),random(255),random(100));
+  col = color(random(255), random(255), random(255), random(100));
   // use full screen size
   createCanvas(displayWidth, displayHeight);
   background(255);
@@ -52,17 +52,17 @@ function setup() {
 
 function draw() {
   if (mouseIsPressed) {
-    var d = dist(x,y, mouseX,mouseY);
+    var d = dist(x, y, mouseX, mouseY);
 
     if (d > stepSize) {
-      var angle = atan2(mouseY-y, mouseX-x);
+      var angle = atan2(mouseY - y, mouseX - x);
 
       push();
-      translate(x,y);
+      translate(x, y);
       rotate(angle);
       stroke(col);
       if (frameCount % 2 == 0) stroke(150);
-      line(0,0,0,lineLength*random(0.95,1.0)*d/10);
+      line(0, 0, 0, lineLength * random(0.95, 1.0) * d / 10);
       pop();
 
       if (drawMode == 1) {
@@ -80,7 +80,7 @@ function draw() {
 function mousePressed() {
   x = mouseX;
   y = mouseY;
-  col = color(random(255),random(255),random(255),random(100));
+  col = color(random(255), random(255), random(255), random(100));
   //lineLength = random(15,50);
 }
 

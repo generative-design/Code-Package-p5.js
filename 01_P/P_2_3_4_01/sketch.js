@@ -65,14 +65,14 @@ function setup() {
 
 function draw() {
   if (mouseIsPressed) {
-    var d = dist(x,y, mouseX,mouseY);
+    var d = dist(x, y, mouseX, mouseY);
 
     if (d > stepSize) {
-      var angle = atan2(mouseY-y, mouseX-x);
+      var angle = atan2(mouseY - y, mouseX - x);
 
       push();
       translate(mouseX, mouseY);
-      rotate(angle+PI);
+      rotate(angle + PI);
       image(lineModule, 0, 0, d, moduleSize);
       pop();
 
@@ -107,7 +107,7 @@ function keyPressed() {
     if (keyCode == UP_ARROW) moduleSize += 5;
     if (keyCode == DOWN_ARROW) moduleSize -= 5;
     // stepSize arrowkeys left/right
-    stepSize = max(stepSize,0.5);
+    stepSize = max(stepSize, 0.5);
     if (keyCode == LEFT_ARROW) stepSize -= 0.5;
     if (keyCode == RIGHT_ARROW) stepSize += 0.5;
     console.log("moduleSize: "+moduleSize+"  stepSize: "+stepSize);
