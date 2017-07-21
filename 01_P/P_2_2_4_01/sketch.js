@@ -61,7 +61,7 @@ function draw() {
     }
   }
 
-  // show random position and line
+  // show original position of the circle and a line to the new position
   // fill(230);
   // ellipse(newX, newY, newR * 2, newR * 2); 
   // line(newX, newY, x[closestIndex], y[closestIndex]);
