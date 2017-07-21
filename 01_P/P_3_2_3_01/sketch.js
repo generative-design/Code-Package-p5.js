@@ -152,8 +152,6 @@ function keyPressed() {
       letterY += lineSpacing;
       letterX = 50;
       break;
-    case TAB:
-      break;
     case BACKSPACE:
     case DELETE:
       background(255);
