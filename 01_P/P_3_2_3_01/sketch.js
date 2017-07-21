@@ -86,21 +86,6 @@ function draw() {
       pnts[i].y += random(-stepSize, stepSize) * danceFactor;  
     }
 
-    //  ------ lines: connected rounded  ------
-    strokeWeight(0.08);
-
-    beginShape();
-    // start controlpoint
-    curveVertex(pnts[pnts.length-1].x,pnts[pnts.length-1].y);
-    // only these points are drawn
-    for (var i = 0; i < pnts.length; i++) {
-      curveVertex(pnts[i].x, pnts[i].y);
-    }
-    curveVertex(pnts[0].x, pnts[0].y);
-    // end controlpoint
-    curveVertex(pnts[1].x, pnts[1].y);
-    endShape();
-
     //  ------ lines: connected straight  ------
     strokeWeight(0.1);
     stroke(0);
@@ -111,6 +96,23 @@ function draw() {
     }
     vertex(pnts[0].x, pnts[0].y);
     endShape();
+
+    //  ------ lines: connected rounded  ------
+    /*
+      strokeWeight(0.08);
+
+      beginShape();
+      // start controlpoint
+      curveVertex(pnts[pnts.length-1].x,pnts[pnts.length-1].y);
+      // only these points are drawn
+      for (var i = 0; i < pnts.length; i++) {
+        curveVertex(pnts[i].x, pnts[i].y);
+      }
+      curveVertex(pnts[0].x, pnts[0].y);
+      // end controlpoint
+      curveVertex(pnts[1].x, pnts[1].y);
+      endShape();
+    */ 
   }
 
   pop();
@@ -121,6 +123,12 @@ function getPoints() {
   var path = new g.Path(fontPath.commands);
   path = g.resampleByLength(path, 25);
   textW = path.bounds().width;
+  // remove all commands without a coordinate
+  for (var i = path.commands.length-1; i >= 0 ; i--) {
+    if (path.commands[i].x == undefined) {
+      path.commands.splice(i, 1);
+    }
+  }
   return path.commands;
 }
 
