@@ -70,6 +70,7 @@ function draw() {
   for (var i = 0; i < formResolution; i++) {
     x[i] += random(-stepSize, stepSize);
     y[i] += random(-stepSize, stepSize);
+    // uncomment the following line to show position of the agents
     // ellipse(x[i] + centerX, y[i] + centerY, 5, 5);
   }
 
