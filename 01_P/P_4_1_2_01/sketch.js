@@ -25,43 +25,34 @@
  */
 'use strict';
 
-var origImg;
 var img;
-var w;
-var h;
 
 function preload() {
-  origImg = loadImage('data/pic.png');
+  img = loadImage('data/pic.png');
 }
 
 function setup() {
   createCanvas(1024, 780);
-
-  w = origImg.width;
-  h = origImg.height;
-  img = createImage(w, h + 200);
-  img.copy(origImg, 0, 0, w, h, 0, 100, w, h);
+  image(img, 0, 100);
 }
 
 function draw() {
   var x1 = floor(random(width));
-  var y1 = 0;
+  var y1 = 50;
 
   var x2 = round(x1 + random(-7, 7));
-  var y2 = round(random(-5, 5));
+  var y2 = round(y1 + random(-5, 5));
 
   var w = floor(random(10, 40));
-  var h = height;
+  var h = height-100;
   
-  img.copy(img, x1, y1, w, h, x2, y2, w, h);
-  image(img, 0, 0);
+  set(x2, y2, get(x1, y1, w, h));
 }
 
 function keyReleased() {
   if (key == 's' || key == 'S') saveCanvas(gd.timestamp(), 'png');
   if (keyCode === DELETE || keyCode === BACKSPACE) {
     clear();
-    img = createImage(w, h + 200);
-    img.copy(origImg, 0, 0, w, h, 0, 100, w, h);
+    image(img, 0, 100);
   }
 }

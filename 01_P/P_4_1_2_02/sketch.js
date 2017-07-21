@@ -46,7 +46,7 @@ function draw() {
   var w = 150;
   var h = 50;
 
-  set(x2, y2, get(x1, y2, w, h));
+  set(x2, y2, get(x1, y1, w, h));
 }
 
 function keyReleased() {
