@@ -65,7 +65,7 @@ function draw() {
     // in selection mode, a white selection rectangle is drawn over the image
     cropX = constrain(mouseX, 0, width - tileWidth);
     cropY = constrain(mouseY, 0, height - tileHeight);
-    image(img);
+    image(img, 0, 0);
     rect(cropX, cropY, tileWidth, tileHeight);
   } else {
     // reassemble image
@@ -82,7 +82,6 @@ function draw() {
 function cropTiles() {
   tileWidth  = width / tileCountY;
   tileHeight = height / tileCountX;
-  tileCount = tileCountX * tileCountY;
   imgTiles = [];
 
   for (var gridY = 0; gridY < tileCountY; gridY++) {
