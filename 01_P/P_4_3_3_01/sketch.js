@@ -48,7 +48,9 @@ function setup() {
   background(255);
   x = width / 2;
   y = height / 2;
-  video = createCapture(VIDEO, function(){ streamReady = true });
+  video = createCapture(VIDEO, function(){ 
+    streamReady = true 
+  });
   video.size(width, height);
   video.hide();
   noFill();
@@ -62,7 +64,7 @@ function draw() {
 
       // first line
       var pixelIndex = (((video.width - 1 - x) + y * video.width) * 4);
-      var c = color(video.pixels[pixelIndex], video.pixels[pixelIndex + 1], video.pixels[pixelIndex + 2], video.pixels[pixelIndex + 3]);
+      var c = color(video.pixels[pixelIndex], video.pixels[pixelIndex + 1], video.pixels[pixelIndex + 2]);
 
       //convert color c to HSV
       var cHSV = chroma(red(c), green(c), blue(c));
