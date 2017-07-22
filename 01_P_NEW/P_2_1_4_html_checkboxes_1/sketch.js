@@ -3,9 +3,6 @@
 * Shout out to Dan Shiffman's checkbox mirror example
 * Image credits: Map tiles by Stamen Design, under CC BY 3.0. Data by OpenStreetMap, under ODbL.
 *
-* MOUSE
-* click               : click on the checkboxes
-*
 * KEYS
 * 1                   : load image shapes
 * 2                   : load image letters
@@ -82,7 +79,6 @@ function draw() {
       }
     }
   }
-  noLoop();
 }
 
 
@@ -93,6 +89,5 @@ function keyPressed() {
 
   img.resize(cols, rows);
   img.loadPixels();
-  loop();
 }
 
