@@ -66,10 +66,13 @@ function draw() {
     }
   }
 
+  gd.sortColors(colors, sortMode);
+/*
   if (sortMode == "hue") sortHue();
   if (sortMode == "saturation") sortSaturation();
   if (sortMode == "brightness") sortBrightness();
   if (sortMode == "greyscale") sortGreyscale();
+*/
 
   for (var gridY = 0; gridY < tileCount; gridY++) {
     for (var gridX = 0; gridX < tileCount; gridX++) {
@@ -129,6 +132,7 @@ function sortGreyscale() {
   })
 }
 
+/*
 function mousePressed() {
   console.log('-------------------------')
   for (var i = 0; i < colors.length; i++) {
@@ -136,6 +140,7 @@ function mousePressed() {
     console.log(g, "|", red(colors[i]), green(colors[i]), blue(colors[i]));
   }
 }
+*/
 
 function keyReleased(){
   if (key == 'c' || key == 'C') writeFile([gd.ase.encode( colors )], gd.timestamp(), 'ase');
@@ -152,8 +157,8 @@ function keyReleased(){
   }
 
   if (key == '4') sortMode = null;
-  if (key == '5') sortMode = "hue";
-  if (key == '6') sortMode = "saturation";
-  if (key == '7') sortMode = "brightness";
-  if (key == '8') sortMode = "greyscale";
+  if (key == '5') sortMode = gd.HUE;
+  if (key == '6') sortMode = gd.SATURATION;
+  if (key == '7') sortMode = gd.BRIGHTNESS;
+  if (key == '8') sortMode = gd.GRAYSCALE;
 }
