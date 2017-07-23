@@ -34,9 +34,9 @@
  */
 
 'use strict';
+
 var img;
 var colors = [];
-
 var sortMode = null;
 
 function preload(){
@@ -45,12 +45,12 @@ function preload(){
 
 function setup() {
   createCanvas(600, 600);
-  //noCursor();
+  noCursor();
   noStroke();
 }
 
 function draw() {
-  var tileCount = floor(width / constrain(mouseX, 5, width));
+  var tileCount = floor(width / max(mouseX, 5));
   var rectSize = width / tileCount;
 
   img.loadPixels();
@@ -67,94 +67,24 @@ function draw() {
   }
 
   gd.sortColors(colors, sortMode);
-/*
-  if (sortMode == "hue") sortHue();
-  if (sortMode == "saturation") sortSaturation();
-  if (sortMode == "brightness") sortBrightness();
-  if (sortMode == "greyscale") sortGreyscale();
-*/
 
+  var i = 0;
   for (var gridY = 0; gridY < tileCount; gridY++) {
     for (var gridX = 0; gridX < tileCount; gridX++) {
-      var index = gridY * tileCount + gridX;
-      fill(colors[index]);
+      fill(colors[i]);
       rect(gridX*rectSize, gridY*rectSize, rectSize, rectSize);
+      i++;
     }
   }
 }
 
-
-
-function sortHue(){
-  colors.sort(function (a, b) {
-    //convert a and b from RGB to HSV
-    var aHue = chroma(red(a), green(a), blue(a)).get('hsv.h');
-    var bHue = chroma(red(b), green(b), blue(b)).get('hsv.h');
-
-    if (aHue < bHue) return 1;
-    if (aHue > bHue) return -1;
-    return 0;
-  })
-}
-
-function sortSaturation() {
-  colors.sort(function (a, b) {
-    //convert a and b from RGB to HSV
-    var aSat = chroma(red(a), green(a), blue(a)).get('hsv.s');
-    var bSat = chroma(red(b), green(b), blue(b)).get('hsv.s');
-
-    if (aSat < bSat) return 1;
-    if (aSat > bSat) return -1;
-    return 0;
-  })
-}
-
-function sortBrightness() {
-  colors.sort(function (a, b) {
-    //convert a and b from RGB to HSV
-    var aBright = chroma(red(a), green(a), blue(a)).get('hsv.v');
-    var bBright = chroma(red(b), green(b), blue(b)).get('hsv.v');
-
-    if (aBright < bBright) return 1;
-    if (aBright > bBright) return -1;
-    return 0;
-  })
-}
-
-function sortGreyscale() {
-  colors.sort(function (a, b) {
-    var aGrey = (red(a) * 0.222 + green(a) * 0.707 + blue(a) * 0.071);
-    var bGrey = (red(b) * 0.222 + green(b) * 0.707 + blue(b) * 0.071);
-
-    if (aGrey < bGrey) return 1;
-    if (aGrey > bGrey) return -1;
-    return 0;
-  })
-}
-
-/*
-function mousePressed() {
-  console.log('-------------------------')
-  for (var i = 0; i < colors.length; i++) {
-    var g = red(colors[i]) * 0.222 + green(colors[i]) * 0.707 + blue(colors[i]) * 0.071;
-    console.log(g, "|", red(colors[i]), green(colors[i]), blue(colors[i]));
-  }
-}
-*/
-
 function keyReleased(){
-  if (key == 'c' || key == 'C') writeFile([gd.ase.encode( colors )], gd.timestamp(), 'ase');
+  if (key == 'c' || key == 'C') writeFile([gd.ase.encode(colors)], gd.timestamp(), 'ase');
   if (key == 's' || key == 'S') saveCanvas(gd.timestamp(), 'png');
 
-  if (key == '1') {
-    img = loadImage("data/pic1.jpg");
-  }
-  if (key == '2') {
-    img = loadImage("data/pic2.jpg");
-  }
-  if (key == '3') {
-    img = loadImage("data/pic3.jpg");
-  }
+  if (key == '1') img = loadImage("data/pic1.jpg");
+  if (key == '2') img = loadImage("data/pic2.jpg");
+  if (key == '3') img = loadImage("data/pic3.jpg");
 
   if (key == '4') sortMode = null;
   if (key == '5') sortMode = gd.HUE;
