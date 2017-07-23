@@ -28,110 +28,132 @@
  * 5                   : sort colors on hue
  * 6                   : sort colors on saturation
  * 7                   : sort colors on brightness
- * 8                   : sort colors on grayscale (luminance)
+ * 8                   : sort colors on greyscale (luminance)
  * s                   : save png
  * c                   : save color palette
  */
 
 'use strict';
-
 var img;
-var imgLoaded = false;
-var imgCopied = false;
 var colors = [];
 
+var sortMode = null;
+
 function preload(){
-  img = loadImage("data/pic1.jpg", function(){ imgLoaded = true });
+  img = loadImage("data/pic1.jpg");
 }
 
 function setup() {
   createCanvas(600, 600);
-  noCursor();
+  //noCursor();
   noStroke();
 }
 
 function draw() {
-  var tileCount = width / max(mouseX, 5);
+  var tileCount = floor(width / constrain(mouseX, 5, width));
   var rectSize = width / tileCount;
 
-  if(!imgCopied && imgLoaded){
-    loadPixelsAndCopyToColorsArray();
+  img.loadPixels();
+  colors = [];
+
+  for (var gridY = 0; gridY < tileCount; gridY++) {
+    for (var gridX = 0; gridX < tileCount; gridX++) {
+      var px = int(gridX * rectSize);
+      var py = int(gridY * rectSize);
+      var i = (py * img.width + px) * 4;
+      var c = color(img.pixels[i], img.pixels[i+1], img.pixels[i+2], img.pixels[i+3]);
+      colors.push(c);
+    }
   }
 
-  if(!imgCopied){
-    for (var gridY = 0; gridY < tileCount; gridY++) {
-      for (var gridX = 0; gridX < tileCount; gridX++) {
-        var pos = gridY * 120 * int(120 / tileCount) + gridX * int(120 / tileCount);
-        fill(red(colors[pos]), green(colors[pos]), blue(colors[pos]), alpha(colors[pos]));
-        rect(gridX*rectSize, gridY*rectSize, rectSize, rectSize);
-      }
+  if (sortMode == "hue") sortHue();
+  if (sortMode == "saturation") sortSaturation();
+  if (sortMode == "brightness") sortBrightness();
+  if (sortMode == "greyscale") sortGreyscale();
+
+  for (var gridY = 0; gridY < tileCount; gridY++) {
+    for (var gridX = 0; gridX < tileCount; gridX++) {
+      var index = gridY * tileCount + gridX;
+      fill(colors[index]);
+      rect(gridX*rectSize, gridY*rectSize, rectSize, rectSize);
     }
   }
 }
 
-function loadPixelsAndCopyToColorsArray(){
-    imgCopied = true;
-    img.loadPixels();
-    colors = [];
-    for(var j = 0; j < img.pixels.length; j += 20){
-        if(j % 600 * 4 == 0) j += 600 * 4;
-        var pixel;
-        colors.push(pixel = color(img.pixels[j], img.pixels[j + 1], img.pixels[j + 2], img.pixels[j + 3]));
-    }
-    imgLoaded = false;
-    imgCopied = false;
-}
+
 
 function sortHue(){
   colors.sort(function (a, b) {
     //convert a and b from RGB to HSV
-    var aHSV = chroma(red(a), green(a), blue(a));
-    var bHSV = chroma(red(b), green(b), blue(b));
+    var aHue = chroma(red(a), green(a), blue(a)).get('hsv.h');
+    var bHue = chroma(red(b), green(b), blue(b)).get('hsv.h');
 
-    return aHSV.get('hsv.h') < bHSV.get('hsv.h');
+    if (aHue < bHue) return 1;
+    if (aHue > bHue) return -1;
+    return 0;
   })
 }
 
-function sortSaturation(){
+function sortSaturation() {
   colors.sort(function (a, b) {
     //convert a and b from RGB to HSV
-    var aHSV = chroma(red(a), green(a), blue(a));
-    var bHSV = chroma(red(b), green(b), blue(b));
+    var aSat = chroma(red(a), green(a), blue(a)).get('hsv.s');
+    var bSat = chroma(red(b), green(b), blue(b)).get('hsv.s');
 
-    return aHSV.get('hsv.s') < bHSV.get('hsv.s');
+    if (aSat < bSat) return 1;
+    if (aSat > bSat) return -1;
+    return 0;
   })
 }
 
-function sortBrightness(){
+function sortBrightness() {
   colors.sort(function (a, b) {
     //convert a and b from RGB to HSV
-    var aHSV = chroma(red(a), green(a), blue(a));
-    var bHSV = chroma(red(b), green(b), blue(b));
+    var aBright = chroma(red(a), green(a), blue(a)).get('hsv.v');
+    var bBright = chroma(red(b), green(b), blue(b)).get('hsv.v');
 
-    return aHSV.get('hsv.v') < bHSV.get('hsv.v');
+    if (aBright < bBright) return 1;
+    if (aBright > bBright) return -1;
+    return 0;
   })
 }
 
-function sortGreyscale(){
+function sortGreyscale() {
   colors.sort(function (a, b) {
-    var aGreyscale = round(red(a) * 0.222 + green(a) * 0.707 + blue(a) * 0.071);
-    var bGreyscale = round(red(b) * 0.222 + green(b) * 0.707 + blue(b) * 0.071);
+    var aGrey = (red(a) * 0.222 + green(a) * 0.707 + blue(a) * 0.071);
+    var bGrey = (red(b) * 0.222 + green(b) * 0.707 + blue(b) * 0.071);
 
-    return aGreyscale < bGreyscale;
+    if (aGrey < bGrey) return 1;
+    if (aGrey > bGrey) return -1;
+    return 0;
   })
+}
+
+function mousePressed() {
+  console.log('-------------------------')
+  for (var i = 0; i < colors.length; i++) {
+    var g = red(colors[i]) * 0.222 + green(colors[i]) * 0.707 + blue(colors[i]) * 0.071;
+    console.log(g, "|", red(colors[i]), green(colors[i]), blue(colors[i]));
+  }
 }
 
 function keyReleased(){
   if (key == 'c' || key == 'C') writeFile([gd.ase.encode( colors )], gd.timestamp(), 'ase');
   if (key == 's' || key == 'S') saveCanvas(gd.timestamp(), 'png');
 
-  if (key == '1') img = loadImage("data/pic1.jpg", function(){ imgLoaded = true  });
-  if (key == '2') img = loadImage("data/pic2.jpg", function(){ imgLoaded = true  });
-  if (key == '3') img = loadImage("data/pic3.jpg", function(){ imgLoaded = true  }); 
+  if (key == '1') {
+    img = loadImage("data/pic1.jpg");
+  }
+  if (key == '2') {
+    img = loadImage("data/pic2.jpg");
+  }
+  if (key == '3') {
+    img = loadImage("data/pic3.jpg");
+  }
 
-  if (key == '4') loadPixelsAndCopyToColorsArray();
-  if (key == '5') sortHue();
-  if (key == '6') sortSaturation();
-  if (key == '7') sortBrightness();
-  if (key == '8') sortGreyscale();
+  if (key == '4') sortMode = null;
+  if (key == '5') sortMode = "hue";
+  if (key == '6') sortMode = "saturation";
+  if (key == '7') sortMode = "brightness";
+  if (key == '8') sortMode = "greyscale";
 }
