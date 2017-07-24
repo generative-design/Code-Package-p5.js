@@ -33,11 +33,8 @@ function setup() {
   // assign globals
   textTyped = [];
   counters = [];
-  textTyped.push("HELLO");
-  counters.push(0);
-  textTyped.push("WORLD");
-  counters.push(0);
-  textTypedCounter = 0;
+  textTypedCounter = 0; // change the counter if starting with 2 lines
+  textTyped.push("TYPE...!");
   fontSize = 120;
   style = 1;
 
@@ -65,14 +62,11 @@ function draw() {
   if (!font) return;
   background(255, 255, 255, 30);
   // margin border
-  translate(20,220);
+  translate(20,150);
 
   fill(0);
 
-
-  // each line of text needs to be animating on its own
   paths = [];
-
   textTyped.forEach(function(txt, lineNum){
     if(txt.length > 0){
       var fontPath = font.getPath(txt, 0, 0, fontSize);
@@ -88,9 +82,6 @@ function draw() {
         breaks: floor(path.commands.length / txt.length)
       };
       paths.push(output);
-
-
-
     }
   })
 
@@ -98,13 +89,13 @@ function draw() {
   ranges = [];
   paths.forEach(function(path, index){
     var output = {id: index, start:[]};
+    // counters.push(0);
     // console.log(path.len)
     for(var i = 0; i < path.len-1; i+=path.breaks){
       output.start.push(floor(i));
     }
     ranges.push(output);
   })
-
 
 
   ranges.forEach(function(range, i){
@@ -116,13 +107,26 @@ function draw() {
         if(cmd !=undefined && ocmd != undefined){
 
           if(style == 1){
+            // stroke(0);
+            stroke(12,177, 90, 150);
+            fill(7,103, 52)
             ellipse(cmd.x, cmd.y + (paths[i].lineNumber*fontSize), fontSize*0.10, fontSize*0.10);
           }
           if(style == 2){
+            // stroke(0);
+            stroke(12,177, 90, 150);
+            fill(7,103, 52)
            rect(cmd.x, cmd.y + (paths[i].lineNumber*fontSize), fontSize*0.10, fontSize*0.10);
           }
           if(style == 3){
-            line(cmd.x, cmd.y+ (paths[i].lineNumber*fontSize), ocmd.x , ocmd.y+ (paths[i].lineNumber*fontSize));
+            // line(cmd.x, cmd.y + (paths[i].lineNumber*fontSize), width/4, height/8);
+            stroke(12,177, 90, 150);
+            line(cmd.x, cmd.y + (paths[i].lineNumber*fontSize), mouseX, mouseY);
+            noStroke();
+
+            fill(7,103, 52);
+            ellipse(cmd.x, cmd.y + (paths[i].lineNumber*fontSize), 6,6);
+
           }
         }
       counters[i]++;
@@ -133,7 +137,6 @@ function draw() {
 
   })
 
-
 }
 
 function keyPressed() {
@@ -141,7 +144,7 @@ function keyPressed() {
 
   if (keyCode === DELETE || keyCode === BACKSPACE || keyCode === LEFT_ARROW) {
     // remove the last letter and destroy each string in the array
-    // until you kill all the strings
+    // until all the strings are gone
 
     if (textTypedCounter >= 0 && textTyped[0].length > 0){
      textTyped[textTypedCounter] = textTyped[textTypedCounter].substring(0,max(0,textTyped[textTypedCounter].length-1));
