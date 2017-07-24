@@ -33,7 +33,7 @@ var textTyped = 'moire';
 var font;
 
 function preload() {
-  font = loadFont('NotoSans-Bold.ttf');
+  font = loadFont('data/NotoSans-Bold.ttf');
 }
 
 function setup() {
