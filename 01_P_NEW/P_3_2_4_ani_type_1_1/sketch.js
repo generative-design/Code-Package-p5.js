@@ -24,7 +24,6 @@ var path;
 var paths;
 var ranges;
 var breaks;
-var counters;
 
 function setup() {
   createCanvas(windowWidth, windowHeight);
@@ -32,12 +31,17 @@ function setup() {
 
   // assign globals
   textTyped = [];
-  counters = [];
-  textTypedCounter = 0; // change the counter if starting with 2 lines
-  textTyped.push("TYPE...!");
+  textTyped.push(new myText("TYPE...!"));
   fontSize = 120;
   style = 1;
 
+
+  // set the textTypedCounter to the number of lines
+  if(textTyped.length >0){
+    textTypedCounter = textTyped.length -1;
+  } else{
+    textTypedCounter = 0;
+  }
 
   rectMode(CENTER);
 
@@ -68,8 +72,8 @@ function draw() {
 
   paths = [];
   textTyped.forEach(function(txt, lineNum){
-    if(txt.length > 0){
-      var fontPath = font.getPath(txt, 0, 0, fontSize);
+    if(txt.text.length > 0){
+      var fontPath = font.getPath(txt.text, 0, 0, fontSize);
       // convert it to a g.Path object
       path = new g.Path(fontPath.commands);
       // resample it with equidistant points
@@ -79,7 +83,7 @@ function draw() {
         data: path,
         lineNumber: lineNum,
         len: path.commands.length,
-        breaks: floor(path.commands.length / txt.length)
+        breaks: floor(path.commands.length / txt.text.length)
       };
       paths.push(output);
     }
@@ -101,9 +105,9 @@ function draw() {
   ranges.forEach(function(range, i){
     // console.log(range.start);
     range.start.forEach(function(d){
-    if(counters[i] < paths[i].breaks){
-        var cmd = paths[i].data.commands[counters[i]+ d];
-        var ocmd = paths[i].data.commands[ceil(paths[i].breaks) - counters[i] + d];
+    if(textTyped[i].counter < paths[i].breaks){
+        var cmd = paths[i].data.commands[textTyped[i].counter+ d];
+        var ocmd = paths[i].data.commands[ceil(paths[i].breaks) - textTyped[i].counter + d];
         if(cmd !=undefined && ocmd != undefined){
 
           if(style == 1){
@@ -129,9 +133,9 @@ function draw() {
 
           }
         }
-      counters[i]++;
+      textTyped[i].counter++;
     }else{
-      counters[i] = 0;
+      textTyped[i].counter = 0;
     }
     })
 
@@ -146,13 +150,13 @@ function keyPressed() {
     // remove the last letter and destroy each string in the array
     // until all the strings are gone
 
-    if (textTypedCounter >= 0 && textTyped[0].length > 0){
-     textTyped[textTypedCounter] = textTyped[textTypedCounter].substring(0,max(0,textTyped[textTypedCounter].length-1));
+    if (textTypedCounter >= 0 && textTyped[0].text.length > 0){
+     textTyped[textTypedCounter].text = textTyped[textTypedCounter].text.substring(0,max(0,textTyped[textTypedCounter].text.length-1));
     } else{
       console.log("nada")
     }
 
-    if(textTyped[textTypedCounter].length == 0){
+    if(textTyped[textTypedCounter].text.length == 0){
         textTypedCounter--;
         if(textTypedCounter < 0){
           console.log("nothing left")
@@ -164,7 +168,7 @@ function keyPressed() {
 
   } else if (keyCode === TAB || keyCode === ENTER || keyCode === RETURN || keyCode === ESCAPE) {
     console.log("enter!")
-    textTyped.push("");
+    textTyped.push(new myText(""));
     textTypedCounter++;
   } else {
     if(key == "1"){
@@ -176,9 +180,14 @@ function keyPressed() {
     else if(key == "3"){
       style = 3;
     }else{
-      textTyped[textTypedCounter] += key;
+      textTyped[textTypedCounter].text += key;
     }
     loop()
   }
 
 }
+
+function myText(_text){
+    var output = {counter:0, text:_text}
+    return output;
+  }
