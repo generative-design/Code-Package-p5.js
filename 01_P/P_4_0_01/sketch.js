@@ -39,7 +39,7 @@ function setup() {
 }
 
 function draw() {
-  var stepX = width  / (mouseX / 3 + 1);
+  var stepX = width / (mouseX / 3 + 1);
   var stepY = height / (mouseY / 3 + 1);
   for (var gridY = 0; gridY < height; gridY += stepY) {
     for (var gridX = 0; gridX < width; gridX += stepX) {

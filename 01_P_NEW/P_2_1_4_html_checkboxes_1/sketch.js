@@ -3,9 +3,6 @@
 * Shout out to Dan Shiffman's checkbox mirror example
 * Image credits: Map tiles by Stamen Design, under CC BY 3.0. Data by OpenStreetMap, under ODbL.
 *
-* MOUSE
-* click               : click on the checkboxes
-*
 * KEYS
 * 1                   : load image shapes
 * 2                   : load image letters
@@ -23,7 +20,7 @@
 
 "use strict";
 
-var selected;
+var img;
 var img1;
 var img2;
 var img3;
@@ -43,53 +40,33 @@ function setup() {
   pixelDensity(1);
 
   // assign globals
-  selected = 1;
   cols = 40;
   rows = 40;
   boxes = [];
 
-  slider = createSlider(0, 255, 0);
+  img = img1;
+  img.resize(cols, rows);
+  img.loadPixels();
 
   for (var y = 0; y < rows; y++) {
     for (var x = 0; x < cols; x++) {
       var box = createCheckbox();
       box.style('display', 'inline');
-      box.parent('mirror');
+      box.parent('container');
       boxes.push(box);
     }
     var linebreak = createSpan('<br/>');
-    linebreak.parent('mirror');
+    linebreak.parent('container');
   }
 
+  slider = createSlider(0, 255, 0);
 }
 
 function draw() {
-  image2boxes();
-}
-
-
-function image2boxes(){
-  var img;
-
-  if(selected == 1){
-    img = img1;
-  }else if(selected == 2){
-    img = img2;
-  }else{
-    img = img3;
-  }
-
-  img.resize(cols, rows);
-  img.loadPixels();
-
   for (var y = 0; y < img.height; y++) {
     for (var x = 0; x < img.height; x++) {
-      var index = (x + (y * img.height))*4;
-      var r = img.pixels[index+0];
-      var g = img.pixels[index+1];
-      var b = img.pixels[index+2];
-
-      var bright = (r+g+b)/3;
+      var c = color(img.get(x, y));
+      var bright = (red(c) + green(c) + blue(c)) / 3;
 
       var threshold = slider.value();
 
@@ -102,13 +79,15 @@ function image2boxes(){
       }
     }
   }
-
 }
 
 
 function keyPressed() {
-  if (key == '1') selected = 1;
-  if (key == '2') selected = 2;
-  if (key == '3') selected = 3;
+  if (key == '1') img = img1;
+  if (key == '2') img = img2;
+  if (key == '3') img = img3;
+
+  img.resize(cols, rows);
+  img.loadPixels();
 }
 

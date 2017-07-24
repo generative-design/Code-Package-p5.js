@@ -37,7 +37,7 @@ function setup() {
 }
 
 function draw() {
-  var x1 = floor(random(0, width));
+  var x1 = floor(random(width));
   var y1 = -100;
   var x2 = round(x1 + random(-7, 7));
   var y2 = round(random(-16, 16));

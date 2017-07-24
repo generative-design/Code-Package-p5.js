@@ -51,7 +51,7 @@ function preload() {
 function setup() {
   createCanvas(800, 600);
 
-  image(img, 0, 0);
+  image(img);
   tileWidth = width / tileCountY;
   tileHeight = height / tileCountX;
 
@@ -65,7 +65,7 @@ function draw() {
     // in selection mode, a white selection rectangle is drawn over the image
     cropX = constrain(mouseX, 0, width - tileWidth);
     cropY = constrain(mouseY, 0, height - tileHeight);
-    image(img, 0, 0);
+    image(img);
     rect(cropX, cropY, tileWidth, tileHeight);
   } else {
     // reassemble image
@@ -107,7 +107,7 @@ function mouseReleased() {
   cropTiles();
 }
 
-function keyReleased(){
+function keyReleased() {
   if (key == 's' || key == 'S') saveCanvas(gd.timestamp(), 'png');
 
   if (key == 'r' || key == 'R') {
