@@ -7,11 +7,11 @@
  * scroll wheel        : change stroke weight
  *
  * KEYS
- * space               : new composition
- * s                   : save png
  * 1                   : toggle vertical mirror
  * 2                   : toggle horizontal mirror
  * 3                   : toggle diagonal mirror
+ * del, backspace      : clear screen
+ * s                   : save png
  *
  * CONTRIBUTED BY
  * [Niels Poldervaart](http://NielsPoldervaart.nl)
@@ -81,10 +81,11 @@ function mouseWheel(e) {
 
 function keyPressed() {
   if (key == 's' || key == 'S') saveCanvas(gd.timestamp(), 'png');
+  if (keyCode === DELETE || keyCode === BACKSPACE) clear();
+
   if (key == '1') verticalMirror = !verticalMirror;
   if (key == '2') horizontalMirror = !horizontalMirror;
   if (key == '3') diagonalMirror = !diagonalMirror;
-  if (key == ' ') clear();
   if (key == 'g' || key == 'G') {
     recording = !recording;
     if (!recording) {
