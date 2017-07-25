@@ -23,7 +23,7 @@ var padding = 10;
 var drawMode = 1;
 var xoff = 0.0;
 var yoff = 10000;
-var pointDensity= 6;
+var pointDensity= 8;
 
 var colors;
 
@@ -32,8 +32,6 @@ var textG;
 
 function preload() {
   font = loadFont("data/FiraSansCompressed-Bold.otf");
-  //font = loadFont("data/FiraSansCompressed-Regular.otf");
-  //font = loadFont("data/FiraSansCompressed-Light.otf");
 }
 
 function setup() {
@@ -44,12 +42,12 @@ function setup() {
   colors = [color(51, 204, 51), color(44, 168, 232), color(229, 25, 42)];
   pixelDensity(1);
 
-  // create an offscreen graphics object to draw the text into
-  textG = createGraphics(width, height);
-  updateText();
+  setupText();
 }
 
-function updateText() {
+function setupText() {
+  // create an offscreen graphics object to draw the text into
+  textG = createGraphics(width, height);
   textG.pixelDensity(1);
   textG.background(255);
   textG.textFont(font);
@@ -68,6 +66,7 @@ function draw() {
     for (var y = 0; y < height; y += pointDensity) {
       // Calculate the index for the pixels array from x and y
       var index = (x + y * textG.width) * 4;
+      
       // Get the red value from image
       var r = textG.pixels[index];
 
@@ -131,8 +130,8 @@ function draw() {
           push();
           beginShape();
           for(var i =0; i < 3; i ++){
-          var ox = noise((i*1000 + x-xoff)/30, (i*3000 + y+yoff)/30) * pointDensity*6;
-          var oy = noise((i*2000 + x-xoff)/30, (i*4000 + y+yoff)/30) * pointDensity*6;
+          var ox = (noise((i*1000 + x-xoff)/30, (i*3000 + y+yoff)/30) - 0.5) * pointDensity*6;
+          var oy = (noise((i*2000 + x-xoff)/30, (i*4000 + y+yoff)/30) - 0.5) * pointDensity*6;
             vertex(x + ox, y + oy);
           }
           endShape(CLOSE)
@@ -140,26 +139,28 @@ function draw() {
         }
 
         if(drawMode ==4){
-          var num = random(1);
-
-          if (num < 0.6) {
-            stroke(colors[0]);
-          } else if (num < 0.7) {
-            stroke(colors[1]);
-          } else {
-            stroke(colors[2]);
-          }
-
+          stroke(colors[0]);
           strokeWeight(3);
+
           point(x-10, y-10);
           point(x, y);
           point(x+10, y+10);
-          randomSeed(frameCount);
+
           for(var i = 0; i < 5; i++){
+            if (i == 1) {
+              stroke(colors[1]);
+            } else if (i == 3) {
+              stroke(colors[2]);
+            }
+
             if(i%2 ==0){
-              point(x + round(random(0, 10)), y + round(random(0, 10)))
+              var ox = noise((10000 + i*100 + x-xoff)/10) * 10;
+              var oy = noise((20000 + i*100 + x-xoff)/10) * 10;
+              point(x + ox, y + oy);
             }else{
-              point(x - round(random(0, 10)), y - round(random(0, 10)))
+              var ox = noise((30000 + i*100 + x-xoff)/10) * 10;
+              var oy = noise((40000 + i*100 + x-xoff)/10) * 10;
+              point(x - ox, y - oy);
             }
           }
         }
@@ -176,7 +177,7 @@ function keyPressed() {
 
   if (keyCode === DELETE || keyCode === BACKSPACE) {
     textTyped = textTyped.substring(0,max(0,textTyped.length-1));
-    updateText();
+    setupText();
   } 
   if (keyCode === ENTER || keyCode === RETURN) {
     // do nothing
@@ -203,7 +204,7 @@ function keyPressed() {
 function keyTyped() {
   if (keyCode >= 32){
     textTyped += key;
-    updateText();
+    setupText();
   }
 }
 
