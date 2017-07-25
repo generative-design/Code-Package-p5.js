@@ -1,10 +1,7 @@
 // P_pendulum_1
 /**
- * Drawing tool that moves a pendulum-esq contraption along paths drawn by the mouse.
+ * A chain of linked pendulums. Each a little shorter and faster than the one it's linked to.
  * Each joint of the pendulum leaves behind its own trail.
- *
- * MOUSE
- * mouse               : click and drag to create a path to draw a pendulum along with
  *
  * KEYS
  * 1                   : toggle pendulum
@@ -28,6 +25,11 @@ var shape;
 var joints = 5;
 var lineLength = 100;
 var speedRelation = 2;
+var center;
+var pendulumPath;
+var angle = 0;
+var maxAngle = 360;
+var speed;
 
 var showPendulum = true;
 var showPendulumPath = true;
@@ -39,78 +41,68 @@ function setup() {
   strokeWeight(1);
   background(220);
 
-  shape = new Shape(width / 2, height / 2, joints, lineLength, speedRelation);
+  center = createVector(width / 2, height / 2);
+
+  startDrawing();
+}
+
+function startDrawing() {
+  pendulumPath = [];
+  // new empty array for each joint
+  for (var i = 0; i < joints; i++) {
+    pendulumPath.push([]);
+  }
+
+  angle = 0;
+  speed = (8 / pow(1.75, joints-1) / pow(2, speedRelation - 1));
 }
 
 function draw() {
   background(0, 0, 100);
 
-  shape.draw();
-}
+  angle += speed;
 
-function Shape(x, y, joints, lineLength, speedRelation, speed) {
+  // each frame, create new positions for each joint
+  if (angle <= maxAngle + speed) {
+    // start at the center position
+    var pos = center.copy();
 
-  this.center = createVector(x, y);
-  this.pendulumPath = [];
-  this.angle = 0;
-  this.maxAngle = 360;
-  this.joints = joints;
-  this.lineLength = lineLength;
-  this.speedRelation = speedRelation || 2;
-  this.speed = speed || (8 / pow(1.75, this.joints-1) / pow(2, speedRelation - 1));
+    for (var i = 0; i < joints; i++) {
+      var a = angle * pow(speedRelation, i);
+      if (i % 2 == 1) a = -a;
+      var nextPos = p5.Vector.fromAngle(radians(a));
+      nextPos.setMag((joints - i) / joints * lineLength);
+      nextPos.add(pos);
 
-  // new empty array for each joint
-  for (var i = 0; i < this.joints; i++) {
-    this.pendulumPath.push([]);
+      if (showPendulum) {
+        noStroke();
+        fill(0, 10);
+        ellipse(pos.x, pos.y, 4, 4);
+        noFill();
+        stroke(0, 10);
+        line(pos.x, pos.y, nextPos.x, nextPos.y);
+      }
+
+      pendulumPath[i].push(nextPos);
+      pos = nextPos;
+    }
   }
 
-  Shape.prototype.draw = function() {
-    this.angle += this.speed;
+  // draw the path for each joint
+  if (showPendulumPath) {
+    strokeWeight(1.6);
+    for (var i = 0; i < pendulumPath.length; i++) {
+      var path = pendulumPath[i];
 
-    if (this.angle <= this.maxAngle + this.speed) {
-      // start at the center position
-      var pos = this.center.copy();
-
-      for (var i = 0; i < this.joints; i++) {
-        var angle = this.angle * pow(speedRelation, i);
-        if (i % 2 == 1) angle = -angle;
-
-        var nextPos = p5.Vector.fromAngle(radians(angle));
-
-        nextPos.setMag((this.lineLength / this.joints) * (this.joints - i));
-        nextPos.add(pos);
-
-        if (showPendulum) {
-          noStroke();
-          fill(0, 10);
-          ellipse(pos.x, pos.y, 4, 4);
-          noFill();
-          stroke(0, 10);
-          line(pos.x, pos.y, nextPos.x, nextPos.y);
-        }
-
-        pos = nextPos;
-
-        this.pendulumPath[i].push(pos);
+      beginShape();
+      var hue = map(i, 0, joints, 120, 360);
+      stroke(hue, 80, 60, 50);
+      for (var j = 0; j < path.length; j++) {
+        vertex(path[j].x, path[j].y);
       }
+      endShape();
     }
-
-    if (showPendulumPath) {
-      strokeWeight(1.6);
-      for (var i = 0; i < this.pendulumPath.length; i++) {
-        var path = this.pendulumPath[i];
-
-        beginShape();
-        var hue = map(i, 0, this.joints, 120, 360);
-        stroke(hue, 80, 60, 50);
-        for (var j = 0; j < path.length; j++) {
-          vertex(path[j].x, path[j].y);
-        }
-        endShape();
-      }
-    }
-  };
-
+  }
 }
 
 function keyPressed() {
@@ -120,25 +112,21 @@ function keyPressed() {
 
   if (keyCode == UP_ARROW) {
     lineLength += 2;
-    shape.lineLength = lineLength;
-    shape = new Shape(width / 2, height / 2, joints, lineLength, speedRelation);
+    startDrawing();
   }
   if (keyCode == DOWN_ARROW) {
     lineLength -= 2;
-    shape.lineLength = lineLength;
-    shape = new Shape(width / 2, height / 2, joints, lineLength, speedRelation);
+    startDrawing();
   }
   if (keyCode == LEFT_ARROW) {
     joints--;
     if (joints < 1) joints = 1;
-    shape.joints = joints;
-    shape = new Shape(width / 2, height / 2, joints, lineLength, speedRelation);
+    startDrawing();
   }
   if (keyCode == RIGHT_ARROW) {
     joints++;
     if (joints > 10) joints = 10;
-    shape.joints = joints;
-    shape = new Shape(width / 2, height / 2, joints, lineLength, speedRelation);
+    startDrawing();
   }
 }
 
@@ -151,14 +139,12 @@ function keyTyped() {
   if (key == '+') {
     speedRelation++;
     if (speedRelation > 5) speedRelation = 5;
-    shape.speedRelation = speedRelation;
-    shape = new Shape(width / 2, height / 2, joints, lineLength, speedRelation);
+    startDrawing();
   }
   if (key == '-') {
     speedRelation--;
     if (speedRelation < 2) speedRelation = 2;
-    shape.speedRelation = speedRelation;
-    shape = new Shape(width / 2, height / 2, joints, lineLength, speedRelation);
+    startDrawing();
   }
 
 }
