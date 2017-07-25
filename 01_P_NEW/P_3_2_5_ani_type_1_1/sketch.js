@@ -125,7 +125,8 @@ function draw() {
           if(style == 3){
             // line(cmd.x, cmd.y + (paths[i].lineNumber*fontSize), width/4, height/8);
             stroke(12,177, 90, 150);
-            line(cmd.x, cmd.y + (paths[i].lineNumber*fontSize), mouseX, mouseY);
+            noCursor();
+            line(cmd.x, cmd.y + (paths[i].lineNumber*fontSize), mouseX - 20, mouseY - 150); // adjusted for translation
             noStroke();
 
             fill(7,103, 52);
