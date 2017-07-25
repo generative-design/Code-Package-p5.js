@@ -6,7 +6,8 @@
 *
 * KEYS
 * A-Z                      : type letters
-* 1-4                      : toggle through type styles
+* Arrow left/right         : toggle through draw modes
+* Arrow up/down            : increase/decrease point density
 * CONTROL                  : save png
 *
 * CONTRIBUTED BY
@@ -21,14 +22,13 @@ var drawMode = 1;
 var fontSize = 250;
 var padding = 10;
 var drawMode = 1;
-var xoff = 0.0;
-var yoff = 10000;
+var nOff = 0;
 var pointDensity= 8;
 
 var colors;
 
 var paths;
-var textG;
+var textImg;
 
 function preload() {
   font = loadFont("data/FiraSansCompressed-Bold.otf");
@@ -47,34 +47,36 @@ function setup() {
 
 function setupText() {
   // create an offscreen graphics object to draw the text into
-  textG = createGraphics(width, height);
-  textG.pixelDensity(1);
-  textG.background(255);
-  textG.textFont(font);
-  textG.textSize(fontSize)
-  textG.text(textTyped, 100, fontSize + 50);
-  textG.loadPixels();
+  textImg = createGraphics(width, height);
+  textImg.pixelDensity(1);
+  textImg.background(255);
+  textImg.textFont(font);
+  textImg.textSize(fontSize)
+  textImg.text(textTyped, 100, fontSize + 50);
+  textImg.loadPixels();
 }
 
 function draw() {
   background(255);
 
-  xoff++;
-  yoff++;
+  nOff++;
 
-  for (var x = 0; x < width; x += pointDensity) {
-    for (var y = 0; y < height; y += pointDensity) {
+  for (var x = 0; x < textImg.width; x += pointDensity) {
+    for (var y = 0; y < textImg.height; y += pointDensity) {
       // Calculate the index for the pixels array from x and y
-      var index = (x + y * textG.width) * 4;
-      
+      var index = (x + y * textImg.width) * 4;
       // Get the red value from image
-      var r = textG.pixels[index];
+      var r = textImg.pixels[index];
 
       if (r < 128) {
 
         if(drawMode == 1){
           strokeWeight(1);
-          var num = noise((x+xoff)/10, y/10);
+
+          var noiseFac = map(mouseX, 0, width, 0, 1);
+          var lengthFac = map(mouseY, 0, height, 0.01, 1);
+
+          var num = noise((x + nOff) * noiseFac, y * noiseFac);
           if (num < 0.6) {
             stroke(colors[0]);
           } else if (num < 0.7) {
@@ -82,10 +84,11 @@ function draw() {
           } else {
             stroke(colors[2]);
           }
+          
           push();
           translate(x, y);
-          rotate(radians(frameCount % 360));
-          line(0, 0, fontSize / 4, 0);
+          rotate(radians(frameCount));
+          line(0, 0, fontSize * lengthFac, 0);
           pop();
         }
 
@@ -96,7 +99,7 @@ function draw() {
           push();
           translate(x, y);
 
-          var num = noise((x+xoff)/10, y/10);
+          var num = noise((x+nOff)/10, y/10);
          
           if (num < 0.6) {
             fill(colors[0]);
@@ -106,8 +109,8 @@ function draw() {
             fill(colors[2]);
           }
 
-          var w = noise((x-xoff)/10, (y+yoff*0.1)/10) * 20;
-          var h = noise((x-xoff)/10, (y+yoff*0.1)/10) * 10;
+          var w = noise((x-nOff)/10, (y+nOff*0.1)/10) * 20;
+          var h = noise((x-nOff)/10, (y+nOff*0.1)/10) * 10;
           ellipse(0, 0, w, h); // rect() is cool too
           pop();
         }
@@ -130,8 +133,8 @@ function draw() {
           push();
           beginShape();
           for(var i =0; i < 3; i ++){
-          var ox = (noise((i*1000 + x-xoff)/30, (i*3000 + y+yoff)/30) - 0.5) * pointDensity*6;
-          var oy = (noise((i*2000 + x-xoff)/30, (i*4000 + y+yoff)/30) - 0.5) * pointDensity*6;
+          var ox = (noise((i*1000 + x-nOff)/30, (i*3000 + y+nOff)/30) - 0.5) * pointDensity*6;
+          var oy = (noise((i*2000 + x-nOff)/30, (i*4000 + y+nOff)/30) - 0.5) * pointDensity*6;
             vertex(x + ox, y + oy);
           }
           endShape(CLOSE)
@@ -154,12 +157,12 @@ function draw() {
             }
 
             if(i%2 ==0){
-              var ox = noise((10000 + i*100 + x-xoff)/10) * 10;
-              var oy = noise((20000 + i*100 + x-xoff)/10) * 10;
+              var ox = noise((10000 + i*100 + x-nOff)/10) * 10;
+              var oy = noise((20000 + i*100 + x-nOff)/10) * 10;
               point(x + ox, y + oy);
             }else{
-              var ox = noise((30000 + i*100 + x-xoff)/10) * 10;
-              var oy = noise((40000 + i*100 + x-xoff)/10) * 10;
+              var ox = noise((30000 + i*100 + x-nOff)/10) * 10;
+              var oy = noise((40000 + i*100 + x-nOff)/10) * 10;
               point(x - ox, y - oy);
             }
           }
@@ -180,8 +183,8 @@ function keyPressed() {
     setupText();
   } 
   if (keyCode === ENTER || keyCode === RETURN) {
-    // do nothing
-    //console.log("enter!")
+    textTyped += "\n";
+    setupText();
   }
   if (keyCode === LEFT_ARROW) {
     drawMode--;
