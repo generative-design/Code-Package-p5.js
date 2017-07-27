@@ -92,7 +92,7 @@ function Treemap(counters, x, y, w, h, parent) {
       var a = restW;
       var b = restH;
       if (restW > restH) {
-        hor = false; // vertical row
+        hor = false; // horizontal row
         a = restH;
         b = restW;
       }
@@ -110,7 +110,6 @@ function Treemap(counters, x, y, w, h, parent) {
 
         // Let's assume it's a horizontal row. The rects are as square as possible, 
         // as soon as the average width (a / rowCount) gets smaller than the row height (bLen).
-        // For a vertical row it work just like that.
         if (a / rowCount < bLen || i == this.maps.length-1) {
 
           // get the position and length of the row according to hor (horizontal or not).

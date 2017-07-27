@@ -36,8 +36,8 @@ function Treemap(counters, x, y, w, h) {
   this.h = h;
   this.rects = [];
 
+  // sort counters
   Treemap.prototype.init = function(){
-    // sort counters
     this.counters.sort(function(a, b) {
       if (a < b) return 1;
       if (a > b) return -1;
@@ -50,29 +50,24 @@ function Treemap(counters, x, y, w, h) {
         this.sum += this.counters[i];
     }
 
-    // Starting point is a rectangle and a number of counters to fit in.
-    // So, as nothing has fit in the rect, restSum, restW, ... are the starting rect and the sum of all counters
     var restSum = this.sum;
     var restW = this.w;
     var restH = this.h;
     var restX = this.x;
     var restY = this.y;
 
-    // Fit in rows. One row consits of one or more rects that should be as square as possible in average.
-    // actIndex always points on the first counter, that has not fitted in.
+    // fit in rows
     var actIndex = 0;
     while (actIndex < this.counters.length) {
-      // A row is always along the shorter edge (a).
       var hor = true; // horizontal row
       var a = restW;
       var b = restH;
       if (restW > restH) {
-        hor = false; // vertical row
+        hor = false; // horizontal row
         a = restH;
         b = restW;
       }
 
-      // How many items to fit into the row? 
       var rowSum = 0;
       var rowCount = 0;
       for (var i = actIndex; i < this.counters.length; i++) {
@@ -83,12 +78,9 @@ function Treemap(counters, x, y, w, h) {
         var percentage = rowSum / restSum;
         var bLen = b * percentage;
 
-        // Let's assume it's a horizontal row. The rects are as square as possible, 
-        // as soon as the average width (a / rowCount) gets smaller than the row height (bLen).
-        // For a vertical row it work just like that.
+        //console.log(rowSum, rowCount, bLen);
         if (a / rowCount < bLen || i == this.counters.length-1) {
-
-          // get the position and length of the row according to hor (horizontal or not).
+          // store rects
           var aPos = restX;
           var bPos = restY;
           var aLen = restW;
@@ -98,9 +90,7 @@ function Treemap(counters, x, y, w, h) {
             aLen = restH;
           }
 
-          // now we can transform the counters between actIndex and i to rects
           for (var j = actIndex; j <= i; j++) {
-            // map aLen according to the value of the counter
             var aPart = aLen * this.counters[j] / rowSum;
             if (hor) {
               this.rects.push({x:aPos, y:bPos, w:aPart, h:bLen});
@@ -110,7 +100,7 @@ function Treemap(counters, x, y, w, h) {
             aPos += aPart;
           }
 
-          // adjust dimensions for the next row
+          // adjust new dimensions
           if (hor) {
             restY += bLen;
             restH -= bLen;
@@ -126,9 +116,9 @@ function Treemap(counters, x, y, w, h) {
       }
 
       actIndex = i + 1;
+      //console.log(actIndex);
     }
   };
-  // init automatically
   this.init();
 
 
