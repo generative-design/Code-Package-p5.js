@@ -27,7 +27,6 @@ function draw() {
 }
 
 
-
 function Treemap(counters, x, y, w, h) {
   this.counters = counters;
   this.sum = 0;
@@ -71,8 +70,8 @@ function Treemap(counters, x, y, w, h) {
 
       var rowSum = 0;
       var rowCount = 0;
-      for (var i = actIndex; i < counters.length; i++) {
-        rowSum += counters[i];
+      for (var i = actIndex; i < this.counters.length; i++) {
+        rowSum += this.counters[i];
         rowCount++;
 
         // a*bLen is the rect of the row 
@@ -80,7 +79,7 @@ function Treemap(counters, x, y, w, h) {
         var bLen = b * percentage;
 
         //console.log(rowSum, rowCount, bLen);
-        if (a / rowCount < bLen || i == counters.length-1) {
+        if (a / rowCount < bLen || i == this.counters.length-1) {
           // store rects
           var aPos = restX;
           var bPos = restY;
