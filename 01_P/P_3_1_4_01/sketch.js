@@ -29,14 +29,12 @@
  */
 'use strict';
 
-var font;
 var joinedText;
-var words;
-var wordCounters = {};
 
-var counters = [];
+var mapData = {};
 var treemap;
 
+var font;
 var maxFontSize = 1000;
 var minFontSize = 1;
 
@@ -49,37 +47,37 @@ function preload() {
 }
 
 function setup() {
-  //createCanvas(windowWidth, windowHeight);
-  createCanvas(windowWidth, round(windowWidth*1.343));
-  strokeWeight(1);
-  fill(255);
-  textAlign(CENTER, BASELINE);
+  createCanvas(windowWidth, windowHeight);
+  //createCanvas(windowWidth, round(windowWidth*1.343));
 
   joinedText = joinedText.join(" ");
-  // Is there a better way to get rid of all that's not [a-z A-z äöü ÄÖÜßéñ ...and so on] ?
-  words = joinedText.split(/[.,;:?'!–()"\-\s]+/);
+  // This seems to be a short and good way. Numbers will be matched to, but that not a very big problem.
+  var words = joinedText.match(/\w+/g);
 
   // count words
   for (var i = 0; i < words.length; i++) {
     var w = words[i].toLowerCase();
-    if (wordCounters[w] == undefined) {
-      wordCounters[w] = 1;
+    if (mapData[w] == undefined) {
+      mapData[w] = 1;
     } else {
-      wordCounters[w]++;
+      mapData[w]++;
     }
   }
   
-  treemap = new Treemap(wordCounters, 1, 1, width-3, height-3, {sort:doSort, direction:rowDirection});
+  treemap = new Treemap(mapData, 1, 1, width - 3, height - 3, {sort:doSort, direction:rowDirection});
 }
+
 
 function draw() {
   background(255);
+  textAlign(CENTER, BASELINE);
 
   for (var i = 0; i < treemap.rects.length; i++) {
     var r = treemap.rects[i];
     
     fill(255);
     stroke(0);
+    strokeWeight(1);
     rect(r.x, r.y, r.w, r.h);
 
     var word = treemap.mapData[i].word;
@@ -99,7 +97,7 @@ function draw() {
 
 
 function Treemap(mapData, x, y, w, h, options) {
-  // convert each key-value-pair to an array with [key, value]
+  // convert each key-value-pair to a two-element array with [key, value]
   this.mapData = Object.keys(mapData).map(function (key) { return {word:key, count:mapData[key]}; });
 
   this.sum = 0;
@@ -220,13 +218,12 @@ function Treemap(mapData, x, y, w, h, options) {
  * Using Durstenfeld shuffle algorithm.
  */
 function shuffleArray(array) {
-    for (var i = array.length - 1; i > 0; i--) {
-        var j = Math.floor(Math.random() * (i + 1));
-        var temp = array[i];
-        array[i] = array[j];
-        array[j] = temp;
-    }
-    return array;
+  for (var i = array.length - 1; i > 0; i--) {
+    var j = Math.floor(Math.random() * (i + 1));
+    var temp = array[i];
+    array[i] = array[j];
+    array[j] = temp;
+  }
 }
 
 
@@ -252,7 +249,7 @@ function keyTyped() {
 
   // number key
   if (keyCode >= 48 && keyCode <= 57) {
-    treemap = new Treemap(wordCounters, 1, 1, width-3, height-3, {sort:doSort, direction:rowDirection});
+    treemap = new Treemap(mapData, 1, 1, width-3, height-3, {sort:doSort, direction:rowDirection});
     loop();
   }
 
