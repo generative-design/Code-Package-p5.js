@@ -30,7 +30,7 @@
 'use strict';
 
 var joinedText;
-var charSet;
+var alphabet = "ABCDEFGHIJKLMNORSTUVWYZÄÖÜß,.;!? ";
 var counters = [];
 
 var posX;
@@ -50,9 +50,11 @@ function setup() {
   textFont("monospace", 18);
 
   joinedText = joinedText.join(" ");
-  charSet = getUniqCharacters();
 
-  for (var i = 0; i < charSet.length; i++) {
+  // use the following command, to collect all characters in the text automatically
+  // alphabet = getUniqCharacters();
+
+  for (var i = 0; i < alphabet.length; i++) {
     counters[i] = 0;
   }
 
@@ -69,7 +71,7 @@ function draw() {
   for (var i = 0; i < joinedText.length; i++) {
     // again, find the index of the current letter in the character set
     var upperCaseChar = joinedText.charAt(i).toUpperCase();
-    var index = charSet.indexOf(upperCaseChar);
+    var index = alphabet.indexOf(upperCaseChar);
     if (index < 0) continue;
 
     if (drawAlpha) {
@@ -93,21 +95,24 @@ function draw() {
   }
 }
 
+function countCharacters() {
+  for (var i = 0; i < joinedText.length; i++) {
+    // get one character from the text and turn it to uppercase
+    var c = joinedText.charAt(i);
+    var upperCaseChar = c.toUpperCase();
+    var index = alphabet.indexOf(upperCaseChar);
+    // increase the respective counter
+    if (index >= 0) counters[index]++;
+  }
+}
+
+
 function getUniqCharacters() {
   var charsArray = joinedText.toUpperCase().split('');
   var uniqCharsArray = charsArray.filter(function(char, index) {
     return charsArray.indexOf(char) === index;
   }).sort();
   return uniqCharsArray.join('');
-}
-
-function countCharacters() {
-  for (var i = 0; i < joinedText.length; i++) {
-    // get one character from the text and turn it to uppercase
-    var index = charSet.indexOf(joinedText.charAt(i).toUpperCase());
-    // increacre the respective counter
-    if (index >= 0) counters[index]++;
-  }
 }
 
 function keyReleased() {

@@ -38,12 +38,15 @@ function setup() {
 
 function draw() {
   var x1 = floor(random(width));
-  var y1 = -100;
+  var y1 = 50;
+
   var x2 = round(x1 + random(-7, 7));
-  var y2 = round(random(-16, 16));
-  var w = floor(random(2, 4));
-  var h = height;
-  copy(img, x1, y1, w, h, x2, y2, w, h);
+  var y2 = round(y1 + random(-5, 5));
+
+  var w = floor(random(10, 40));
+  var h = height-100;
+  
+  set(x2, y2, get(x1, y1, w, h));
 }
 
 function keyReleased() {

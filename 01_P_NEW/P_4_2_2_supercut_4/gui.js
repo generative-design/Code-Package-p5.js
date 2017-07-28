@@ -1,5 +1,5 @@
 function createGUI() {
-  gui = QuickSettings.create(10, 10, 'P_supercut_4');
+  gui = QuickSettings.create(10, 10, document.title);
   gui.addFileChooser('video', 'video file', 'video/*', selectVideoFile);
   gui.addFileChooser('subtitles', 'subtitle file', undefined, selectSubtitleFile);
   gui.addText('searchQuery', searchQuery, setSearchQuery);
@@ -10,6 +10,7 @@ function createGUI() {
   gui.addHTML('speed', '1');
   gui.addHTML('dialog', '');
   gui.addButton('togglePlayback', togglePlayback);
+  gui.addBoolean('tileMode', tileMode, setTileMode);
 }
 
 function updateGUI() {
@@ -37,6 +38,11 @@ function selectVideoFile(file) {
 
 function selectSubtitleFile(file) {
   subtitleSrc = URL.createObjectURL(file);
+  reset();
+}
+
+function setTileMode() {
+  tileMode = !tileMode;
   reset();
 }
 

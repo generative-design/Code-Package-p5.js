@@ -68,6 +68,6 @@ function mousePressed() {
   actRandomSeed = random(100000);
 }
 
-function keyReleased(){
+function keyReleased() {
   if (key == 's' || key == 'S') saveCanvas(gd.timestamp(), 'png');
 }

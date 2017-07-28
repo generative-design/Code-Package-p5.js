@@ -1,5 +1,5 @@
 function createGUI() {
-  gui = QuickSettings.create(10, 10, 'P_supercut_1');
+  gui = QuickSettings.create(10, 10, document.title);
   gui.addFileChooser('video', 'video file', 'video/*', selectVideoFile);
   gui.addFileChooser('subtitles', 'subtitle file', undefined, selectSubtitleFile);
   gui.addText('searchQuery', searchQuery, setSearchQuery);

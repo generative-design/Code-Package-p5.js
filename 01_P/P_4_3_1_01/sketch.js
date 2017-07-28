@@ -49,7 +49,7 @@ function draw() {
 
   for (var gridX = 0; gridX < img.width; gridX++) {
     for (var gridY = 0; gridY < img.height; gridY++) {
-      // grid positoon + tile size
+      // grid position + tile size
       var tileWidth = width / img.width;
       var tileHeight = height / img.height;
       var posX = tileWidth * gridX;

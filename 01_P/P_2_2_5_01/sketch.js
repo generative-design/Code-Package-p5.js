@@ -50,39 +50,49 @@ function draw() {
   // Choose a random or the current mouse position
   var newX = random(maxRadius, width - maxRadius);
   var newY = random(maxRadius, height - maxRadius);
+  var newR = minRadius;
   if (mouseIsPressed) {
     newX = random(mouseX - mouseRect, mouseX + mouseRect);
     newY = random(mouseY - mouseRect, mouseY + mouseRect);
+    newR = 1;
   }
 
-  // Try to fit the largest possible circle at the current location without overlapping
-  for (var newR = maxRadius; newR >= minRadius; newR--) {
-    var intersection = circles.some(function(circle) {
-      return dist(newX, newY, circle.x, circle.y) < circle.r + newR;
-    });
-    if (!intersection) {
-      circles.push(new Circle(newX, newY, newR));
-      break;
+  // Check if the small new circle already intersects one of the others
+  var intersection = false;
+  for (var i = 0; i < circles.length; i++) {
+    var d = dist(newX, newY, circles[i].x, circles[i].y);
+    if (d < circles[i].r + newR) {
+      intersection = true;
     }
+  }
+
+  // If not, try to fit the largest possible circle at the current location without overlapping
+  if (!intersection) {
+    var minR = Number.MAX_VALUE;
+    var closestCircle;
+    for (var i = 0; i < circles.length; i++) {
+      var d = dist(newX, newY, circles[i].x, circles[i].y);
+      if (minR > d - circles[i].r) {
+        minR = d - circles[i].r;
+        closestCircle = circles[i];
+      }
+    }
+    if (minR > maxRadius) minR = maxRadius;
+    
+    circles.push(new Circle(newX, newY, minR, closestCircle));
   }
 
   // Draw all circles
-  circles.forEach(function(circle) {
-    // Try to find an adjacent circle to the current one and draw a connecting line between the two
-    var closestCircle = circles.find(function(otherCircle) {
-      return dist(circle.x, circle.y, otherCircle.x, otherCircle.y) <= circle.r + otherCircle.r + 1;
-    });
-    if (closestCircle) {
-      stroke(100, 230, 100);
-      strokeWeight(0.75);
-      line(circle.x, circle.y, closestCircle.x, closestCircle.y);
-    }
-
-    // Draw the circle itself.
+  for (var i = 0; i < circles.length; i++) {
+    // Draw the circle itself
     stroke(0);
     strokeWeight(1.5);
-    circle.draw();
-  });
+    circles[i].draw();
+    // Draw the line between this and the closest
+    stroke(51, 204, 51);
+    strokeWeight(0.75);
+    circles[i].drawLine();
+  }
 
   // Visualise the random range of the current mouse position
   if (mouseIsPressed) {
@@ -92,13 +102,18 @@ function draw() {
   }
 }
 
-function Circle(x, y, r) {
+function Circle(x, y, r, c) {
   this.x = x;
   this.y = y;
   this.r = r;
+  this.closestCircle = c;
 
   Circle.prototype.draw = function() {
     ellipse(this.x, this.y, this.r);
+  }
+
+  Circle.prototype.drawLine = function() {
+    if (this.closestCircle) line(this.x, this.y, this.closestCircle.x, this.closestCircle.y);
   }
 }
 

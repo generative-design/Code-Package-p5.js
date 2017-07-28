@@ -83,52 +83,51 @@ function setup() {
   createCanvas(1024, 768);
   imageMode(CENTER);
 
-  layer1Items = generateCollageItems(layer1Images, 10, width / 2, height / 2, width, height, 0.1, 0.5, 0, 0);
-  layer2Items = generateCollageItems(layer2Images, 15, width / 2, height / 2, width, height, 0.1, 0.3, -HALF_PI, HALF_PI);
-  layer3Items = generateCollageItems(layer3Images, 11, width / 2, height / 2, width, height, 0.1, 0.85, 0, 0);
+  layer1Items = generateCollageItems(layer1Images, 100, width / 2, height / 2, width, height, 0.1, 0.5, 0, 0);
+  layer2Items = generateCollageItems(layer2Images, 150, width / 2, height / 2, width, height, 0.1, 0.3, -HALF_PI, HALF_PI);
+  layer3Items = generateCollageItems(layer3Images, 110, width / 2, height / 2, width, height, 0.1, 0.4, 0, 0);
 
-  drawCollageitems(layer1Items);
-  drawCollageitems(layer2Items);
-  drawCollageitems(layer3Items);
+  drawCollageItems(layer1Items);
+  drawCollageItems(layer2Items);
+  drawCollageItems(layer3Items);
 }
 
 function keyReleased() {
   if (key == 's' || key == 'S') saveCanvas(gd.timestamp(), 'png');
-  if (key == '1') layer1Items = generateCollageItems(layer1Images, random(2, 10), width / 2, height / 2, width, height, 0.1, 0.5, 0, 0);
-  if (key == '2') layer2Items = generateCollageItems(layer2Images, random(10, 25), width / 2, height / 2, width, height, 0.1, random(0.3, 0.8), -HALF_PI, HALF_PI);
-  if (key == '3') layer3Items = generateCollageItems(layer3Images, random(10, 25), width / 2, height / 2, width, height, 0.1, random(0.4, 0.8), -0.05, 0.05);
+  if (key == '1') layer1Items = generateCollageItems(layer1Images, random(50, 200), width / 2, height / 2, width, height, 0.1, 0.5, 0, 0);
+  if (key == '2') layer2Items = generateCollageItems(layer2Images, random(25, 300), width / 2, height / 2, width, height, 0.1, random(0.3, 0.8), -HALF_PI, HALF_PI);
+  if (key == '3') layer3Items = generateCollageItems(layer3Images, random(50, 300), width / 2, height / 2, width, height, 0.1, random(0.2, 0.6), -0.05, 0.05);
 
   clear();
 
-  drawCollageitems(layer1Items);
-  drawCollageitems(layer2Items);
-  drawCollageitems(layer3Items);
+  drawCollageItems(layer1Items);
+  drawCollageItems(layer2Items);
+  drawCollageItems(layer3Items);
 }
 
 function generateCollageItems(layerImages, count, posX, posY, rangeX, rangeY, scaleStart, scaleEnd, rotationStart, rotationEnd) {
   var layerItems = [];
-  for (var i = 0; i < layerImages.length; i++) {
-    for (var j = 0; j < count; j++) {
-      var collageItem = new CollageItem(layerImages[i]);
-      collageItem.x = posX + random(-rangeX / 2, rangeX / 2);
-      collageItem.y = posY + random(-rangeY / 2, rangeY / 2);
-      collageItem.scaling = random(scaleStart, scaleEnd);
-      collageItem.rotation = random(rotationStart, rotationEnd);
-      layerItems.push(collageItem);
-    }
+  for (var i = 0; i < count; i++) {
+    var index = i % layerImages.length;
+    var item = new CollageItem(layerImages[index]);
+    item.x = posX + random(-rangeX / 2, rangeX / 2);
+    item.y = posY + random(-rangeY / 2, rangeY / 2);
+    item.scaling = random(scaleStart, scaleEnd);
+    item.rotation = random(rotationStart, rotationEnd);
+    layerItems.push(item);
   }
   return layerItems;
 }
 
 function CollageItem(image) {
+  this.image = image;
   this.x = 0;
   this.y = 0;
   this.rotation = 0;
   this.scaling = 1;
-  this.image = image;
 }
 
-function drawCollageitems(layerItems) {
+function drawCollageItems(layerItems) {
   for (var i = 0; i < layerItems.length; i++) {
     push();
     translate(layerItems[i].x, layerItems[i].y);

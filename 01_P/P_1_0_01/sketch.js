@@ -31,6 +31,7 @@
 function setup() {
   createCanvas(720, 720);
   noCursor();
+  
   colorMode(HSB, 360, 100, 100);
   rectMode(CENTER);
   noStroke();

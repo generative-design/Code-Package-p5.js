@@ -169,7 +169,7 @@ function draw() {
 
   // blink cursor after text
   fill(0);
-  if (frameCount / 6 % 2 === 0) rect(0, 0, 15, 2);
+  if (int(frameCount / 6) % 2 === 0) rect(0, 0, 15, 2);
 }
 
 
@@ -183,7 +183,6 @@ function keyReleased() {
   // export png
   if (keyCode === CONTROL) saveCanvas(gd.timestamp(), 'png');
   if (keyCode === ALT) actRandomSeed++;
-  print(actRandomSeed);
 }
 
 function keyPressed() {

@@ -67,9 +67,9 @@ function setup() {
 
 function draw() {
   background(255);
-
+  
   if (mouseIsPressed && mouseButton == LEFT) setTile();
-  if (mouseIsPressed && mouseButton == RIGHT) unSetTile();
+  if (mouseIsPressed && mouseButton == RIGHT) unsetTile();
 
   if (doDrawGrid) drawGrid();
   drawModules();

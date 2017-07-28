@@ -27,8 +27,8 @@
 
 // horizontal and vertical grid count
 // take care of the aspect ratio ... here 4:3
-var tileCountX = 12;
-var tileCountY = 16;
+var tileCountX = 9;
+var tileCountY = 12;
 var tileWidth;
 var tileHeight;
 var imageCount = tileCountX * tileCountY;
@@ -60,6 +60,8 @@ function draw() {
     // draw video
     image(movie, posX, posY, tileWidth, tileHeight);
 
+    currentImage++;
+
     // seek the video to next time
     var nextTime = map(currentImage, 0, imageCount, 0, movie.duration());
     print('seek to: ' + movie.time());
@@ -72,7 +74,6 @@ function draw() {
       gridY++;
     }
 
-    currentImage++;
     if (currentImage >= imageCount) noLoop();
   }
 }
