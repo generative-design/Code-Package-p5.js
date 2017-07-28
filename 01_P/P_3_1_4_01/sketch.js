@@ -51,7 +51,8 @@ function setup() {
   //createCanvas(windowWidth, round(windowWidth*1.343));
 
   joinedText = joinedText.join(" ");
-  // This seems to be a short and good way. Numbers will be matched to, but that not a very big problem.
+  // If you want to get rid of all number chars too, just uncomment the following line
+  // joinedText = joinedText.replace(/\d+/g, '');
   var words = joinedText.match(/\w+/g);
 
   // count words
