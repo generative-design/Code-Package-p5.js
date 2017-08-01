@@ -59,17 +59,18 @@ function Treemap(counters, x, y, w, h) {
     // fit in rows
     var actIndex = 0;
     while (actIndex < this.counters.length) {
-      var hor = true; // horizontal row
+      var isHorizontal = true; // horizontal row
       var a = restW;
       var b = restH;
       if (restW > restH) {
-        hor = false; // horizontal row
+        isHorizontal = false; // horizontal row
         a = restH;
         b = restW;
       }
 
       var rowSum = 0;
       var rowCount = 0;
+      var avRelPrev = Number.MAX_VALUE;
       for (var i = actIndex; i < this.counters.length; i++) {
         rowSum += this.counters[i];
         rowCount++;
@@ -77,14 +78,24 @@ function Treemap(counters, x, y, w, h) {
         // a*bLen is the rect of the row 
         var percentage = rowSum / restSum;
         var bLen = b * percentage;
+        var avRel = (a / rowCount) / bLen;
 
         //console.log(rowSum, rowCount, bLen);
-        if (a / rowCount < bLen || i == this.counters.length-1) {
+        if (avRel < 1 || i == this.counters.length-1) {
+          // Which is better, the actual or the previous fitting?
+          if (avRelPrev < 1/avRel) {
+            // previous fitting is better, so revert to that
+            rowSum -= this.counters[i];
+            rowCount--;
+            bLen = b * rowSum / restSum;
+            i--;
+          }
+
           // store rects
           var aPos = restX;
           var bPos = restY;
           var aLen = restW;
-          if (!hor) {
+          if (!isHorizontal) {
             aPos = restY;
             bPos = restX;
             aLen = restH;
@@ -92,7 +103,7 @@ function Treemap(counters, x, y, w, h) {
 
           for (var j = actIndex; j <= i; j++) {
             var aPart = aLen * this.counters[j] / rowSum;
-            if (hor) {
+            if (isHorizontal) {
               this.rects.push({x:aPos, y:bPos, w:aPart, h:bLen});
             } else {
               this.rects.push({x:bPos, y:aPos, w:bLen, h:aPart});
@@ -101,7 +112,7 @@ function Treemap(counters, x, y, w, h) {
           }
 
           // adjust new dimensions
-          if (hor) {
+          if (isHorizontal) {
             restY += bLen;
             restH -= bLen;
           } else {
@@ -112,6 +123,8 @@ function Treemap(counters, x, y, w, h) {
 
           break;
         }
+
+        avRelPrev = avRel;
 
       }
 

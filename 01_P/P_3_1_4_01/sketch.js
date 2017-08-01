@@ -141,12 +141,12 @@ function Treemap(mapData, x, y, w, h, options) {
     var actIndex = 0;
     while (actIndex < this.mapData.length) {
       // A row is always along the shorter edge (a).
-      var hor = true; // horizontal row
+      var isHorizontal = true; // horizontal row
       var a = restW;
       var b = restH;
       if (this.options.direction != "horizontal") {
         if (restW > restH || this.options.direction == "vertical") {
-          hor = false; // vertical row
+          isHorizontal = false; // vertical row
           a = restH;
           b = restW;
         }
@@ -155,6 +155,7 @@ function Treemap(mapData, x, y, w, h, options) {
       // How many items to fit into the row? 
       var rowSum = 0;
       var rowCount = 0;
+      var avRelPrev = Number.MAX_VALUE;
       for (var i = actIndex; i < this.mapData.length; i++) {
         rowSum += this.mapData[i].count;
         rowCount++;
@@ -162,17 +163,26 @@ function Treemap(mapData, x, y, w, h, options) {
         // a*bLen is the rect of the row 
         var percentage = rowSum / restSum;
         var bLen = b * percentage;
-
+        var avRel = (a / rowCount) / bLen;
         // Let's assume it's a horizontal row. The rects are as square as possible, 
         // as soon as the average width (a / rowCount) gets smaller than the row height (bLen).
         // For a vertical row it work just like that.
-        if (a / rowCount < bLen || i == this.mapData.length-1) {
+        if (avRel < 1 || i == this.mapData.length-1) {
 
-          // get the position and length of the row according to hor (horizontal or not).
+          // Which is better, the actual or the previous fitting?
+          if (avRelPrev < 1/avRel) {
+            // previous fitting is better, so revert to that
+            rowSum -= this.mapData[i].count;
+            rowCount--;
+            bLen = b * rowSum / restSum;
+            i--;
+          }
+
+          // get the position and length of the row according to isHorizontal (horizontal or not).
           var aPos = restX;
           var bPos = restY;
           var aLen = restW;
-          if (!hor) {
+          if (!isHorizontal) {
             aPos = restY;
             bPos = restX;
             aLen = restH;
@@ -182,7 +192,7 @@ function Treemap(mapData, x, y, w, h, options) {
           for (var j = actIndex; j <= i; j++) {
             // map aLen according to the value of the counter
             var aPart = aLen * this.mapData[j].count / rowSum;
-            if (hor) {
+            if (isHorizontal) {
               this.rects.push({x:aPos, y:bPos, w:aPart, h:bLen});
             } else {
               this.rects.push({x:bPos, y:aPos, w:bLen, h:aPart});
@@ -191,7 +201,7 @@ function Treemap(mapData, x, y, w, h, options) {
           }
 
           // adjust dimensions for the next row
-          if (hor) {
+          if (isHorizontal) {
             restY += bLen;
             restH -= bLen;
           } else {
@@ -203,6 +213,7 @@ function Treemap(mapData, x, y, w, h, options) {
           break;
         }
 
+        avRelPrev = avRel;
       }
 
       actIndex = i + 1;
