@@ -43,16 +43,20 @@ var showAxes = true;
 
 var img;
 
+var tablet;
+
 function setup() {
   // Please work with a square canvas
   canvasElement = createCanvas(800, 800);
-  noCursor();
+  cursor(CROSS);
   noFill();
   lineColor = color(0);
 
   // Create an offscreen graphics object to draw into
   img = createGraphics(width, height);
   img.pixelDensity(1);
+
+  tablet = new gd.WacomTablet();
 
   setupGIF();
 }
@@ -64,7 +68,22 @@ function draw() {
   img.strokeWeight(lineWidth);
   img.stroke(lineColor);
 
-  if (mouseIsPressed) {
+  var tabletValues = tablet.values();
+
+  // gamma values optimized for wacom intuos 3
+  var pressure = gamma(tabletValues.pressure, 2.5);
+  var angle = tabletValues.azimuth;
+  var penLength = cos(tabletValues.altitude);
+
+  if (pressure > 0.0 && penLength > 0.0) {
+    lineWidth = map(pressure, 0, 1, 0.1, 10);
+
+    if (tabletValues.isEraser) {
+      img.stroke(255);
+      lineWidth *= 3;
+    }  
+    img.strokeWeight(lineWidth);
+
     for (var i = 0; i < penCount; i++) {
       for (var j = 0; j < penCount; j++) {
         var w = width;
@@ -136,6 +155,11 @@ function draw() {
 
   }
 
+}
+
+// gamma ramp, non linaer mapping ...
+function gamma(theValue, theGamma) {
+  return pow(theValue, theGamma);
 }
 
 function mouseWheel(e) {
