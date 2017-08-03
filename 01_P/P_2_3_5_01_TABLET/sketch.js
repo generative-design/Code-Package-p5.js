@@ -62,7 +62,6 @@ function setup() {
 function draw() {
   var tabletValues = tablet.values();
   
-  
   // gamma values optimized for wacom intuos 3
   var pressure = gamma(tabletValues.pressure, 2.5);
   var angle = tabletValues.azimuth;
