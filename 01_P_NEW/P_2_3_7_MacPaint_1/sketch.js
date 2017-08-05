@@ -65,64 +65,60 @@ function draw() {
   img.stroke(lineColor);
 
   if (mouseIsPressed) {
+    var w = width / penCount;
+    var h = height / penCount;
+    var x = mouseX % w;
+    var y = mouseY % h;
+    var px = x - (mouseX - pmouseX);
+    var py = y - (mouseY - pmouseY);
+
     for (var i = 0; i < penCount; i++) {
       for (var j = 0; j < penCount; j++) {
-        var w = width;
-        var h = height;
-        var x = (mouseX + i * w / penCount);
-        var y = (mouseY + j * h / penCount);
-        var px = (pmouseX + i * w / penCount);
-        var py = (pmouseY + j * h / penCount);
-
-        if (x > w) {
-          x -= w;
-          px -= w;
-        }
-
-        if (y > h) {
-          y -= h;
-          py -= h;
-        }
+        var ox = i * w;
+        var oy = j * h;
 
         // Normal position
-        img.line(x, y, px, py); 
+        img.line(x+ox, y+oy, px+ox, py+oy); 
         // Horizontal mirror or all three other mirrors
-        if (mh || md2 && md1 && mv) img.line(w - x, y, w - px, py);
+        if (mh || md2 && md1 && mv) img.line(w-x+ox, y+oy, w-px+ox, py+oy);
         // Vertical mirror
-        if (mv || md2 && md1 && mh) img.line(x, h - y, px, h - py);
+        if (mv || md2 && md1 && mh) img.line(x+ox, h-y+oy, px+ox, h-py+oy);
         // Horizontal and vertical mirror
-        if (mv && mh || md2 && md1) img.line(w - x, h - y, w - px, h - py);
+        if (mv && mh || md2 && md1) img.line(w-x+ox, h-y+oy, w-px+ox, h-py+oy);
 
         // When mirroring diagonally, flip X and Y inputs.
-        if (md1 || md2 && mv && mh) img.line(y, x, py, px);
-        if (md1 && mh || md2 && mv) img.line(y, w - x, py, w - px);
-        if (md1 && mv || md2 && mh) img.line(h - y, x, h - py, px);
-        if (md1 && mv && mh || md2) img.line(h - y, w - x, h - py, w - px);
+        if (md1 || md2 && mv && mh) img.line(y+ox, x+oy, py+ox, px+oy);
+        if (md1 && mh || md2 && mv) img.line(y+ox, w-x+oy, py+ox, w-px+oy);
+        if (md1 && mv || md2 && mh) img.line(h-y+ox, x+oy, h-py+ox, px+oy);
+        if (md1 && mv && mh || md2) img.line(h-y+ox, w-x+oy, h-py+ox, w-px+oy);
       }
     }
 
     if (recording) {
       gif.addFrame(canvasElement.canvas, {delay: 1, copy: true});
     }
-
   }
 
   if (showAxes) {
     var w = width / penCount;
     var h = height / penCount;
 
-    // draw mirror axes
-    stroke(0, 50);
-    strokeWeight(1);
+    // draw mirror axes and tiles
     for (var i = 0; i < penCount; i++) {
       for (var j = 0; j < penCount; j++) {
         var x = i * w;
         var y = j * h;
 
+        stroke(0, 50);
+        strokeWeight(1);
         if (mh) line(x + w / 2, y, x + w / 2, y + h);
         if (mv) line(x, y + h / 2, x + w, y + h / 2);
         if (md1) line(x, y, x + w, y + h);
         if (md2) line(x + w, y, x, y + h);
+
+        stroke(15, 233, 118, 50);
+        strokeWeight(1);
+        rect(i * w, j * h, w - 1, h - 1);
       }
     }
 
@@ -133,9 +129,7 @@ function draw() {
     stroke(0, 50);
     noFill();
     ellipse(mouseX, mouseY, lineWidth + 1, lineWidth + 1)
-
   }
-
 }
 
 function mouseWheel(e) {
