@@ -67,7 +67,7 @@ function draw() {
   var angle = tabletValues.azimuth;
   var penLength = cos(tabletValues.altitude);
 
-  if (pressure > 0.0 && penLength > 0.0) {
+  if (pressure > 0 && penLength > 0) {
     push();
     translate(mouseX, mouseY);
     rotate(angle);
@@ -127,7 +127,6 @@ function draw() {
     endShape(CLOSE);
     pop();
   }
-  
 }
 
 // gamma ramp, non linaer mapping ...
