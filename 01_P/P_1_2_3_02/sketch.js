@@ -50,13 +50,13 @@ function draw() {
   // create palette
   for (var i=0; i<colorCount; i++) {
     if (i%2 == 0) {
-      hueValues[i] = int(random(0,360));
+      hueValues[i] = int(random(130, 220));
       saturationValues[i] = 100;
-      brightnessValues[i] = int(random(0,100));
+      brightnessValues[i] = int(random(15, 100));
     }
     else {
       hueValues[i] = 195;
-      saturationValues[i] = int(random(0,100));
+      saturationValues[i] = int(random(20, 100));
       brightnessValues[i] = 100;
     }
   }

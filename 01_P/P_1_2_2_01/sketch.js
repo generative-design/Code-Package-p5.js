@@ -23,12 +23,12 @@
  * position x          : resolution
  * 
  * KEYS
- * 1-3                 : load different images
- * 4                   : no color sorting
- * 5                   : sort colors on hue
- * 6                   : sort colors on saturation
- * 7                   : sort colors on brightness
- * 8                   : sort colors on greyscale (luminance)
+ * 1-4                 : load different images
+ * 5                   : no color sorting
+ * 6                   : sort colors on hue
+ * 7                   : sort colors on saturation
+ * 8                   : sort colors on brightness
+ * 9                   : sort colors on greyscale (luminance)
  * s                   : save png
  * c                   : save color palette
  */
@@ -85,10 +85,11 @@ function keyReleased(){
   if (key == '1') img = loadImage("data/pic1.jpg");
   if (key == '2') img = loadImage("data/pic2.jpg");
   if (key == '3') img = loadImage("data/pic3.jpg");
+  if (key == '4') img = loadImage("data/pic4.jpg");
 
-  if (key == '4') sortMode = null;
-  if (key == '5') sortMode = gd.HUE;
-  if (key == '6') sortMode = gd.SATURATION;
-  if (key == '7') sortMode = gd.BRIGHTNESS;
-  if (key == '8') sortMode = gd.GRAYSCALE;
+  if (key == '5') sortMode = null;
+  if (key == '6') sortMode = gd.HUE;
+  if (key == '7') sortMode = gd.SATURATION;
+  if (key == '8') sortMode = gd.BRIGHTNESS;
+  if (key == '9') sortMode = gd.GRAYSCALE;
 }

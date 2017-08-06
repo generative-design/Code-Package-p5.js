@@ -35,7 +35,7 @@ var SOUTHEAST = 3;
 var SOUTH = 4;
 var SOUTHWEST = 5;
 var WEST = 6;
-var NORTHWEST= 7;
+var NORTHWEST = 7;
 var direction;
 
 var stepSize = 1;

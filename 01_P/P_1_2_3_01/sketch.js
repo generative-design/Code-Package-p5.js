@@ -173,13 +173,13 @@ function keyPressed() {
   if (key == '0') {
     for (var i = 0; i < tileCountX; i++) {
       if (i % 2 === 0) {
-        hueValues[i] = 192;
-        saturationValues[i] = int(random(0, 100));
-        brightnessValues[i] = int(random(10, 100));
+        hueValues[i] = 140;
+        saturationValues[i] = int(random(30, 100));
+        brightnessValues[i] = int(random(40, 100));
       } else {
-        hueValues[i] = 273;
-        saturationValues[i] = int(random(0, 100));
-        brightnessValues[i] = int(random(10,90));
+        hueValues[i] = 210;
+        saturationValues[i] = int(random(40, 100));
+        brightnessValues[i] = int(random(50, 90));
       }
     }
   }
