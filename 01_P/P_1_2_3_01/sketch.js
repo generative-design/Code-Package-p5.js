@@ -179,7 +179,7 @@ function keyPressed() {
       } else {
         hueValues[i] = 210;
         saturationValues[i] = int(random(40, 100));
-        brightnessValues[i] = int(random(50, 90));
+        brightnessValues[i] = int(random(50, 100));
       }
     }
   }
