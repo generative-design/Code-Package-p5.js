@@ -34,7 +34,6 @@ var saturationValues = [];
 var brightnessValues = [];
 var actRandomSeed = 0;
 
-
 function setup() {
   createCanvas(800, 800);
   colorMode(HSB, 360, 100, 100, 100);
@@ -114,7 +113,7 @@ function draw() {
 }
 
 function mouseReleased() {
-  actRandomSeed = int(random(100000));
+  actRandomSeed = random(100000);
   loop();
 }
 
