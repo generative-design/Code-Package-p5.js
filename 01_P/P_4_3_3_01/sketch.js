@@ -42,14 +42,13 @@ var pointCount = 1;
 var diffusion = 50;
 var streamReady = false;
 
-
 function setup() {
   createCanvas(640, 480);
   background(255);
   x = width / 2;
   y = height / 2;
-  video = createCapture(VIDEO, function(){ 
-    streamReady = true 
+  video = createCapture(VIDEO, function(){
+    streamReady = true
   });
   video.size(width, height);
   video.hide();
@@ -57,18 +56,18 @@ function setup() {
 }
 
 function draw() {
-  if(streamReady) {
+  if (streamReady) {
     for (var j = 0; j <= mouseX / 50; j++) {
       // get actual web cam image
       video.loadPixels();
 
       // first line
-      var pixelIndex = (((video.width - 1 - x) + y * video.width) * 4);
+      var pixelIndex = ((video.width - 1 - x) + y * video.width) * 4;
       var c = color(video.pixels[pixelIndex], video.pixels[pixelIndex + 1], video.pixels[pixelIndex + 2]);
 
-      //convert color c to HSV
+      // convert color c to HSV
       var cHSV = chroma(red(c), green(c), blue(c));
-      strokeWeight(cHSV.get( 'hsv.h' ) / 50);
+      strokeWeight(cHSV.get('hsv.h') / 50);
       stroke(c);
 
       diffusion = map(mouseY, 0, height, 5, 100);
@@ -78,9 +77,9 @@ function draw() {
       curveVertex(x, y);
 
       for (var i = 0; i < pointCount; i++) {
-        var rx = int( random(-diffusion, diffusion));
+        var rx = int(random(-diffusion, diffusion));
         curvePointX = constrain(x + rx, 0, width - 1);
-        var ry = int( random(-diffusion, diffusion));
+        var ry = int(random(-diffusion, diffusion));
         curvePointY = constrain(y + ry, 0, height - 1);
         curveVertex(curvePointX, curvePointY);
       }
