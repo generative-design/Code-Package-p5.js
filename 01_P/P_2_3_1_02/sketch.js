@@ -7,11 +7,11 @@
 //
 // http://www.generative-gestaltung.de
 //
-// Licensed under the Apache License, Version 2.0 (the "License");
+// Licensed under the Apache License, Version 2.0 (the 'License');
 // you may not use this file except in compliance with the License.
 // You may obtain a copy of the License at http://www.apache.org/licenses/LICENSE-2.0
 // Unless required by applicable law or agreed to in writing, software
-// distributed under the License is distributed on an "AS IS" BASIS,
+// distributed under the License is distributed on an 'AS IS' BASIS,
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and
 // limitations under the License.
@@ -48,19 +48,19 @@ var clickPosX = 0;
 var clickPosY = 0;
 
 function preload() {
-  lineModule[1] = loadImage("data/02.svg");
-  lineModule[2] = loadImage("data/03.svg");
-  lineModule[3] = loadImage("data/04.svg");
-  lineModule[4] = loadImage("data/05.svg");
+  lineModule[1] = loadImage('data/02.svg');
+  lineModule[2] = loadImage('data/03.svg');
+  lineModule[3] = loadImage('data/04.svg');
+  lineModule[4] = loadImage('data/05.svg');
 }
 
 function setup() {
-  createCanvas(windowWidth,windowHeight);
+  createCanvas(windowWidth, windowHeight);
   background(255);
   cursor(CROSS);
   strokeWeight(0.75);
 
-  c = color(181, 157, 0, 100);
+  c = color(181, 157, 0);
 }
 
 function windowResized() {
@@ -121,12 +121,12 @@ function keyReleased() {
   }
 
   // change color
-  if (key == ' ') c = color(random(255), random(255), random(255), random(80, 150));
+  if (key == ' ') c = color(random(255), random(255), random(255), random(80, 100));
   //default colors from 1 to 4
-  if (key == '1') c = color(181,157,0,100);
-  if (key == '2') c = color(0,130,164,100);
-  if (key == '3') c = color(87,35,129,100);
-  if (key == '4') c = color(197,0,123,100);
+  if (key == '1') c = color(181, 157, 0);
+  if (key == '2') c = color(0, 130, 164);
+  if (key == '3') c = color(87, 35, 129);
+  if (key == '4') c = color(197, 0, 123);
 
   // load svg for line module
   if (key == '5') lineModuleIndex = 0;
