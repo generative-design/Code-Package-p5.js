@@ -53,8 +53,7 @@ function draw() {
       hueValues[i] = int(random(360));
       saturationValues[i] = 100;
       brightnessValues[i] = int(random(100));
-    }
-    else {
+    } else {
       hueValues[i] = 195;
       saturationValues[i] = int(random(20));
       brightnessValues[i] = 100;
