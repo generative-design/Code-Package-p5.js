@@ -35,20 +35,20 @@
 var drawMode = 1;
 
 var col;
-var x = 0, y = 0;
+var x = 0,
+var y = 0;
 var stepSize = 5.0;
 var lineLength = 25;
 
 function setup() {
-  col = color(random(255), random(255), random(255), random(100));
   // use full screen size
   createCanvas(displayWidth, displayHeight);
   background(255);
+  col = color(random(255), random(255), random(255), random(100));
   x = mouseX;
   y = mouseY;
   cursor(CROSS);
 }
-
 
 function draw() {
   if (mouseIsPressed) {
@@ -62,16 +62,15 @@ function draw() {
       rotate(angle);
       stroke(col);
       if (frameCount % 2 == 0) stroke(150);
-      line(0, 0, 0, lineLength * random(0.95, 1.0) * d / 10);
+      line(0, 0, 0, lineLength * random(0.95, 1) * d / 10);
       pop();
 
       if (drawMode == 1) {
         x = x + cos(angle) * stepSize;
         y = y + sin(angle) * stepSize;
-      }
-      else {
-        x  = mouseX;
-        y  = mouseY;
+      } else {
+        x = mouseX;
+        y = mouseY;
       }
     }
   }
