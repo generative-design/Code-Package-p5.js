@@ -68,7 +68,6 @@ function setup() {
   treemap = new Treemap(mapData, 1, 1, width - 3, height - 3, {sort:doSort, direction:rowDirection});
 }
 
-
 function draw() {
   background(255);
   textAlign(CENTER, BASELINE);
@@ -95,7 +94,6 @@ function draw() {
 
   noLoop();
 }
-
 
 function Treemap(mapData, x, y, w, h, options) {
   // convert each key-value-pair to a two-element array with [key, value]
@@ -221,8 +219,6 @@ function Treemap(mapData, x, y, w, h, options) {
   };
   // init automatically
   this.init();
-
-
 }
 
 /**
@@ -231,15 +227,11 @@ function Treemap(mapData, x, y, w, h, options) {
  */
 function shuffleArray(array) {
   for (var i = array.length - 1; i > 0; i--) {
-    var j = Math.floor(Math.random() * (i + 1));
+    var j = floor(random() * (i + 1));
     var temp = array[i];
     array[i] = array[j];
     array[j] = temp;
   }
-}
-
-
-function keyReleased() {
 }
 
 function keyTyped() {
@@ -264,5 +256,4 @@ function keyTyped() {
     treemap = new Treemap(mapData, 1, 1, width-3, height-3, {sort:doSort, direction:rowDirection});
     loop();
   }
-
 }
