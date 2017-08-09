@@ -45,7 +45,7 @@ function setup() {
   background(255);
   cursor(CROSS);
 
-  c = color(181, 157, 0, 100);
+  c = color(181, 157, 0);
   strokeWeight(1);
 }
 
@@ -85,10 +85,10 @@ function keyReleased() {
   }
 
   // change color
-  if (key == ' ') c = color(random(255), random(255), random(255), random(80, 150));
+  if (key == ' ') c = color(random(255), random(255), random(255), random(80, 100));
   //default colors from 1 to 4
-  if (key == '1') c = color(181, 157, 0, 100);
-  if (key == '2') c = color(0, 130, 164, 100);
-  if (key == '3') c = color(87, 35, 129, 100);
-  if (key == '4') c = color(197, 0, 123, 100);
+  if (key == '1') c = color(181, 157, 0);
+  if (key == '2') c = color(0, 130, 164);
+  if (key == '3') c = color(87, 35, 129);
+  if (key == '4') c = color(197, 0, 123);
 }

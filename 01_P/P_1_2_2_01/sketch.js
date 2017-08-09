@@ -18,10 +18,10 @@
 
 /**
  * extract and sort the color palette of an image
- * 	 
+ *
  * MOUSE
  * position x          : resolution
- * 
+ *
  * KEYS
  * 1-4                 : load different images
  * 5                   : no color sorting
@@ -32,7 +32,6 @@
  * s                   : save png
  * c                   : save color palette
  */
-
 'use strict';
 
 var img;
@@ -40,7 +39,7 @@ var colors = [];
 var sortMode = null;
 
 function preload(){
-  img = loadImage("data/pic1.jpg");
+  img = loadImage('data/pic1.jpg');
 }
 
 function setup() {
@@ -61,7 +60,7 @@ function draw() {
       var px = int(gridX * rectSize);
       var py = int(gridY * rectSize);
       var i = (py * img.width + px) * 4;
-      var c = color(img.pixels[i], img.pixels[i+1], img.pixels[i+2], img.pixels[i+3]);
+      var c = color(img.pixels[i], img.pixels[i + 1], img.pixels[i + 2], img.pixels[i + 3]);
       colors.push(c);
     }
   }
@@ -72,7 +71,7 @@ function draw() {
   for (var gridY = 0; gridY < tileCount; gridY++) {
     for (var gridX = 0; gridX < tileCount; gridX++) {
       fill(colors[i]);
-      rect(gridX*rectSize, gridY*rectSize, rectSize, rectSize);
+      rect(gridX * rectSize, gridY * rectSize, rectSize, rectSize);
       i++;
     }
   }
@@ -82,10 +81,10 @@ function keyReleased(){
   if (key == 'c' || key == 'C') writeFile([gd.ase.encode(colors)], gd.timestamp(), 'ase');
   if (key == 's' || key == 'S') saveCanvas(gd.timestamp(), 'png');
 
-  if (key == '1') img = loadImage("data/pic1.jpg");
-  if (key == '2') img = loadImage("data/pic2.jpg");
-  if (key == '3') img = loadImage("data/pic3.jpg");
-  if (key == '4') img = loadImage("data/pic4.jpg");
+  if (key == '1') img = loadImage('data/pic1.jpg');
+  if (key == '2') img = loadImage('data/pic2.jpg');
+  if (key == '3') img = loadImage('data/pic3.jpg');
+  if (key == '4') img = loadImage('data/pic4.jpg');
 
   if (key == '5') sortMode = null;
   if (key == '6') sortMode = gd.HUE;

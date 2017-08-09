@@ -46,17 +46,18 @@ var maxDist;
 var sizeMode = 0;
 
 function preload() {
-  shapes.push(loadImage("data/module_1.svg"));
-  shapes.push(loadImage("data/module_2.svg"));
-  shapes.push(loadImage("data/module_3.svg"));
-  shapes.push(loadImage("data/module_4.svg"));
-  shapes.push(loadImage("data/module_5.svg"));
-  shapes.push(loadImage("data/module_6.svg"));
-  shapes.push(loadImage("data/module_7.svg"));
+  shapes.push(loadImage('data/module_1.svg'));
+  shapes.push(loadImage('data/module_2.svg'));
+  shapes.push(loadImage('data/module_3.svg'));
+  shapes.push(loadImage('data/module_4.svg'));
+  shapes.push(loadImage('data/module_5.svg'));
+  shapes.push(loadImage('data/module_6.svg'));
+  shapes.push(loadImage('data/module_7.svg'));
 }
 
 function setup() {
   createCanvas(600, 600);
+
   currentShape = shapes[0];
   tileWidth = width / tileCount;
   tileHeight = height / tileCount;
