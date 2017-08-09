@@ -38,7 +38,7 @@ function setup() {
   createCanvas(600, 600);
   colorMode(HSB, 360, 100, 100, 100);
   noStroke();
-  fill(192,100,64,60);
+  fill(192, 100, 64, 60);
 }
 
 function draw() {
