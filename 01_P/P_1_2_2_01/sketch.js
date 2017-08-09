@@ -38,7 +38,7 @@ var img;
 var colors = [];
 var sortMode = null;
 
-function preload(){
+function preload() {
   img = loadImage('data/pic1.jpg');
 }
 
@@ -77,7 +77,7 @@ function draw() {
   }
 }
 
-function keyReleased(){
+function keyReleased() {
   if (key == 'c' || key == 'C') writeFile([gd.ase.encode(colors)], gd.timestamp(), 'ase');
   if (key == 's' || key == 'S') saveCanvas(gd.timestamp(), 'png');
 

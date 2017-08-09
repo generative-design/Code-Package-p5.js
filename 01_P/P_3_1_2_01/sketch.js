@@ -32,9 +32,9 @@
  * alt                 : new random layout
  * ctrl                : save png
  */
-"use strict";
+'use strict';
 
-var textTyped = "";
+var textTyped = '';
 var font;
 
 var shapeSpace
@@ -54,14 +54,14 @@ var zoom;
 var actRandomSeed;
 
 function preload() {
-  font = loadFont("data/miso-bold.ttf");
-  shapeSpace = loadImage("data/space.svg");
-  shapeSpace2 = loadImage("data/space2.svg");
-  shapePeriod = loadImage("data/period.svg");
-  shapeComma = loadImage("data/comma.svg");
-  shapeExclamationmark = loadImage("data/exclamationmark.svg");
-  shapeQuestionmark = loadImage("data/questionmark.svg");
-  shapeReturn = loadImage("data/return.svg");
+  font = loadFont('data/miso-bold.ttf');
+  shapeSpace = loadImage('data/space.svg');
+  shapeSpace2 = loadImage('data/space2.svg');
+  shapePeriod = loadImage('data/period.svg');
+  shapeComma = loadImage('data/comma.svg');
+  shapeExclamationmark = loadImage('data/exclamationmark.svg');
+  shapeQuestionmark = loadImage('data/questionmark.svg');
+  shapeReturn = loadImage('data/return.svg');
 }
 
 function setup() {
@@ -173,7 +173,7 @@ function draw() {
 }
 
 
-function mousePressed(){
+function mousePressed() {
   offsetX = mouseX - centerX;
   offsetY = mouseY - centerY;
 }
@@ -209,7 +209,7 @@ function keyPressed() {
   }
 }
 
-function keyTyped(){
+function keyTyped() {
   if (keyCode >= 32) {
     textTyped += key;
   }

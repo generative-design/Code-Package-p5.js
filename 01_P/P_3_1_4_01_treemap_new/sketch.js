@@ -37,7 +37,7 @@ function Treemap(counters, x, y, w, h) {
   this.rects = [];
 
   // sort counters
-  Treemap.prototype.init = function(){
+  Treemap.prototype.init = function() {
     this.counters.sort(function(a, b) {
       if (a < b) return 1;
       if (a > b) return -1;

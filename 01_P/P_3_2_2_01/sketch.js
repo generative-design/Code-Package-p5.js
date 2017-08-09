@@ -18,11 +18,11 @@
 
 /**
  * fontgenerator with dynamic elements
- * 
+ *
  * MOUSE
  * position x          : curve rotation
  * position y          : curve height
- * 
+ *
  * KEYS
  * a-z                 : text input (keyboard)
  * del, backspace      : remove last letter
@@ -30,7 +30,7 @@
  * ctrl                : save png
  */
 
-var textTyped = "Charles Mingus";
+var textTyped = 'Charles Mingus';
 
 var font;
 
@@ -57,8 +57,7 @@ function draw() {
   if (filled) {
     noStroke();
     fill(0);
-  }
-  else {
+  } else {
     noFill();
     stroke(0);
     strokeWeight(2);
@@ -77,26 +76,26 @@ function draw() {
     // path = g.resampleByAmount(path, 500);
 
     // map mouse axis
-    var addToAngle = map(mouseX, 0, width, -PI, +PI);
+    var addToAngle = map(mouseX, 0, width, -PI, PI);
     var curveHeight = map(mouseY, 0, height, 0.1, 2);
-     
-    for (var i = 0; i < path.commands.length-1; i++) {
+
+    for (var i = 0; i < path.commands.length - 1; i++) {
       var pnt0 = path.commands[i];
-      var pnt1 = path.commands[i+1];
+      var pnt1 = path.commands[i + 1];
       var d = dist(pnt0.x, pnt0.y, pnt1.x, pnt1.y);
 
       // create a gap between each letter
       if (d > 20) continue;
 
       // alternate in every step from -1 to 1
-      var stepper = map(i%2, 0, 1, -1, 1);
+      var stepper = map(i % 2, 0, 1, -1, 1);
       var angle = atan2(pnt1.y - pnt0.y, pnt1.x - pnt0.x);
       angle = angle + addToAngle;
 
-      var cx = pnt0.x + cos(angle*stepper) * d*4 * curveHeight;
-      var cy = pnt0.y + sin(angle*stepper) * d*3 * curveHeight;
+      var cx = pnt0.x + cos(angle * stepper) * d * 4 * curveHeight;
+      var cy = pnt0.y + sin(angle * stepper) * d * 3 * curveHeight;
 
-      bezier(pnt0.x,pnt0.y,  cx,cy, cx,cy,  pnt1.x,pnt1.y);
+      bezier(pnt0.x, pnt0.y, cx, cy, cx, cy, pnt1.x, pnt1.y);
     }
   }
 }
@@ -116,7 +115,7 @@ function keyPressed() {
 }
 
 function keyTyped() {
-  if (keyCode >= 32){
+  if (keyCode >= 32) {
     textTyped += key;
   }
 }

@@ -27,7 +27,7 @@
  *
  * KEYS
  * 1-8                 : switch tileset
- * y,x,c,v,b           : switch colors
+ * y, x, c, v, b       : switch colors
  * del, backspace      : clear screen
  * r                   : random tiles
  * s                   : save png
@@ -37,8 +37,8 @@
 'use strict';
 
 var modules = [];
-var moduleType = ["A", "B", "C", "D", "E", "F", "J", "K"];
-var activeModuleSet = "A";
+var moduleType = ['A', 'B', 'C', 'D', 'E', 'F', 'J', 'K'];
+var activeModuleSet = 'A';
 
 var tileSize = 30;
 var gridResolutionX;
@@ -56,7 +56,7 @@ function preload() {
   for (var i = 0; i < moduleType.length; i++) {
     modules[moduleType[i]] = [];
     for (var j = 0; j < 16; j++) {
-      modules[moduleType[i]].push(loadImage("data/" + moduleType[i] + "_" + nf(j,2) + ".svg"));
+      modules[moduleType[i]].push(loadImage('data/' + moduleType[i] + '_' + nf(j, 2) + '.svg'));
     }
   }
 }
@@ -65,13 +65,13 @@ function setup() {
   // use full window size
   createCanvas(windowWidth, windowHeight);
 
-  colorMode(HSB,360,100,100,100);
+  colorMode(HSB, 360, 100, 100, 100);
   cursor(CROSS);
   rectMode(CENTER);
   imageMode(CENTER);
   strokeWeight(0.15);
   textSize(8);
-  textAlign(CENTER,CENTER);
+  textAlign(CENTER, CENTER);
 
   gridResolutionX = round(width / tileSize) + 2;
   gridResolutionY = round(height / tileSize) + 2;
@@ -154,32 +154,32 @@ function drawModules() {
       // use only active tiles
       var currentTile = tiles[gridX][gridY];
       if (tiles[gridX][gridY]  != 0) {
-        var binaryResult = "";
+        var binaryResult = '';
         // check the four neightbours, each can be true or false
         // create a binary result out of it, eg. 1011
         // NORTH
         if (tiles[gridX][gridY - 1] != 0) {
-          binaryResult += "1";
+          binaryResult += '1';
         } else {
-          binaryResult += "0";
+          binaryResult += '0';
         }
         // WEST
         if (tiles[gridX - 1][gridY] != 0) {
-          binaryResult += "1";
+          binaryResult += '1';
         } else {
-          binaryResult += "0";
+          binaryResult += '0';
         }
         // SOUTH
         if (tiles[gridX][gridY + 1] != 0) {
-          binaryResult += "1";
+          binaryResult += '1';
         } else {
-          binaryResult += "0";
+          binaryResult += '0';
         }
         // EAST
         if (tiles[gridX + 1][gridY] != 0) {
-          binaryResult += "1";
+          binaryResult += '1';
         } else {
-          binaryResult += "0";
+          binaryResult += '0';
         }
 
         // convert binary string to a decimal values from 0 - 15
@@ -195,14 +195,14 @@ function drawModules() {
 
         if (debugMode) {
           fill(150);
-          text(currentTile + "\n" + decimalResult + "\n" + binaryResult, posX, posY);
+          text(currentTile + '\n' + decimalResult + '\n' + binaryResult, posX, posY);
         }
       }
     }
   }
 }
 
-function keyPressed(){
+function keyPressed() {
   if (key == 's' || key == 'S') saveCanvas(gd.timestamp(), 'png');
 
   if (keyCode === DELETE || keyCode === BACKSPACE) initTiles();
@@ -210,14 +210,14 @@ function keyPressed(){
   if (key == 'd' || key == 'D') debugMode = !debugMode;
   if (key == 'r' || key == 'R') randomMode = !randomMode;
 
-  if (key == '1') activeModuleSet = "A";
-  if (key == '2') activeModuleSet = "B";
-  if (key == '3') activeModuleSet = "C";
-  if (key == '4') activeModuleSet = "D";
-  if (key == '5') activeModuleSet = "E";
-  if (key == '6') activeModuleSet = "F";
-  if (key == '7') activeModuleSet = "J";
-  if (key == '8') activeModuleSet = "K";
+  if (key == '1') activeModuleSet = 'A';
+  if (key == '2') activeModuleSet = 'B';
+  if (key == '3') activeModuleSet = 'C';
+  if (key == '4') activeModuleSet = 'D';
+  if (key == '5') activeModuleSet = 'E';
+  if (key == '6') activeModuleSet = 'F';
+  if (key == '7') activeModuleSet = 'J';
+  if (key == '8') activeModuleSet = 'K';
 
   if (key == 'y' || key == 'Y') activeTileColor = color(0);
   if (key == 'x' || key == 'X') activeTileColor = color(52, 100, 71);

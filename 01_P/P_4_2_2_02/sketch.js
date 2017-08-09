@@ -20,7 +20,6 @@
  * simple timelapse camera, after each intervalTime a picture is saved.
  *
  */
-
 'use strict';
 
 var cam;
@@ -36,7 +35,7 @@ var streamReady = false;
 
 function setup() {
   createCanvas(640, 480);
-  cam = createCapture(VIDEO, function(){ streamReady = true });
+  cam = createCapture(VIDEO, function() { streamReady = true });
   cam.hide();
   noStroke();
 }
@@ -53,8 +52,7 @@ function draw() {
       saveCanvas(saveFileName, 'png');
       doSave = false;
       counter++;
-    }
-    else if (interval != 0) {
+    } else if (interval != 0) {
       doSave = true;
     }
 

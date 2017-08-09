@@ -30,8 +30,8 @@
  */
 'use strict';
 
-var font = "Arial";
-var letter = "A";
+var font = 'Arial';
+var letter = 'A';
 
 function setup() {
   createCanvas(windowWidth, windowHeight);

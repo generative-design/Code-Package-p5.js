@@ -18,17 +18,16 @@
 
 /**
  * fontgenerator with dynamic elements. letter ouline consist of linked agents.
- * 
+ *
  * MOUSE
  * press + position x  : letter distortion
- * 
+ *
  * KEYS
  * a-z                 : text input (keyboard)
  * alt                 : freeze current state
  * del, backspace      : clear screen
  * ctrl                : save png
  */
-
 
 var typedKey = 'a';
 var fontPath;
@@ -48,7 +47,6 @@ var font;
 var pnts;
 
 var freeze = false;
-
 
 function setup() {
   createCanvas(windowWidth, windowHeight);
@@ -75,15 +73,15 @@ function draw() {
   translate(letterX, letterY);
 
   // distortion on/off
+  danceFactor = 1;
   if (mouseIsPressed) danceFactor = map(mouseX, 0, width, 0, 3);
-  else danceFactor = 1;
 
   // are there points to draw?
   if (pnts.length > 0) {
     // let the points dance
     for (var i = 0; i < pnts.length; i++) {
       pnts[i].x += random(-stepSize, stepSize) * danceFactor;
-      pnts[i].y += random(-stepSize, stepSize) * danceFactor;  
+      pnts[i].y += random(-stepSize, stepSize) * danceFactor;
     }
 
     //  ------ lines: connected straight  ------
@@ -103,7 +101,7 @@ function draw() {
 
       beginShape();
       // start controlpoint
-      curveVertex(pnts[pnts.length-1].x,pnts[pnts.length-1].y);
+      curveVertex(pnts[pnts.length-1].x, pnts[pnts.length-1].y);
       // only these points are drawn
       for (var i = 0; i < pnts.length; i++) {
         curveVertex(pnts[i].x, pnts[i].y);
@@ -112,7 +110,7 @@ function draw() {
       // end controlpoint
       curveVertex(pnts[1].x, pnts[1].y);
       endShape();
-    */ 
+    */
   }
 
   pop();
@@ -138,13 +136,16 @@ function keyReleased() {
   if (keyCode == ALT) {
     // switch loop on/off
     freeze = !freeze;
-    if (freeze == true) noLoop();
-    else loop();
-  } 
+    if (freeze) {
+      noLoop();
+    } else {
+      loop();
+    }
+  }
 }
 
 function keyPressed() {
-  switch(keyCode) {
+  switch (keyCode) {
     case ENTER:
     case RETURN:
       typedKey = '';
@@ -166,8 +167,8 @@ function keyPressed() {
 }
 
 function keyTyped() {
-  if (keyCode >= 32){
-    if (keyCode == 32){
+  if (keyCode >= 32) {
+    if (keyCode == 32) {
       typedKey = '';
       letterX += textW + spaceWidth;
       pnts = getPoints(typedKey);

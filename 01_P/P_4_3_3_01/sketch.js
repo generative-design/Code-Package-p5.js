@@ -47,7 +47,7 @@ function setup() {
   background(255);
   x = width / 2;
   y = height / 2;
-  video = createCapture(VIDEO, function(){
+  video = createCapture(VIDEO, function() {
     streamReady = true
   });
   video.size(width, height);

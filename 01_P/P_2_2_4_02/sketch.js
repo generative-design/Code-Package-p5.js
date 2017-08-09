@@ -59,7 +59,7 @@ function draw() {
   var closestDist = 100000000;
   var closestIndex = 0;
   // which circle is the closest?
-  for(var i = 0; i < currentCount; i++) {
+  for (var i = 0; i < currentCount; i++) {
     var newDist = dist(newX, newY, x[i], y[i]);
     if (newDist < closestDist) {
       closestDist = newDist;

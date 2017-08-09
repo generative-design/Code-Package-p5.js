@@ -47,17 +47,17 @@ var drawColoredLines = true;
 var drawText = true;
 
 function preload() {
-  joinedText = loadStrings("data/faust_kurz.txt");
+  joinedText = loadStrings('data/faust_kurz.txt');
 }
 
 function setup() {
   createCanvas(1200, 800);
   colorMode(HSB, 360, 100, 100, 100);
 
-  textFont("monospace", 18);
+  textFont('monospace', 18);
   fill(0);
 
-  joinedText = joinedText.join(" ");
+  joinedText = joinedText.join(' ');
   charSet = getUniqCharacters();
   for (var i = 0; i < charSet.length; i++) {
     counters[i] = 0;

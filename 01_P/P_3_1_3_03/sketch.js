@@ -49,17 +49,17 @@ var drawEllipses = true;
 var drawText = false;
 
 function preload() {
-  joinedText = loadStrings("data/faust_short.txt");
+  joinedText = loadStrings('data/faust_short.txt');
 }
 
 function setup() {
   createCanvas(1400, windowHeight);
   colorMode(HSB, 360, 100, 100, 100);
 
-  textFont("monospace", 20);
+  textFont('monospace', 20);
   noStroke();
 
-  joinedText = joinedText.join(joinedText, " ");
+  joinedText = joinedText.join(joinedText, ' ');
   charSet = getUniqCharacters();
   for (var i = 0; i < charSet.length; i++) {
     counters[i] = 0;
@@ -93,7 +93,7 @@ function draw() {
     var mx = map(mouseX, 50, width - 50, 0, 1);
     mx = constrain(mx, 0, 1);
     var lineLength = charSize;
-    var lineAngle = random(-PI,PI) * mx - HALF_PI;
+    var lineAngle = random(-PI, PI) * mx - HALF_PI;
     var newPosX = lineLength * cos(lineAngle);
     var newPosY = lineLength * sin(lineAngle);
 

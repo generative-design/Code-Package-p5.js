@@ -40,7 +40,7 @@ var streamReady = false;
 function setup() {
   createCanvas(640, 480);
   background(255);
-  video = createCapture(VIDEO, function(){ streamReady = true });
+  video = createCapture(VIDEO, function() { streamReady = true });
   video.size(width, height);
   video.hide();
 

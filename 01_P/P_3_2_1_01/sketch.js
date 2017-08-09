@@ -99,7 +99,7 @@ function keyPressed() {
 }
 
 function keyTyped() {
-  if (keyCode >= 32){
+  if (keyCode >= 32) {
     textTyped += key;
     loop();
   }

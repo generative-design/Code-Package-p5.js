@@ -29,7 +29,7 @@
  */
 'use strict';
 
-var textTyped = "Type slow and fast!";
+var textTyped = 'Type slow and fast!';
 var fontSizes = [textTyped.length];
 var minFontSize = 15;
 var maxFontSize = 800;
@@ -42,21 +42,21 @@ var spacing = 2; // line height
 var tracking = 0; // between letters
 var font;
 
-
 function setup() {
   createCanvas(800, 600);
 
-  font = "Arial";
+  font = 'Arial';
 
   noCursor();
   noStroke();
 
   // init fontSizes
-  for (var i = 0; i < textTyped.length; i++) fontSizes[i] = minFontSize;
+  for (var i = 0; i < textTyped.length; i++) {
+    fontSizes[i] = minFontSize;
+  }
 
   pMillis = millis();
 }
-
 
 function draw() {
   background(255);
@@ -99,12 +99,10 @@ function draw() {
   rect(x, y, newFontSize / 2, newFontSize / 20);
 }
 
-
 function keyReleased() {
   // export png
   if (keyCode === CONTROL) saveCanvas(gd.timestamp(), 'png');
 }
-
 
 function keyPressed() {
   switch(keyCode) {
@@ -121,8 +119,8 @@ function keyPressed() {
   pMillis = millis();
 }
 
-function keyTyped(){
-  if(keyCode >= 32){
+function keyTyped() {
+  if (keyCode >= 32) {
     textTyped += key;
     fontSizes.push(newFontSize);
   }

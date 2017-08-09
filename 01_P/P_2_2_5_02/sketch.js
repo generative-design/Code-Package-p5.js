@@ -46,14 +46,14 @@ var mouseRect = 15;
 var module1;
 var module2;
 
-// style selector, hotkeys 1,2,3
+// style selector, hotkeys 1, 2, 3
 var showSVG = true;
 var showLine = false;
 var showCircle = false;
 
 function preload() {
-  module1 = loadImage("data/01.svg");
-  module2 = loadImage("data/02.svg");
+  module1 = loadImage('data/01.svg');
+  module2 = loadImage('data/02.svg');
 }
 
 function setup() {

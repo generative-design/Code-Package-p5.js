@@ -73,20 +73,20 @@ var palette = [
 var actColorIndex = 0;
 
 function preload() {
-  font = loadFont("data/miso-bold.ttf");
-  shapeSpace = loadImage("data/space.svg");
-  shapeSpace2 = loadImage("data/space2.svg");
-  shapePeriod = loadImage("data/period.svg");
-  shapeComma = loadImage("data/comma.svg");
-  shapeExclamationmark = loadImage("data/exclamationmark.svg");
-  shapeQuestionmark = loadImage("data/questionmark.svg");
-  shapeReturn = loadImage("data/return.svg");
+  font = loadFont('data/miso-bold.ttf');
+  shapeSpace = loadImage('data/space.svg');
+  shapeSpace2 = loadImage('data/space2.svg');
+  shapePeriod = loadImage('data/period.svg');
+  shapeComma = loadImage('data/comma.svg');
+  shapeExclamationmark = loadImage('data/exclamationmark.svg');
+  shapeQuestionmark = loadImage('data/questionmark.svg');
+  shapeReturn = loadImage('data/return.svg');
 
-  icon1 = loadImage("data/icon1.svg");
-  icon2 = loadImage("data/icon2.svg");
-  icon3 = loadImage("data/icon3.svg");
-  icon4 = loadImage("data/icon4.svg");
-  icon5 = loadImage("data/icon5.svg");
+  icon1 = loadImage('data/icon1.svg');
+  icon2 = loadImage('data/icon2.svg');
+  icon3 = loadImage('data/icon3.svg');
+  icon4 = loadImage('data/icon4.svg');
+  icon5 = loadImage('data/icon5.svg');
 }
 
 function setup() {
@@ -133,7 +133,7 @@ function draw() {
 
     // ------ letter rule table ------
     switch (letter) {
-      case " ": //space
+      case ' ': //space
         //60% notrun, 20% left, 20% right
         var dir = floor(random(5));
         if (dir === 0) {
@@ -147,27 +147,27 @@ function draw() {
           rotate(-QUARTER_PI);
         }
         break;
-      case ",":
+      case ',':
         image(shapeComma, 0, -15);
         translate(33, 15);
         rotate(QUARTER_PI);
         break;
-      case ".":
+      case '.':
         image(shapePeriod, 0, -56);
         translate(56, -56);
         rotate(-HALF_PI);
         break;
-      case "!":
+      case '!':
         image(shapeExclamationmark, 0, -30);
         translate(43, -18);
         rotate(-QUARTER_PI);
         break;
-      case "?":
+      case '?':
         image(shapeQuestionmark, 0, -30);
         translate(43, -18);
         rotate(-QUARTER_PI);
         break;
-      case "\n":
+      case '\n':
         // start a new line at a random position near the center
         rect(0, -25, 10, 35);
         pop();
@@ -178,8 +178,8 @@ function draw() {
         fill(palette[actColorIndex][0], palette[actColorIndex][1], palette[actColorIndex][2]);
         rect(0, -25, 10, 35);
         break;
-      case "o": // Station big
-        rect(0, -15, letterWidth+1, 15);
+      case 'o': // Station big
+        rect(0, -15, letterWidth + 1, 15);
         push();
         fill(0);
         var station = textTyped.substring(i - 10, i - 1);
@@ -193,12 +193,12 @@ function draw() {
         pop();
         translate(letterWidth, 0);
         break;
-      case "a": // Station small left
+      case 'a': // Station small left
         rect(0, 0 - 15, letterWidth + 1, 25);
         rect(0, 0 - 15, letterWidth + 1, 15);
         translate(letterWidth, 0);
         break;
-      case "u":  // Station small right
+      case 'u':  // Station small right
         rect(0, 0 - 25, letterWidth + 1, 25);
         rect(0, 0 - 15, letterWidth + 1, 15);
         translate(letterWidth, 0);
@@ -247,12 +247,9 @@ function keyPressed() {
       textTyped = textTyped.substring(0, textTyped.length - 1);
       print(textTyped);
       break;
-    case TAB:
-    case ESCAPE:
-      break;
     case ENTER:
     case RETURN:
-      textTyped += "\n";
+      textTyped += '\n';
       break;
     case UP_ARROW:
       zoom += 0.05;
@@ -263,7 +260,7 @@ function keyPressed() {
   }
 }
 
-function keyTyped(){
+function keyTyped() {
   if (keyCode >= 32) {
     textTyped += key;
     print(textTyped);
