@@ -44,16 +44,16 @@ var drawLines = false;
 var drawText = true;
 
 function preload() {
-  joinedText = loadStrings("data/faust_kurz.txt");
+  joinedText = loadStrings('data/faust_kurz.txt');
 }
 
 function setup() {
   createCanvas(620, windowHeight);
 
-  textFont("monospace", 18);
+  textFont('monospace', 18);
   fill(87, 35, 129);
 
-  joinedText = joinedText.join(" ");
+  joinedText = joinedText.join(' ');
   alphabet = getUniqCharacters();
   for (var i = 0; i < alphabet.length; i++) {
     drawLetters[i] = true;
@@ -100,7 +100,7 @@ function draw() {
     }
 
     posX += textWidth(joinedText.charAt(i));
-    if (posX >= width - 200 && upperCaseChar == " ") {
+    if (posX >= width - 200 && upperCaseChar == ' ') {
       posY += 30;
       posX = 20;
     }

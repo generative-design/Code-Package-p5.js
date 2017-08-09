@@ -30,7 +30,7 @@
 'use strict';
 
 var joinedText;
-var alphabet = "ABCDEFGHIJKLMNORSTUVWYZÄÖÜß,.;!? ";
+var alphabet = 'ABCDEFGHIJKLMNORSTUVWYZÄÖÜß,.;!? ';
 var counters = [];
 
 var posX;
@@ -40,16 +40,16 @@ var drawAlpha = true;
 
 
 function preload() {
-  joinedText = loadStrings("data/faust_kurz.txt");
+  joinedText = loadStrings('data/faust_kurz.txt');
 }
 
 function setup() {
   createCanvas(620, windowHeight);
 
   noStroke();
-  textFont("monospace", 18);
+  textFont('monospace', 18);
 
-  joinedText = joinedText.join(" ");
+  joinedText = joinedText.join(' ');
 
   // use the following command, to collect all characters in the text automatically
   // alphabet = getUniqCharacters();
@@ -88,7 +88,7 @@ function draw() {
     text(joinedText.charAt(i), posX, interY);
 
     posX += textWidth(joinedText.charAt(i));
-    if (posX >= width - 200 && upperCaseChar == " ") {
+    if (posX >= width - 200 && upperCaseChar == ' ') {
       posY += 30;
       posX = 20;
     }

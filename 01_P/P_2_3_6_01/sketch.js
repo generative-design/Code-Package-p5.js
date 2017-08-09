@@ -45,7 +45,7 @@ var debugMode = false;
 function preload() {
   // load SVG modules
   for (var i = 0; i < 16; i++) {
-    modules[i] = loadImage("data/" + nf(i,2) + ".svg");
+    modules[i] = loadImage('data/' + nf(i, 2) + '.svg');
   }
 }
 
@@ -58,7 +58,7 @@ function setup() {
   imageMode(CENTER);
   strokeWeight(0.15);
   textSize(8);
-  textAlign(CENTER,CENTER);
+  textAlign(CENTER, CENTER);
 
   gridResolutionX = round(width / tileSize) + 2;
   gridResolutionY = round(height / tileSize) + 2;
@@ -67,7 +67,7 @@ function setup() {
 
 function draw() {
   background(255);
-  
+
   if (mouseIsPressed && mouseButton == LEFT) setTile();
   if (mouseIsPressed && mouseButton == RIGHT) unsetTile();
 
@@ -140,14 +140,14 @@ function drawModules() {
 
         if (debugMode) {
           fill(150);
-          text(decimalResult + "\n" + binaryResult, posX, posY);
+          text(decimalResult + '\n' + binaryResult, posX, posY);
         }
       }
     }
   }
 }
 
-function keyPressed(){
+function keyPressed() {
   if (key == 's' || key == 'S') saveCanvas(gd.timestamp(), 'png');
 
   if (keyCode === DELETE || keyCode === BACKSPACE) initTiles();

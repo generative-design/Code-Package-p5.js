@@ -97,7 +97,7 @@ function draw() {
     if (posY > height) posY = 0;
 
     if (drawMode === 3) {
-      if (counter >= 100){
+      if (counter >= 100) {
         counter = 0;
         fill(192, 100, 64, 80);
         ellipse(posX + stepSize / 2, posY + stepSize / 2, diameter + 7, diameter + 7);

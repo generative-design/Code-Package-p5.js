@@ -75,7 +75,7 @@ function draw() {
 
       colorRight = color(hue(colorRight), saturation(colorRight), brightness(colorRight), alphaRight);
 
-      var toggle = int(random(0,2));
+      var toggle = int(random(0, 2));
 
       if (toggle === 0) {
         stroke(colorLeft);
@@ -96,7 +96,7 @@ function mousePressed() {
   actRandomSeed = random(100000);
 }
 
-function keyReleased(){
+function keyReleased() {
   if (key == 's' || key == 'S') saveCanvas(gd.timestamp(), 'png');
 
   if (key == '1') {

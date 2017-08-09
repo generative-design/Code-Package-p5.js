@@ -6,7 +6,7 @@
 'use strict';
 
 
-var counters = [1, 2, 3, 4, [2,3,4,1,1], 6, [4,1,1], [2,3,4,1,1,2,2], 9, 10, 11, 12];
+var counters = [1, 2, 3, 4, [2, 3, 4, 1, 1], 6, [4, 1, 1], [2, 3, 4, 1, 1, 2, 2], 9, 10, 11, 12];
 var treemap;
 
 function setup() {
@@ -35,7 +35,7 @@ function Treemap(counters, x, y, w, h, parent) {
   this.h = h;
   this.maps = [];
   this.sum = 0;
-  
+
   this.parent = parent;
   if (this.parent) {
     this.level = parent.level + 1;
@@ -58,7 +58,7 @@ function Treemap(counters, x, y, w, h, parent) {
     this.sum += this.counters;
   }
 
-  Treemap.prototype.init = function(){
+  Treemap.prototype.init = function() {
     // Stop immediately, if it's not an array
     if (this.maps.length == 0) return;
 
@@ -68,7 +68,6 @@ function Treemap(counters, x, y, w, h, parent) {
       if (a.sum > b.sum) return -1;
       else return 0;
     });
-    //console.log("after sort: ", this.maps);
 
     // give every child an index. could be handy for drawing
     for (var i = 0; i < this.maps.length; i++) {
@@ -97,7 +96,7 @@ function Treemap(counters, x, y, w, h, parent) {
         b = restW;
       }
 
-      // How many items to fit into the row? 
+      // How many items to fit into the row?
       var rowSum = 0;
       var rowCount = 0;
       var avRelPrev = Number.MAX_VALUE;
@@ -105,12 +104,12 @@ function Treemap(counters, x, y, w, h, parent) {
         rowSum += this.maps[i].sum;
         rowCount++;
 
-        // a * bLen is the rect of the row 
+        // a * bLen is the rect of the row
         var percentage = rowSum / restSum;
         var bLen = b * percentage;
         var avRel = (a / rowCount) / bLen;
 
-        // Let's assume it's a horizontal row. The rects are as square as possible, 
+        // Let's assume it's a horizontal row. The rects are as square as possible,
         // as soon as the average width (a / rowCount) gets smaller than the row height (bLen).
         if (avRel < 1 || i == this.counters.length-1) {
           // Which is better, the actual or the previous fitting?
@@ -147,8 +146,7 @@ function Treemap(counters, x, y, w, h, parent) {
               this.maps[j].w = bLen;
               this.maps[j].h = aPart;
             }
-            //console.log(this.maps[j]);
-            
+
             // now that the position, width and height is set, it's possible to calculate the nested treemap.
             this.maps[j].init();
             aPos += aPart;
@@ -207,4 +205,3 @@ function createRandomCounters(level) {
   }
   return a;
 }
-

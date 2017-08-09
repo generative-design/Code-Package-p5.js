@@ -39,18 +39,18 @@ var maxFontSize = 1000;
 var minFontSize = 1;
 
 var doSort = true;
-var rowDirection = "both";
+var rowDirection = 'both';
 
 function preload() {
-  font = loadFont("data/miso-bold.ttf");
-  joinedText = loadStrings("data/pride_and_prejudice.txt");
+  font = loadFont('data/miso-bold.ttf');
+  joinedText = loadStrings('data/pride_and_prejudice.txt');
 }
 
 function setup() {
   createCanvas(windowWidth, windowHeight);
   //createCanvas(windowWidth, round(windowWidth*1.343));
 
-  joinedText = joinedText.join(" ");
+  joinedText = joinedText.join(' ');
   // If you want to get rid of all number chars too, just uncomment the following line
   // joinedText = joinedText.replace(/\d+/g, '');
   var words = joinedText.match(/\w+/g);
@@ -64,7 +64,7 @@ function setup() {
       mapData[w]++;
     }
   }
-  
+
   treemap = new Treemap(mapData, 1, 1, width - 3, height - 3, {sort:doSort, direction:rowDirection});
 }
 
@@ -75,7 +75,7 @@ function draw() {
 
   for (var i = 0; i < treemap.rects.length; i++) {
     var r = treemap.rects[i];
-    
+
     fill(255);
     stroke(0);
     strokeWeight(1);
@@ -109,7 +109,7 @@ function Treemap(mapData, x, y, w, h, options) {
   this.rects = [];
   this.options = options || {};
 
-  Treemap.prototype.init = function(){
+  Treemap.prototype.init = function() {
     if (this.options.sort == true || this.options.sort == undefined) {
       // sort mapData
       this.mapData.sort(function(a, b) {
@@ -144,15 +144,15 @@ function Treemap(mapData, x, y, w, h, options) {
       var isHorizontal = true; // horizontal row
       var a = restW;
       var b = restH;
-      if (this.options.direction != "horizontal") {
-        if (restW > restH || this.options.direction == "vertical") {
+      if (this.options.direction != 'horizontal') {
+        if (restW > restH || this.options.direction == 'vertical') {
           isHorizontal = false; // vertical row
           a = restH;
           b = restW;
         }
       }
 
-      // How many items to fit into the row? 
+      // How many items to fit into the row?
       var rowSum = 0;
       var rowCount = 0;
       var avRelPrev = Number.MAX_VALUE;
@@ -160,11 +160,11 @@ function Treemap(mapData, x, y, w, h, options) {
         rowSum += this.mapData[i].count;
         rowCount++;
 
-        // a*bLen is the rect of the row 
+        // a*bLen is the rect of the row
         var percentage = rowSum / restSum;
         var bLen = b * percentage;
         var avRel = (a / rowCount) / bLen;
-        // Let's assume it's a horizontal row. The rects are as square as possible, 
+        // Let's assume it's a horizontal row. The rects are as square as possible,
         // as soon as the average width (a / rowCount) gets smaller than the row height (bLen).
         // For a vertical row it work just like that.
         if (avRel < 1 || i == this.mapData.length-1) {
@@ -248,16 +248,16 @@ function keyTyped() {
 
   if (key == '1') {
     doSort = !doSort;
-  }  
+  }
   if (key == '2') {
-    rowDirection = "horizontal";
-  }  
+    rowDirection = 'horizontal';
+  }
   if (key == '3') {
-    rowDirection = "vertical";
-  }  
+    rowDirection = 'vertical';
+  }
   if (key == '4') {
-    rowDirection = "both";
-  }  
+    rowDirection = 'both';
+  }
 
   // number key
   if (keyCode >= 48 && keyCode <= 57) {
@@ -266,4 +266,3 @@ function keyTyped() {
   }
 
 }
-

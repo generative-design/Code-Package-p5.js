@@ -108,7 +108,7 @@ function draw() {
           var greyscale2 = floor(red(c2) * 0.222 + green(c2) * 0.707 + blue(c2) * 0.071);
           var h5 = 50 * mouseXFactor;
           var d1 = map(greyscale, 0, 255, h5, 0);
-          var d2 = map(greyscale2, 0,255, h5, 0);
+          var d2 = map(greyscale2, 0, 255, h5, 0);
           line(posX - d1, posY + d1, posX + tileWidth - d2, posY + d2);
           break;
         case 6:

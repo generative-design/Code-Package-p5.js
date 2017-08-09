@@ -55,8 +55,8 @@ function draw() {
   background(0, 0, 100);
 
   // limit mouse coordinates to canvas
-  var mX = constrain(mouseX,0,width);
-  var mY = constrain(mouseY,0,height);
+  var mX = constrain(mouseX, 0, width);
+  var mY = constrain(mouseY, 0, height);
 
   // tile counter
   var counter = 0;
@@ -123,7 +123,7 @@ function keyPressed() {
       brightnessValues[i] = int(random(0, 100));
     }
   }
-  
+
   if (key == '5') {
     for (var i = 0; i < tileCountX; i++) {
       hueValues[i] = 195;
@@ -131,7 +131,7 @@ function keyPressed() {
       brightnessValues[i] = int(random(0, 100));
     }
   }
-  
+
   if (key == '6') {
     for (var i = 0; i < tileCountX; i++) {
       hueValues[i] = 195;
@@ -147,7 +147,7 @@ function keyPressed() {
       brightnessValues[i] = int(random(50, 90));
     }
   }
-  
+
   if (key == '8') {
     for (var i = 0; i < tileCountX; i++) {
       hueValues[i] = int(random(180, 360));
@@ -169,7 +169,7 @@ function keyPressed() {
       }
     }
   }
-  
+
   if (key == '0') {
     for (var i = 0; i < tileCountX; i++) {
       if (i % 2 === 0) {
