@@ -29,7 +29,6 @@
 var shapes = [];
 var img;
 
-
 function preload() {
   img = loadImage('data/pic.png');
 
@@ -50,14 +49,14 @@ function preload() {
 
 function setup() {
   createCanvas(600, 900);
-  image(img, 0, 0);
-};
+  image(img);
+}
 
 function draw() {
   background(255);
 
   for (var gridX = 0; gridX < img.width; gridX++) {
-    for(var gridY = 0; gridY < img.height; gridY++) {
+    for (var gridY = 0; gridY < img.height; gridY++) {
       // grid position + title size
       var titleWidth = 603 / img.width;
       var titleHeight = 873 / img.height;
@@ -68,8 +67,8 @@ function draw() {
       img.loadPixels();
       var c = img.get(min(gridX, img.width - 1), gridY);
       // greyscale conversion
-      var greyscale = Math.round(red(c) * 0.222 + green(c) * 0.707 + blue(c) * 0.071);
-      var gradientToIndex = Math.round(map(greyscale, 0, 255, 0, shapes.length - 1));
+      var greyscale = round(red(c) * 0.222 + green(c) * 0.707 + blue(c) * 0.071);
+      var gradientToIndex = round(map(greyscale, 0, 255, 0, shapes.length - 1));
       image(shapes[gradientToIndex], posX, posY, titleWidth, titleHeight);
     }
   }

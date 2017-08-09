@@ -40,15 +40,15 @@ var blackAndWhite = false;
 var img;
 
 function preload() {
-  img = loadImage("data/pic.png");
+  img = loadImage('data/pic.png');
 }
 
 function setup() {
   createCanvas(533, 796);
-  textFont("Times");
+  textFont('Times');
   textSize(10);
   textAlign(LEFT, CENTER);
-  print(img.width + " x " + img.height);
+  print(img.width + ' • ' + img.height);
 }
 
 function draw() {
@@ -72,15 +72,21 @@ function draw() {
 
     if (fontSizeStatic) {
       textSize(fontSizeMax);
-      if (blackAndWhite) fill(greyscale);
-      else fill(c);
+      if (blackAndWhite) {
+        fill(greyscale);
+      } else {
+        fill(c);
+      }
     } else {
       // greyscale to fontsize
       var fontSize = map(greyscale, 0, 255, fontSizeMax, fontSizeMin);
       fontSize = max(fontSize, 1);
       textSize(fontSize);
-      if (blackAndWhite) fill(0);
-      else fill(c);
+      if (blackAndWhite) {
+        fill(0);
+      } else {
+        fill(c);
+      }
     }
 
     var letter = inputText.charAt(counter);

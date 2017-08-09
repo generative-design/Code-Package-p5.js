@@ -49,11 +49,11 @@ function setup() {
 
   tileWidth = width / tileCountX;
   tileHeight = height / tileCountY;
-  print(movie.width +' x '+ movie.height);
+  print(movie.width + ' • ' + movie.height);
 }
 
 function draw() {
-  if(movie.elt.readyState === 4) {
+  if (movie.elt.readyState === 4) {
     var posX = tileWidth * gridX;
     var posY = tileHeight * gridY;
 
