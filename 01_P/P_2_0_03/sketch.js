@@ -35,9 +35,8 @@ var strokeColor;
 
 function setup() {
   createCanvas(720, 720);
-  colorMode(HSB,360,100,100,100);
+  colorMode(HSB, 360, 100, 100, 100);
   noFill();
-  background(0,0,100);
   strokeWeight(2);
 
   strokeColor = [];
@@ -45,20 +44,20 @@ function setup() {
 }
 
 function draw() {
-  if(mouseIsPressed){
+  if (mouseIsPressed) {
     push();
-    translate(width/2,height/2);
+    translate(width / 2, height / 2);
 
-    var circleResolution = int(map(mouseY+100,0,height,2, 10));
-    var radius = mouseX-width/2;
-    var angle = TWO_PI/circleResolution;
+    var circleResolution = int(map(mouseY + 100, 0, height, 2, 10));
+    var radius = mouseX - width / 2;
+    var angle = TAU / circleResolution;
 
     stroke(strokeColor);
 
     beginShape();
-    for (var i=0; i<=circleResolution; i++){
-      var x = 0 + cos(angle*i) * radius;
-      var y = 0 + sin(angle*i) * radius;
+    for (var i = 0; i <= circleResolution; i++) {
+      var x = cos(angle * i) * radius;
+      var y = sin(angle * i) * radius;
       vertex(x, y);
     }
     endShape();
@@ -67,19 +66,19 @@ function draw() {
   }
 }
 
-function keyReleased(){
-  if (keyCode == DELETE || keyCode == BACKSPACE) background(0,0,100);
+function keyReleased() {
+  if (keyCode == DELETE || keyCode == BACKSPACE) background(0, 0, 100);
   if (key == 's' || key == 'S') saveCanvas(gd.timestamp(), 'png');
 
-  switch(key){
-  case '1':
-    strokeColor = color(0, 0, 0, 10);
-    break;
-  case '2':
-    strokeColor = color(192, 100, 64, 10);
-    break;
-  case '3':
-    strokeColor = color(52, 100, 71, 10);
-    break;
+  switch (key) {
+    case '1':
+      strokeColor = color(0, 0, 0, 10);
+      break;
+    case '2':
+      strokeColor = color(192, 100, 64, 10);
+      break;
+    case '3':
+      strokeColor = color(52, 100, 71, 10);
+      break;
   }
 }
