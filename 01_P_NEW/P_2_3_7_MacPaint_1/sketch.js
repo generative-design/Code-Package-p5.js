@@ -24,7 +24,7 @@
  * CONTRIBUTED BY
  * [Niels Poldervaart](http://NielsPoldervaart.nl)
 */
-"use strict";
+'use strict';
 
 var gif;
 var canvasElement;
@@ -78,19 +78,19 @@ function draw() {
         var oy = j * h;
 
         // Normal position
-        img.line(x+ox, y+oy, px+ox, py+oy); 
+        img.line(x + ox, y + oy, px + ox, py + oy);
         // Horizontal mirror or all three other mirrors
-        if (mh || md2 && md1 && mv) img.line(w-x+ox, y+oy, w-px+ox, py+oy);
+        if (mh || md2 && md1 && mv) img.line(w - x + ox, y + oy, w - px + ox, py + oy);
         // Vertical mirror
-        if (mv || md2 && md1 && mh) img.line(x+ox, h-y+oy, px+ox, h-py+oy);
+        if (mv || md2 && md1 && mh) img.line(x + ox, h - y + oy, px + ox, h - py + oy);
         // Horizontal and vertical mirror
-        if (mv && mh || md2 && md1) img.line(w-x+ox, h-y+oy, w-px+ox, h-py+oy);
+        if (mv && mh || md2 && md1) img.line(w - x + ox, h - y + oy, w - px + ox, h - py + oy);
 
         // When mirroring diagonally, flip X and Y inputs.
-        if (md1 || md2 && mv && mh) img.line(y+ox, x+oy, py+ox, px+oy);
-        if (md1 && mh || md2 && mv) img.line(y+ox, w-x+oy, py+ox, w-px+oy);
-        if (md1 && mv || md2 && mh) img.line(h-y+ox, x+oy, h-py+ox, px+oy);
-        if (md1 && mv && mh || md2) img.line(h-y+ox, w-x+oy, h-py+ox, w-px+oy);
+        if (md1 || md2 && mv && mh) img.line(y + ox, x + oy, py + ox, px + oy);
+        if (md1 && mh || md2 && mv) img.line(y + ox, w - x + oy, py + ox, w - px + oy);
+        if (md1 && mv || md2 && mh) img.line(h - y + ox, x + oy, h - py + ox, px + oy);
+        if (md1 && mv && mh || md2) img.line(h - y + ox, w - x + oy, h - py + ox, w - px + oy);
       }
     }
 
