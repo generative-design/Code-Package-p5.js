@@ -45,7 +45,7 @@ function setup() {
 
   rectMode(CENTER);
 
-  opentype.load('../../data/FreeSans.otf', function(err, f) {
+  opentype.load('data/FreeSans.otf', function(err, f) {
     if (err) {
       print('Font could not be loaded: ' + err);
     } else {
