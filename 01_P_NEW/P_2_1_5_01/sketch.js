@@ -1,7 +1,7 @@
-// P_moire_1
+// P_2_1_5_01
 /**
- * Simple moire effect demonstration by moving, rotating 
- * and scaling a shape of densely packed lines over 
+ * Simple moire effect demonstration by moving, rotating
+ * and scaling a shape of densely packed lines over
  * a background also consisting of densely packed lines.
  *
  * MOUSE
@@ -15,12 +15,12 @@
  * CONTRIBUTED BY
  * [Niels Poldervaart](http://NielsPoldervaart.nl)
  */
-"use strict";
+'use strict';
 
 var drawMode = 1;
 
 function setup() {
-  createCanvas(600, 600);
+  createCanvas(800, 800);
   noFill();
 }
 

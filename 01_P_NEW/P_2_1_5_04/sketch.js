@@ -1,4 +1,4 @@
-// P_moire_7
+// P_2_1_5_04
 /**
  * Drawing tool for creating moire effect compositions using
  * smooth path of any length, width, smoothness and colour.
@@ -20,7 +20,7 @@
  * CONTRIBUTED BY
  * [Niels Poldervaart](http://NielsPoldervaart.nl)
  */
-"use strict";
+'use strict';
 
 var shapes = [];
 var density = 2.5;
@@ -33,7 +33,6 @@ var newShape;
 function setup() {
   createCanvas(800, 800);
   noFill();
-  strokeWeight(1);
   shapeColor = color(0);
 }
 
@@ -61,7 +60,7 @@ function Shape(h, c) {
     var newPos = createVector(x, y);
     var lastPos = this.getLastPos();
     if (
-      this.shapePath.length === 0 ||
+      this.shapePath.length == 0 ||
       lastPos && p5.Vector.dist(newPos, lastPos) > smoothness
     ) {
       this.shapePath.push(newPos);
@@ -115,9 +114,9 @@ function keyPressed() {
     redraw();
   }
 
-  if (keyCode === RIGHT_ARROW) smoothness += density;
-  if (keyCode === LEFT_ARROW) smoothness -= density;
+  if (keyCode == RIGHT_ARROW) smoothness += density;
+  if (keyCode == LEFT_ARROW) smoothness -= density;
 
-  if (keyCode === UP_ARROW) shapeHeight += density;
-  if (keyCode === DOWN_ARROW) shapeHeight -= density;
+  if (keyCode == UP_ARROW) shapeHeight += density;
+  if (keyCode == DOWN_ARROW) shapeHeight -= density;
 }

@@ -1,4 +1,4 @@
-// P_moire_6
+// P_2_1_5_03
 /**
  * Drawing tool for creating moire effect compositions using
  * rectangles of various widths, lengths, angles and colours.
@@ -18,39 +18,38 @@
  * CONTRIBUTED BY
  * [Niels Poldervaart](http://NielsPoldervaart.nl)
  */
-"use strict";
+'use strict';
 
-var rectangles = [];
+var shapes = [];
 var density = 2.5;
-var rectHeight = 64;
-var lineColor;
+var shapeHeight = 64;
+var shapeColor;
 
-var newRect;
+var newShape;
 
 function setup() {
-  createCanvas(600, 600);
+  createCanvas(800, 800);
   noFill();
-  strokeWeight(1);
-  lineColor = color(0);
+  shapeColor = color(0);
 }
 
 function draw() {
   background(255);
 
-  rectangles.forEach(function(rectangle) {
-    rectangle.draw();
+  shapes.forEach(function(shape) {
+    shape.draw();
   });
 
-  if (newRect) {
-    newRect.x2 = mouseX;
-    newRect.y2 = mouseY;
-    newRect.h = rectHeight;
-    newRect.c = lineColor;
-    newRect.draw();
+  if (newShape) {
+    newShape.x2 = mouseX;
+    newShape.y2 = mouseY;
+    newShape.h = shapeHeight;
+    newShape.c = shapeColor;
+    newShape.draw();
   }
 }
 
-function Rectangle(x1, y1, x2, y2, h, c) {
+function Shape(x1, y1, x2, y2, h, c) {
   this.x1 = x1;
   this.y1 = y1;
   this.x2 = x2;
@@ -58,7 +57,7 @@ function Rectangle(x1, y1, x2, y2, h, c) {
   this.h = h;
   this.c = c;
 
-  Rectangle.prototype.draw = function() {
+  Shape.prototype.draw = function() {
     var w = dist(this.x1, this.y1, this.x2, this.y2);
     var a = atan2(this.y2 - this.y1, this.x2 - this.x1);
     stroke(this.c);
@@ -74,22 +73,22 @@ function Rectangle(x1, y1, x2, y2, h, c) {
 }
 
 function mousePressed() {
-  newRect = new Rectangle(pmouseX, pmouseY, mouseX, mouseY, rectHeight, lineColor);
+  newShape = new Shape(pmouseX, pmouseY, mouseX, mouseY, shapeHeight, shapeColor);
 }
 
 function mouseReleased() {
-  rectangles.push(newRect);
-  newRect = undefined;
+  shapes.push(newShape);
+  newShape = undefined;
 }
 
 function keyPressed() {
   if (key == 's' || key == 'S') saveCanvas(gd.timestamp(), 'png');
 
-  if (key == '1') lineColor = color(255, 0, 0);
-  if (key == '2') lineColor = color(0, 255, 0);
-  if (key == '3') lineColor = color(0, 0, 255);
-  if (key == '4') lineColor = color(0);
+  if (key == '1') shapeColor = color(255, 0, 0);
+  if (key == '2') shapeColor = color(0, 255, 0);
+  if (key == '3') shapeColor = color(0, 0, 255);
+  if (key == '4') shapeColor = color(0);
 
-  if (keyCode === UP_ARROW) rectHeight += density;
-  if (keyCode === DOWN_ARROW) rectHeight -= density;
+  if (keyCode == UP_ARROW) shapeHeight += density;
+  if (keyCode == DOWN_ARROW) shapeHeight -= density;
 }
