@@ -1,4 +1,4 @@
-// P_3_2_5_type_moire_8
+// P_3_2_4_01
 /**
  * Drawing tool for creating moire effect compositions using
  * smooth path of any length, width, smoothness and colour.
@@ -17,7 +17,7 @@
  * CONTRIBUTED BY
  * [Niels Poldervaart](http://NielsPoldervaart.nl)
  */
-"use strict";
+'use strict';
 
 var letters = [];
 var density = 2.5;
@@ -49,7 +49,7 @@ function draw() {
 
   translate(100, height * 0.75);
 
-  pathSampleFactor = 0.1 * pow(0.02, mouseX/width);
+  pathSampleFactor = 0.1 * pow(0.02, mouseX / width);
   ribbonWidth = map(mouseY, 0, height, 1, 200);
 
   for (var i = 0; i < letters.length; i++) {
@@ -97,7 +97,6 @@ function Letter(char, x, y) {
           v.mult(d);
           var pneu = p5.Vector.add(p0, v);
           curveVertex(pneu.x, pneu.y);
-
         }
       }
 
@@ -107,25 +106,25 @@ function Letter(char, x, y) {
 }
 
 function keyReleased() {
-  if (keyCode === CONTROL) saveCanvas(gd.timestamp(), 'png');
+  if (keyCode == CONTROL) saveCanvas(gd.timestamp(), 'png');
 
-  if (keyCode === LEFT_ARROW) density *= 1.25;
-  if (keyCode === RIGHT_ARROW) density /= 1.25;
+  if (keyCode == LEFT_ARROW) density *= 1.25;
+  if (keyCode == RIGHT_ARROW) density /= 1.25;
 
-  if (keyCode === UP_ARROW) {
+  if (keyCode == UP_ARROW) {
     fontSize *= 1.1;
     createLetters();
   }
-  if (keyCode === DOWN_ARROW) {
+  if (keyCode == DOWN_ARROW) {
     fontSize /= 1.1;
     createLetters();
   }
 
-  if (keyCode === ENTER) createLetters();
+  if (keyCode == ENTER) createLetters();
 }
 
 function keyPressed() {
-  if (keyCode === DELETE || keyCode === BACKSPACE) {
+  if (keyCode == DELETE || keyCode == BACKSPACE) {
     if (textTyped.length > 0) {
       textTyped = textTyped.substring(0, textTyped.length - 1);
       createLetters();
