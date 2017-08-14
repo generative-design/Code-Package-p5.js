@@ -1,4 +1,4 @@
-// P_2_0_02.pde
+// P_2_0_02
 //
 // Generative Gestaltung, ISBN: 978-3-87439-759-9
 // First Edition, Hermann Schmidt, Mainz, 2009

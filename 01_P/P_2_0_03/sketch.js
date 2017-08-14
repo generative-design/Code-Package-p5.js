@@ -1,4 +1,4 @@
-// P_2_0_03.pde
+// P_2_0_03
 //
 // Generative Gestaltung, ISBN: 978-3-87439-759-9
 // First Edition, Hermann Schmidt, Mainz, 2009
@@ -38,8 +38,6 @@ function setup() {
   colorMode(HSB, 360, 100, 100, 100);
   noFill();
   strokeWeight(2);
-
-  strokeColor = [];
   strokeColor = color(0, 10);
 }
 
@@ -70,15 +68,7 @@ function keyReleased() {
   if (keyCode == DELETE || keyCode == BACKSPACE) background(0, 0, 100);
   if (key == 's' || key == 'S') saveCanvas(gd.timestamp(), 'png');
 
-  switch (key) {
-    case '1':
-      strokeColor = color(0, 0, 0, 10);
-      break;
-    case '2':
-      strokeColor = color(192, 100, 64, 10);
-      break;
-    case '3':
-      strokeColor = color(52, 100, 71, 10);
-      break;
-  }
+  if (key == '1') strokeColor = color(0, 0, 0, 10);
+  if (key == '2') strokeColor = color(192, 100, 64, 10);
+  if (key == '3') strokeColor = color(52, 100, 71, 10);
 }
