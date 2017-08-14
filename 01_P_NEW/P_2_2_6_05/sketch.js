@@ -1,4 +1,4 @@
-// P_pendulum_5
+// P_2_2_6_05
 /**
  * Drawing tool that moves a branching pendulum contraption along paths drawn by the mouse.
  * The last joint of the pendulum leaves behind its own vertex, which is used to draw the
@@ -11,23 +11,26 @@
  * 1                   : toggle path line
  * 2                   : toggle pendulum
  * 3                   : toggle pendulum path
- * arrow up            : increase amplitude
- * arrow down          : decrease amplitude
- * arrow left          : decrease gravity
- * arrow right         : increase gravity
+ * -                   : decrease gravity
+ * +                   : increase gravity
+ * arrow down          : decrease length of lines
+ * arrow up            : increase length of lines
+ * arrow left          : decrease joints
+ * arrow right         : increase joints
+ * del, backspace      : clear screen
  * s                   : save png
  *
  * CONTRIBUTED BY
  * [Niels Poldervaart](http://NielsPoldervaart.nl)
  */
-"use strict";
+'use strict';
 
 var shapes = [];
 
 var newShape;
 
 var joints = 4;
-var amplitude = 128;
+var lineLength = 128;
 var resolution = 0.04;
 var gravity = 0.094;
 var damping = 0.998;
@@ -36,7 +39,7 @@ var showPath = true;
 var showPendulum = true;
 var showPendulumPath = true;
 
-var font = "Georgia";
+var font = 'Georgia';
 var letters = "Sie hören nicht die folgenden Gesänge, Die Seelen, denen ich die ersten sang, Zerstoben ist das freundliche Gedränge, Verklungen ach! der erste Wiederklang.";
 var fontSizeMin = 6;
 
@@ -44,7 +47,6 @@ function setup() {
   createCanvas(windowWidth, windowHeight);
   colorMode(HSB, 360, 100, 100, 100);
   strokeWeight(1);
-  background(220);
   textFont(font, fontSizeMin);
 }
 
@@ -65,12 +67,12 @@ function draw() {
 
 function Shape(pendulumPathColor) {
   this.shapePath = [];
-  this.iterator = 0;
-  this.resolution = resolution;
-  this.amplitude = amplitude;
-  this.pendulum = new Pendulum(this.amplitude, joints);
   this.pendulumPath = [];
   this.pendulumPathColor = pendulumPathColor;
+  this.iterator = 0;
+  this.lineLength = lineLength;
+  this.resolution = resolution;
+  this.pendulum = new Pendulum(this.lineLength, joints);
   this.letterIndex = 0;
 
   Shape.prototype.addPos = function(x, y) {
@@ -108,7 +110,7 @@ function Shape(pendulumPathColor) {
         var nextPos = this.pendulumPath[nextPosIndex];
 
         if (nextPos) {
-          var angle = atan2(nextPos.y - pos.y, nextPos.x - pos.x);;
+          var angle = atan2(nextPos.y - pos.y, nextPos.x - pos.x);
           push();
           translate(pos.x, pos.y);
           rotate(angle);
@@ -227,18 +229,26 @@ function mouseReleased() {
 function keyPressed() {
   if (key == 's' || key == 'S') saveCanvas(gd.timestamp(), 'png');
 
-  if (key == ' ') {
+  if (keyCode == DELETE || keyCode == BACKSPACE) {
     shapes = [];
-    background(255);
-    loop();
+    newShape = undefined;
+  }
+
+  if (keyCode == UP_ARROW) lineLength += 2;
+  if (keyCode == DOWN_ARROW) lineLength -= 2;
+  if (keyCode == LEFT_ARROW) {
+    joints--;
+    joints = max(1, joints);
+  }
+  if (keyCode == RIGHT_ARROW) {
+    joints++;
+    joints = max(1, joints);
   }
 
   if (key == '1') showPath = !showPath;
   if (key == '2') showPendulum = !showPendulum;
   if (key == '3') showPendulumPath = !showPendulumPath;
 
-  if (keyCode == UP_ARROW) amplitude += 2;
-  if (keyCode == DOWN_ARROW) amplitude -= 2;
-  if (keyCode == LEFT_ARROW) gravity -= 0.001;
-  if (keyCode == RIGHT_ARROW) gravity += 0.001;
+  if (key == '-') gravity -= 0.001;
+  if (key == '+') gravity += 0.001;
 }

@@ -1,4 +1,4 @@
-// P_pendulum_2
+// P_2_2_6_03
 /**
  * Drawing tool that moves a pendulum contraption along paths drawn by the mouse.
  * The last joint of the pendulum leaves behind its own trail.
@@ -11,23 +11,26 @@
  * 2                   : toggle pendulum
  * 3                   : toggle pendulum path
  * 4                   : toggle clear screen
- * arrow up            : increase amplitude
- * arrow down          : decrease amplitude
- * arrow left          : decrease gravity
- * arrow right         : increase gravity
+ * -                   : decrease gravity
+ * +                   : increase gravity
+ * arrow down          : decrease length of lines
+ * arrow up            : increase length of lines
+ * arrow left          : decrease joints
+ * arrow right         : increase joints
+ * del, backspace      : clear screen
  * s                   : save png
  *
  * CONTRIBUTED BY
  * [Niels Poldervaart](http://NielsPoldervaart.nl)
  */
-"use strict";
+'use strict';
 
 var shapes = [];
 
 var newShape;
 
 var joints = 12;
-var amplitude = 64;
+var linelength = 64;
 var resolution = 0.06;
 var gravity = 0.094;
 var damping = 0.998;
@@ -42,7 +45,6 @@ function setup() {
   colorMode(HSB, 360, 100, 100, 100);
   noFill();
   strokeWeight(1);
-  background(220);
 }
 
 function draw() {
@@ -62,12 +64,12 @@ function draw() {
 
 function Shape(pendulumPathColor) {
   this.shapePath = [];
-  this.iterator = 0;
-  this.resolution = resolution;
-  this.amplitude = amplitude;
-  this.pendulum = new Pendulum(this.amplitude, joints);
   this.pendulumPath = [];
   this.pendulumPathColor = pendulumPathColor;
+  this.iterator = 0;
+  this.linelength = linelength;
+  this.resolution = resolution;
+  this.pendulum = new Pendulum(this.linelength, joints);
 
   Shape.prototype.addPos = function(x, y) {
     var newPos = createVector(x, y);
@@ -75,16 +77,16 @@ function Shape(pendulumPathColor) {
   };
 
   Shape.prototype.draw = function() {
-      strokeWeight(0.8);
-      stroke(0, 10);
+    strokeWeight(0.8);
+    stroke(0, 10);
 
-      if (showPath) {
-        beginShape();
-        this.shapePath.forEach(function(pos) {
-          vertex(pos.x, pos.y);
-        });
-        endShape();
-      }
+    if (showPath) {
+      beginShape();
+      this.shapePath.forEach(function(pos) {
+        vertex(pos.x, pos.y);
+      });
+      endShape();
+    }
 
     if (this.iterator < this.shapePath.length) {
       var currentIndex = floor(this.iterator);
@@ -93,7 +95,6 @@ function Shape(pendulumPathColor) {
       var previousPos = this.shapePath[currentIndex - 1];
       if (previousPos) {
         var offsetPos = p5.Vector.lerp(previousPos, currentPos, this.iterator - currentIndex);
-
         var heading = atan2(currentPos.y - previousPos.y, currentPos.x - previousPos.x) - HALF_PI;
 
         push();
@@ -109,7 +110,7 @@ function Shape(pendulumPathColor) {
     }
 
     if (showPendulumPath) {
-      strokeWeight(1);
+      strokeWeight(1.6);
       stroke(this.pendulumPathColor);
       beginShape();
       this.pendulumPath.forEach(function(pos) {
@@ -201,10 +202,21 @@ function mouseReleased() {
 function keyPressed() {
   if (key == 's' || key == 'S') saveCanvas(gd.timestamp(), 'png');
 
-  if (key == ' ') {
+  if (keyCode == DELETE || keyCode == BACKSPACE) {
     shapes = [];
-    background(255);
-    loop();
+    newShape = undefined;
+    background(0, 0, 100);
+  }
+
+  if (keyCode == UP_ARROW) linelength += 2;
+  if (keyCode == DOWN_ARROW) linelength -= 2;
+  if (keyCode == LEFT_ARROW) {
+    joints--;
+    joints = max(1, joints);
+  }
+  if (keyCode == RIGHT_ARROW) {
+    joints++;
+    joints = max(1, joints);
   }
 
   if (key == '1') showPath = !showPath;
@@ -212,8 +224,6 @@ function keyPressed() {
   if (key == '3') showPendulumPath = !showPendulumPath;
   if (key == '4') clearScreen = !clearScreen;
 
-  if (keyCode == UP_ARROW) amplitude += 2;
-  if (keyCode == DOWN_ARROW) amplitude -= 2;
-  if (keyCode == LEFT_ARROW) gravity -= 0.001;
-  if (keyCode == RIGHT_ARROW) gravity += 0.001;
+  if (key == '-') gravity -= 0.001;
+  if (key == '+') gravity += 0.001;
 }

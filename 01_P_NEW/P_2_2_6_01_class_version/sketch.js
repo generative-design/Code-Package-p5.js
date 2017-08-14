@@ -1,4 +1,4 @@
-// P_pendulum_1
+// P_2_2_6_01_class_version
 /**
  * A chain of linked pendulums. Each a little shorter and faster than the one it's linked to.
  * Each joint of the pendulum leaves behind its own trail.
@@ -10,15 +10,15 @@
  * +                   : increase speed relation
  * arrow down          : decrease length of lines
  * arrow up            : increase length of lines
- * arrow left          : decrease speed
- * arrow right         : increase speed
+ * arrow left          : decrease joints
+ * arrow right         : increase joints
  * del, backspace      : clear screen
  * s                   : save png
  *
  * CONTRIBUTED BY
  * [Niels Poldervaart](http://NielsPoldervaart.nl)
  */
-"use strict";
+'use strict';
 
 var shape;
 
@@ -34,8 +34,6 @@ function setup() {
   colorMode(HSB, 360, 100, 100, 100);
   noFill();
   strokeWeight(1);
-  background(220);
-
   shape = new Shape(width / 2, height / 2, joints, lineLength, speedRelation);
 }
 
@@ -54,7 +52,7 @@ function Shape(x, y, joints, lineLength, speedRelation, speed) {
   this.joints = joints;
   this.lineLength = lineLength;
   this.speedRelation = speedRelation || 2;
-  this.speed = speed || (8 / pow(1.75, this.joints-1) / pow(2, speedRelation - 1));
+  this.speed = speed || (8 / pow(1.75, this.joints - 1) / pow(2, speedRelation - 1));
 
   // new empty array for each joint
   for (var i = 0; i < this.joints; i++) {
@@ -111,7 +109,9 @@ function Shape(x, y, joints, lineLength, speedRelation, speed) {
 }
 
 function keyPressed() {
-  if (keyCode === DELETE || keyCode === BACKSPACE) {
+  if (key == 's' || key == 'S') saveCanvas(gd.timestamp(), 'png');
+
+  if (keyCode == DELETE || keyCode == BACKSPACE) {
     shape = new Shape(width / 2, height / 2, joints, lineLength);
   }
 
@@ -137,13 +137,6 @@ function keyPressed() {
     shape.joints = joints;
     shape = new Shape(width / 2, height / 2, joints, lineLength, speedRelation);
   }
-}
-
-function keyTyped() {
-  if (key == 's' || key == 'S') saveCanvas(gd.timestamp(), 'png');
-
-  if (key == '1') showPendulum = !showPendulum;
-  if (key == '2') showPendulumPath = !showPendulumPath;
 
   if (key == '+') {
     speedRelation++;
@@ -158,4 +151,6 @@ function keyTyped() {
     shape = new Shape(width / 2, height / 2, joints, lineLength, speedRelation);
   }
 
+  if (key == '1') showPendulum = !showPendulum;
+  if (key == '2') showPendulumPath = !showPendulumPath;
 }

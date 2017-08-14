@@ -1,4 +1,4 @@
-// P_pendulum_1
+// P_2_2_6_02
 /**
  * Drawing tool that moves a pendulum-esq contraption along paths drawn by the mouse.
  * Each joint of the pendulum leaves behind its own trail.
@@ -10,23 +10,26 @@
  * 1                   : toggle path line
  * 2                   : toggle pendulum
  * 3                   : toggle pendulum path
- * arrow up            : increase amplitude
- * arrow down          : decrease amplitude
- * arrow left          : decrease speed
- * arrow right         : increase speed
+ * -                   : decrease speed
+ * +                   : increase speed
+ * arrow down          : decrease length of lines
+ * arrow up            : increase length of lines
+ * arrow left          : decrease joints
+ * arrow right         : increase joints
+ * del, backspace      : clear screen
  * s                   : save png
  *
  * CONTRIBUTED BY
  * [Niels Poldervaart](http://NielsPoldervaart.nl)
  */
-"use strict";
+'use strict';
 
 var shapes = [];
 
 var newShape;
 
 var joints = 8;
-var amplitude = 32;
+var lineLength = 32;
 var speed = 16;
 var resolution = 0.2;
 
@@ -39,7 +42,6 @@ function setup() {
   colorMode(HSB, 360, 100, 100, 100);
   noFill();
   strokeWeight(1);
-  background(220);
 }
 
 function draw() {
@@ -57,11 +59,11 @@ function draw() {
   }
 }
 
-function Shape(amplitude, speed, resolution, joints) {
+function Shape(lineLength, speed, resolution, joints) {
   this.shapePath = [];
   this.pendulumPath = [];
   this.iterator = 0;
-  this.amplitude = amplitude;
+  this.lineLength = lineLength;
   this.speed = speed;
   this.resolution = resolution;
   this.joints = joints;
@@ -99,7 +101,7 @@ function Shape(amplitude, speed, resolution, joints) {
           this.iterator /
           pow(-2, this.joints - i) * this.speed
         );
-        offsetPosB.setMag((this.amplitude / this.joints) * (this.joints - i));
+        offsetPosB.setMag((this.lineLength / this.joints) * (this.joints - i));
         offsetPosB.add(offsetPosA);
 
         if (showPendulum) {
@@ -135,7 +137,7 @@ function Shape(amplitude, speed, resolution, joints) {
 }
 
 function mousePressed() {
-  newShape = new Shape(amplitude, speed, resolution, joints);
+  newShape = new Shape(lineLength, speed, resolution, joints);
   newShape.addPos(mouseX, mouseY);
 }
 
@@ -147,18 +149,26 @@ function mouseReleased() {
 function keyPressed() {
   if (key == 's' || key == 'S') saveCanvas(gd.timestamp(), 'png');
 
-  if (key == ' ') {
+  if (keyCode == DELETE || keyCode == BACKSPACE) {
     shapes = [];
-    background(255);
-    loop();
+    newShape = undefined;
   }
+
+  if (keyCode == UP_ARROW) lineLength += 2;
+  if (keyCode == DOWN_ARROW) lineLength -= 2;
+  if (keyCode == LEFT_ARROW) {
+    joints--;
+    joints = max(1, joints);
+  }
+  if (keyCode == RIGHT_ARROW) {
+    joints++
+    joints = max(1, joints);
+  };
 
   if (key == '1') showPath = !showPath;
   if (key == '2') showPendulum = !showPendulum;
   if (key == '3') showPendulumPath = !showPendulumPath;
 
-  if (keyCode == UP_ARROW) amplitude += 2;
-  if (keyCode == DOWN_ARROW) amplitude -= 2;
-  if (keyCode == LEFT_ARROW) speed--;
-  if (keyCode == RIGHT_ARROW) speed++;
+  if (key == '+') speed++;
+  if (key == '-') speed--;
 }

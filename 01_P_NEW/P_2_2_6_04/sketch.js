@@ -1,4 +1,4 @@
-// P_pendulum_3
+// P_2_2_6_04
 /**
  * Drawing tool that moves a branching pendulum contraption along paths drawn by the mouse.
  * The last joint of the pendulum leaves behind its own trail.
@@ -11,23 +11,24 @@
  * 2                   : toggle pendulum
  * 3                   : toggle pendulum path
  * 4                   : toggle fill mode
- * arrow up            : increase amplitude
- * arrow down          : decrease amplitude
+ * arrow up            : increase length of lines
+ * arrow down          : decrease length of lines
  * arrow left          : decrease gravity
  * arrow right         : increase gravity
+ * del, backspace      : clear screen
  * s                   : save png
  *
  * CONTRIBUTED BY
  * [Niels Poldervaart](http://NielsPoldervaart.nl)
  */
-"use strict";
+'use strict';
 
 var shapes = [];
 
 var newShape;
 
 var joints = 5;
-var amplitude = 32;
+var lineLength = 32;
 var resolution = 0.04;
 var gravity = 0.099;
 var damping = 0.995;
@@ -44,7 +45,6 @@ function setup() {
   colorMode(HSB, 360, 100, 100, 100);
   noFill();
   strokeWeight(1);
-  background(220);
 }
 
 function draw() {
@@ -64,12 +64,12 @@ function draw() {
 
 function Shape(pendulumPathColor) {
   this.shapePath = [];
-  this.iterator = 0;
-  this.resolution = resolution;
-  this.amplitude = amplitude;
-  this.pendulum = new Pendulum(this.amplitude, joints);
   this.pendulumPath = [];
   this.pendulumPathColor = pendulumPathColor;
+  this.iterator = 0;
+  this.lineLength = lineLength;
+  this.resolution = resolution;
+  this.pendulum = new Pendulum(this.lineLength, joints);
 
   Shape.prototype.addPos = function(x, y) {
     var newPos = createVector(x, y);
@@ -91,7 +91,7 @@ function Shape(pendulumPathColor) {
     if (showPendulumPath && this.pendulumPath.length) {
       strokeWeight(1);
       stroke(this.pendulumPathColor);
-      
+
       if (fillMode) {
         var c = this.pendulumPathColor;
         fill(hue(c), saturation(c), brightness(c), 10);
@@ -112,7 +112,6 @@ function Shape(pendulumPathColor) {
           endShape();
         }.bind(this));
       }
-      
     }
 
     if (this.iterator < this.shapePath.length) {
@@ -222,19 +221,18 @@ function mouseReleased() {
 function keyPressed() {
   if (key == 's' || key == 'S') saveCanvas(gd.timestamp(), 'png');
 
-  if (key == ' ') {
+  if (keyCode == DELETE || keyCode == BACKSPACE) {
     shapes = [];
-    background(255);
-    loop();
+    newShape = undefined;
   }
+
+  if (keyCode == UP_ARROW) lineLength += 2;
+  if (keyCode == DOWN_ARROW) lineLength -= 2;
+  if (keyCode == LEFT_ARROW) gravity -= 0.001;
+  if (keyCode == RIGHT_ARROW) gravity += 0.001;
 
   if (key == '1') showPath = !showPath;
   if (key == '2') showPendulum = !showPendulum;
   if (key == '3') showPendulumPath = !showPendulumPath;
   if (key == '4') fillMode = !fillMode;
-
-  if (keyCode == UP_ARROW) amplitude += 2;
-  if (keyCode == DOWN_ARROW) amplitude -= 2;
-  if (keyCode == LEFT_ARROW) gravity -= 0.001;
-  if (keyCode == RIGHT_ARROW) gravity += 0.001;
 }

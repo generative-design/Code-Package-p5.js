@@ -1,4 +1,4 @@
-// P_pendulum_1
+// P_2_2_6_01
 /**
  * A chain of linked pendulums. Each a little shorter and faster than the one it's linked to.
  * Each joint of the pendulum leaves behind its own trail.
@@ -10,15 +10,15 @@
  * +                   : increase speed relation
  * arrow down          : decrease length of lines
  * arrow up            : increase length of lines
- * arrow left          : decrease speed
- * arrow right         : increase speed
+ * arrow left          : decrease joints
+ * arrow right         : increase joints
  * del, backspace      : clear screen
  * s                   : save png
  *
  * CONTRIBUTED BY
  * [Niels Poldervaart](http://NielsPoldervaart.nl)
  */
-"use strict";
+'use strict';
 
 var shape;
 
@@ -39,7 +39,6 @@ function setup() {
   colorMode(HSB, 360, 100, 100, 100);
   noFill();
   strokeWeight(1);
-  background(220);
 
   center = createVector(width / 2, height / 2);
 
@@ -54,7 +53,7 @@ function startDrawing() {
   }
 
   angle = 0;
-  speed = (8 / pow(1.75, joints-1) / pow(2, speedRelation - 1));
+  speed = (8 / pow(1.75, joints - 1) / pow(2, speedRelation - 1));
 }
 
 function draw() {
@@ -106,9 +105,9 @@ function draw() {
 }
 
 function keyPressed() {
-  if (keyCode === DELETE || keyCode === BACKSPACE) {
-    shape = new Shape(width / 2, height / 2, joints, lineLength);
-  }
+  if (key == 's' || key == 'S') saveCanvas(gd.timestamp(), 'png');
+
+  if (keyCode == DELETE || keyCode == BACKSPACE) startDrawing();
 
   if (keyCode == UP_ARROW) {
     lineLength += 2;
@@ -128,13 +127,6 @@ function keyPressed() {
     if (joints > 10) joints = 10;
     startDrawing();
   }
-}
-
-function keyTyped() {
-  if (key == 's' || key == 'S') saveCanvas(gd.timestamp(), 'png');
-
-  if (key == '1') showPendulum = !showPendulum;
-  if (key == '2') showPendulumPath = !showPendulumPath;
 
   if (key == '+') {
     speedRelation++;
@@ -147,4 +139,6 @@ function keyTyped() {
     startDrawing();
   }
 
+  if (key == '1') showPendulum = !showPendulum;
+  if (key == '2') showPendulumPath = !showPendulumPath;
 }
