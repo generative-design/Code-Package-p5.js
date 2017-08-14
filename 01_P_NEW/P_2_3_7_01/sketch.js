@@ -1,4 +1,4 @@
-// P_MacPaint_1
+// P_2_3_7_01
 /**
  * Simple drawing tool where mouse input gets mirrored over multiple axes
  *
@@ -130,10 +130,6 @@ function draw() {
     noFill();
     ellipse(mouseX, mouseY, lineWidth + 1, lineWidth + 1)
   }
-}
-
-function mouseWheel(e) {
-  //lineWidth = max(lineWidth += e.delta / 100, 0.1);
 }
 
 function keyPressed() {

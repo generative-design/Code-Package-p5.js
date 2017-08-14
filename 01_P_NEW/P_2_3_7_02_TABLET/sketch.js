@@ -1,4 +1,4 @@
-// P_MacPaint_1
+// P_2_3_7_02_TABLET
 /**
  * Simple drawing tool where mouse input gets mirrored over multiple axes
  *
@@ -24,7 +24,7 @@
  * CONTRIBUTED BY
  * [Niels Poldervaart](http://NielsPoldervaart.nl)
 */
-"use strict";
+'use strict';
 
 var gif;
 var canvasElement;
@@ -81,7 +81,7 @@ function draw() {
     if (tabletValues.isEraser) {
       img.stroke(255);
       lineWidth *= 3;
-    }  
+    }
     img.strokeWeight(lineWidth);
 
     for (var i = 0; i < penCount; i++) {
@@ -104,7 +104,7 @@ function draw() {
         }
 
         // Normal position
-        img.line(x, y, px, py); 
+        img.line(x, y, px, py);
         // Horizontal mirror or all three other mirrors
         if (mh || md2 && md1 && mv) img.line(w - x, y, w - px, py);
         // Vertical mirror
@@ -160,10 +160,6 @@ function draw() {
 // gamma ramp, non linaer mapping ...
 function gamma(theValue, theGamma) {
   return pow(theValue, theGamma);
-}
-
-function mouseWheel(e) {
-  //lineWidth = max(lineWidth += e.delta / 100, 0.1);
 }
 
 function keyPressed() {
