@@ -90,8 +90,10 @@ function setup() {
 function draw() {
   background(360);
 
-  if (mouseIsPressed && mouseButton == LEFT) setTile();
-  if (mouseIsPressed && mouseButton == RIGHT) unSetTile();
+  if (mouseIsPressed) {
+    if (mouseButton == LEFT) setTile();
+    if (mouseButton == RIGHT) unsetTile();
+  }
 
   if (doDrawGrid) drawGrid();
   drawModules();

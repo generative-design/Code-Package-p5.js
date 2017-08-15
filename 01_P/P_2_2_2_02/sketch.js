@@ -1,4 +1,4 @@
-// P_2_2_2_02.pde
+// P_2_2_2_02
 //
 // Generative Gestaltung, ISBN: 978-3-87439-759-9
 // First Edition, Hermann Schmidt, Mainz, 2009
@@ -23,8 +23,8 @@
  * position x          : composition speed of the picture
  *
  * KEYS
- * Delete/Backspace    : clear display
  * 1-3                 : draw mode
+ * DEL/BACKSPACE       : clear display
  * s                   : save png
  */
 'use strict';
@@ -54,8 +54,8 @@ var drawMode = 1;
 
 function setup() {
   createCanvas(600, 600);
-  colorMode(HSB, 360, 100, 100);
-  background(360, 0, 100);
+  colorMode(HSB, 360, 100, 100, 100);
+  background(360);
 
   angle = getRandomAngle(direction);
   posX = floor(random(width));
@@ -97,20 +97,21 @@ function draw() {
     // ------ if agent is crossing his path or border was reached ------
     loadPixels();
     var currentPixel = get(floor(posX), floor(posY));
-    if ((currentPixel[0] != 255 && currentPixel[1] != 255 &&
-         currentPixel[2] != 255) || reachedBorder) {
-
+    if (
+      reachedBorder ||
+      (currentPixel[0] != 255 && currentPixel[1] != 255 && currentPixel[2] != 255)
+    ) {
       angle = getRandomAngle(direction);
 
       var distance = dist(posX, posY, posXcross, posYcross);
       if (distance >= minLength) {
           strokeWeight(distance / dWeight);
-          if (drawMode === 1) stroke(0);
-          if (drawMode === 2) stroke(52, 100, distance / dStroke);
-          if (drawMode === 3) stroke(192, 100, 64, distance / dStroke);
+          if (drawMode == 1) stroke(0);
+          if (drawMode == 2) stroke(52, 100, distance / dStroke);
+          if (drawMode == 3) stroke(192, 100, 64, distance / dStroke);
           line(posX, posY, posXcross, posYcross);
       }
-    
+
       posXcross = posX;
       posYcross = posY;
     }
@@ -118,18 +119,18 @@ function draw() {
 }
 
 function keyReleased() {
-  if (key === 's' || key === 'S') saveCanvas(gd.timestamp(), 'png');
-  if (keyCode === DELETE || keyCode === BACKSPACE) background(360);
-  if (key === '1') drawMode = 1;
-  if (key === '2') drawMode = 2;
-  if (key === '3') drawMode = 3;
+  if (key == 's' || key == 'S') saveCanvas(gd.timestamp(), 'png');
+  if (keyCode == DELETE || keyCode == BACKSPACE) background(360);
+  if (key == '1') drawMode = 1;
+  if (key == '2') drawMode = 2;
+  if (key == '3') drawMode = 3;
 }
 
 function getRandomAngle(currentDirection) {
   var a = (floor(random(-angleCount, angleCount)) + 0.5) * 90 / angleCount;
-  if (currentDirection === NORTH) return a - 90;
-  if (currentDirection === EAST) return a;
-  if (currentDirection === SOUTH) return a + 90;
-  if (currentDirection === WEST) return a + 180;
+  if (currentDirection == NORTH) return a - 90;
+  if (currentDirection == EAST) return a;
+  if (currentDirection == SOUTH) return a + 90;
+  if (currentDirection == WEST) return a + 180;
   return 0;
 }

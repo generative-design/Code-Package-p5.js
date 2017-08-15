@@ -30,7 +30,7 @@
  */
 'use strict';
 
-var font = 'Arial';
+var font = 'sans-serif';
 var letter = 'A';
 
 function setup() {

@@ -1,4 +1,4 @@
-// P_2_2_1_02.pde
+// P_2_2_1_02
 //
 // Generative Gestaltung, ISBN: 978-3-87439-759-9
 // First Edition, Hermann Schmidt, Mainz, 2009
@@ -24,7 +24,7 @@
  *
  * KEYS
  * 1-3                 : draw mode of the agent
- * BACKSPACE           : clear display
+ * DEL/BACKSPACE       : clear display
  * s                   : save png
  */
 'use strict';
@@ -52,8 +52,8 @@ var counter = 0;
 function setup() {
   createCanvas(windowWidth, windowHeight);
   colorMode(HSB, 360, 100, 100, 100);
-  clear();
   noStroke();
+
   posX = width / 2;
   posY = height / 2;
 }
@@ -63,30 +63,30 @@ function draw() {
     counter++;
 
     // random number for the direction of the next step
-    if (drawMode === 2) {
+    if (drawMode == 2) {
       direction = int(random(3));
     } else {
       direction = int(random(7));
     }
 
-    if (direction === NORTH) {
+    if (direction == NORTH) {
       posY -= stepSize;
-    } else if (direction === NORTHEAST) {
+    } else if (direction == NORTHEAST) {
       posX += stepSize;
       posY -= stepSize;
-    } else if (direction === EAST) {
+    } else if (direction == EAST) {
       posX += stepSize;
-    } else if (direction === SOUTHEAST) {
+    } else if (direction == SOUTHEAST) {
       posX += stepSize;
       posY += stepSize;
-    } else if (direction === SOUTH) {
+    } else if (direction == SOUTH) {
       posY += stepSize;
-    } else if (direction === SOUTHWEST) {
+    } else if (direction == SOUTHWEST) {
       posX -= stepSize;
       posY += stepSize;
-    } else if (direction === WEST) {
+    } else if (direction == WEST) {
       posX -= stepSize;
-    } else if (direction === NORTHWEST) {
+    } else if (direction == NORTHWEST) {
       posX -= stepSize;
       posY -= stepSize;
     }
@@ -96,7 +96,7 @@ function draw() {
     if (posY < 0) posY = height;
     if (posY > height) posY = 0;
 
-    if (drawMode === 3) {
+    if (drawMode == 3) {
       if (counter >= 100) {
         counter = 0;
         fill(192, 100, 64, 80);
@@ -111,7 +111,7 @@ function draw() {
 
 function keyReleased() {
   if (key == 's' || key == 'S') saveCanvas(gd.timestamp(), 'png');
-  if (keyCode === DELETE || keyCode === BACKSPACE) clear();
+  if (keyCode == DELETE || keyCode == BACKSPACE) clear();
 
   if (key == '1') {
     drawMode = 1;

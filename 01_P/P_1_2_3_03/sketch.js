@@ -1,4 +1,4 @@
-// P_1_2_3_03.pde
+// P_1_2_3_03
 //
 // Generative Gestaltung, ISBN: 978-3-87439-759-9
 // First Edition, Hermann Schmidt, Mainz, 2009
@@ -32,11 +32,11 @@ var colorCount = 20;
 var hueValues = [];
 var saturationValues = [];
 var brightnessValues = [];
-var alphaValue = 27;
 var actRandomSeed = 0;
+var alphaValue = 27;
 
 function setup() {
-  createCanvas(800, 800);
+  createCanvas(windowWidth, windowHeight);
   colorMode(HSB, 360, 100, 100, 100);
   noStroke();
 }
@@ -50,12 +50,12 @@ function draw() {
   // create palette
   for (var i = 0; i < colorCount; i++) {
     if (i % 2 == 0) {
-      hueValues[i] = int(random(360));
+      hueValues[i] = random(360);
       saturationValues[i] = 100;
-      brightnessValues[i] = int(random(100));
+      brightnessValues[i] = random(100);
     } else {
       hueValues[i] = 195;
-      saturationValues[i] = int(random(100));
+      saturationValues[i] = random(100);
       brightnessValues[i] = 100;
     }
   }

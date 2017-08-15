@@ -56,7 +56,7 @@ function draw() {
   var newX = random(newR, width - newR);
   var newY = random(newR, height - newR);
 
-  var closestDist = 100000000;
+  var closestDist = Number.MAX_VALUE;
   var closestIndex = 0;
   // which circle is the closest?
   for (var i = 0; i < currentCount; i++) {
