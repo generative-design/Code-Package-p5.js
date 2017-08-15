@@ -1,5 +1,6 @@
+// P_1_2_3_05
 /**
- * generates a specific color palette and some random "rect-tilings" with radial gradient
+ * generates a specific color palette and some random 'rect-tilings' with radial gradient
  *
  * MOUSE
  * left click          : new composition
@@ -8,7 +9,7 @@
  * s                   : save png
  * c                   : save color palette
  */
-"use strict";
+'use strict';
 
 var colorCount = 20;
 var hueValues = [];
