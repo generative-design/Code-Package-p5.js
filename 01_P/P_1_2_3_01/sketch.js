@@ -1,4 +1,4 @@
-// P_1_2_3_01.pde
+// P_1_2_3_01
 //
 // Generative Gestaltung, ISBN: 978-3-87439-759-9
 // First Edition, Hermann Schmidt, Mainz, 2009
@@ -32,21 +32,20 @@
 var tileCountX = 50;
 var tileCountY = 10;
 
-// arrays for color components values
 var hueValues = [];
 var saturationValues = [];
 var brightnessValues = [];
 
 function setup() {
-  createCanvas(800, 800);
+  createCanvas(windowWidth, windowHeight);
   colorMode(HSB, 360, 100, 100, 100);
   noStroke();
 
   // init with random values
   for (var i = 0; i < tileCountX; i++) {
-    hueValues[i] = int(random(0, 360));
-    saturationValues[i] = int(random(0, 100));
-    brightnessValues[i] = int(random(0, 100));
+    hueValues[i] = random(360);
+    saturationValues[i] = random(100);
+    brightnessValues[i] = random(100);
   }
 }
 
@@ -82,7 +81,7 @@ function draw() {
 }
 
 function keyPressed() {
-  if (key == 's' || key =='S') saveCanvas(gd.timestamp(), 'png');
+  if (key == 's' || key == 'S') saveCanvas(gd.timestamp(), 'png');
   if (key == 'c' || key == 'C') {
     // -- save an ase file (adobe swatch export) --
     var colors = [];
@@ -94,25 +93,25 @@ function keyPressed() {
 
   if (key == '1') {
     for (var i = 0; i < tileCountX; i++) {
-      hueValues[i] = int(random(0, 360));
-      saturationValues[i] = int(random(0, 100));
-      brightnessValues[i] = int(random(0, 100));
+      hueValues[i] = random(360);
+      saturationValues[i] = random(100);
+      brightnessValues[i] = random(100);
     }
   }
 
   if (key == '2') {
     for (var i = 0; i < tileCountX; i++) {
-      hueValues[i] = int(random(0, 360));
-      saturationValues[i] = int(random(0, 100));
+      hueValues[i] = random(360);
+      saturationValues[i] = random(100);
       brightnessValues[i] = 100;
     }
   }
 
   if (key == '3') {
     for (var i = 0; i < tileCountX; i++) {
-      hueValues[i] = int(random(0, 360));
+      hueValues[i] = random(360);
       saturationValues[i] = 100;
-      brightnessValues[i] = int(random(0, 100));
+      brightnessValues[i] = random(100);
     }
   }
 
@@ -120,7 +119,7 @@ function keyPressed() {
     for (var i = 0; i < tileCountX; i++) {
       hueValues[i] = 0;
       saturationValues[i] = 0;
-      brightnessValues[i] = int(random(0, 100));
+      brightnessValues[i] = random(100);
     }
   }
 
@@ -128,43 +127,43 @@ function keyPressed() {
     for (var i = 0; i < tileCountX; i++) {
       hueValues[i] = 195;
       saturationValues[i] = 100;
-      brightnessValues[i] = int(random(0, 100));
+      brightnessValues[i] = random(100);
     }
   }
 
   if (key == '6') {
     for (var i = 0; i < tileCountX; i++) {
       hueValues[i] = 195;
-      saturationValues[i] = int(random(0, 100));
+      saturationValues[i] = random(100);
       brightnessValues[i] = 100;
     }
   }
 
   if (key == '7') {
     for (var i = 0; i < tileCountX; i++) {
-      hueValues[i] = int(random(0, 180));
-      saturationValues[i] = int(random(80, 100));
-      brightnessValues[i] = int(random(50, 90));
+      hueValues[i] = random(180);
+      saturationValues[i] = random(80, 100);
+      brightnessValues[i] = random(50, 90);
     }
   }
 
   if (key == '8') {
     for (var i = 0; i < tileCountX; i++) {
-      hueValues[i] = int(random(180, 360));
-      saturationValues[i] = int(random(80, 100));
-      brightnessValues[i] = int(random(50, 90));
+      hueValues[i] = random(180, 360);
+      saturationValues[i] = random(80, 100);
+      brightnessValues[i] = random(50, 90);
     }
   }
 
   if (key == '9') {
     for (var i = 0; i < tileCountX; i++) {
-      if (i % 2 === 0) {
-        hueValues[i] = int(random(0, 360));
+      if (i % 2 == 0) {
+        hueValues[i] = random(360);
         saturationValues[i] = 100;
-        brightnessValues[i] = int(random(0, 100));
+        brightnessValues[i] = random(100);
       } else {
         hueValues[i] = 195;
-        saturationValues[i] = int(random(0, 100));
+        saturationValues[i] = random(100);
         brightnessValues[i] = 100;
       }
     }
@@ -172,14 +171,14 @@ function keyPressed() {
 
   if (key == '0') {
     for (var i = 0; i < tileCountX; i++) {
-      if (i % 2 === 0) {
+      if (i % 2 == 0) {
         hueValues[i] = 140;
-        saturationValues[i] = int(random(30, 100));
-        brightnessValues[i] = int(random(40, 100));
+        saturationValues[i] = random(30, 100);
+        brightnessValues[i] = random(40, 100);
       } else {
         hueValues[i] = 210;
-        saturationValues[i] = int(random(40, 100));
-        brightnessValues[i] = int(random(50, 100));
+        saturationValues[i] = random(40, 100);
+        brightnessValues[i] = random(50, 100);
       }
     }
   }
