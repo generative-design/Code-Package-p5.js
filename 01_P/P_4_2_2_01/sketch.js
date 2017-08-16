@@ -53,7 +53,7 @@ function setup() {
 }
 
 function draw() {
-  if (movie.elt.readyState === 4) {
+  if (movie.elt.readyState == 4) {
     var posX = tileWidth * gridX;
     var posY = tileHeight * gridY;
 

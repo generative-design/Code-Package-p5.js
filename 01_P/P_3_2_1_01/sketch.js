@@ -75,7 +75,7 @@ function draw() {
     for (var i = 0; i < path.commands.length; i++) {
       var pnt = path.commands[i];
       // on every 2nd point
-      if (i % 2 === 0) {
+      if (i % 2 == 0) {
         ellipse(pnt.x, pnt.y, diameter, diameter);
       }
     }
@@ -86,11 +86,11 @@ function draw() {
 
 function keyReleased() {
   // export png
-  if (keyCode === CONTROL) saveCanvas(gd.timestamp(), 'png');
+  if (keyCode == CONTROL) saveCanvas(gd.timestamp(), 'png');
 }
 
 function keyPressed() {
-  if (keyCode === DELETE || keyCode === BACKSPACE) {
+  if (keyCode == DELETE || keyCode == BACKSPACE) {
     if (textTyped.length > 0) {
       textTyped = textTyped.substring(0, textTyped.length - 1);
       loop();

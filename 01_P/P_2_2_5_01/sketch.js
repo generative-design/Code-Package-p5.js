@@ -118,8 +118,8 @@ function Circle(x, y, r, c) {
 }
 
 function keyPressed() {
-  if (keyCode === UP_ARROW) mouseRect += 4;
-  if (keyCode === DOWN_ARROW) mouseRect -= 4;
+  if (keyCode == UP_ARROW) mouseRect += 4;
+  if (keyCode == DOWN_ARROW) mouseRect -= 4;
 }
 
 function keyReleased() {

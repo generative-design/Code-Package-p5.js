@@ -115,8 +115,8 @@ function keyReleased() {
   if (key == '1') drawMode = 1;
   if (key == '2') drawMode = 2;
   if (key == '3') drawMode = 3;
-  if (keyCode === DOWN_ARROW) tileCountY = max(tileCountY - 1, 1);
-  if (keyCode === UP_ARROW) tileCountY += 1;
-  if (keyCode === LEFT_ARROW) tileCountX = max(tileCountX - 1, 1);
-  if (keyCode === RIGHT_ARROW) tileCountX += 1;
+  if (keyCode == DOWN_ARROW) tileCountY = max(tileCountY - 1, 1);
+  if (keyCode == UP_ARROW) tileCountY += 1;
+  if (keyCode == LEFT_ARROW) tileCountX = max(tileCountX - 1, 1);
+  if (keyCode == RIGHT_ARROW) tileCountX += 1;
 }

@@ -77,7 +77,7 @@ function draw() {
 
       var toggle = int(random(0, 2));
 
-      if (toggle === 0) {
+      if (toggle == 0) {
         stroke(colorLeft);
         line(posX, posY, posX + (width / tileCount) / 2, posY + height / tileCount);
         line(posX + (width / tileCount) / 2, posY, posX + (width / tileCount), posY + height / tileCount);
@@ -129,5 +129,5 @@ function keyReleased() {
 }
 
 function colorsEqual(col1, col2) {
-  return col1.toString() === col2.toString();
+  return col1.toString() == col2.toString();
 }

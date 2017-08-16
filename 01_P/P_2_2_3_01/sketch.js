@@ -109,7 +109,7 @@ function mousePressed() {
 
 function keyReleased() {
   if (key == 's' || key == 'S') saveCanvas(gd.timestamp(), 'png');
-  if (keyCode === DELETE || keyCode === BACKSPACE) background(255);
+  if (keyCode == DELETE || keyCode == BACKSPACE) background(255);
   if (key == '1') filled = false;
   if (key == '2') filled = true;
 

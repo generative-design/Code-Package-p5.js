@@ -54,7 +54,7 @@ function mouseDragged() {
 }
 
 function keyReleased() {
-  if (keyCode === CONTROL) saveCanvas(gd.timestamp(), 'png');
+  if (keyCode == CONTROL) saveCanvas(gd.timestamp(), 'png');
 }
 
 function keyTyped() {

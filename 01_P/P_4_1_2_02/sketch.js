@@ -51,7 +51,7 @@ function draw() {
 
 function keyReleased() {
   if (key == 's' || key == 'S') saveCanvas(gd.timestamp(), 'png');
-  if (keyCode === DELETE || keyCode === BACKSPACE) {
+  if (keyCode == DELETE || keyCode == BACKSPACE) {
     clear();
     image(img, 0, 0);
   }

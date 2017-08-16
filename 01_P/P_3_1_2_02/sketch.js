@@ -136,12 +136,12 @@ function draw() {
       case ' ': //space
         //60% notrun, 20% left, 20% right
         var dir = floor(random(5));
-        if (dir === 0) {
+        if (dir == 0) {
           image(shapeSpace, 0, -15);
           translate(2, 0);
           rotate(QUARTER_PI);
         }
-        if (dir === 1) {
+        if (dir == 1) {
           image(shapeSpace2, 0, -15);
           translate(13, -5);
           rotate(-QUARTER_PI);
@@ -226,7 +226,7 @@ function draw() {
 
   // blink cursor after text
   fill(200, 30, 40);
-  if (frameCount / 6 % 2 === 0) rect(0, 0, 15, 2);
+  if (frameCount / 6 % 2 == 0) rect(0, 0, 15, 2);
 
   pop();
 }
@@ -237,7 +237,7 @@ function mousePressed() {
 }
 
 function keyReleased() {
-  if (keyCode === CONTROL) saveCanvas(gd.timestamp(), 'png');
+  if (keyCode == CONTROL) saveCanvas(gd.timestamp(), 'png');
 }
 
 function keyPressed() {

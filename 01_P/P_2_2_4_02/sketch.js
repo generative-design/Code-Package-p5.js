@@ -87,7 +87,7 @@ function draw() {
   }
 
   for (var i = 0; i < currentCount; i++) {
-    if (i === 0) {
+    if (i == 0) {
       noFill();
     } else {
       fill(50);

@@ -152,7 +152,7 @@ function drawModules() {
 function keyPressed() {
   if (key == 's' || key == 'S') saveCanvas(gd.timestamp(), 'png');
 
-  if (keyCode === DELETE || keyCode === BACKSPACE) initTiles();
+  if (keyCode == DELETE || keyCode == BACKSPACE) initTiles();
   if (key == 'g' || key == 'G') doDrawGrid = !doDrawGrid;
   if (key == 'd' || key == 'D') debugMode = !debugMode;
 }

@@ -67,10 +67,10 @@ function draw() {
       scale(1, tileHeight / tileWidth);
 
       var toggle = int(random(0, 4));
-      if (toggle === 0) rotate(-HALF_PI);
-      if (toggle === 1) rotate(0);
-      if (toggle === 2) rotate(HALF_PI);
-      if (toggle === 3) rotate(PI);
+      if (toggle == 0) rotate(-HALF_PI);
+      if (toggle == 1) rotate(0);
+      if (toggle == 2) rotate(HALF_PI);
+      if (toggle == 3) rotate(PI);
 
       // draw module
       for (var i = 0; i < circleCount; i++) {

@@ -68,12 +68,12 @@ function draw() {
 
       var toggle = int(random(0, 2));
 
-      if (toggle === 0) {
+      if (toggle == 0) {
         stroke(colorLeft);
         strokeWeight(mouseX / 10);
         line(posX, posY, posX + width / tileCount, posY + height / tileCount);
       }
-      if (toggle === 1) {
+      if (toggle == 1) {
         stroke(colorRight);
         strokeWeight(mouseY / 10);
         line(posX, posY + width / tileCount, posX + height / tileCount, posY);
@@ -136,5 +136,5 @@ function keyReleased() {
 }
 
 function colorsEqual(col1, col2) {
-  return col1.toString() === col2.toString();
+  return col1.toString() == col2.toString();
 }

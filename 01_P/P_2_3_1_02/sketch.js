@@ -71,7 +71,7 @@ function draw() {
   if (mouseIsPressed) {
     var x = mouseX;
     var y = mouseY;
-    if (keyIsPressed && keyCode === SHIFT) {
+    if (keyIsPressed && keyCode == SHIFT) {
       if (abs(clickPosX - x) > abs(clickPosY - y)) {
         y = clickPosY;
       } else {
@@ -104,15 +104,15 @@ function mousePressed() {
 }
 
 function keyPressed() {
-  if (keyCode === UP_ARROW) lineModuleSize += 5;
-  if (keyCode === DOWN_ARROW) lineModuleSize -= 5;
-  if (keyCode === LEFT_ARROW) angleSpeed -= 0.5;
-  if (keyCode === RIGHT_ARROW) angleSpeed += 0.5;
+  if (keyCode == UP_ARROW) lineModuleSize += 5;
+  if (keyCode == DOWN_ARROW) lineModuleSize -= 5;
+  if (keyCode == LEFT_ARROW) angleSpeed -= 0.5;
+  if (keyCode == RIGHT_ARROW) angleSpeed += 0.5;
 }
 
 function keyReleased() {
   if (key == 's' || key == 'S') saveCanvas(gd.timestamp(), 'png');
-  if (keyCode === DELETE || keyCode === BACKSPACE) background(255);
+  if (keyCode == DELETE || keyCode == BACKSPACE) background(255);
 
   // reverse direction and mirror angle
   if (key == 'd' || key == 'D') {

@@ -66,7 +66,7 @@ var sketch = function( p ) {
 
     pointCount = p.mouseX * 2 + 200;
 
-    if (drawMode === 1) {
+    if (drawMode == 1) {
       p.stroke(0);
       p.strokeWeight(1);
 
@@ -80,7 +80,7 @@ var sketch = function( p ) {
         p.vertex(x,y);
       }
       p.endShape();
-    } else if (drawMode === 2) {
+    } else if (drawMode == 2) {
       p.strokeWeight(8);
 
       for (var i = 0; i <= pointCount; i++) {
@@ -106,7 +106,7 @@ var sketch = function( p ) {
     if (p.key == 's' || p.key == 'S') p.saveCanvas(gd.timestamp(), 'png');
 
     if (p.key == 'd' || p.key == 'D') {
-      if (drawMode === 1) {
+      if (drawMode == 1) {
         drawMode = 2;
       } else {
         drawMode = 1;
@@ -121,8 +121,8 @@ var sketch = function( p ) {
     if (p.key == '4') freqY++;
     freqY = p.max(freqY,1);
 
-    if (p.keyCode === p.LEFT_ARROW) phi -= 15;
-    if (p.keyCode === p.RIGHT_ARROW) phi += 15;
+    if (p.keyCode == p.LEFT_ARROW) phi -= 15;
+    if (p.keyCode == p.RIGHT_ARROW) phi += 15;
 
     if (p.key == '7') modFreqX--;
     if (p.key == '8') modFreqX++;
