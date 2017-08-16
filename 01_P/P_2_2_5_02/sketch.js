@@ -128,7 +128,7 @@ function Circle(x, y, r) {
       push();
       translate(this.x, this.y);
       rotate(this.rotation);
-      if (this.r === maxRadius) {
+      if (this.r == maxRadius) {
         image(module1, 0, 0, this.r * 2, this.r * 2);
       } else {
         image(module2, 0, 0, this.r * 2, this.r * 2);
@@ -144,8 +144,8 @@ function Circle(x, y, r) {
 }
 
 function keyPressed() {
-  if (keyCode === UP_ARROW) mouseRect += 4;
-  if (keyCode === DOWN_ARROW) mouseRect -= 4;
+  if (keyCode == UP_ARROW) mouseRect += 4;
+  if (keyCode == DOWN_ARROW) mouseRect -= 4;
 }
 
 function keyReleased() {

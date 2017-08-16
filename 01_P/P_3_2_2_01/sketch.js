@@ -102,12 +102,12 @@ function draw() {
 
 function keyReleased() {
   // export png
-  if (keyCode === CONTROL) saveCanvas(gd.timestamp(), 'png');
+  if (keyCode == CONTROL) saveCanvas(gd.timestamp(), 'png');
   if (keyCode == ALT) filled = !filled;
 }
 
 function keyPressed() {
-  if (keyCode === DELETE || keyCode === BACKSPACE) {
+  if (keyCode == DELETE || keyCode == BACKSPACE) {
     if (textTyped.length > 0) {
       textTyped = textTyped.substring(0, textTyped.length - 1);
     }

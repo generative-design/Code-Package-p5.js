@@ -55,11 +55,11 @@ function draw() {
 
       var toggle = int(random(0, 2));
 
-      if (toggle === 0) {
+      if (toggle == 0) {
         strokeWeight(mouseX / 20);
         line(posX, posY, posX + width / tileCount, posY + height / tileCount);
       }
-      if (toggle === 1) {
+      if (toggle == 1) {
         strokeWeight(mouseY / 20);
         line(posX, posY + width / tileCount, posX + height / tileCount, posY);
       }

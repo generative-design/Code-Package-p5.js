@@ -132,7 +132,7 @@ function getPoints() {
 
 function keyReleased() {
   // export png
-  if (keyCode === CONTROL) saveCanvas(gd.timestamp(), 'png');
+  if (keyCode == CONTROL) saveCanvas(gd.timestamp(), 'png');
   if (keyCode == ALT) {
     // switch loop on/off
     freeze = !freeze;

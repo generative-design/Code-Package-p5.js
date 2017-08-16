@@ -56,7 +56,7 @@ var sketch = function( p ) {
     // Draw agents
     p.stroke(0, agentAlpha);
     for (var i = 0; i < agentCount; i++) {
-      if (drawMode === 1) {
+      if (drawMode == 1) {
         agents[i].update1(strokeWidth, noiseScale, noiseStrength, noiseZVelocity);
       } else {
         agents[i].update2(strokeWidth, noiseScale, noiseStrength, noiseZVelocity);
@@ -65,15 +65,15 @@ var sketch = function( p ) {
   }
 
   p.keyReleased = function() {
-    if (p.key === 's' || p.key === 'S') p.saveCanvas(gd.timestamp(), 'png');
-    if (p.key === '1') drawMode = 1;
-    if (p.key === '2') drawMode = 2;
-    if (p.key === ' ') {
+    if (p.key == 's' || p.key == 'S') p.saveCanvas(gd.timestamp(), 'png');
+    if (p.key == '1') drawMode = 1;
+    if (p.key == '2') drawMode = 2;
+    if (p.key == ' ') {
       var newNoiseSeed = p.floor(p.random(10000));
       console.log('newNoiseSeed', newNoiseSeed);
       p.noiseSeed(newNoiseSeed);
     }
-    if (p.keyCode === p.DELETE || p.keyCode === p.BACKSPACE) p.background(255);
+    if (p.keyCode == p.DELETE || p.keyCode == p.BACKSPACE) p.background(255);
   }
 
 };

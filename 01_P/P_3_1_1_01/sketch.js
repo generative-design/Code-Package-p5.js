@@ -95,13 +95,13 @@ function draw() {
   newFontSize = min(newFontSize, maxFontSize);
 
   fill(200, 30, 40);
-  if (int(frameCount / 10) % 2 === 0) fill(255);
+  if (int(frameCount / 10) % 2 == 0) fill(255);
   rect(x, y, newFontSize / 2, newFontSize / 20);
 }
 
 function keyReleased() {
   // export png
-  if (keyCode === CONTROL) saveCanvas(gd.timestamp(), 'png');
+  if (keyCode == CONTROL) saveCanvas(gd.timestamp(), 'png');
 }
 
 function keyPressed() {

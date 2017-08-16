@@ -145,14 +145,14 @@ function mousePressed() {
 }
 
 function keyPressed() {
-  if (keyCode === UP_ARROW) stepSize++;
-  if (keyCode === DOWN_ARROW) stepSize--;
+  if (keyCode == UP_ARROW) stepSize++;
+  if (keyCode == DOWN_ARROW) stepSize--;
   stepSize = max(stepSize, 1);
 }
 
 function keyReleased() {
   if (key == 's' || key == 'S') saveCanvas(gd.timestamp(), 'png');
-  if (keyCode === DELETE || keyCode === BACKSPACE) background(255);
+  if (keyCode == DELETE || keyCode == BACKSPACE) background(255);
   if (key == '1') filled = false;
   if (key == '2') filled = true;
   if (key == '3') drawMode = 1;
