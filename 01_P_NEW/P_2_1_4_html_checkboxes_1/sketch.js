@@ -25,10 +25,11 @@ var img1;
 var img2;
 var img3;
 var slider;
-var cols;
-var rows;
+var cols = 40;
+var rows = 40;
 var boxes;
 
+// preload the images to be used for the checkboxes
 function preload(){
   img1 = loadImage('data/shapes.png');
   img2 = loadImage('data/draw.png');
@@ -36,14 +37,14 @@ function preload(){
 }
 
 function setup() {
+  // the html dom elements are not rendered on canvas
   noCanvas();
+  // set pixel density to 1
   pixelDensity(1);
 
-  // assign globals
-  cols = 40;
-  rows = 40;
   boxes = [];
 
+  // set the current img
   img = img1;
   img.resize(cols, rows);
   img.loadPixels();
@@ -52,13 +53,14 @@ function setup() {
     for (var x = 0; x < cols; x++) {
       var box = createCheckbox();
       box.style('display', 'inline');
-      box.parent('container');
+      box.parent('mirror');
       boxes.push(box);
     }
     var linebreak = createSpan('<br/>');
-    linebreak.parent('container');
+    linebreak.parent('mirror');
   }
 
+  // add a slider to adjust the pixel threshold
   slider = createSlider(0, 255, 0);
 }
 
@@ -68,6 +70,7 @@ function draw() {
       var c = color(img.get(x, y));
       var bright = (red(c) + green(c) + blue(c)) / 3;
 
+      // get the threshold from the slider 
       var threshold = slider.value();
 
       var checkIndex = x + y * cols;
