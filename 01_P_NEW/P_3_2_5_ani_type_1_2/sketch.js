@@ -28,7 +28,7 @@ function setup() {
   noLoop();
 
   // assign globals
-  textTyped = "TYPE...!"
+  textTyped = "TYPE...!";
   style = 1;
   fontSize = 120;
   padding = 10;
@@ -102,7 +102,9 @@ function draw() {
       // push();
       translate((xMax - xMin)/2 + fontSize/2 + padding, 0);
 
-      for(var i = 0; i < d.commands.length -1; i+=1){
+      for(var i = 0; i < d.commands.length - 1; i+=1){
+        if (d.commands[i].x == undefined || d.commands[i].y == undefined) continue;
+
         if(i%2 ==0){
           var angle = frameCount%360;
         } else{
@@ -110,7 +112,7 @@ function draw() {
         }
 
         fill(255);
-        stroke(0);
+        stroke(65, 105, 185);
         var rectSize = fontSize*0.05;
         var shiftX1 = mouseX/100 * random(-1, 1);
         var shiftY1 = mouseY/100 * random(-1, 1);
@@ -122,7 +124,7 @@ function draw() {
         var shiftY4 = mouseY/100 * random(-1, 1);
 
         if(style === 1){
-          push()
+          push();
           translate(d.commands[i].x, d.commands[i].y);
           rotate(radians(angle));
           point(0+shiftX1, 0+shiftY1);
@@ -154,7 +156,7 @@ function draw() {
           push();
           translate(d.commands[i].x, d.commands[i].y);
           rotate(radians(angle));
-          fill(0);
+          fill(65, 105, 185);
           noStroke();
           ellipse(0+shiftX2, 0+shiftY2, rectSize/2, rectSize/2);
           pop();
@@ -174,7 +176,6 @@ function draw() {
     })
 
   }
-
 }
 
 function keyPressed() {
