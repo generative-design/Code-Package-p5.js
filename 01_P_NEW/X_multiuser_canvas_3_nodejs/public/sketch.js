@@ -77,7 +77,7 @@ function newDrawing(data){
 
 
 function draw(){
-  if(mouseIsPressed){
+  if(mouseIsPressed && mouseButton == LEFT){
     params.x2 = mouseX;
     params.y2 = mouseY;
 

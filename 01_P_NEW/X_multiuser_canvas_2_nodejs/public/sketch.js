@@ -113,7 +113,7 @@ function newDrawing(data){
 
 function draw(){
   stroke(255);
-  if(mouseIsPressed){
+  if(mouseIsPressed && mouseButton == LEFT){
     params.x1 = pmouseX;
       params.y1 = pmouseY;
       params.x2 = mouseX;

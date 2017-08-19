@@ -64,7 +64,7 @@ function draw() {
   img.strokeWeight(lineWidth);
   img.stroke(lineColor);
 
-  if (mouseIsPressed) {
+  if (mouseIsPressed && mouseButton == LEFT) {
     var w = width / penCount;
     var h = height / penCount;
     var x = mouseX % w;
