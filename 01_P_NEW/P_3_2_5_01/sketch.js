@@ -39,7 +39,7 @@ function setup() {
   frameRate(25);
   rectMode(CENTER);
 
-  colors = [color(51, 204, 51), color(44, 168, 232), color(229, 25, 42)];
+  colors = [color(65, 105, 185), color(245, 95, 80), color(15, 233, 118)];
   pixelDensity(1);
 
   setupText();

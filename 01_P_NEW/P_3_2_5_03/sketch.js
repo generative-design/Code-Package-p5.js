@@ -111,25 +111,23 @@ function draw() {
         if(cmd !=undefined && ocmd != undefined){
 
           if(style == 1){
-            // stroke(0);
-            stroke(12,177, 90, 150);
-            fill(7,103, 52)
+            stroke(65, 105, 185, 150);
+            fill(65, 105, 185)
             ellipse(cmd.x, cmd.y + (paths[i].lineNumber*fontSize), fontSize*0.10, fontSize*0.10);
           }
           if(style == 2){
-            // stroke(0);
-            stroke(12,177, 90, 150);
-            fill(7,103, 52)
+            stroke(65, 105, 185, 150);
+            fill(65, 105, 185)
            rect(cmd.x, cmd.y + (paths[i].lineNumber*fontSize), fontSize*0.10, fontSize*0.10);
           }
           if(style == 3){
             // line(cmd.x, cmd.y + (paths[i].lineNumber*fontSize), width/4, height/8);
-            stroke(12,177, 90, 150);
+            stroke(65, 105, 185, 150);
             noCursor();
             line(cmd.x, cmd.y + (paths[i].lineNumber*fontSize), mouseX - 20, mouseY - 150); // adjusted for translation
             noStroke();
 
-            fill(7,103, 52);
+            fill(65, 105, 185);
             ellipse(cmd.x, cmd.y + (paths[i].lineNumber*fontSize), 6,6);
 
           }

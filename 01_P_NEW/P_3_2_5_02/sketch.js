@@ -726,7 +726,7 @@ function lineFromToInSteps(x1, y1, x2, y2, stepCount) {
   var ratio = aniIndex/stepCount;
   var posX = lerp(x1, x2, ratio);
   var posY = lerp(y1, y2, ratio);
-  fill(0);
+  fill(65, 105, 185);
   rectMode(CENTER);
   if(style == 4){
     rect(posX, posY, 10, 10);
@@ -750,7 +750,7 @@ function curveFromToInSteps(a1, a2, b1, b2, c1, c2, d1, d2,  stepCount){
     var ratio = aniIndex/stepCount;
     var posX = lerp(points[aniIndex].x, points[aniIndex+1].x, ratio);
     var posY = lerp(points[aniIndex].y, points[aniIndex+1].y, ratio);
-    fill(0);
+    fill(65, 105, 185);
     rectMode(CENTER);
     if(style == 4){
       rect(posX, posY, 10, 10);
@@ -773,7 +773,7 @@ function bezierFromToInSteps(a1, a2, b1, b2, c1, c2, d1, d2,  stepCount){
     var ratio = aniIndex/stepCount;
     var posX = lerp(points[aniIndex].x, points[aniIndex+1].x, ratio);
     var posY = lerp(points[aniIndex].y, points[aniIndex+1].y, ratio);
-    fill(0);
+    fill(65, 105, 185);
     rectMode(CENTER);
     if(style == 4){
       rect(posX, posY, 10, 10);
@@ -790,7 +790,7 @@ function arcFromToInSteps(x, y, radiusWidth, radiusHeight, a1, a2, stepCount) {
   var angle = lerp(a1, a2, ratio);
   var posX = x + cos(angle) * radiusWidth;
   var posY = y + sin(angle) * radiusHeight;
-  fill(0);
+  fill(65, 105, 185);
   rectMode(CENTER);
   if(style == 4){
     rect(posX, posY, 10, 10);
@@ -818,7 +818,7 @@ function keyPressed() {
     cursorLocation.y += aniLetters.letterHeight + 5;
   }
   // type letters
-  stroke(0);
+  stroke(65, 105, 185);
   var aniLetter  = 'ani' + key.toUpperCase();
   if(aniLetters[aniLetter]){
     aniMessage.push({letter: aniLetter, x:cursorLocation.x, y: cursorLocation.y});
