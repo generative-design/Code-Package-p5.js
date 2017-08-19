@@ -51,7 +51,7 @@ function draw() {
   var newX = random(maxRadius, width - maxRadius);
   var newY = random(maxRadius, height - maxRadius);
   var newR = minRadius;
-  if (mouseIsPressed) {
+  if (mouseIsPressed && mouseButton == LEFT) {
     newX = random(mouseX - mouseRect, mouseX + mouseRect);
     newY = random(mouseY - mouseRect, mouseY + mouseRect);
     newR = 1;
@@ -95,7 +95,7 @@ function draw() {
   }
 
   // Visualise the random range of the current mouse position
-  if (mouseIsPressed) {
+  if (mouseIsPressed && mouseButton == LEFT) {
     stroke(100, 230, 100);
     strokeWeight(2);
     rect(mouseX, mouseY, mouseRect, mouseRect);

@@ -68,7 +68,7 @@ function windowResized() {
 }
 
 function draw() {
-  if (mouseIsPressed) {
+  if (mouseIsPressed && mouseButton == LEFT) {
     var x = mouseX;
     var y = mouseY;
     if (keyIsPressed && keyCode == SHIFT) {

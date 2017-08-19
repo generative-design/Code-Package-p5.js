@@ -98,7 +98,7 @@ function draw() {
   background(255);
   noStroke();
 
-  if (mouseIsPressed) {
+  if (mouseIsPressed && mouseButton == LEFT) {
     centerX = mouseX - offsetX;
     centerY = mouseY - offsetY;
   }

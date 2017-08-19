@@ -56,7 +56,7 @@ function setup() {
 }
 
 function draw() {
-  if (mouseIsPressed) {
+  if (mouseIsPressed && mouseButton == LEFT) {
     var d = dist(x, y, mouseX, mouseY);
     textSize(fontSizeMin + d / 2);
     var newLetter = letters.charAt(counter);

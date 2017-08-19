@@ -50,7 +50,7 @@ function setup() {
 }
 
 function draw() {
-  if (mouseIsPressed) {
+  if (mouseIsPressed && mouseButton == LEFT) {
     push();
     translate(mouseX, mouseY);
     rotate(radians(angle));
