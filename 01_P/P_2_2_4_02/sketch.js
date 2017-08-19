@@ -1,4 +1,4 @@
-// P_2_2_4_02.pde
+// P_2_2_4_02
 //
 // Generative Gestaltung, ISBN: 978-3-87439-759-9
 // First Edition, Hermann Schmidt, Mainz, 2009
@@ -25,13 +25,13 @@
  */
 'use strict';
 
-var maxCount = 5000; //max count of the cirlces
+var maxCount = 5000; // max count of the cirlces
 var currentCount = 1;
-var newx = [];
-var newy = [];
 var x = [];
 var y = [];
 var r = [];
+var x2 = [];
+var y2 = [];
 
 var drawGhosts = false;
 
@@ -43,7 +43,6 @@ function setup() {
   y[0] = height / 2;
   r[0] = 360;
 }
-
 
 function draw() {
   clear();
@@ -70,8 +69,8 @@ function draw() {
   // align it to the closest circle outline
   var angle = atan2(newY - y[closestIndex], newX - x[closestIndex]);
 
-  newx[currentCount] = newX;
-  newy[currentCount] = newY;
+  x2[currentCount] = newX;
+  y2[currentCount] = newY;
   x[currentCount] = x[closestIndex] + cos(angle) * (r[closestIndex] + newR);
   y[currentCount] = y[closestIndex] + sin(angle) * (r[closestIndex] + newR);
   r[currentCount] = newR;
@@ -81,8 +80,8 @@ function draw() {
   if (drawGhosts) {
     for (var i = 1; i < currentCount; i++) {
       fill(230);
-      ellipse(newx[i], newy[i], r[i] * 2, r[i] * 2);
-      line(newx[i], newy[i], x[i], y[i]);
+      ellipse(x2[i], y2[i], r[i] * 2, r[i] * 2);
+      line(x2[i], y2[i], x[i], y[i]);
     }
   }
 
@@ -96,7 +95,6 @@ function draw() {
   }
 
   if (currentCount >= maxCount) noLoop();
-
 }
 
 function keyReleased() {
