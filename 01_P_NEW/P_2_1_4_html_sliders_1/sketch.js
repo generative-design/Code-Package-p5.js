@@ -65,6 +65,5 @@ function draw() {
       .style("width", sliderWidth+"px").style('transform', 'rotate('+90+'deg)');
   }
 
-
 }
 
