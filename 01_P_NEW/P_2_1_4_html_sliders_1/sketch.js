@@ -68,10 +68,3 @@ function draw() {
 
 }
 
-
-// TODO: create circle, triangles from handles
-// TODO: slider group values all change in sync by drag handles
-
-function keyPressed() {
-
-}
