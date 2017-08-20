@@ -18,8 +18,8 @@
 var textTyped;
 var textTypedCounter;
 var font;
-var fontSize;
-var style;
+var fontSize = 120;
+var style = 1;
 var path;
 var paths;
 var ranges;
@@ -29,15 +29,12 @@ function setup() {
   createCanvas(windowWidth, windowHeight);
   noLoop();
 
-  // assign globals
+  // push text 
   textTyped = [];
   textTyped.push(new myText("TYPE...!"));
-  fontSize = 120;
-  style = 1;
-
 
   // set the textTypedCounter to the number of lines
-  if(textTyped.length >0){
+  if(textTyped.length > 0){
     textTypedCounter = textTyped.length -1;
   } else{
     textTypedCounter = 0;
@@ -45,6 +42,7 @@ function setup() {
 
   rectMode(CENTER);
 
+  // read in the font to opentype.js
   opentype.load('data/FreeSans.otf', function(err, f) {
     if (err) {
       print('Font could not be loaded: ' + err);
@@ -93,8 +91,6 @@ function draw() {
   ranges = [];
   paths.forEach(function(path, index){
     var output = {id: index, start:[]};
-    // counters.push(0);
-    // console.log(path.len)
     for(var i = 0; i < path.len-1; i+=path.breaks){
       output.start.push(floor(i));
     }
@@ -105,40 +101,40 @@ function draw() {
   ranges.forEach(function(range, i){
     // console.log(range.start);
     range.start.forEach(function(d){
-    if(textTyped[i].counter < paths[i].breaks){
-        var cmd = paths[i].data.commands[textTyped[i].counter+ d];
-        var ocmd = paths[i].data.commands[ceil(paths[i].breaks) - textTyped[i].counter + d];
-        if(cmd !=undefined && ocmd != undefined){
+      if(textTyped[i].counter < paths[i].breaks){
+          var cmd = paths[i].data.commands[textTyped[i].counter+ d];
+          var ocmd = paths[i].data.commands[ceil(paths[i].breaks) - textTyped[i].counter + d];
+          if(cmd !=undefined && ocmd != undefined){
 
-          if(style == 1){
-            stroke(65, 105, 185, 150);
-            fill(65, 105, 185)
-            ellipse(cmd.x, cmd.y + (paths[i].lineNumber*fontSize), fontSize*0.10, fontSize*0.10);
+            if(style == 1){
+              stroke(65, 105, 185, 150);
+              fill(65, 105, 185)
+              ellipse(cmd.x, cmd.y + (paths[i].lineNumber*fontSize), fontSize*0.10, fontSize*0.10);
+            }
+            if(style == 2){
+              stroke(65, 105, 185, 150);
+              fill(65, 105, 185)
+             rect(cmd.x, cmd.y + (paths[i].lineNumber*fontSize), fontSize*0.10, fontSize*0.10);
+            }
+            if(style == 3){
+              stroke(65, 105, 185, 150);
+              noCursor();
+              line(cmd.x, cmd.y + (paths[i].lineNumber*fontSize), mouseX - 20, mouseY - 150); // adjusted for translation
+              noStroke();
+
+              fill(65, 105, 185);
+              ellipse(cmd.x, cmd.y + (paths[i].lineNumber*fontSize), 6,6);
+
+            }
           }
-          if(style == 2){
-            stroke(65, 105, 185, 150);
-            fill(65, 105, 185)
-           rect(cmd.x, cmd.y + (paths[i].lineNumber*fontSize), fontSize*0.10, fontSize*0.10);
-          }
-          if(style == 3){
-            // line(cmd.x, cmd.y + (paths[i].lineNumber*fontSize), width/4, height/8);
-            stroke(65, 105, 185, 150);
-            noCursor();
-            line(cmd.x, cmd.y + (paths[i].lineNumber*fontSize), mouseX - 20, mouseY - 150); // adjusted for translation
-            noStroke();
+        textTyped[i].counter++;
+      }else{
+        textTyped[i].counter = 0;
+      }
 
-            fill(65, 105, 185);
-            ellipse(cmd.x, cmd.y + (paths[i].lineNumber*fontSize), 6,6);
+    });
 
-          }
-        }
-      textTyped[i].counter++;
-    }else{
-      textTyped[i].counter = 0;
-    }
-    })
-
-  })
+  });
 
 }
 
