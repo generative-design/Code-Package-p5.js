@@ -21,7 +21,6 @@ var textTyped = "TYPE & CODE"
 var drawMode = 1;
 var fontSize = 250;
 var padding = 10;
-var drawMode = 1;
 var nOff = 0;
 var pointDensity= 8;
 
