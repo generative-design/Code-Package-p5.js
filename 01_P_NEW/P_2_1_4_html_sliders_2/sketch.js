@@ -13,9 +13,10 @@
 
 'use strict';
 
-const mySliders = [];
+var mySliders;
 
 function setup() {
+  mySliders = [];
   createCanvas(windowWidth, windowHeight);
   // init canvas with slider rose to the middle
   mySliders.push(new SliderRose(width/2, height/2));
@@ -39,7 +40,6 @@ function SliderRose(_x, _y){
   this.x1 = _x;
   this.y1 = _y;
   var mySliders = [];
-  this.sliderBackgrounds = [];
   var sinAngle = 0;
 
   var counter = 0;
@@ -52,6 +52,7 @@ function SliderRose(_x, _y){
     var y2 = sin(sliderAngle)*roseRadius;
 
     mySliders[counter] = createSlider(0, 255, 50)
+
     mySliders[counter].position(this.x1 + x2, this.y1 + y2);
     mySliders[counter].style('width', roseRadius +'px')
     mySliders[counter].style('transform', 'rotate('+i+'deg)');
@@ -73,4 +74,5 @@ function SliderRose(_x, _y){
   }
 
 }
+
 
