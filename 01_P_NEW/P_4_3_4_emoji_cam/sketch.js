@@ -5,6 +5,7 @@
  *
  * KEYS
  * s                   : save png
+ * f                   : start/stop recording of frames
  */
 'use strict';
 
@@ -14,6 +15,8 @@ var cam;
 var icons;
 var emojisPath = "../../data/twemoji/";
 var tree;
+
+var recording = false;
 
 
 function preload() {
@@ -67,8 +70,11 @@ function draw(){
       //ellipse(posX, posY, titleWidth, titleHeight);
     }
   }
+
+  if (recording) saveCanvas(gd.timestamp(), 'png');
 }
 
 function keyReleased(){
   if (key == 's' || key == 'S') saveCanvas(gd.timestamp(), 'png');
+  if (key == 'f' || key == 'F') recording = !recording;
 }
