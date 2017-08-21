@@ -1,11 +1,11 @@
-// P_supercut_3
+// P_4_2_2_03
 /**
  * Create montage of video with two root words to build limericks,
  *
  * CONTRIBUTED BY
  * [Niels Poldervaart](http://NielsPoldervaart.nl)
  */
-"use strict";
+'use strict';
 
 // Download video file from https://github.com/generative-design/Code-Package-Data/blob/master/P_supercut_media/video.mp4
 var videoSrc = '../../data/P_supercut_media/video.mp4';

@@ -1,11 +1,12 @@
-// P_supercut_2
+// P_4_2_2_04
 /**
- * Create montage of video with a search query for Part Of Speech.
+ * Play the movie normally and increase playback speed every time when something matching
+ * the search query (either a string or a Regular Expression) is encounterd.
  *
  * CONTRIBUTED BY
  * [Niels Poldervaart](http://NielsPoldervaart.nl)
  */
-"use strict";
+'use strict';
 
 // Download video file from https://github.com/generative-design/Code-Package-Data/blob/master/P_supercut_media/video.mp4
 var videoSrc = '../../data/P_supercut_media/video.mp4';
@@ -13,8 +14,7 @@ var video;
 var subtitleSrc = '../../data/P_supercut_media/subs.vtt';
 var subtitles;
 
-// List space-seperated PENN tags (see https://rednoise.org/rita/reference/PennTags.html)
-var searchQuery = 'nns jjr';
+var searchQuery = '\\b(comet)\\b';
 
 var searchResults = [];
 var currentResult;
@@ -71,7 +71,6 @@ function SubTitleObject(startTime, endTime, dialog) {
   this.endTime = getTimeInSeconds(endTime);
   this.dialog = dialog.replace(/\s\d+\s$|<(?:.)*?>/g, '').trim();
   this.duration = this.endTime - this.startTime;
-  this.dialogPOS = RiTa.getPosTags(this.dialog);
 }
 
 function getTimeInSeconds(timeString) {
@@ -83,11 +82,12 @@ function getTimeInSeconds(timeString) {
 }
 
 function findSubtiles(searchPattern) {
-  searchPattern = searchPattern.split(' ');
-  var results = subtitles.filter(function(subtitle) {
-    return searchPattern.every(function(searchGroup) {
-      return subtitle.dialogPOS.indexOf(searchGroup) !== -1;
-    });
+  searchPattern = new RegExp(searchPattern, 'i');
+  var results = [];
+  subtitles.forEach(function(subtitle) {
+    if (searchPattern.test(subtitle.dialog)) {
+      results.push(subtitle);
+    };
   });
   return results;
 }
@@ -113,46 +113,43 @@ function generateMontage() {
 
   if (searchResults.length) {
     resizeCanvas(windowWidth, searchResults.length * video.size().height);
+    video.play();
+    video.speed(1);
     queryResultMontage(searchResults, 0);
   }
 }
 
 function queryResultMontage(searchResults, i) {
-  currentResult = searchResults[i];
-  var duration = currentResult.duration;
-
-  video.play();
-  video.time(currentResult.startTime);
-
-  print(currentResult.startTimeStamp, currentResult.dialog);
-  fragmentTimer = setTimeout(function() {
-
-    video.pause();
-
-    if (tileMode) {
-      var framePos = getFramePos();
-      var img = video.get();
-      image(img, framePos.x, framePos.y, frameWidth, frameHeight);
-
-      var dialogElement = createSpan(currentResult.dialog);
-      dialogElement.addClass('subtitle');
-      dialogElement.size(frameWidth, frameHeight);
-      dialogElement.position(framePos.x, framePos.y);
-
-      text(currentResult.endTimeStamp, framePos.x, framePos.y);
-
-      col++;
-      framePos = getFramePos();
-      video.position(framePos.x, framePos.y);
-    }
-
+  video.elt.ontimeupdate = function() {
+    updateGUI();
     if (i < searchResults.length - 1) {
-      queryResultMontage(searchResults, i + 1);
-    } else {
-      clearTimeout(fragmentTimer);
-    }
+      if (video.time() > searchResults[i].startTime) {
+        currentResult = searchResults[i];
+        video.speed(video.speed() / QUARTER_PI);
+        print(video.speed(), currentResult.startTimeStamp, currentResult.dialog);
+        if (tileMode) {
+          var framePos = getFramePos();
+          var img = video.get();
+          image(img, framePos.x, framePos.y, frameWidth, frameHeight);
 
-  }, duration * 1000);
+          var dialogElement = createSpan(currentResult.dialog);
+          dialogElement.addClass('subtitle');
+          dialogElement.size(frameWidth, frameHeight);
+          dialogElement.position(framePos.x, framePos.y);
+
+          text(currentResult.endTimeStamp, framePos.x, framePos.y);
+
+          col++;
+          framePos = getFramePos();
+          video.position(framePos.x, framePos.y);
+        }
+        i++;
+      }
+    } else {
+      video.elt.ontimeupdate = null;
+      return false;
+    };
+  }
 }
 
 function togglePlayback() {

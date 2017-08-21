@@ -1,11 +1,11 @@
-// P_supercut_1
+// P_4_2_2_01
 /**
  * Create montage of video with a search query consisting of a string or a Regular Expression.
  *
  * CONTRIBUTED BY
  * [Niels Poldervaart](http://NielsPoldervaart.nl)
  */
-"use strict";
+'use strict';
 
 // Download video file from https://github.com/generative-design/Code-Package-Data/blob/master/P_supercut_media/video.mp4
 var videoSrc = '../../data/P_supercut_media/video.mp4';
