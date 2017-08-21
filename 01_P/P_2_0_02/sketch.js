@@ -39,7 +39,7 @@ function setup() {
 }
 
 function draw() {
-  if (mouseIsPressed) {
+  if (mouseIsPressed && mouseButton == LEFT) {
     push();
     translate(width / 2, height / 2);
 

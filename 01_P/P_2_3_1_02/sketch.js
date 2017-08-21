@@ -1,4 +1,4 @@
-// P_2_3_1_02.pde
+// P_2_3_1_02
 //
 // Generative Gestaltung, ISBN: 978-3-87439-759-9
 // First Edition, Hermann Schmidt, Mainz, 2009
@@ -25,7 +25,7 @@
  * KEYS
  * 1-4                 : switch default colors
  * 5-9                 : switch brush element
- * del, backspace      : clear screen
+ * delete/backspace    : clear screen
  * d                   : reverse direction and mirrow angle
  * space               : new random color
  * arrow left          : rotaion speed -
@@ -68,7 +68,7 @@ function windowResized() {
 }
 
 function draw() {
-  if (mouseIsPressed) {
+  if (mouseIsPressed && mouseButton == LEFT) {
     var x = mouseX;
     var y = mouseY;
     if (keyIsPressed && keyCode == SHIFT) {

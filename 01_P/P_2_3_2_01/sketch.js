@@ -35,7 +35,7 @@
 var drawMode = 1;
 
 var col;
-var x = 0,
+var x = 0;
 var y = 0;
 var stepSize = 5.0;
 var lineLength = 25;
@@ -51,7 +51,7 @@ function setup() {
 }
 
 function draw() {
-  if (mouseIsPressed) {
+  if (mouseIsPressed && mouseButton == LEFT) {
     var d = dist(x, y, mouseX, mouseY);
 
     if (d > stepSize) {

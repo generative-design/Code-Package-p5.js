@@ -32,16 +32,16 @@
  */
 'use strict';
 
-var currentShape;
-var shapes = [];
-
 var tileCount = 10;
+
 var tileWidth;
 var tileHeight;
 var shapeSize = 50.0;
 var newShapeSize = shapeSize;
 var shapeAngle = 0.0;
 var maxDist;
+var currentShape;
+var shapes = [];
 
 var sizeMode = 0;
 

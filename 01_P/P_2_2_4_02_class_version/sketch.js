@@ -25,8 +25,8 @@
  */
 'use strict';
 
+var shapes = [];
 var maxCount = 5000; // max count of the cirlces
-var currentCount = 1;
 var x = [];
 var y = [];
 var r = [];
@@ -39,9 +39,7 @@ function setup() {
   createCanvas(800, 800);
 
   // first circle
-  x[0] = width / 2;
-  y[0] = height / 2;
-  r[0] = 360;
+  shapes.push(new Shape(width / 2, height / 2, 360));
 }
 
 function draw() {
@@ -57,44 +55,51 @@ function draw() {
 
   var closestDist = Number.MAX_VALUE;
   var closestIndex = 0;
-  // which circle is the closest?
-  for (var i = 0; i < currentCount; i++) {
-    var newDist = dist(newX, newY, x[i], y[i]);
+  // which shape is the closest?
+  var closestShape;
+  shapes.forEach(function(shape) {
+    var newDist = dist(newX, newY, shape.x, shape.y);
     if (newDist < closestDist) {
       closestDist = newDist;
-      closestIndex = i;
+      closestShape = shape;
     }
-  }
+  });
 
   // align it to the closest circle outline
-  var angle = atan2(newY - y[closestIndex], newX - x[closestIndex]);
+  var angle = atan2(newY - closestShape.y, newX - closestShape.x);
 
-  x2[currentCount] = newX;
-  y2[currentCount] = newY;
-  x[currentCount] = x[closestIndex] + cos(angle) * (r[closestIndex] + newR);
-  y[currentCount] = y[closestIndex] + sin(angle) * (r[closestIndex] + newR);
-  r[currentCount] = newR;
-  currentCount++;
+  shapes.push(new Shape(
+    closestShape.x + cos(angle) * (closestShape.r + newR),
+    closestShape.y + sin(angle) * (closestShape.r + newR),
+    newR,
+    newX,
+    newY
+  ));
 
   // draw circles at random position and lines
-  if (drawGhosts) {
-    for (var i = 1; i < currentCount; i++) {
+  shapes.forEach(function(shape, index) {
+    if (drawGhosts) {
       fill(230);
-      ellipse(x2[i], y2[i], r[i] * 2, r[i] * 2);
-      line(x2[i], y2[i], x[i], y[i]);
+      ellipse(shape.newX, shape.newY, shape.r * 2);
+      line(shape.newX, shape.newY, shape.x, shape.y);
     }
-  }
-
-  for (var i = 0; i < currentCount; i++) {
-    if (i == 0) {
+    if (index == 0) {
       noFill();
     } else {
       fill(50);
     }
-    ellipse(x[i], y[i], r[i] * 2, r[i] * 2);
-  }
+    ellipse(shape.x, shape.y, shape.r * 2);
+  });
 
-  if (currentCount >= maxCount) noLoop();
+  if (shapes.length >= maxCount) noLoop();
+}
+
+function Shape(x, y, r, newX, newY) {
+  this.x = x;
+  this.y = y;
+  this.r = r;
+  this.newX = newX;
+  this.newY = newY;
 }
 
 function keyReleased() {

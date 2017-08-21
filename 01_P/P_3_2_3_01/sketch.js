@@ -74,7 +74,7 @@ function draw() {
 
   // distortion on/off
   danceFactor = 1;
-  if (mouseIsPressed) danceFactor = map(mouseX, 0, width, 0, 3);
+  if (mouseIsPressed && mouseButton == LEFT) danceFactor = map(mouseX, 0, width, 0, 3);
 
   // are there points to draw?
   if (pnts.length > 0) {

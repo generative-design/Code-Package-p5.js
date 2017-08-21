@@ -109,7 +109,7 @@ function windowResized() {
 function draw() {
   background(255);
 
-  if (mouseIsPressed) {
+  if (mouseIsPressed && mouseButton == LEFT) {
     centerX = mouseX - offsetX;
     centerY = mouseY - offsetY;
   }

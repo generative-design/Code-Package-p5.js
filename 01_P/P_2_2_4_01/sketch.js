@@ -1,4 +1,4 @@
-// P_2_2_4_01.pde
+// P_2_2_4_01
 //
 // Generative Gestaltung, ISBN: 978-3-87439-759-9
 // First Edition, Hermann Schmidt, Mainz, 2009
@@ -24,15 +24,14 @@
  */
 'use strict';
 
-var maxCount = 5000; //max count of the cirlces
+var maxCount = 5000; // max count of the cirlces
 var currentCount = 1;
 var x = [];
 var y = [];
-var r = []; // radius
+var r = [];
 
 function setup() {
-  createCanvas(600, 600);
-
+  createCanvas(800, 800);
   strokeWeight(0.5);
 
   // first circle
@@ -41,9 +40,8 @@ function setup() {
   r[0] = 10;
 }
 
-
 function draw() {
-  background(255);
+  clear();
 
   // create a random set of parameters
   var newR = random(1, 7);
@@ -63,7 +61,7 @@ function draw() {
 
   // show original position of the circle and a line to the new position
   // fill(230);
-  // ellipse(newX, newY, newR * 2, newR * 2); 
+  // ellipse(newX, newY, newR * 2, newR * 2);
   // line(newX, newY, x[closestIndex], y[closestIndex]);
 
   // aline it to the closest circle outline

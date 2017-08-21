@@ -65,7 +65,7 @@ function setup() {
 }
 
 function draw() {
-  if (mouseIsPressed) {
+  if (mouseIsPressed && mouseButton == LEFT) {
     var d = dist(x, y, mouseX, mouseY);
 
     if (d > stepSize) {
