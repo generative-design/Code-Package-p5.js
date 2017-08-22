@@ -53,8 +53,8 @@ function setup() {
 function draw() {
   // noLoop();
   if (!font) return;
-  // background(255, 255, 255, 2);
-  background(255, 255, 255, 50);
+  background(255, 255, 255, 10);
+  // background(255, 255, 255, 50);
 
   // margin border
   translate(20,150);
@@ -64,17 +64,20 @@ function draw() {
   myAnimatedText.getLineCount();
   myAnimatedText.getPaths();
   // myAnimatedText.getAllPaths();
-  // myAnimatedText.getRanges();
   myAnimatedText.getCoordinates();
   // myAnimatedText.getAllCoordinates();
 
+  // draw methods
+  if(myAnimatedText.drawMode == 1){
+    myAnimatedText.animatedPoints();  
+  }
+  if(myAnimatedText.drawMode == 2){
+    myAnimatedText.lines2mouse();
+  }
+  if(myAnimatedText.drawMode == 3){
+    myAnimatedText.show();
+  }
   
-  
-  // // draw methods
-  // myAnimatedText.show();
-  // myAnimatedText.showAll();
-  myAnimatedText.lines2mouse();
-
   
 
 }
@@ -110,9 +113,67 @@ function animatedType(){
   } 
 
   // get the path objects for each line typed
+  this.getPaths = function(){
+    // clear the paths each loop
+    that.paths = [];
+  
+    // go though each of the text objects
+    that.textTyped.forEach(function(txt, lineNum){
+      if(txt.text.length > 0){
+          var fontPath = font.getPath(txt.text, 0, 0, fontSize);
+          // convert it to a g.Path object
+          var path = new g.Path(fontPath.commands);
+          // resample it with equidistant points
+          path = g.resampleByLength(path, that.pointDensity);
+          // console.log(fontPath.getBoundingBox())
+
+          // structure the relevant path data
+          var pathData = {
+            data: path,
+            lineNumber: lineNum,
+            len: path.commands.length,
+            breaks: floor(path.commands.length / txt.text.length),
+            ranges: []
+          };
+          
+          // get the start point of each letter
+          for(var i = 0; i < pathData.len-1; i += pathData.breaks){
+            pathData.ranges.push(floor(i));
+          }
+
+          that.paths.push(pathData);
+      }
+    });
+  } 
+
+  
+  // get all the coordinates
+  this.getCoordinates = function(){
+    // clear the coordinates each loop
+    that.coordinates = [];
+
+    // for each of the letters
+    that.paths.forEach(function(path, idx){
+                 
+      path.data.commands.forEach(function(coord){
+        if(coord.x != undefined && coord.y != undefined){
+          var yOffset = path.lineNumber*fontSize;
+          that.coordinates.push({x: coord.x, y: coord.y + yOffset})
+        }
+      })
+      
+    });
+  } 
+
+  // get the path objects for each line typed
   this.getAllPaths = function(){
     // clear the paths each loop
     that.paths = [];
+
+    // we need:
+    // starting location
+    // number of points per letter
+
   
     // go though each of the text objects
     that.textTyped.forEach(function(txt, lineNum){
@@ -141,71 +202,7 @@ function animatedType(){
 
   } 
 
-  // get the path objects for each line typed
-  this.getPaths = function(){
-    // clear the paths each loop
-    that.paths = [];
   
-    // go though each of the text objects
-    that.textTyped.forEach(function(txt, lineNum){
-      if(txt.text.length > 0){
-          var fontPath = font.getPath(txt.text, 0, 0, fontSize);
-          // convert it to a g.Path object
-          var path = new g.Path(fontPath.commands);
-          // resample it with equidistant points
-          path = g.resampleByLength(path, that.pointDensity);
-          // console.log(fontPath.getBoundingBox())
-
-          // structure the relevant path data
-          var pathData = {
-            data: path,
-            lineNumber: lineNum,
-            len: path.commands.length,
-            breaks: floor(path.commands.length / txt.text.length)
-          };
-          
-          that.paths.push(pathData);
-      }
-    });
-
-  } 
-
-  // get the ranges
-  this.getRanges = function(){
-    // clear the ranges each loop
-    that.ranges = [];
-    // for each path, retrieve a list of
-    // the starting locations of each letter
-    that.paths.forEach(function(path, idx){
-      var startingLocations = {id: idx, start:[]};
-      for(var i = 0; i < path.len-1; i+=path.breaks){
-        startingLocations.start.push(floor(i));
-      }
-      that.ranges.push(startingLocations);
-    });
-
-  } 
-
-  
-
-  // get all the coordinates
-  this.getCoordinates = function(){
-    // clear the coordinates each loop
-    that.coordinates = [];
-
-    // for each of the letters
-    that.paths.forEach(function(path, idx){
-                 
-      path.data.commands.forEach(function(coord){
-        if(coord.x != undefined && coord.y != undefined){
-          var yOffset = path.lineNumber*fontSize;
-          that.coordinates.push({x: coord.x, y: coord.y + yOffset})
-        }
-      })
-      
-    });
-  } 
-
   // get all the coordinates
   this.getAllCoordinates = function(){
     // clear the coordinates each loop
@@ -271,7 +268,7 @@ function animatedType(){
 
   // add characters
   this.addCharacters = function(_key){
-    myAnimatedText.textTyped[myAnimatedText.lineCount].text += _key;
+    that.textTyped[that.lineCount].text += _key;
   }
 
 
@@ -279,7 +276,7 @@ function animatedType(){
   Rendering Methods
   */
 
-  // show all the points
+  // show all the points with random color
   this.show = function(){
     that.coordinates.forEach(function(coords){
       stroke(random(255),random(255),random(255))
@@ -287,16 +284,36 @@ function animatedType(){
     })
   } // end this.show();
 
-
-  this.showAll = function(){
+  // follow the mouse with extruded lines
+  this.lines2mouse = function(){
     that.coordinates.forEach(function(coords){
         strokeWeight(1);
-        coords.coords.forEach(function(d){
-          ellipse(d.x, d.y, 10, 10)
-        })
+        line( coords.x + map(mouseX, 0, width, -100, 100), coords.y + map(mouseY, 0, height, -100, 100), coords.x, coords.y)
+    })
+  }
+
+  // animate the points
+  this.animatedPoints = function(){
+    that.paths.forEach(function(path, idx){
+      path.ranges.forEach(function(d){
+        var cmd = path.data.commands[that.textTyped[idx].counter + d];
+        
+        if((cmd != undefined) && (that.textTyped[idx].counter < path.breaks)){
+            var yOffset = path.lineNumber*fontSize;    
+            ellipse(cmd.x, cmd.y + yOffset, fontSize*0.10, fontSize*0.10);
+            that.textTyped[idx].counter++;
+        }else{
+            that.textTyped[idx].counter = 0;
+        }
+
+      });
     })
 
-  } 
+    
+  }
+
+
+
 
   this.linesAllStructure = function(){
     that.coordinates.forEach(function(coords){
@@ -314,17 +331,11 @@ function animatedType(){
     })
   }
 
-  this.lines2mouse = function(){
-    that.coordinates.forEach(function(coords){
-        strokeWeight(1);
-        line( coords.x + map(mouseX, 0, width, -100, 100), coords.y + map(mouseY, 0, height, -100, 100), coords.x, coords.y)
-    })
-  }
 
 
 } // end animatedType object
 
-
+// key controls
 function keyPressed(){
   if (keyCode === CONTROL) saveCanvas(gd.timestamp(), 'png');
 
@@ -336,14 +347,15 @@ function keyPressed(){
     myAnimatedText.addLines();
   }
 
-  // if (keyCode === LEFT_ARROW) {
-  //   drawMode--;
-  //   if (drawMode < 1) drawMode = 4;
-  // }
-  // if (keyCode === RIGHT_ARROW) {
-  //   drawMode++;
-  //   if (drawMode > 4) drawMode = 1;
-  // }
+  if (keyCode === LEFT_ARROW) {
+    myAnimatedText.drawMode--;
+    if (myAnimatedText.drawMode < 1) myAnimatedText.drawMode = 4;
+  }
+  if (keyCode === RIGHT_ARROW) {
+    myAnimatedText.drawMode++;
+    if (myAnimatedText.drawMode > 4) myAnimatedText.drawMode = 1;
+  }
+
   if (keyCode === DOWN_ARROW) {
     myAnimatedText.pointDensity--;
     if (myAnimatedText.pointDensity < 2) myAnimatedText.pointDensity = 2;
@@ -362,26 +374,17 @@ function keyTyped() {
 
 
 
-// function keyPressed() {
-
-//   } else if (keyCode === TAB || keyCode === ENTER || keyCode === RETURN || keyCode === ESCAPE) {
-//     console.log("enter!")
-//     textTyped.push(new myText(""));
-//     textTypedCounter++;
-//   } else {
-//     if(key == "1"){
-//       style = 1;
-//     }else if(key == "2"){
-//       style = 2;
-//     }else if(key == "3"){
-//       style = 3;
-//     }else if(key == "4"){
-//       style = 4;
-//     }else{
-//       textTyped[textTypedCounter].text += key;
-//     }
-//     loop()
-//   }
-
-// }
-
+  // get the ranges
+  // this.getRanges = function(){
+  //   // clear the ranges each loop
+  //   that.ranges = [];
+  //   // for each path, retrieve a list of
+  //   // the starting locations of each letter
+  //   that.paths.forEach(function(path, idx){
+  //     var startingLocations = {id: idx, start:[]};
+  //     for(var i = 0; i < path.len-1; i+=path.breaks){
+  //       startingLocations.start.push(floor(i));
+  //     }
+  //     that.ranges.push(startingLocations);
+  //   });
+  // } 
