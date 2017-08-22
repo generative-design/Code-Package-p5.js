@@ -19,6 +19,7 @@ var font;
 var fontSize = 120;
 var style = 1;
 var padding = 10;
+// declare your animatedText variable
 var myAnimatedText;
 
 
@@ -29,8 +30,9 @@ function setup() {
   imageMode(CENTER);
   rectMode(CENTER);
 
-
+  // initialize the animatedType Object
   myAnimatedText = new animatedType();
+  // add some text in
   myAnimatedText.textTyped.push(myAnimatedText.addText("TYPE!"));
   myAnimatedText.textTyped.push(myAnimatedText.addText("CODE!"));
 
@@ -45,7 +47,6 @@ function setup() {
   });
 
   // frameRate(1)
-  
 }
 
 
@@ -54,7 +55,6 @@ function draw() {
   // noLoop();
   if (!font) return;
   background(255, 255, 255, 10);
-  // background(255, 255, 255, 50);
 
   // margin border
   translate(20,150);
@@ -75,9 +75,8 @@ function draw() {
     myAnimatedText.lines2mouse();
   }
   if(myAnimatedText.drawMode == 3){
-    myAnimatedText.show();
+    myAnimatedText.randomStrokes();
   }
-  
   
 
 }
@@ -91,7 +90,7 @@ function animatedType(){
   that.ranges = [];
   that.lineCount = 0;
   that.letterCoordinates = [];
-  that.pointDensity = 4;
+  that.pointDensity = 1;
 
   that.drawMode = 1;
   that.style = 1;
@@ -234,7 +233,7 @@ function animatedType(){
       });
       
     });
-  } // end getAllCoordinates();
+  } 
 
 
   /* 
@@ -277,7 +276,7 @@ function animatedType(){
   */
 
   // show all the points with random color
-  this.show = function(){
+  this.randomStrokes = function(){
     that.coordinates.forEach(function(coords){
       stroke(random(255),random(255),random(255))
       ellipse(coords.x, coords.y,5, 5);
@@ -298,21 +297,19 @@ function animatedType(){
       path.ranges.forEach(function(d){
         var cmd = path.data.commands[that.textTyped[idx].counter + d];
         
-        if((cmd != undefined) && (that.textTyped[idx].counter < path.breaks)){
+        if(cmd != undefined ){
+          if(that.textTyped[idx].counter < path.breaks){
             var yOffset = path.lineNumber*fontSize;    
             ellipse(cmd.x, cmd.y + yOffset, fontSize*0.10, fontSize*0.10);
             that.textTyped[idx].counter++;
-        }else{
+          }else{
             that.textTyped[idx].counter = 0;
+          } 
         }
-
       });
     })
 
-    
   }
-
-
 
 
   this.linesAllStructure = function(){
@@ -356,11 +353,11 @@ function keyPressed(){
     if (myAnimatedText.drawMode > 4) myAnimatedText.drawMode = 1;
   }
 
-  if (keyCode === DOWN_ARROW) {
+  if (keyCode === UP_ARROW) {
     myAnimatedText.pointDensity--;
     if (myAnimatedText.pointDensity < 2) myAnimatedText.pointDensity = 2;
   }
-  if (keyCode === UP_ARROW) {
+  if (keyCode === DOWN_ARROW) {
     myAnimatedText.pointDensity++;
   }
 
