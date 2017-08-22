@@ -88,6 +88,7 @@ function animatedType(){
   that.ranges = [];
   that.lineCount = 0;
   that.letterCoordinates = [];
+  that.pointDensity = 4;
 
   that.drawMode = 1;
   that.style = 1;
@@ -122,7 +123,7 @@ function animatedType(){
           // convert it to a g.Path object
           var path = new g.Path(fontPath.commands);
           // resample it with equidistant points
-          path = g.resampleByLength(path, 1);
+          path = g.resampleByLength(path, that.pointDensity);
 
           // structure the relevant path data
           var pathData = {
@@ -152,7 +153,7 @@ function animatedType(){
           // convert it to a g.Path object
           var path = new g.Path(fontPath.commands);
           // resample it with equidistant points
-          path = g.resampleByLength(path, 4);
+          path = g.resampleByLength(path, that.pointDensity);
           // console.log(fontPath.getBoundingBox())
 
           // structure the relevant path data
@@ -333,6 +334,22 @@ function keyPressed(){
 
   if (keyCode === ENTER || keyCode === RETURN) {
     myAnimatedText.addLines();
+  }
+
+  // if (keyCode === LEFT_ARROW) {
+  //   drawMode--;
+  //   if (drawMode < 1) drawMode = 4;
+  // }
+  // if (keyCode === RIGHT_ARROW) {
+  //   drawMode++;
+  //   if (drawMode > 4) drawMode = 1;
+  // }
+  if (keyCode === DOWN_ARROW) {
+    myAnimatedText.pointDensity--;
+    if (myAnimatedText.pointDensity < 2) myAnimatedText.pointDensity = 2;
+  }
+  if (keyCode === UP_ARROW) {
+    myAnimatedText.pointDensity++;
   }
 
 }
