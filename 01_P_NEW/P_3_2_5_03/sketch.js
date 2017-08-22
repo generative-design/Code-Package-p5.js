@@ -18,13 +18,9 @@
 var font;
 var fontSize = 120;
 var style = 1;
-var texture1;
 var padding = 10;
 var myAnimatedText;
 
-function preload(){
-  texture1= loadImage("data/texture1.png"); 
-}
 
 function setup() {
   createCanvas(windowWidth, windowHeight);
@@ -48,7 +44,7 @@ function setup() {
     }
   });
 
-  frameRate(1)
+  // frameRate(1)
   
 }
 
@@ -59,7 +55,6 @@ function draw() {
   if (!font) return;
   // background(255, 255, 255, 2);
   background(255, 255, 255, 50);
-  // background(255, 255, 255);
 
   // margin border
   translate(20,150);
@@ -68,9 +63,16 @@ function draw() {
 
   myAnimatedText.getLineCount();
   myAnimatedText.getPaths();
-  myAnimatedText.getRanges();
+  // myAnimatedText.getAllPaths();
+  // myAnimatedText.getRanges();
   myAnimatedText.getCoordinates();
+  // myAnimatedText.getAllCoordinates();
+
   
+  
+  // // draw methods
+  // myAnimatedText.show();
+  // myAnimatedText.showAll();
   myAnimatedText.lines2mouse();
 
   
@@ -90,9 +92,8 @@ function animatedType(){
   that.drawMode = 1;
   that.style = 1;
 
+  // set the lineCount to the number of "lines" or text object in the textTyped Array
   this.getLineCount = function(){
-    // set the lineCount to the number of "lines" or text object 
-    // in the textTyped Array
     if(that.textTyped.length > 0){
       that.lineCount = that.textTyped.length -1;
     } else{
@@ -100,6 +101,12 @@ function animatedType(){
     }
   }
 
+  // create a text object to hold each line of text
+  // usage: this.textTyped.push(this.addText("hello"))
+  this.addText = function(_text){
+    var textObject = {counter:0, text:_text}
+    return textObject;
+  } 
 
   // get the path objects for each line typed
   this.getAllPaths = function(){
@@ -109,6 +116,7 @@ function animatedType(){
     // go though each of the text objects
     that.textTyped.forEach(function(txt, lineNum){
       if(txt.text.length > 0){
+        // for each string of text, split it up to each letter
         txt.text.split('').forEach(function(d){
           var fontPath = font.getPath(d, 0, 0, fontSize);
           // convert it to a g.Path object
@@ -130,7 +138,7 @@ function animatedType(){
       }
     });
 
-  } // end this.getAllPaths()
+  } 
 
   // get the path objects for each line typed
   this.getPaths = function(){
@@ -159,8 +167,9 @@ function animatedType(){
       }
     });
 
-  } // end this.getPaths()
+  } 
 
+  // get the ranges
   this.getRanges = function(){
     // clear the ranges each loop
     that.ranges = [];
@@ -174,14 +183,9 @@ function animatedType(){
       that.ranges.push(startingLocations);
     });
 
-  } // end this.getRanges()
+  } 
 
-  // create a text object to hold each line of text
-  // usage: this.textTyped.push(this.addText("hello"))
-  this.addText = function(_text){
-    var textObject = {counter:0, text:_text}
-    return textObject;
-  } // end this.addText()
+  
 
   // get all the coordinates
   this.getCoordinates = function(){
@@ -199,7 +203,7 @@ function animatedType(){
       })
       
     });
-  } // end getAllCoordinates();
+  } 
 
   // get all the coordinates
   this.getAllCoordinates = function(){
@@ -236,6 +240,41 @@ function animatedType(){
 
 
   /* 
+  keyboard interaction Methods
+  */
+
+  // remove letters
+  this.removeLetters = function(){
+    var textTypedCounter = that.lineCount;
+
+    if (textTypedCounter >= 0 && that.textTyped[0].text.length > 0){
+     that.textTyped[textTypedCounter].text = that.textTyped[textTypedCounter].text.substring(0,max(0,that.textTyped[textTypedCounter].text.length-1));
+    } 
+
+    if(that.textTyped[textTypedCounter].text.length == 0){
+        textTypedCounter--;
+        if(textTypedCounter < 0){
+          console.log("nothing left")
+          textTypedCounter = 0;
+        }else{
+          that.textTyped.pop();
+        }
+    }
+  }
+
+  // add lines 
+  this.addLines = function(){
+    that.textTyped.push(that.addText(""));
+    that.lineCount++;
+  }
+
+  // add characters
+  this.addCharacters = function(_key){
+    myAnimatedText.textTyped[myAnimatedText.lineCount].text += _key;
+  }
+
+
+  /* 
   Rendering Methods
   */
 
@@ -246,6 +285,17 @@ function animatedType(){
       ellipse(coords.x, coords.y,5, 5);
     })
   } // end this.show();
+
+
+  this.showAll = function(){
+    that.coordinates.forEach(function(coords){
+        strokeWeight(1);
+        coords.coords.forEach(function(d){
+          ellipse(d.x, d.y, 10, 10)
+        })
+    })
+
+  } 
 
   this.linesAllStructure = function(){
     that.coordinates.forEach(function(coords){
@@ -270,102 +320,32 @@ function animatedType(){
     })
   }
 
-  // if(style === 4){
-  //   push();
-  //   translate(d.commands[i].x, d.commands[i].y);
-  //   rotate(radians(angle));
-  //   fill(65, 105, 185);
-  //   noStroke();
-  //   ellipse(0+shiftX2, 0+shiftY2, rectSize/2, rectSize/2);
-  //   pop();
-
-  //   strokeWeight(0.1);
-  //   line((xMin+xMax)/2, (yMax+yMin)/2,d.commands[i].x, d.commands[i].y );
-  // }
-
-
-  // this.animatePoints = function(){
-
-  //   // for each of the letters
-  //   that.ranges.forEach(function(range, i){
-  //     range.start.forEach(function(d){
-  //       if(that.textTyped[i].counter < that.paths[i].breaks){
-  //           var pathIndex = that.textTyped[i].counter + d;
-  //           var cmd = that.paths[i].data.commands[pathIndex];
-  //           var ocmd = that.paths[i].data.commands[ceil(that.paths[i].breaks) - pathIndex];
-  //           if(cmd !=undefined && ocmd != undefined){
-  //             var yOffset = that.paths[i].lineNumber*fontSize;
-  //             var featWidth = fontSize*random(0.10);
-  //             if(that.style == 1){
-  //               // stroke(65, 105, 185, 150);
-  //               fill(65, 105, 185)
-  //               ellipse(cmd.x, cmd.y + yOffset, featWidth, featWidth);
-  //             }
-  //             if(that.style == 2){
-  //               // stroke(65, 105, 185, 150);
-  //               push()
-  //               // fill(65, 105, 185)
-  //               stroke(0)
-  //               strokeWeight(2)
-  //               fill(255)
-  //               translate(cmd.x, cmd.y + yOffset)
-  //               rotate(radians(frameCount))
-  //               rect(0,0, featWidth, featWidth);
-  //              pop()
-  //             }
-  //             if(that.style == 3){
-  //               push()
-  //               translate(cmd.x, cmd.y + yOffset)
-  //               rotate(radians(frameCount))
-  //               image(texture1, 0,0, 15, 15);
-  //               pop()
-  //               // stroke(65, 105, 185, 150);
-  //               // line(cmd.x, cmd.y + (paths[i].lineNumber*fontSize), mouseX - 20, mouseY - 150); // adjusted for translation
-  //               // noStroke();
-
-  //               // fill(65, 105, 185);
-  //               // ellipse(cmd.x, cmd.y + (paths[i].lineNumber*fontSize), 6,6);
-  //             }
-
-  //           }
-  //         that.textTyped[i].counter++;
-  //       }else{
-  //         that.textTyped[i].counter = 0;
-  //       }
-
-  //     });
-
-  //   });
-  // } // end animatePoints();
-
-  
-
 
 } // end animatedType object
 
 
+function keyPressed(){
+  if (keyCode === CONTROL) saveCanvas(gd.timestamp(), 'png');
+
+  if (keyCode === DELETE || keyCode === BACKSPACE) {
+    myAnimatedText.removeLetters();
+  } 
+
+  if (keyCode === ENTER || keyCode === RETURN) {
+    myAnimatedText.addLines();
+  }
+
+}
+
+function keyTyped() {
+  if (keyCode >= 32){
+    myAnimatedText.addCharacters(key);
+  }
+}
+
 
 
 // function keyPressed() {
-//   if (keyCode === CONTROL) saveCanvas(gd.timestamp(), 'png');
-
-//   if (keyCode === DELETE || keyCode === BACKSPACE || keyCode === LEFT_ARROW) {
-
-//     if (textTypedCounter >= 0 && textTyped[0].text.length > 0){
-//      textTyped[textTypedCounter].text = textTyped[textTypedCounter].text.substring(0,max(0,textTyped[textTypedCounter].text.length-1));
-//     } else{
-//       console.log("nada")
-//     }
-
-//     if(textTyped[textTypedCounter].text.length == 0){
-//         textTypedCounter--;
-//         if(textTypedCounter < 0){
-//           console.log("nothing left")
-//           textTypedCounter = 0;
-//         }else{
-//           textTyped.pop();
-//         }
-//     }
 
 //   } else if (keyCode === TAB || keyCode === ENTER || keyCode === RETURN || keyCode === ESCAPE) {
 //     console.log("enter!")
