@@ -326,7 +326,7 @@ function animatedType(){
 
   }
 
-
+  // radial lines
   this.radialLines = function(){
     
     stroke(that.colors[0])
@@ -344,6 +344,7 @@ function animatedType(){
     })
   }
 
+  // orbiting points
   this.orbitingPoints = function(_type){
 
     stroke(that.colors[0])
@@ -389,6 +390,7 @@ function animatedType(){
 
   }
 
+  // wobblyShapes
   this.wobblyShapes= function(_type){
   
     that.individualPaths.forEach(function(path, idx){
@@ -435,12 +437,10 @@ function animatedType(){
 
     });
 
-
   }
 
-
+  // outward lines following mouse
   this.outwardLines = function(){
-    
     that.individualPaths.forEach(function(path, idx){
       stroke(that.colors[path.lineNumber])
       strokeWeight(0.5);
@@ -460,11 +460,6 @@ function animatedType(){
       pop();
     });
   }
-
-
-      
-
-
 
 } // end animatedType object
 
@@ -506,18 +501,3 @@ function keyTyped() {
 }
 
 
-
-  // get the ranges
-  // this.getRanges = function(){
-  //   // clear the ranges each loop
-  //   that.ranges = [];
-  //   // for each path, retrieve a list of
-  //   // the starting locations of each letter
-  //   that.paths.forEach(function(path, idx){
-  //     var startingLocations = {id: idx, start:[]};
-  //     for(var i = 0; i < path.len-1; i+=path.breaks){
-  //       startingLocations.start.push(floor(i));
-  //     }
-  //     that.ranges.push(startingLocations);
-  //   });
-  // } 
