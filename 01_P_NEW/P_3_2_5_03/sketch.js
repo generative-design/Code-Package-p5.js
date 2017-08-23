@@ -21,6 +21,7 @@ var style = 1;
 var padding = 10;
 // declare your animatedText variable
 var myAnimatedText;
+var angle = 0;
 
 
 function setup() {
@@ -54,29 +55,43 @@ function setup() {
 function draw() {
   // noLoop();
   if (!font) return;
-  background(255, 255, 255, 10);
+  background(255, 255, 255, 20);
+  // background(255, 255, 255);
 
   // margin border
   translate(20,150);
-
   fill(0);
 
   myAnimatedText.getLineCount();
   myAnimatedText.getPaths();
-  // myAnimatedText.getAllPaths();
+  myAnimatedText.getIndividualPaths();
   myAnimatedText.getCoordinates();
-  // myAnimatedText.getAllCoordinates();
 
   // draw methods
   if(myAnimatedText.drawMode == 1){
-    myAnimatedText.animatedPoints();  
+    myAnimatedText.animatedPoints("ellipse");  
   }
   if(myAnimatedText.drawMode == 2){
-    myAnimatedText.lines2mouse();
+    myAnimatedText.animatedPoints("rect");
   }
   if(myAnimatedText.drawMode == 3){
-    myAnimatedText.randomStrokes();
+    myAnimatedText.lines2mouse();
   }
+  if(myAnimatedText.drawMode == 4){
+    myAnimatedText.radialLines();
+  }
+  if(myAnimatedText.drawMode == 5){
+    myAnimatedText.orbitingPoints("points");
+  }
+  if(myAnimatedText.drawMode == 6){
+    myAnimatedText.wobblyShapes("TRIANGLE_FAN");
+  }
+  if(myAnimatedText.drawMode == 7){
+    myAnimatedText.wobblyShapes("TRIANGLES");
+  }
+  // if(myAnimatedText.drawMode == 8){
+  
+  // }
   
 
 }
@@ -87,13 +102,20 @@ function animatedType(){
   var that = this;
   that.textTyped = [];
   that.paths = [];
+  that.individualPaths = [];
   that.ranges = [];
   that.lineCount = 0;
   that.letterCoordinates = [];
-  that.pointDensity = 1;
+  that.pointDensity = 2;
+  that.startX = 0;
+  that.colors = [color(65, 105, 185), color(245, 95, 80), color(15, 233, 118), color(233, 15, 130), color(118, 15, 233), color(  15, 233, 118)];
 
-  that.drawMode = 1;
+  that.drawMode = 7;
   that.style = 1;
+
+  /* 
+  Data Handling Methods
+  */
 
   // set the lineCount to the number of "lines" or text object in the textTyped Array
   this.getLineCount = function(){
@@ -145,7 +167,58 @@ function animatedType(){
     });
   } 
 
-  
+  this.getIndividualPaths = function(){
+    that.individualPaths = [];
+
+    // go though each of the text objects
+    that.textTyped.forEach(function(txt, lineNum){
+      if(txt.text.length > 0){
+        txt.text.split("").forEach(function(d){
+          var fontPath = font.getPath(d, 0, 0, fontSize);
+          // convert it to a g.Path object
+          var path = new g.Path(fontPath.commands);
+          // resample it with equidistant points
+          path = g.resampleByLength(path, that.pointDensity);
+
+          // structure the relevant path data
+          var pathData = {
+            data: path,
+            lineNumber: lineNum,
+            len: path.commands.length,
+            bbox: fontPath.getBoundingBox(),
+            distX: 0,
+            startX: 0
+          };
+
+          // console.log(pathData.bbox.x1)
+          pathData.distX = ceil(dist(pathData.bbox.x1, 0, pathData.bbox.x2, 0));
+
+          that.individualPaths.push(pathData);
+          })
+      }
+    });
+
+    // set the startX to zero
+    that.startX = 0;
+    for(var i = 0; i < that.individualPaths.length-1; i++){
+      // if the linenumbers are the same
+      if(that.individualPaths[i].lineNumber === that.individualPaths[i+1].lineNumber){
+        // then add to the startX and assign it to the individualpath startX
+        that.individualPaths[i].startX = that.startX;
+        that.startX += that.individualPaths[i].distX + 15;
+      } else{
+        that.individualPaths[i].startX = that.startX;
+        that.startX = 0;
+      }
+      // when reaching the end
+      if(i == that.individualPaths.length-2){
+        that.individualPaths[i+1].startX = that.startX;
+      }
+ 
+    }
+
+  }
+
   // get all the coordinates
   this.getCoordinates = function(){
     // clear the coordinates each loop
@@ -164,76 +237,6 @@ function animatedType(){
     });
   } 
 
-  // get the path objects for each line typed
-  this.getAllPaths = function(){
-    // clear the paths each loop
-    that.paths = [];
-
-    // we need:
-    // starting location
-    // number of points per letter
-
-  
-    // go though each of the text objects
-    that.textTyped.forEach(function(txt, lineNum){
-      if(txt.text.length > 0){
-        // for each string of text, split it up to each letter
-        txt.text.split('').forEach(function(d){
-          var fontPath = font.getPath(d, 0, 0, fontSize);
-          // convert it to a g.Path object
-          var path = new g.Path(fontPath.commands);
-          // resample it with equidistant points
-          path = g.resampleByLength(path, that.pointDensity);
-
-          // structure the relevant path data
-          var pathData = {
-            data: path,
-            lineNumber: lineNum,
-            len: path.commands.length,
-            breaks: floor(path.commands.length / txt.text.length)
-          };
-          
-          that.paths.push(pathData);
-        })
-
-      }
-    });
-
-  } 
-
-  
-  // get all the coordinates
-  this.getAllCoordinates = function(){
-    // clear the coordinates each loop
-    that.coordinates = [];
-
-    // for each of the letters
-    that.paths.forEach(function(path, idx){
-          
-      var letterCoords = [];          
-      path.data.commands.forEach(function(coord){
-        if(coord.x != undefined && coord.y != undefined){
-          var yOffset = path.lineNumber*fontSize;
-
-          letterCoords.push({x: coord.x, y: coord.y + yOffset})
-        }
-      })
-
-      var coordsXMax =  floor(Math.max.apply(Math, letterCoords.map(function(o){return o.x;})))
-      var coordsXMin =  floor(Math.min.apply(Math, letterCoords.map(function(o){return o.x;})))
-      var coordsYMax =  floor(Math.max.apply(Math, letterCoords.map(function(o){return o.y;})))
-      var coordsYMin =  floor(Math.min.apply(Math, letterCoords.map(function(o){return o.y;})))
-
-      that.coordinates.push({
-        coords: letterCoords,
-        xMax:coordsXMax,
-        xMin:coordsXMin,
-        yMax:coordsYMax,
-        yMin:coordsYMin
-      });
-      
-    });
-  } 
 
 
   /* 
@@ -243,11 +246,11 @@ function animatedType(){
   // remove letters
   this.removeLetters = function(){
     var textTypedCounter = that.lineCount;
-
+    // remove letters from each object
     if (textTypedCounter >= 0 && that.textTyped[0].text.length > 0){
      that.textTyped[textTypedCounter].text = that.textTyped[textTypedCounter].text.substring(0,max(0,that.textTyped[textTypedCounter].text.length-1));
     } 
-
+    // remove objects if there's no characters
     if(that.textTyped[textTypedCounter].text.length == 0){
         textTypedCounter--;
         if(textTypedCounter < 0){
@@ -271,7 +274,7 @@ function animatedType(){
   }
 
 
-  /* 
+  /*
   Rendering Methods
   */
 
@@ -285,22 +288,33 @@ function animatedType(){
 
   // follow the mouse with extruded lines
   this.lines2mouse = function(){
+
+    stroke(that.colors[0])
     that.coordinates.forEach(function(coords){
         strokeWeight(1);
         line( coords.x + map(mouseX, 0, width, -100, 100), coords.y + map(mouseY, 0, height, -100, 100), coords.x, coords.y)
     })
   }
 
+
   // animate the points
-  this.animatedPoints = function(){
+  this.animatedPoints = function(_shape){
+
     that.paths.forEach(function(path, idx){
+      fill(that.colors[path.lineNumber])
+      stroke(that.colors[path.lineNumber])
       path.ranges.forEach(function(d){
         var cmd = path.data.commands[that.textTyped[idx].counter + d];
         
         if(cmd != undefined ){
           if(that.textTyped[idx].counter < path.breaks){
-            var yOffset = path.lineNumber*fontSize;    
-            ellipse(cmd.x, cmd.y + yOffset, fontSize*0.10, fontSize*0.10);
+            var yOffset = path.lineNumber*fontSize;
+            if(_shape == "ellipse"){
+              ellipse(cmd.x, cmd.y + yOffset, fontSize*0.10, fontSize*0.10);  
+            }else if(_shape == "rect"){
+              rect(cmd.x, cmd.y + yOffset, fontSize*0.10, fontSize*0.10);
+            }    
+            
             that.textTyped[idx].counter++;
           }else{
             that.textTyped[idx].counter = 0;
@@ -312,21 +326,121 @@ function animatedType(){
   }
 
 
-  this.linesAllStructure = function(){
+  this.radialLines = function(){
+    
+    stroke(that.colors[0])
     that.coordinates.forEach(function(coords){
         strokeWeight(1);
-        coords.coords.forEach(function(d){
-          line((coords.xMin+coords.xMax)/2, (coords.yMax+coords.yMin)/2, d.x, d.y)
-        })
+        for(var i = 0; i < 360; i+=60){
+          var angle = radians(i);
+          var radiusDistanceX = map(mouseX, 0, width, 0, random(20));
+          var radiusDistanceY = map(mouseY, 0, width, 0, random(20));
+          
+          var ptX = cos(angle) * radiusDistanceX + coords.x;
+          var ptY = sin(angle) * radiusDistanceY + coords.y;
+          line(ptX, ptY, coords.x, coords.y)
+        }
     })
   }
 
-  this.linesStructure = function(){
-    that.coordinates.forEach(function(coords){
-        strokeWeight(1);
-        line(mouseX, mouseY, coords.x, coords.y)
+  this.orbitingPoints = function(_type){
+
+    stroke(that.colors[0])
+    var rectSize = fontSize*0.05;
+    var shiftX1 = mouseX/100 * random(-1, 1);
+    var shiftY1 = mouseY/100 * random(-1, 1);
+    var shiftX2 = mouseX/100 * random(-1, 1);
+    var shiftY2 = mouseY/100 * random(-1, 1);
+    var shiftX3 = mouseX/100 * random(-1, 1);
+    var shiftY3 = mouseY/100 * random(-1, 1);
+    var shiftX4 = mouseX/100 * random(-1, 1);
+    var shiftY4 = mouseY/100 * random(-1, 1);
+
+    that.coordinates.forEach(function(coords, idx){
+
+        if(idx%2 ==0){
+          var angle = radians(frameCount%360);
+        } else{
+          var angle = radians(-frameCount%360);
+        }
+
+        if(_type == "points"){
+          push()
+          translate(coords.x, coords.y)
+          rotate(angle);
+          point(0+shiftX1, 0+shiftY1);
+          point(0+rectSize+shiftX2, 0+shiftY2);
+          pop()
+        }
     })
   }
+
+  // make a triangle blob from the points
+  this.triangleBlob = function(){
+    fill(that.colors[1])
+    stroke(that.colors[1])
+
+    beginShape(TRIANGLE_STRIP);
+    that.coordinates.forEach(function(coords, idx){
+      vertex(coords.x, coords.y);
+    })
+    endShape();
+
+  }
+
+  this.wobblyShapes= function(_type){
+  
+    that.individualPaths.forEach(function(path, idx){
+      stroke(that.colors[path.lineNumber])
+      fill(that.colors[path.lineNumber])
+
+      angle +=0.01;
+      if(idx %2){
+        var shifter = sin(angle) * 0.05 ;        
+      } else{
+        var shifter = sin(angle) * -0.05 ;  
+      }
+
+      var yOffset = path.lineNumber*fontSize;
+      var xOffset = path.startX;
+      
+      push();
+      translate(xOffset,yOffset);
+      rotate(shifter);
+      
+      // choose a beginShape mode
+      if(_type == "TRIANGLES"){
+        beginShape(TRIANGLES);  
+      }
+      else if(_type == "TRIANGLE_STRIP"){
+        beginShape(TRIANGLE_STRIP);  
+      }
+      else if(_type == "LINES"){
+        beginShape(LINES);  
+      }
+      else if(_type == "TRIANGLE_FAN"){        
+        beginShape(TRIANGLE_FAN);  
+      } else{
+        beginShape(TRIANGLES);  
+      }
+
+      // add all those vertices to the shape
+      path.data.commands.forEach(function(d){
+        vertex(d.x, d.y)
+      })
+
+      endShape();
+      pop();
+
+    });
+
+
+  }
+
+  this.
+
+
+      
 
 
 
@@ -346,11 +460,11 @@ function keyPressed(){
 
   if (keyCode === LEFT_ARROW) {
     myAnimatedText.drawMode--;
-    if (myAnimatedText.drawMode < 1) myAnimatedText.drawMode = 4;
+    if (myAnimatedText.drawMode < 1) myAnimatedText.drawMode = 8;
   }
   if (keyCode === RIGHT_ARROW) {
     myAnimatedText.drawMode++;
-    if (myAnimatedText.drawMode > 4) myAnimatedText.drawMode = 1;
+    if (myAnimatedText.drawMode > 8) myAnimatedText.drawMode = 1;
   }
 
   if (keyCode === UP_ARROW) {
