@@ -89,9 +89,10 @@ function draw() {
   if(myAnimatedText.drawMode == 7){
     myAnimatedText.wobblyShapes("TRIANGLES");
   }
-  // if(myAnimatedText.drawMode == 8){
-  
-  // }
+  if(myAnimatedText.drawMode == 8){
+    myAnimatedText.outwardLines();
+  }
+
   
 
 }
@@ -110,7 +111,7 @@ function animatedType(){
   that.startX = 0;
   that.colors = [color(65, 105, 185), color(245, 95, 80), color(15, 233, 118), color(233, 15, 130), color(118, 15, 233), color(  15, 233, 118)];
 
-  that.drawMode = 7;
+  that.drawMode = 8;
   that.style = 1;
 
   /* 
@@ -437,7 +438,28 @@ function animatedType(){
 
   }
 
-  this.
+
+  this.outwardLines = function(){
+    
+    that.individualPaths.forEach(function(path, idx){
+      stroke(that.colors[path.lineNumber])
+      strokeWeight(0.5);
+      fill(that.colors[path.lineNumber])
+      var yOffset = path.lineNumber*fontSize;
+      var xOffset = path.startX + 50;
+      
+      push();
+      translate(xOffset,yOffset);
+        var cX = (path.bbox.x1 + path.bbox.x2)/2 + map(mouseX, 0, width, -50, 50);
+        var cY = (path.bbox.y1 + path.bbox.y2)/2 + map(mouseY, 0, height, -50, 50);
+        // add all those vertices to the shape
+        path.data.commands.forEach(function(d){
+          line(cX, cY, d.x, d.y)
+          
+        })
+      pop();
+    });
+  }
 
 
       
