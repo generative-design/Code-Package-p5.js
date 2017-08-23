@@ -19,9 +19,7 @@
 
 "use strict";
 
-var cursorLocation;
 var aniLetters;
-var letterPadding;
 var style;
 var aniMessage;
 
@@ -31,21 +29,20 @@ function setup() {
   strokeCap(ROUND);
 
   // assign globals
-  cursorLocation = {x:50, y:50};
-  letterPadding = 20;
-  style = 4;
+  style = 1;
   aniMessage = [];
   aniLetters = new AniLetters(40, 100);
 
   // initialize with "Type" message
-  aniMessage.push({letter: 'aniT', x:cursorLocation.x, y: cursorLocation.y});
-  cursorLocation.x += aniLetters.letterWidth+letterPadding;
-  aniMessage.push({letter: 'aniY', x:cursorLocation.x, y: cursorLocation.y});
-  cursorLocation.x += aniLetters.letterWidth+letterPadding;
-  aniMessage.push({letter: 'aniP', x:cursorLocation.x, y: cursorLocation.y});
-  cursorLocation.x += aniLetters.letterWidth+letterPadding;
-  aniMessage.push({letter: 'aniE', x:cursorLocation.x, y: cursorLocation.y});
-  cursorLocation.x += aniLetters.letterWidth+letterPadding;
+  aniMessage.push({letter: 'T', x: aniLetters.cursorLocation.x, y: aniLetters.cursorLocation.y});
+  aniLetters.cursorLocation.x += aniLetters.letterWidth+aniLetters.letterPadding;
+  aniMessage.push({letter: 'Y', x: aniLetters.cursorLocation.x, y: aniLetters.cursorLocation.y});
+  aniLetters.cursorLocation.x += aniLetters.letterWidth+aniLetters.letterPadding;
+  aniMessage.push({letter: 'P', x: aniLetters.cursorLocation.x, y: aniLetters.cursorLocation.y});
+  aniLetters.cursorLocation.x += aniLetters.letterWidth+aniLetters.letterPadding;
+  aniMessage.push({letter: 'E', x: aniLetters.cursorLocation.x, y: aniLetters.cursorLocation.y});
+  aniLetters.cursorLocation.x += aniLetters.letterWidth+aniLetters.letterPadding;
+
 }
 
 function draw() {
@@ -64,9 +61,11 @@ function AniLetters(_lwidth, _lheight){
   this.letterHeight = _lheight;
   this.aniSteps = 20;
   this.mode = 3;
+  this.cursorLocation = {x:50, y:50};
+  this.letterPadding = 20;
 
   // -------------- letters -------------
-  this.aniA = function(x, y){
+  this.A = function(x, y){
     push();
     translate(x, y);
     this.diagonalToMiddle(this.letterWidth/2,0, 1);
@@ -75,7 +74,7 @@ function AniLetters(_lwidth, _lheight){
     pop();
   }
 
-  this.aniB = function(x, y){
+  this.B = function(x, y){
     push();
     translate(x, y);
     this.fullStem(0,0);
@@ -83,14 +82,14 @@ function AniLetters(_lwidth, _lheight){
     this.halfBowl(0,this.letterHeight/2, -1);
     pop();
   }
-  this.aniC = function(x, y){
+  this.C = function(x, y){
     push();
     translate(x, y);
     this.fullBowl(0, 0, 1);
     pop();
   }
 
-  this.aniD = function(x, y){
+  this.D = function(x, y){
     push();
     translate(x, y);
     this.fullStem(0,0);
@@ -98,7 +97,7 @@ function AniLetters(_lwidth, _lheight){
     pop();
   }
 
-  this.aniE = function(x,y){
+  this.E = function(x,y){
     push();
     translate(x, y);
     this.fullStem(0,0);
@@ -108,7 +107,7 @@ function AniLetters(_lwidth, _lheight){
     pop();
   }
 
-  this.aniF = function(x,y){
+  this.F = function(x,y){
     push();
     translate(x, y);
     this.fullStem(0,0);
@@ -117,7 +116,7 @@ function AniLetters(_lwidth, _lheight){
     pop();
   }
 
-  this.aniG = function(x,y){
+  this.G = function(x,y){
     push();
     translate(x, y);
     this.fullBowl(0, 0, 1);
@@ -126,7 +125,7 @@ function AniLetters(_lwidth, _lheight){
     pop();
   }
 
-  this.aniH = function(x,y){
+  this.H = function(x,y){
     push();
     translate(x, y);
     this.fullStem(0,0);
@@ -135,21 +134,21 @@ function AniLetters(_lwidth, _lheight){
     pop();
   }
 
-  this.aniI = function(x,y){
+  this.I = function(x,y){
     push();
     translate(x, y);
     this.fullStem(this.letterWidth/2,0);
     pop();
   }
 
-  this.aniJ = function(x,y){
+  this.J = function(x,y){
     push();
     translate(x, y);
     this.jCurve(0, 0);
     pop();
   }
 
-  this.aniK = function(x,y){
+  this.K = function(x,y){
     push();
     translate(x, y);
     this.fullStem(0,0);
@@ -158,7 +157,7 @@ function AniLetters(_lwidth, _lheight){
     pop();
   }
 
-  this.aniL = function(x,y){
+  this.L = function(x,y){
     push();
     translate(x, y);
     this.fullStem(0,0);
@@ -166,7 +165,7 @@ function AniLetters(_lwidth, _lheight){
     pop();
   }
 
-  this.aniM = function(x,y){
+  this.M = function(x,y){
     push();
     translate(x, y);
     this.fullStem(0,0);
@@ -176,7 +175,7 @@ function AniLetters(_lwidth, _lheight){
     pop();
   }
 
-  this.aniN = function(x,y){
+  this.N = function(x,y){
     push();
     translate(x, y);
     this.fullStem(0,0);
@@ -185,14 +184,14 @@ function AniLetters(_lwidth, _lheight){
     pop();
   }
 
-  this.aniO = function(x,y){
+  this.O = function(x,y){
     push();
     translate(x, y);
     this.letterO(0, 0);
     pop();
   }
 
-  this.aniP = function(x,y){
+  this.P = function(x,y){
     push();
     translate(x, y);
     this.fullStem(0,0);
@@ -200,7 +199,7 @@ function AniLetters(_lwidth, _lheight){
     pop();
   }
 
-  this.aniQ = function(x,y){
+  this.Q = function(x,y){
     push();
     translate(x, y);
     this.letterO(0,0);
@@ -208,7 +207,7 @@ function AniLetters(_lwidth, _lheight){
     pop();
   }
 
-  this.aniR = function(x,y){
+  this.R = function(x,y){
     push();
     translate(x, y);
     this.fullStem(0,0);
@@ -217,7 +216,7 @@ function AniLetters(_lwidth, _lheight){
     pop();
   }
 
-  this.aniS = function(x,y){
+  this.S = function(x,y){
     push();
     translate(x, y);
     // noFill();
@@ -225,7 +224,7 @@ function AniLetters(_lwidth, _lheight){
     pop();
   }
 
-  this.aniT = function(x,y){
+  this.T = function(x,y){
     push();
     translate(x, y);
     this.fullStem(this.letterWidth/2,0);
@@ -233,14 +232,14 @@ function AniLetters(_lwidth, _lheight){
     pop();
   }
 
-  this.aniU = function(x,y){
+  this.U = function(x,y){
     push();
     translate(x, y);
     this.uCurve(0,0);
     pop();
   }
 
-  this.aniV = function(x,y){
+  this.V = function(x,y){
     push();
     translate(x, y);
     this.diagonalToMiddle(0, 0, 1);
@@ -248,7 +247,7 @@ function AniLetters(_lwidth, _lheight){
     pop();
   }
 
-  this.aniW = function(x,y){
+  this.W = function(x,y){
     push();
     translate(x, y);
     this.diagonalToQuarter(0, 0, 1);
@@ -259,7 +258,7 @@ function AniLetters(_lwidth, _lheight){
     pop();
   }
 
-  this.aniX = function(x, y){
+  this.X = function(x, y){
     push();
     translate(x ,y);
     this.diagonalToEnd(0, 0, -1);
@@ -267,7 +266,7 @@ function AniLetters(_lwidth, _lheight){
     pop();
   }
 
-  this.aniY = function(x,y){
+  this.Y = function(x,y){
     push();
     translate(x, y);
     this.halfStem(this.letterWidth/2, this.letterHeight/2);
@@ -276,7 +275,7 @@ function AniLetters(_lwidth, _lheight){
     pop()
   }
 
-  this.aniZ = function(x,y){
+  this.Z = function(x,y){
     push();
     translate(x, y);
     this.diagonalToEnd(0,0,1);
@@ -718,6 +717,32 @@ function AniLetters(_lwidth, _lheight){
     pop()
   }
 
+
+  /*
+  Keyboard interactions
+  */
+
+  this.space = function(){
+    this.cursorLocation.x += 50;
+  }
+
+  this.newLine = function(){
+    this.cursorLocation.x = 50;
+    this.cursorLocation.y += this.letterHeight + 5;
+  }
+
+  this.addLetters = function(_key){
+    // type letters
+    stroke(65, 105, 185);
+    var aniLetter  = _key.toUpperCase();
+    if(aniLetters[aniLetter]){
+      aniMessage.push({letter: aniLetter, x:this.cursorLocation.x, y: this.cursorLocation.y});
+      this.cursorLocation.x += this.letterWidth+this.letterPadding;
+    } else{
+      console.log("not a letter")
+    }
+  }
+
 }
 
 
@@ -728,14 +753,15 @@ function lineFromToInSteps(x1, y1, x2, y2, stepCount) {
   var posY = lerp(y1, y2, ratio);
   fill(65, 105, 185);
   rectMode(CENTER);
-  if(style == 4){
+  if(style == 1){
     rect(posX, posY, 10, 10);
-  }
-  if(style == 5){
+  } else if(style == 2){
+    ellipse(posX, posY, 10, 10);
+  } else{
     ellipse(posX, posY, 10, 10);
   }
   // ellipse(posX, posY, 10, 10);
-}
+} // end AniType() object
 
 
 function curveFromToInSteps(a1, a2, b1, b2, c1, c2, d1, d2,  stepCount){
@@ -752,10 +778,11 @@ function curveFromToInSteps(a1, a2, b1, b2, c1, c2, d1, d2,  stepCount){
     var posY = lerp(points[aniIndex].y, points[aniIndex+1].y, ratio);
     fill(65, 105, 185);
     rectMode(CENTER);
-    if(style == 4){
+    if(style == 1){
       rect(posX, posY, 10, 10);
-    }
-    if(style == 5){
+    } else if(style == 2){
+      ellipse(posX, posY, 10, 10);
+    } else{
       ellipse(posX, posY, 10, 10);
     }
 
@@ -775,10 +802,11 @@ function bezierFromToInSteps(a1, a2, b1, b2, c1, c2, d1, d2,  stepCount){
     var posY = lerp(points[aniIndex].y, points[aniIndex+1].y, ratio);
     fill(65, 105, 185);
     rectMode(CENTER);
-    if(style == 4){
+    if(style == 1){
       rect(posX, posY, 10, 10);
-    }
-    if(style == 5){
+    } else if(style == 2){
+      ellipse(posX, posY, 10, 10);
+    } else{
       ellipse(posX, posY, 10, 10);
     }
 
@@ -792,10 +820,11 @@ function arcFromToInSteps(x, y, radiusWidth, radiusHeight, a1, a2, stepCount) {
   var posY = y + sin(angle) * radiusHeight;
   fill(65, 105, 185);
   rectMode(CENTER);
-  if(style == 4){
+  if(style == 1){
     rect(posX, posY, 10, 10);
-  }
-  if(style == 5){
+  } else if(style == 2){
+    ellipse(posX, posY, 10, 10);
+  } else{
     ellipse(posX, posY, 10, 10);
   }
 
@@ -804,33 +833,49 @@ function arcFromToInSteps(x, y, radiusWidth, radiusHeight, a1, a2, stepCount) {
 
 function keyPressed() {
   if (keyCode === CONTROL) saveCanvas(gd.timestamp(), 'png');
+  
   // change draw mode
-  if (key === "1") aniLetters.mode = 1;
-  if (key === "2") aniLetters.mode = 2;
-  if (key === "3") aniLetters.mode = 3;
-  if (key === "4") style = 4;
-  if (key === "5") style = 5;
-  // spacebar
-  if (keyCode == 32) cursorLocation.x += 50;
-  // on return
-  if (keyCode == ENTER || keyCode == RETURN) {
-    cursorLocation.x = 50;
-    cursorLocation.y += aniLetters.letterHeight + 5;
+  if (keyCode === LEFT_ARROW) {
+    aniLetters.mode--;
+    if (aniLetters.mode < 1) aniLetters.mode = 3;
   }
-  // type letters
-  stroke(65, 105, 185);
-  var aniLetter  = 'ani' + key.toUpperCase();
-  if(aniLetters[aniLetter]){
-    aniMessage.push({letter: aniLetter, x:cursorLocation.x, y: cursorLocation.y});
-    cursorLocation.x += aniLetters.letterWidth+letterPadding;
-  } else{
-    console.log("not a letter")
+  if (keyCode === RIGHT_ARROW) {
+    aniLetters.mode++;
+    if (aniLetters.mode > 3) aniLetters.mode = 1;
+  }
+  // change the number of steps in the animation
+  if (keyCode === DOWN_ARROW) {
+    aniLetters.aniSteps--;
+    if (aniLetters.aniSteps < 4) aniLetters.aniSteps = 4;
+  }
+  if (keyCode === UP_ARROW) {
+    aniLetters.aniSteps++;
   }
 
-  // Remove the letter
-  if(keyCode == LEFT_ARROW ){
+  // change between ellipses and rect
+  if (key === "1") style = 1;
+  if (key === "2") style = 2;
+  
+  // spacebar
+  if (keyCode == 32) aniLetters.space();
+  
+  // on return
+  if (keyCode == ENTER || keyCode == RETURN) {
+    aniLetters.newLine();
+  }
+  // remove letters
+  if (keyCode === DELETE || keyCode === BACKSPACE) {
     aniMessage.pop();
-    cursorLocation.x -= aniLetters.letterWidth + letterPadding;
+    aniLetters.cursorLocation.x -= aniLetters.letterWidth + aniLetters.letterPadding;
+  } 
+}
+
+
+function keyTyped() {
+  if (keyCode >= 32){
+    aniLetters.addLetters(key);
   }
 }
+
+
 
