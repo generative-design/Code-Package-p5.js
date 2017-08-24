@@ -1,32 +1,15 @@
 /**
- * Type messages with this animated font
+ * Animated font created from simple geometries
  *
- * MOUSE
  *
  * KEYS
- * CONTROL                   : save png
- * A-Z
- * 1                         : only letter form
- * 2                         : only animated letter form
- * 3                         : both letter form and animation
- * 4                         : use squares for animation
- * 5                         : use ellipses for animation
- * left arrow                : remove the letter
+ * A-Z                      : type letters
+ * Arrow left/right         : toggle through draw modes
+ * Arrow up/down            : increase/decrease point density
+ * CONTROL                  : save png
  *
  * CONTRIBUTED BY
  * [Joey Lee](http://jk-lee.com)
- */
-
-
- // TODO:
- /*
- 1. restructure data model:
-  - move aniLetters.textTyped into the aniType Object itself
-
- 2. automatic line number counting
- 3. move rendering methods into the object
- 4. add rendering method for bending letters
-
  */
 
 "use strict";
@@ -39,9 +22,11 @@ function setup() {
   strokeWeight(1);
   strokeCap(ROUND);
 
+  // adding your aniLetters object with 
+  // the letter width and height
   aniLetters = new AniLetters(40, 100);
 
-  // initialize with "Type" message
+  // initialize with a message
   aniLetters.textTyped.push( aniLetters.addText("TYPE"))
   aniLetters.textTyped.push( aniLetters.addText("CODE"))
   
@@ -51,13 +36,16 @@ function draw() {
   // noLoop();
   background(255, 255, 255, 30);
 
+  // count how many lines of text there are
   aniLetters.getLineCount();
+  // collect the letters and their x and y locations
   aniLetters.getPaths();
+  // loop through the paths and draw them to screen
   aniLetters.render();
 
 }
 
-
+// the AniLetters object defines the simple geometry font
 function AniLetters(_lwidth, _lheight){
   var that = this;
   that.textTyped = [];
