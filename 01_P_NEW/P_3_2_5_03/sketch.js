@@ -17,11 +17,8 @@
 
 var font;
 var fontSize = 120;
-var style = 1;
-var padding = 10;
 // declare your animatedText variable
 var myAnimatedText;
-var angle = 0;
 
 
 function setup() {
@@ -110,6 +107,7 @@ function animatedType(){
   that.pointDensity = 2;
   that.startX = 0;
   that.colors = [color(65, 105, 185), color(245, 95, 80), color(15, 233, 118), color(233, 15, 130), color(118, 15, 233), color(  15, 233, 118)];
+  that.angle = 0;
 
   that.drawMode = 8;
   that.style = 1;
@@ -397,11 +395,11 @@ function animatedType(){
       stroke(that.colors[path.lineNumber])
       fill(that.colors[path.lineNumber])
 
-      angle +=0.01;
+      that.angle +=0.01;
       if(idx %2){
-        var shifter = sin(angle) * 0.05 ;        
+        var shifter = sin(that.angle) * 0.05 ;        
       } else{
-        var shifter = sin(angle) * -0.05 ;  
+        var shifter = sin(that.angle) * -0.05 ;  
       }
 
       var yOffset = path.lineNumber*fontSize;
