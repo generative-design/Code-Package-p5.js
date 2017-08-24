@@ -17,6 +17,18 @@
  * [Joey Lee](http://jk-lee.com)
  */
 
+
+ // TODO:
+ /*
+ 1. restructure data model:
+  - move aniMessage into the aniType Object itself
+
+ 2. automatic line number counting
+ 3. move rendering methods into the object
+ 4. add rendering method for bending letters
+
+ */
+
 "use strict";
 
 var aniLetters;
