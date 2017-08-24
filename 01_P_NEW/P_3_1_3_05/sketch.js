@@ -228,7 +228,7 @@ function draw() {
 }
 
 function keyReleased() {
-  if (keyCode === CONTROL) saveCanvas(gd.timestamp(), 'png');
+  if (keyCode == CONTROL) saveCanvas(gd.timestamp(), 'png');
 
   if (key == '1') drawGreyLines = !drawGreyLines;
   if (key == '2') drawColoredLines = !drawColoredLines;

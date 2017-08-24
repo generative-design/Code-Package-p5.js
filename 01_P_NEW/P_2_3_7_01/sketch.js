@@ -134,7 +134,7 @@ function draw() {
 
 function keyPressed() {
   if (key == 's' || key == 'S') saveCanvas(gd.timestamp(), 'png');
-  if (keyCode === DELETE || keyCode === BACKSPACE) img.clear();
+  if (keyCode == DELETE || keyCode == BACKSPACE) img.clear();
 
   if (keyCode == RIGHT_ARROW) penCount++;
   if (keyCode == LEFT_ARROW) penCount = max(1, penCount - 1);
