@@ -21,7 +21,7 @@
  // TODO:
  /*
  1. restructure data model:
-  - move aniMessage into the aniType Object itself
+  - move aniLetters.textTyped into the aniType Object itself
 
  2. automatic line number counting
  3. move rendering methods into the object
@@ -32,59 +32,135 @@
 "use strict";
 
 var aniLetters;
-var style;
-var aniMessage;
+
 
 function setup() {
   createCanvas(800,800);
   strokeWeight(1);
   strokeCap(ROUND);
 
-  // assign globals
-  style = 1;
-  aniMessage = [];
   aniLetters = new AniLetters(40, 100);
 
   // initialize with "Type" message
-  aniMessage.push({letter: 'T', x: aniLetters.cursorLocation.x, y: aniLetters.cursorLocation.y});
-  aniLetters.cursorLocation.x += aniLetters.letterWidth+aniLetters.letterPadding;
-  aniMessage.push({letter: 'Y', x: aniLetters.cursorLocation.x, y: aniLetters.cursorLocation.y});
-  aniLetters.cursorLocation.x += aniLetters.letterWidth+aniLetters.letterPadding;
-  aniMessage.push({letter: 'P', x: aniLetters.cursorLocation.x, y: aniLetters.cursorLocation.y});
-  aniLetters.cursorLocation.x += aniLetters.letterWidth+aniLetters.letterPadding;
-  aniMessage.push({letter: 'E', x: aniLetters.cursorLocation.x, y: aniLetters.cursorLocation.y});
-  aniLetters.cursorLocation.x += aniLetters.letterWidth+aniLetters.letterPadding;
-
-  // frameRate(1);
+  aniLetters.textTyped.push( aniLetters.addText("TYPE"))
+  aniLetters.textTyped.push( aniLetters.addText("CODE"))
+  
 }
 
 function draw() {
   // noLoop();
   background(255, 255, 255, 30);
-  if(aniMessage.length > 0){
-    aniMessage.forEach(function(d){
-        aniLetters[d.letter](d.x, d.y);
-    })
-  }
+
+  aniLetters.getLineCount();
+  aniLetters.getPaths();
+  aniLetters.render();
+
 }
 
 
 function AniLetters(_lwidth, _lheight){
-  this.textTyped = [];
-  this.letterWidth = _lwidth;
-  this.letterHeight = _lheight;
-  this.aniSteps = 20;
-  this.drawMode = 3;
-  this.cursorLocation = {x:50, y:50};
-  this.letterPadding = 20;
+  var that = this;
+  that.textTyped = [];
+  that.textTyped = [];
+  that.paths = [];
+  that.letterWidth = _lwidth;
+  that.letterHeight = _lheight;
+  that.lineCount = 0;
+  that.aniSteps = 20;
+  that.drawMode = 3;
+  that.cursorLocation = {x:50, y:50};
+  that.letterPadding = 60;
+  that.style = 1;
+
+
+  /*
+  Keyboard interactions
+  */
+
+  // set the lineCount to the number of "lines" or text object in the textTyped Array
+  this.getLineCount = function(){
+    if(that.textTyped.length > 0){
+      that.lineCount = that.textTyped.length -1;
+    } else{
+      that.lineCount = 0;
+    }
+  }
+
+  this.getPaths = function(){
+    that.paths = [];
+
+    that.textTyped.forEach(function(txt, idx){
+      txt.text.split("").forEach(function(d, i){
+
+        var pathData = {
+          letter: d.toUpperCase(),
+          x: that.cursorLocation.x + (that.letterWidth + that.letterPadding * i),
+          y: that.cursorLocation.y + (that.letterHeight * idx),
+        };
+
+        that.paths.push(pathData);
+
+      })
+    })
+  }
+
+
+  this.addText = function(_text){
+    var textObject = {counter: 0, text:_text}
+    return textObject;
+  } 
+
+  // remove letters
+  this.removeLetters = function(){
+    var textTypedCounter = that.lineCount;
+    // remove letters from each object
+    if (textTypedCounter >= 0 && that.textTyped[0].text.length > 0){
+     that.textTyped[textTypedCounter].text = that.textTyped[textTypedCounter].text.substring(0,max(0,that.textTyped[textTypedCounter].text.length-1));
+    } 
+    // remove objects if there's no characters
+    if(that.textTyped[textTypedCounter].text.length == 0){
+        textTypedCounter--;
+        if(textTypedCounter < 0){
+          console.log("nothing left")
+          textTypedCounter = 0;
+        }else{
+          that.textTyped.pop();
+        }
+    }
+  }
+
+  this.render = function(){
+    if(that.paths.length > 0){
+      that.paths.forEach(function(d){
+          that[d.letter](d.x, d.y);
+      })
+    }
+  }
+
+  // add lines 
+  this.addLines = function(){
+    that.textTyped.push(that.addText(""));
+    that.lineCount++;
+  }
+
+  // add characters
+  this.addCharacters = function(_key){
+    that.textTyped[that.lineCount].text += _key;
+  }
+
 
   // -------------- letters -------------
+  // space
+  this[" "] = function(){
+    // nothing
+  }
+
   this.A = function(x, y){
     push();
     translate(x, y);
-    this.diagonalToMiddle(this.letterWidth/2,0, 1);
-    this.diagonalToMiddle(-this.letterWidth/2,0, -1);
-    this.halfCrossBar(this.letterWidth/4, this.letterHeight/2);
+    this.diagonalToMiddle(that.letterWidth/2,0, 1);
+    this.diagonalToMiddle(-that.letterWidth/2,0, -1);
+    this.halfCrossBar(that.letterWidth/4, that.letterHeight/2);
     pop();
   }
 
@@ -93,7 +169,7 @@ function AniLetters(_lwidth, _lheight){
     translate(x, y);
     this.fullStem(0,0);
     this.halfBowl(0,0, -1);
-    this.halfBowl(0,this.letterHeight/2, -1);
+    this.halfBowl(0,that.letterHeight/2, -1);
     pop();
   }
   this.C = function(x, y){
@@ -116,8 +192,8 @@ function AniLetters(_lwidth, _lheight){
     translate(x, y);
     this.fullStem(0,0);
     this.crossBar(0,0);
-    this.crossBar(0,this.letterHeight/2);
-    this.crossBar(0,this.letterHeight);
+    this.crossBar(0,that.letterHeight/2);
+    this.crossBar(0,that.letterHeight);
     pop();
   }
 
@@ -126,7 +202,7 @@ function AniLetters(_lwidth, _lheight){
     translate(x, y);
     this.fullStem(0,0);
     this.crossBar(0,0);
-    this.crossBar(0,this.letterHeight/2);
+    this.crossBar(0,that.letterHeight/2);
     pop();
   }
 
@@ -134,8 +210,8 @@ function AniLetters(_lwidth, _lheight){
     push();
     translate(x, y);
     this.fullBowl(0, 0, 1);
-    this.halfStem(this.letterWidth,this.letterHeight/2);
-    this.halfCrossBar(this.letterWidth/2, this.letterHeight/2);
+    this.halfStem(that.letterWidth,that.letterHeight/2);
+    this.halfCrossBar(that.letterWidth/2, that.letterHeight/2);
     pop();
   }
 
@@ -143,15 +219,15 @@ function AniLetters(_lwidth, _lheight){
     push();
     translate(x, y);
     this.fullStem(0,0);
-    this.crossBar(0, this.letterHeight/2);
-    this.fullStem(this.letterWidth,0);
+    this.crossBar(0, that.letterHeight/2);
+    this.fullStem(that.letterWidth,0);
     pop();
   }
 
   this.I = function(x,y){
     push();
     translate(x, y);
-    this.fullStem(this.letterWidth/2,0);
+    this.fullStem(that.letterWidth/2,0);
     pop();
   }
 
@@ -166,8 +242,8 @@ function AniLetters(_lwidth, _lheight){
     push();
     translate(x, y);
     this.fullStem(0,0);
-    this.halfDiagonalLeg(0, this.letterHeight/2, 1);
-    this.halfDiagonalLeg(0, this.letterHeight/2, -1);
+    this.halfDiagonalLeg(0, that.letterHeight/2, 1);
+    this.halfDiagonalLeg(0, that.letterHeight/2, -1);
     pop();
   }
 
@@ -175,7 +251,7 @@ function AniLetters(_lwidth, _lheight){
     push();
     translate(x, y);
     this.fullStem(0,0);
-    this.crossBar(0, this.letterHeight)
+    this.crossBar(0, that.letterHeight)
     pop();
   }
 
@@ -183,7 +259,7 @@ function AniLetters(_lwidth, _lheight){
     push();
     translate(x, y);
     this.fullStem(0,0);
-    this.fullStem(this.letterWidth,0);
+    this.fullStem(that.letterWidth,0);
     this.diagonalToMiddle(0, 0, 1);
     this.diagonalToMiddle(0, 0, -1);
     pop();
@@ -193,7 +269,7 @@ function AniLetters(_lwidth, _lheight){
     push();
     translate(x, y);
     this.fullStem(0,0);
-    this.fullStem(this.letterWidth,0);
+    this.fullStem(that.letterWidth,0);
     this.diagonalToEnd(0, 0, -1);
     pop();
   }
@@ -217,7 +293,7 @@ function AniLetters(_lwidth, _lheight){
     push();
     translate(x, y);
     this.letterO(0,0);
-    this.halfDiagonalArm(this.letterWidth/2,this.letterHeight/2, -1);
+    this.halfDiagonalArm(that.letterWidth/2,that.letterHeight/2, -1);
     pop();
   }
 
@@ -226,7 +302,7 @@ function AniLetters(_lwidth, _lheight){
     translate(x, y);
     this.fullStem(0,0);
     this.halfBowl(0,0, -1);
-    this.halfDiagonalLeg(0, this.letterHeight/2, -1);
+    this.halfDiagonalLeg(0, that.letterHeight/2, -1);
     pop();
   }
 
@@ -241,7 +317,7 @@ function AniLetters(_lwidth, _lheight){
   this.T = function(x,y){
     push();
     translate(x, y);
-    this.fullStem(this.letterWidth/2,0);
+    this.fullStem(that.letterWidth/2,0);
     this.crossBar(0,0);
     pop();
   }
@@ -267,8 +343,8 @@ function AniLetters(_lwidth, _lheight){
     this.diagonalToQuarter(0, 0, 1);
     this.diagonalToQuarter(0, 0, -1);
 
-    this.diagonalToQuarter(this.letterWidth/2, 0, 1);
-    this.diagonalToQuarter(this.letterWidth/2, 0, -1);
+    this.diagonalToQuarter(that.letterWidth/2, 0, 1);
+    this.diagonalToQuarter(that.letterWidth/2, 0, -1);
     pop();
   }
 
@@ -283,7 +359,7 @@ function AniLetters(_lwidth, _lheight){
   this.Y = function(x,y){
     push();
     translate(x, y);
-    this.halfStem(this.letterWidth/2, this.letterHeight/2);
+    this.halfStem(that.letterWidth/2, that.letterHeight/2);
     this.halfDiagonalArm(0,0, 1);
     this.halfDiagonalArm(0,0, -1);
     pop()
@@ -294,7 +370,7 @@ function AniLetters(_lwidth, _lheight){
     translate(x, y);
     this.diagonalToEnd(0,0,1);
     this.crossBar(0,0);
-    this.crossBar(0,this.letterHeight);
+    this.crossBar(0,that.letterHeight);
     pop()
   }
 
@@ -305,24 +381,24 @@ function AniLetters(_lwidth, _lheight){
 
     this.static = function(){
       noFill();
-      curve(this.letterWidth, -this.letterHeight*1.5, 0, this.letterHeight*0.25, this.letterWidth, this.letterHeight*0.75, this.letterWidth-this.letterWidth, this.letterHeight*0.75+this.letterHeight*1.5)
-      arc(this.letterWidth/2, this.letterHeight*0.25, this.letterWidth, this.letterHeight/2, PI, 0);
-      arc(this.letterWidth/2, this.letterHeight*0.75, this.letterWidth, this.letterHeight/2, 0, PI);
+      curve(that.letterWidth, -that.letterHeight*1.5, 0, that.letterHeight*0.25, that.letterWidth, that.letterHeight*0.75, that.letterWidth-that.letterWidth, that.letterHeight*0.75+that.letterHeight*1.5)
+      arc(that.letterWidth/2, that.letterHeight*0.25, that.letterWidth, that.letterHeight/2, PI, 0);
+      arc(that.letterWidth/2, that.letterHeight*0.75, that.letterWidth, that.letterHeight/2, 0, PI);
     }
 
     this.dynamic = function(){
-      arcFromToInSteps(this.letterWidth/2, this.letterHeight*0.25, this.letterWidth/2,this.letterWidth/2, -PI, 0, this.aniSteps);
-      arcFromToInSteps(this.letterWidth/2, this.letterHeight*0.75, this.letterWidth/2,this.letterWidth/2, PI, 0, this.aniSteps);
-      curveFromToInSteps(this.letterWidth, -this.letterHeight*1.5, 0, this.letterHeight*0.25, this.letterWidth, this.letterHeight*0.75, this.letterWidth-this.letterWidth, this.letterHeight*0.75+this.letterHeight*1.5,this.aniSteps);
+      this.arcFromToInSteps(that.letterWidth/2, that.letterHeight*0.25, that.letterWidth/2,that.letterWidth/2, -PI, 0, that.aniSteps);
+      this.arcFromToInSteps(that.letterWidth/2, that.letterHeight*0.75, that.letterWidth/2,that.letterWidth/2, PI, 0, that.aniSteps);
+      this.curveFromToInSteps(that.letterWidth, -that.letterHeight*1.5, 0, that.letterHeight*0.25, that.letterWidth, that.letterHeight*0.75, that.letterWidth-that.letterWidth, that.letterHeight*0.75+that.letterHeight*1.5,that.aniSteps);
     }
 
-    if(this.drawMode === 1){
+    if(that.drawMode === 1){
       this.static();
     }
-    if(this.drawMode === 2){
+    if(that.drawMode === 2){
       this.dynamic();
     }
-    if(this.drawMode === 3){
+    if(that.drawMode === 3){
       this.static();
       this.dynamic();
     }
@@ -335,19 +411,19 @@ function AniLetters(_lwidth, _lheight){
 
     this.static = function(){
       noFill();
-      arc(this.letterWidth/2, 0, this.letterWidth, this.letterHeight*2, 0, PI);
+      arc(that.letterWidth/2, 0, that.letterWidth, that.letterHeight*2, 0, PI);
     }
     this.dynamic = function(){
-      arcFromToInSteps(this.letterWidth/2, 0, this.letterWidth/2, this.letterHeight, 0, PI, this.aniSteps+10)
+      this.arcFromToInSteps(that.letterWidth/2, 0, that.letterWidth/2, that.letterHeight, 0, PI, that.aniSteps+10)
     }
 
-    if(this.drawMode === 1){
+    if(that.drawMode === 1){
       this.static();
     }
-    if(this.drawMode === 2){
+    if(that.drawMode === 2){
       this.dynamic();
     }
-    if(this.drawMode === 3){
+    if(that.drawMode === 3){
       this.static();
       this.dynamic();
     }
@@ -360,19 +436,19 @@ function AniLetters(_lwidth, _lheight){
     translate(x1, y1);
     this.static = function(){
       noFill();
-      bezier(this.letterWidth, 0, this.letterWidth+10, this.letterHeight*1.5, 0, this.letterHeight, 0, this.letterHeight*0.75)
+      bezier(that.letterWidth, 0, that.letterWidth+10, that.letterHeight*1.5, 0, that.letterHeight, 0, that.letterHeight*0.75)
     }
     this.dynamic = function(){
-      bezierFromToInSteps(this.letterWidth, 0, this.letterWidth+10, this.letterHeight*1.5, 0, this.letterHeight, 0, this.letterHeight*0.75, this.aniSteps + 10)
+      this.bezierFromToInSteps(that.letterWidth, 0, that.letterWidth+10, that.letterHeight*1.5, 0, that.letterHeight, 0, that.letterHeight*0.75, that.aniSteps + 10)
     }
 
-    if(this.drawMode === 1){
+    if(that.drawMode === 1){
       this.static();
     }
-    if(this.drawMode === 2){
+    if(that.drawMode === 2){
       this.dynamic();
     }
-    if(this.drawMode === 3){
+    if(that.drawMode === 3){
       this.static();
       this.dynamic();
     }
@@ -386,19 +462,19 @@ function AniLetters(_lwidth, _lheight){
 
     this.static = function(){
       noFill();
-      ellipse(this.letterWidth/2, this.letterHeight/2, this.letterWidth, this.letterHeight);
+      ellipse(that.letterWidth/2, that.letterHeight/2, that.letterWidth, that.letterHeight);
     }
     this.dynamic = function(){
-      arcFromToInSteps(this.letterWidth/2, this.letterHeight/2, this.letterWidth/2, this.letterHeight/2, PI, -PI, this.aniSteps+10)
+      this.arcFromToInSteps(that.letterWidth/2, that.letterHeight/2, that.letterWidth/2, that.letterHeight/2, PI, -PI, that.aniSteps+10)
     }
 
-    if(this.drawMode === 1){
+    if(that.drawMode === 1){
       this.static();
     }
-    if(this.drawMode === 2){
+    if(that.drawMode === 2){
       this.dynamic();
     }
-    if(this.drawMode === 3){
+    if(that.drawMode === 3){
       this.static();
       this.dynamic();
     }
@@ -412,28 +488,28 @@ function AniLetters(_lwidth, _lheight){
     this.static = function(){
       noFill();
       if(direction == 1){
-        line(this.letterWidth/2, this.letterHeight/2, this.letterWidth, 0);
+        line(that.letterWidth/2, that.letterHeight/2, that.letterWidth, 0);
       }
       if (direction == -1){
-        line(0, 0, this.letterWidth/2, this.letterHeight/2);
+        line(0, 0, that.letterWidth/2, that.letterHeight/2);
       }
     }
     this.dynamic = function(){
       if(direction == 1){
-        lineFromToInSteps(this.letterWidth/2, this.letterHeight/2, this.letterWidth, 0, this.aniSteps);
+        this.lineFromToInSteps(that.letterWidth/2, that.letterHeight/2, that.letterWidth, 0, that.aniSteps);
       }
       if (direction == -1){
-        lineFromToInSteps(0, 0, this.letterWidth/2, this.letterHeight/2, this.aniSteps);
+        this.lineFromToInSteps(0, 0, that.letterWidth/2, that.letterHeight/2, that.aniSteps);
       }
     }
 
-    if(this.drawMode === 1){
+    if(that.drawMode === 1){
       this.static();
     }
-    if(this.drawMode === 2){
+    if(that.drawMode === 2){
       this.dynamic();
     }
-    if(this.drawMode === 3){
+    if(that.drawMode === 3){
       this.static();
       this.dynamic();
     }
@@ -447,28 +523,28 @@ function AniLetters(_lwidth, _lheight){
     this.static = function(){
       noFill();
       if(direction == 1){
-        line(this.letterWidth, 0, 0, this.letterHeight);
+        line(that.letterWidth, 0, 0, that.letterHeight);
       }
       if (direction == -1){
-        line(0, 0, this.letterWidth, this.letterHeight);
+        line(0, 0, that.letterWidth, that.letterHeight);
       }
     }
     this.dynamic = function(){
       if(direction == 1){
-        lineFromToInSteps(this.letterWidth, 0, 0, this.letterHeight, this.aniSteps);
+        this.lineFromToInSteps(that.letterWidth, 0, 0, that.letterHeight, that.aniSteps);
       }
       if (direction == -1){
-        lineFromToInSteps(0, 0, this.letterWidth, this.letterHeight, this.aniSteps);
+        this.lineFromToInSteps(0, 0, that.letterWidth, that.letterHeight, that.aniSteps);
       }
     }
 
-    if(this.drawMode === 1){
+    if(that.drawMode === 1){
       this.static();
     }
-    if(this.drawMode === 2){
+    if(that.drawMode === 2){
       this.dynamic();
     }
-    if(this.drawMode === 3){
+    if(that.drawMode === 3){
       this.static();
       this.dynamic();
     }
@@ -481,28 +557,28 @@ function AniLetters(_lwidth, _lheight){
     this.static = function(){
       noFill();
       if(direction == 1){
-        line(0, 0, this.letterWidth/4 , this.letterHeight);
+        line(0, 0, that.letterWidth/4 , that.letterHeight);
       }
       if(direction == -1){
-        line(this.letterWidth/4, this.letterHeight, this.letterWidth/2, 0);
+        line(that.letterWidth/4, that.letterHeight, that.letterWidth/2, 0);
       }
     }
     this.dynamic = function(){
       if(direction == 1){
-        lineFromToInSteps(0, 0, this.letterWidth/4 , this.letterHeight, this.aniSteps);
+        this.lineFromToInSteps(0, 0, that.letterWidth/4 , that.letterHeight, that.aniSteps);
       }
       if(direction == -1){
-        lineFromToInSteps(this.letterWidth/4, this.letterHeight, this.letterWidth/2, 0, this.aniSteps);
+        this.lineFromToInSteps(that.letterWidth/4, that.letterHeight, that.letterWidth/2, 0, that.aniSteps);
       }
     }
 
-    if(this.drawMode === 1){
+    if(that.drawMode === 1){
       this.static();
     }
-    if(this.drawMode === 2){
+    if(that.drawMode === 2){
       this.dynamic();
     }
-    if(this.drawMode === 3){
+    if(that.drawMode === 3){
       this.static();
       this.dynamic();
     }
@@ -515,28 +591,28 @@ function AniLetters(_lwidth, _lheight){
     this.static = function(){
       noFill();
       if(direction == 1){
-        line(0, 0, this.letterWidth/2 , this.letterHeight);
+        line(0, 0, that.letterWidth/2 , that.letterHeight);
       }
       if(direction == -1){
-        line(this.letterWidth/2, this.letterHeight, this.letterWidth, 0);
+        line(that.letterWidth/2, that.letterHeight, that.letterWidth, 0);
       }
     }
     this.dynamic = function(){
       if(direction == 1){
-      lineFromToInSteps(0, 0, this.letterWidth/2 , this.letterHeight, this.aniSteps);
+        this.lineFromToInSteps(0, 0, that.letterWidth/2 , that.letterHeight, that.aniSteps);
       }
       if(direction == -1){
-        lineFromToInSteps(this.letterWidth/2, this.letterHeight, this.letterWidth, 0, this.aniSteps);
+        this.lineFromToInSteps(that.letterWidth/2, that.letterHeight, that.letterWidth, 0, that.aniSteps);
       }
     }
 
-    if(this.drawMode === 1){
+    if(that.drawMode === 1){
       this.static();
     }
-    if(this.drawMode === 2){
+    if(that.drawMode === 2){
       this.dynamic();
     }
-    if(this.drawMode === 3){
+    if(that.drawMode === 3){
       this.static();
       this.dynamic();
     }
@@ -548,27 +624,27 @@ function AniLetters(_lwidth, _lheight){
     translate(x1, y1);
     var endpoint;
     if(direction == 1){
-      endpoint = -this.letterHeight/2;
+      endpoint = -that.letterHeight/2;
     }
     if(direction == -1){
-      endpoint = this.letterHeight/2;
+      endpoint = that.letterHeight/2;
     }
 
     this.static = function(){
       noFill();
-      line(0, 0, this.letterHeight/2, endpoint);
+      line(0, 0, that.letterHeight/2, endpoint);
     }
     this.dynamic = function(){
-      lineFromToInSteps(0, 0, this.letterHeight/2, endpoint, this.aniSteps);
+      this.lineFromToInSteps(0, 0, that.letterHeight/2, endpoint, that.aniSteps);
     }
 
-    if(this.drawMode === 1){
+    if(that.drawMode === 1){
       this.static();
     }
-    if(this.drawMode === 2){
+    if(that.drawMode === 2){
       this.dynamic();
     }
-    if(this.drawMode === 3){
+    if(that.drawMode === 3){
       this.static();
       this.dynamic();
     }
@@ -580,18 +656,18 @@ function AniLetters(_lwidth, _lheight){
     translate(x1,y1);
     this.static = function(){
       noFill();
-      line(0, 0, 0, this.letterHeight);
+      line(0, 0, 0, that.letterHeight);
     }
     this.dynamic = function(){
-      lineFromToInSteps(0, 0, 0, this.letterHeight, this.aniSteps);
+      this.lineFromToInSteps(0, 0, 0, that.letterHeight, that.aniSteps);
     }
-    if(this.drawMode === 1){
+    if(that.drawMode === 1){
       this.static();
     }
-    if(this.drawMode === 2){
+    if(that.drawMode === 2){
       this.dynamic();
     }
-    if(this.drawMode === 3){
+    if(that.drawMode === 3){
       this.static();
       this.dynamic();
     }
@@ -603,18 +679,18 @@ function AniLetters(_lwidth, _lheight){
     translate(x1,y1);
     this.static = function(){
       noFill();
-      line(0, 0, 0, this.letterHeight/2);
+      line(0, 0, 0, that.letterHeight/2);
     }
     this.dynamic = function(){
-      lineFromToInSteps(0, 0, 0, this.letterHeight/2, this.aniSteps);
+      this.lineFromToInSteps(0, 0, 0, that.letterHeight/2, that.aniSteps);
     }
-    if(this.drawMode === 1){
+    if(that.drawMode === 1){
       this.static();
     }
-    if(this.drawMode === 2){
+    if(that.drawMode === 2){
       this.dynamic();
     }
-    if(this.drawMode === 3){
+    if(that.drawMode === 3){
       this.static();
       this.dynamic();
     }
@@ -626,19 +702,19 @@ function AniLetters(_lwidth, _lheight){
     translate(x1,y1);
     this.static = function(){
       noFill();
-      line(0, 0, this.letterWidth/2, 0);
+      line(0, 0, that.letterWidth/2, 0);
     }
     this.dynamic = function(){
-      lineFromToInSteps(0, 0, this.letterWidth/2, 0, this.aniSteps);
+      this.lineFromToInSteps(0, 0, that.letterWidth/2, 0, that.aniSteps);
     }
 
-    if(this.drawMode === 1){
+    if(that.drawMode === 1){
       this.static();
     }
-    if(this.drawMode === 2){
+    if(that.drawMode === 2){
       this.dynamic();
     }
-    if(this.drawMode === 3){
+    if(that.drawMode === 3){
       this.static();
       this.dynamic();
     }
@@ -646,30 +722,30 @@ function AniLetters(_lwidth, _lheight){
   }
 
   this.halfBowl= function(x1, y1, direction){
-    var cPoint = this.letterWidth*8;
+    var cPoint = that.letterWidth*8;
     noFill();
     push();
     if(direction === 1){
-      translate(x1+ this.letterWidth,y1);
+      translate(x1+ that.letterWidth,y1);
     }
     if(direction === -1){
       translate(x1,y1);
     }
     this.static = function(){
       noFill();
-      curve(cPoint*direction, 0, 0,0,0,this.letterHeight/2,cPoint*direction,this.letterHeight/2)
+      curve(cPoint*direction, 0, 0,0,0,that.letterHeight/2,cPoint*direction,that.letterHeight/2)
     }
     this.dynamic = function(){
-      curveFromToInSteps(cPoint*direction, 0, 0,0,0,this.letterHeight/2,cPoint*direction,this.letterHeight/2,this.aniSteps);
+      this.curveFromToInSteps(cPoint*direction, 0, 0,0,0,that.letterHeight/2,cPoint*direction,that.letterHeight/2,that.aniSteps);
     }
 
-    if(this.drawMode === 1){
+    if(that.drawMode === 1){
       this.static();
     }
-    if(this.drawMode === 2){
+    if(that.drawMode === 2){
       this.dynamic();
     }
-    if(this.drawMode === 3){
+    if(that.drawMode === 3){
       this.static();
       this.dynamic();
     }
@@ -677,30 +753,30 @@ function AniLetters(_lwidth, _lheight){
   }
 
   this.fullBowl = function(x1, y1, direction){
-    var cPoint = this.letterWidth*8;
+    var cPoint = that.letterWidth*8;
     noFill();
     push();
     if(direction === 1){
-      translate(x1 + this.letterWidth,y1);
+      translate(x1 + that.letterWidth,y1);
     }
     if(direction === -1){
       translate(x1,y1);
     }
     this.static = function(){
       noFill();
-      curve(cPoint*direction, 0, 0,0,0,this.letterHeight, cPoint*direction,this.letterHeight)
+      curve(cPoint*direction, 0, 0,0,0,that.letterHeight, cPoint*direction,that.letterHeight)
     }
     this.dynamic = function(){
-      curveFromToInSteps(cPoint*direction, 0, 0,0,0,this.letterHeight, cPoint*direction,this.letterHeight, this.aniSteps);
+      this.curveFromToInSteps(cPoint*direction, 0, 0,0,0,that.letterHeight, cPoint*direction,that.letterHeight, that.aniSteps);
     }
 
-    if(this.drawMode === 1){
+    if(that.drawMode === 1){
       this.static();
     }
-    if(this.drawMode === 2){
+    if(that.drawMode === 2){
       this.dynamic();
     }
-    if(this.drawMode === 3){
+    if(that.drawMode === 3){
       this.static();
       this.dynamic();
     }
@@ -712,19 +788,19 @@ function AniLetters(_lwidth, _lheight){
     translate(x1, y1);
     this.static = function(){
       noFill();
-      line(0, 0, this.letterWidth, 0);
+      line(0, 0, that.letterWidth, 0);
     }
     this.dynamic = function(){
-      lineFromToInSteps(0, 0, this.letterWidth, 0, this.aniSteps);
+      this.lineFromToInSteps(0, 0, that.letterWidth, 0, that.aniSteps);
     }
 
-    if(this.drawMode === 1){
+    if(that.drawMode === 1){
       this.static();
     }
-    if(this.drawMode === 2){
+    if(that.drawMode === 2){
       this.dynamic();
     }
-    if(this.drawMode === 3){
+    if(that.drawMode === 3){
       this.static();
       this.dynamic();
     }
@@ -732,117 +808,98 @@ function AniLetters(_lwidth, _lheight){
   }
 
 
+ 
+
   /*
-  Keyboard interactions
+  Animation functions
   */
 
-  this.space = function(){
-    this.cursorLocation.x += 50;
-  }
-
-  this.newLine = function(){
-    this.cursorLocation.x = 50;
-    this.cursorLocation.y += this.letterHeight + 5;
-  }
-
-  this.addLetters = function(_key){
-    // type letters
-    stroke(65, 105, 185);
-    var aniLetter  = _key.toUpperCase();
-    if(aniLetters[aniLetter]){
-      aniMessage.push({letter: aniLetter, x:this.cursorLocation.x, y: this.cursorLocation.y});
-      this.cursorLocation.x += this.letterWidth+this.letterPadding;
+  this.lineFromToInSteps = function(x1, y1, x2, y2, stepCount) {
+    var aniIndex = frameCount % (stepCount+1);
+    var ratio = aniIndex/stepCount;
+    var posX = lerp(x1, x2, ratio);
+    var posY = lerp(y1, y2, ratio);
+    fill(65, 105, 185);
+    rectMode(CENTER);
+    if(that.style == 1){
+      rect(posX, posY, 10, 10);
+    } else if(that.style == 2){
+      ellipse(posX, posY, 10, 10);
     } else{
-      console.log("not a letter")
+      ellipse(posX, posY, 10, 10);
     }
+    
+  } 
+
+  this.curveFromToInSteps = function(a1, a2, b1, b2, c1, c2, d1, d2,  stepCount){
+    var points = [];
+    for (var i = 0; i <= stepCount; i++) {
+      var t = i / stepCount;
+      var cx = curvePoint(a1, b1, c1, d1, t);
+      var cy = curvePoint(a2, b2, c2, d2, t);
+      points.push({x: cx, y: cy});
+    }
+     var aniIndex = frameCount % (stepCount);
+      var ratio = aniIndex/stepCount;
+      var posX = lerp(points[aniIndex].x, points[aniIndex+1].x, ratio);
+      var posY = lerp(points[aniIndex].y, points[aniIndex+1].y, ratio);
+      fill(65, 105, 185);
+      rectMode(CENTER);
+      if(that.style == 1){
+        rect(posX, posY, 10, 10);
+      } else if(that.style == 2){
+        ellipse(posX, posY, 10, 10);
+      } else{
+        ellipse(posX, posY, 10, 10);
+      }
+
+  }
+
+  this.bezierFromToInSteps = function(a1, a2, b1, b2, c1, c2, d1, d2,  stepCount){
+    var points = [];
+    for (var i = 0; i <= stepCount; i++) {
+      var t = i / stepCount;
+      var cx = bezierPoint(a1, b1, c1, d1, t);
+      var cy = bezierPoint(a2, b2, c2, d2, t);
+      points.push({x: cx, y: cy});
+    }
+     var aniIndex = frameCount % (stepCount);
+      var ratio = aniIndex/stepCount;
+      var posX = lerp(points[aniIndex].x, points[aniIndex+1].x, ratio);
+      var posY = lerp(points[aniIndex].y, points[aniIndex+1].y, ratio);
+      fill(65, 105, 185);
+      rectMode(CENTER);
+      if(that.style == 1){
+        rect(posX, posY, 10, 10);
+      } else if(that.style == 2){
+        ellipse(posX, posY, 10, 10);
+      } else{
+        ellipse(posX, posY, 10, 10);
+      }
+
+  }
+
+  this.arcFromToInSteps = function(x, y, radiusWidth, radiusHeight, a1, a2, stepCount) {
+    var aniIndex = frameCount % (stepCount+1);
+    var ratio = aniIndex/stepCount;
+    var angle = lerp(a1, a2, ratio);
+    var posX = x + cos(angle) * radiusWidth;
+    var posY = y + sin(angle) * radiusHeight;
+    fill(65, 105, 185);
+    rectMode(CENTER);
+    if(that.style == 1){
+      rect(posX, posY, 10, 10);
+    } else if(that.style == 2){
+      ellipse(posX, posY, 10, 10);
+    } else{
+      ellipse(posX, posY, 10, 10);
+    }
+
   }
 
 } // end AniType() object
 
 
-function lineFromToInSteps(x1, y1, x2, y2, stepCount) {
-  var aniIndex = frameCount % (stepCount+1);
-  var ratio = aniIndex/stepCount;
-  var posX = lerp(x1, x2, ratio);
-  var posY = lerp(y1, y2, ratio);
-  fill(65, 105, 185);
-  rectMode(CENTER);
-  if(style == 1){
-    rect(posX, posY, 10, 10);
-  } else if(style == 2){
-    ellipse(posX, posY, 10, 10);
-  } else{
-    ellipse(posX, posY, 10, 10);
-  }
-  
-} 
-
-
-function curveFromToInSteps(a1, a2, b1, b2, c1, c2, d1, d2,  stepCount){
-  var points = [];
-  for (var i = 0; i <= stepCount; i++) {
-    var t = i / stepCount;
-    var cx = curvePoint(a1, b1, c1, d1, t);
-    var cy = curvePoint(a2, b2, c2, d2, t);
-    points.push({x: cx, y: cy});
-  }
-   var aniIndex = frameCount % (stepCount);
-    var ratio = aniIndex/stepCount;
-    var posX = lerp(points[aniIndex].x, points[aniIndex+1].x, ratio);
-    var posY = lerp(points[aniIndex].y, points[aniIndex+1].y, ratio);
-    fill(65, 105, 185);
-    rectMode(CENTER);
-    if(style == 1){
-      rect(posX, posY, 10, 10);
-    } else if(style == 2){
-      ellipse(posX, posY, 10, 10);
-    } else{
-      ellipse(posX, posY, 10, 10);
-    }
-
-}
-
-function bezierFromToInSteps(a1, a2, b1, b2, c1, c2, d1, d2,  stepCount){
-  var points = [];
-  for (var i = 0; i <= stepCount; i++) {
-    var t = i / stepCount;
-    var cx = bezierPoint(a1, b1, c1, d1, t);
-    var cy = bezierPoint(a2, b2, c2, d2, t);
-    points.push({x: cx, y: cy});
-  }
-   var aniIndex = frameCount % (stepCount);
-    var ratio = aniIndex/stepCount;
-    var posX = lerp(points[aniIndex].x, points[aniIndex+1].x, ratio);
-    var posY = lerp(points[aniIndex].y, points[aniIndex+1].y, ratio);
-    fill(65, 105, 185);
-    rectMode(CENTER);
-    if(style == 1){
-      rect(posX, posY, 10, 10);
-    } else if(style == 2){
-      ellipse(posX, posY, 10, 10);
-    } else{
-      ellipse(posX, posY, 10, 10);
-    }
-
-}
-
-function arcFromToInSteps(x, y, radiusWidth, radiusHeight, a1, a2, stepCount) {
-  var aniIndex = frameCount % (stepCount+1);
-  var ratio = aniIndex/stepCount;
-  var angle = lerp(a1, a2, ratio);
-  var posX = x + cos(angle) * radiusWidth;
-  var posY = y + sin(angle) * radiusHeight;
-  fill(65, 105, 185);
-  rectMode(CENTER);
-  if(style == 1){
-    rect(posX, posY, 10, 10);
-  } else if(style == 2){
-    ellipse(posX, posY, 10, 10);
-  } else{
-    ellipse(posX, posY, 10, 10);
-  }
-
-}
 
 
 function keyPressed() {
@@ -867,27 +924,28 @@ function keyPressed() {
   }
 
   // change between ellipses and rect
-  if (key === "1") style = 1;
-  if (key === "2") style = 2;
+  if (key === "1") aniLetters.style = 1;
+  if (key === "2") aniLetters.style = 2;
   
   // spacebar
-  if (keyCode == 32) aniLetters.space();
+  // if (keyCode == 32) aniLetters.space();
   
   // on return
   if (keyCode == ENTER || keyCode == RETURN) {
-    aniLetters.newLine();
+    aniLetters.addLines();
   }
   // remove letters
   if (keyCode === DELETE || keyCode === BACKSPACE) {
-    aniMessage.pop();
-    aniLetters.cursorLocation.x -= aniLetters.letterWidth + aniLetters.letterPadding;
+    // aniLetters.textTyped.pop();
+    // aniLetters.cursorLocation.x -= aniLetters.letterWidth + aniLetters.letterPadding;
+    aniLetters.removeLetters();
   } 
 }
 
 
 function keyTyped() {
   if (keyCode >= 32){
-    aniLetters.addLetters(key);
+    aniLetters.addCharacters(key);
   }
 }
 
