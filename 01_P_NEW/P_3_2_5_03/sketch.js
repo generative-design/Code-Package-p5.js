@@ -1,14 +1,14 @@
 /**
- * Animated type fade away text
+ * Animated type exploring various drawing modes
  *
- * KEYS
- * CONTROL                   : save png
- * A-Z
- * 1                         : animated circles
- * 2                         : animated squares
- * 3                         : animated lines
- * left arrow                : remove the letter
- * enter                     : new line
+* MOUSE
+* position x/y             : affect randomness
+*
+* KEYS
+* A-Z                      : type letters
+* Arrow left/right         : toggle through draw modes
+* Arrow up/down            : increase/decrease point density
+* CONTROL                  : save png
  *
  * CONTRIBUTED BY
  * [Joey Lee](http://jk-lee.com)
