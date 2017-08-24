@@ -74,7 +74,7 @@ function AniLetters(_lwidth, _lheight){
 
 
   /*
-  Keyboard interactions
+  Data Handling
   */
 
   // set the lineCount to the number of "lines" or text object in the textTyped Array
@@ -86,6 +86,7 @@ function AniLetters(_lwidth, _lheight){
     }
   }
 
+  // get each data path of the letters
   this.getPaths = function(){
     that.paths = [];
 
@@ -104,11 +105,15 @@ function AniLetters(_lwidth, _lheight){
     })
   }
 
-
+  // add a text object for each line
   this.addText = function(_text){
     var textObject = {counter: 0, text:_text}
     return textObject;
-  } 
+  }
+
+  /*
+  Keyboard interactions
+  */
 
   // remove letters
   this.removeLetters = function(){
@@ -127,15 +132,7 @@ function AniLetters(_lwidth, _lheight){
           that.textTyped.pop();
         }
     }
-  }
-
-  this.render = function(){
-    if(that.paths.length > 0){
-      that.paths.forEach(function(d){
-          that[d.letter](d.x, d.y);
-      })
-    }
-  }
+  }  
 
   // add lines 
   this.addLines = function(){
@@ -145,11 +142,31 @@ function AniLetters(_lwidth, _lheight){
 
   // add characters
   this.addCharacters = function(_key){
+    if(that[_key.toUpperCase()]){
     that.textTyped[that.lineCount].text += _key;
+    } else{
+      console.log("not a letter");
+    }
+  }
+
+  
+  /*
+  Call functions in render
+  */
+
+  this.render = function(){
+    if(that.paths.length > 0){
+      that.paths.forEach(function(d){
+          that[d.letter](d.x, d.y);
+      })
+    }
   }
 
 
-  // -------------- letters -------------
+  /*
+  Letter Definitions
+  */
+
   // space
   this[" "] = function(){
     // nothing
@@ -374,7 +391,9 @@ function AniLetters(_lwidth, _lheight){
     pop()
   }
 
-  // ------------- components --------------- //
+  /*
+  Component Definitions
+  */
   this.sCurve = function(x1,y1){
     push();
     translate(x1, y1);
@@ -807,9 +826,6 @@ function AniLetters(_lwidth, _lheight){
     pop()
   }
 
-
- 
-
   /*
   Animation functions
   */
@@ -900,8 +916,6 @@ function AniLetters(_lwidth, _lheight){
 } // end AniType() object
 
 
-
-
 function keyPressed() {
   if (keyCode === CONTROL) saveCanvas(gd.timestamp(), 'png');
   
@@ -926,9 +940,6 @@ function keyPressed() {
   // change between ellipses and rect
   if (key === "1") aniLetters.style = 1;
   if (key === "2") aniLetters.style = 2;
-  
-  // spacebar
-  // if (keyCode == 32) aniLetters.space();
   
   // on return
   if (keyCode == ENTER || keyCode == RETURN) {
