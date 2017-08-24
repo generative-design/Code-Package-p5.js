@@ -24,16 +24,17 @@
   },
   "homepage": "http://www.generative-gestaltung.de",
   "dependencies": {
-    "budo": "^9.2.2",
+    "budo": "^9.4.7",
+    "chroma-js": "^1.3.4",
     "fs-sync": "^1.0.4",
-    "g.js": "^0.1.2",
-    "generative-design-library": "git@github.com:generative-design/generative-design-library.js.git#18e32cc0abd487845e46a335560e0061bb2970e7",
-    "glob": "^7.1.1",
-    "opentype.js": "^0.6.8",
-    "p5": "^0.5.11",
+    "g.js": "^0.1.4",
+    "generative-design-library": "https://github.com/generative-design/generative-design-library.js.git",
+    "generative-design-library.js": "git+https://github.com/generative-design/generative-design-library.js.git",
+    "glob": "^7.1.2",
     "jquery": "^3.2.1",
-    "tooltipster": "^4.2.5",
-    "chroma-js": "^1.3.4"
+    "opentype.js": "^0.6.9",
+    "p5": "^0.5.12",
+    "tooltipster": "^4.2.5"
   },
   "install": {
     "sources": {
