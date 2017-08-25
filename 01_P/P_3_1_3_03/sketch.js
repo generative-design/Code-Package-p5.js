@@ -1,4 +1,4 @@
-// P_3_1_3_03.pde
+// P_3_1_3_03
 //
 // Generative Gestaltung, ISBN: 978-3-87439-759-9
 // First Edition, Hermann Schmidt, Mainz, 2009
@@ -84,7 +84,9 @@ function draw() {
 
     // calculate parameters
     var charAlpha = 100;
-    if (drawAlpha) charAlpha = counters[index];
+    if (drawAlpha) {
+      charAlpha = counters[index];
+    }
 
     var my = map(mouseY, 50, height - 50, 0, 1);
     my = constrain(my, 0, 1);
@@ -101,10 +103,14 @@ function draw() {
     push();
     translate(posX, posY);
     stroke(273, 73, 51, charAlpha);
-    if (drawLines) line(0, 0, newPosX, newPosY);
+    if (drawLines) {
+      line(0, 0, newPosX, newPosY);
+    }
     noStroke();
     fill(52, 100, 71, charAlpha);
-    if (drawEllipses) ellipse(0, 0, charSize / 10, charSize / 10);
+    if (drawEllipses) {
+      ellipse(0, 0, charSize / 10, charSize / 10);
+    }
     if (drawText) {
       fill(0, charAlpha);
       text(joinedText.charAt(i), newPosX, newPosY);

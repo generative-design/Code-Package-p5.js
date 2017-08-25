@@ -1,4 +1,4 @@
-// P_2_1_3_05.pde
+// P_2_1_3_05
 //
 // Generative Gestaltung, ISBN: 978-3-87439-759-9
 // First Edition, Hermann Schmidt, Mainz, 2009
@@ -33,9 +33,12 @@ var tileCountX = 10;
 var tileCountY = 10;
 var tileWidth;
 var tileHeight;
+
 var colorStep = 6;
+
 var endSize = 0;
 var stepSize = 30;
+
 var actRandomSeed = 0;
 
 function setup() {

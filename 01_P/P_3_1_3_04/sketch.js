@@ -1,4 +1,4 @@
-// P_3_1_3_04.pde
+// P_3_1_3_04
 //
 // Generative Gestaltung, ISBN: 978-3-87439-759-9
 // First Edition, Hermann Schmidt, Mainz, 2009
@@ -51,7 +51,7 @@ function preload() {
 }
 
 function setup() {
-  createCanvas(1200, 800);
+  createCanvas(1200, windowHeight);
   colorMode(HSB, 360, 100, 100, 100);
 
   textFont('monospace', 18);
@@ -76,6 +76,8 @@ function draw() {
 
   posX = 0;
   posY = 200;
+  var oldX = 0;
+  var oldY = 0;
   var sortPositionsX = [];
   var oldPositionsX = [];
   var oldPositionsY = [];
@@ -84,8 +86,6 @@ function draw() {
     oldPositionsX[i] = 0;
     oldPositionsY[i] = 0;
   }
-  var oldX = 0;
-  var oldY = 0;
 
   // draw counters
   if (mouseX >= width - 50) {
