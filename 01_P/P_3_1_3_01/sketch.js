@@ -1,4 +1,4 @@
-// P_3_1_3_01.pde
+// P_3_1_3_01
 //
 // Generative Gestaltung, ISBN: 978-3-87439-759-9
 // First Edition, Hermann Schmidt, Mainz, 2009
@@ -37,7 +37,6 @@ var posX;
 var posY;
 
 var drawAlpha = true;
-
 
 function preload() {
   joinedText = loadStrings('data/faust_kurz.txt');
@@ -105,7 +104,6 @@ function countCharacters() {
     if (index >= 0) counters[index]++;
   }
 }
-
 
 function getUniqCharacters() {
   var charsArray = joinedText.toUpperCase().split('');
