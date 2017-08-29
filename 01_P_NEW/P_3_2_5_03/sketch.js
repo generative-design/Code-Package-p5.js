@@ -444,8 +444,8 @@ function animatedType(){
       strokeWeight(0.5);
       fill(that.colors[path.lineNumber])
       var yOffset = path.lineNumber*fontSize;
-      var xOffset = path.startX + 50;
-      
+      var xOffset = path.startX;
+
       push();
       translate(xOffset,yOffset);
         var cX = (path.bbox.x1 + path.bbox.x2)/2 + map(mouseX, 0, width, -50, 50);
