@@ -36,8 +36,6 @@ var joinedText;
 var treemap;
 
 var font;
-var maxFontSize = 1000;
-var minFontSize = 1;
 
 var doSort = true;
 var rowDirection = 'both';
@@ -61,6 +59,7 @@ function setup() {
   treemap = new Treemap(1, 1, width - 3, height - 3, {
     sort: doSort,
     direction: rowDirection,
+    padding: 2,
     ignore: []
   });
 
@@ -70,12 +69,15 @@ function setup() {
   for (var i = 0; i < words.length; i++) {
     var w = words[i].toLowerCase();
     var index = w.length;
-    var t = subTreemaps[index];
-    if (t == undefined) {
-      t = treemap.addTreemap(index);
-      subTreemaps[index] = t;
+    // Add only words with less than 10 letters
+    if (index < 10) {
+      var t = subTreemaps[index];
+      if (t == undefined) {
+        t = treemap.addTreemap(index);
+        subTreemaps[index] = t;
+      }
+      t.addData(w);
     }
-    t.addData(w);
   }
 
   treemap.init();
@@ -86,31 +88,34 @@ function draw() {
 
   textAlign(CENTER, BASELINE);
 
-  colorMode(HSB, 360, 100, 100, 100);
+  // colorMode(HSB, 360, 100, 100, 100);
+  strokeWeight(1);
+
   for (var i = 0; i < treemap.items.length; i++) {
     var subTreemap = treemap.items[i];
     if (!subTreemap.ignored) {
-      var h = map(i, 0, treemap.items.length, 0, 240);
+      // var h = map(i, 0, treemap.items.length, 50, 150);
 
       for (var j = 0; j < subTreemap.items.length; j++) {
-        var r = subTreemap.items[j];
-        var s = map(subTreemap.items[j].count, 0, subTreemap.maxCount, 25, 50);
+        var item = subTreemap.items[j];
+        // var s = map(subTreemap.items[j].count, 0, subTreemap.maxCount, 10, 30);
 
-        fill(h, s, 100);
-        stroke(h, s + 20, 90);
-        strokeWeight(1);
-        rect(r.x, r.y, r.w, r.h);
+        // fill(h, s, 100);
+        // stroke(h, s + 20, 90);
+        noFill();
+        stroke(0);
+        rect(item.x, item.y, item.w, item.h);
 
         var word = subTreemap.items[j].data;
         textFont(font, 100);
         var textW = textWidth(word);
-        var fontSize = 100 * (r.w * 0.9) / textW;
-        fontSize = min(fontSize, (r.h * 0.9));
+        var fontSize = 100 * (item.w * 0.9) / textW;
+        fontSize = min(fontSize, (item.h * 0.9));
         textFont(font, fontSize);
 
         fill(0);
         noStroke();
-        text(word, r.x + r.w / 2, r.y + r.h * 0.8);
+        text(word, item.x + item.w / 2, item.y + item.h * 0.8);
       }
     }
   }

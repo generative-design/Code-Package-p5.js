@@ -33,20 +33,19 @@ var joinedText;
 var treemap;
 
 var font;
-var maxFontSize = 1000;
-var minFontSize = 1;
 
 var doSort = true;
 var rowDirection = 'both';
 
 function preload() {
   font = loadFont('data/miso-bold.ttf');
-  joinedText = loadStrings('data/pride_and_prejudice_short.txt');
+  joinedText = loadStrings('data/pride_and_prejudice.txt');
 }
 
 function setup() {
   createCanvas(windowWidth, windowHeight);
   //createCanvas(windowWidth, round(windowWidth*1.343));
+  //createCanvas(windowWidth*2, round(windowWidth*1.343)*2);
 
   joinedText = joinedText.join(' ');
   // If you want to get rid of all number chars too, just uncomment the following line
@@ -69,23 +68,23 @@ function draw() {
   textAlign(CENTER, BASELINE);
 
   for (var i = 0; i < treemap.items.length; i++) {
-    var r = treemap.items[i];
+    var item = treemap.items[i];
 
     fill(255);
     stroke(0);
     strokeWeight(1);
-    rect(r.x, r.y, r.w, r.h);
+    rect(item.x, item.y, item.w, item.h);
 
-    var word = treemap.items[i].data;
+    var word = item.data;
     textFont(font, 100);
     var textW = textWidth(word);
-    var fontSize = 100 * (r.w * 0.9) / textW;
-    fontSize = min(fontSize, (r.h * 0.9));
+    var fontSize = 100 * (item.w * 0.9) / textW;
+    fontSize = min(fontSize, (item.h * 0.9));
     textFont(font, fontSize);
 
     fill(0);
     noStroke();
-    text(word, r.x + r.w / 2, r.y + r.h * 0.8);
+    text(word, item.x + item.w / 2, item.y + item.h * 0.8);
   }
 
   noLoop();

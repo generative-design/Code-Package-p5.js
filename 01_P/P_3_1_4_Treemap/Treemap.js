@@ -66,7 +66,6 @@ function Treemap() {
   this.y = y || 0;
   this.w = w || 0;
   this.h = h || 0;
-  this.padding = 0;
 
   this.parent = parent;
   if (this.parent) {
@@ -176,10 +175,11 @@ function Treemap() {
     // Starting point is a rectangle and a number of counters to fit in.
     // So, as nothing has fit in the rect, restSum, restW, ... are the starting rect and the sum of all counters
     var restSum = this.count;
-    var restX = this.x + this.padding;
-    var restY = this.y + this.padding;
-    var restW = this.w - this.padding * 2;
-    var restH = this.h - this.padding * 2;
+    var pad = this.options.padding || 0;
+    var restX = this.x + pad;
+    var restY = this.y + pad;
+    var restW = this.w - pad * 2;
+    var restH = this.h - pad * 2;
 
     // Fit in rows. One row consits of one or more rects that should be as square as possible in average.
     // actIndex always points on the first counter, that has not fitted in.
