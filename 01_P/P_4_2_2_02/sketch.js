@@ -1,4 +1,4 @@
-// P_4_2_2_02.pde
+// P_4_2_2_02
 //
 // Generative Gestaltung, ISBN: 978-3-87439-759-9
 // First Edition, Hermann Schmidt, Mainz, 2009
@@ -24,8 +24,8 @@
 
 var cam;
 
-// intervalTime in sec. here 5 min
-var intervalTime = 5 * 60;
+// intervalTime in sec., here 30 seconds
+var intervalTime = 30;
 
 var secondsSinceStart = 0;
 var startTime = gd.timestamp();
