@@ -1,4 +1,4 @@
-// P_4_2_1_02.pde
+// P_4_2_1_02
 //
 // Generative Gestaltung, ISBN: 978-3-87439-759-9
 // First Edition, Hermann Schmidt, Mainz, 2009
@@ -17,7 +17,7 @@
 // limitations under the License.
 
 /**
- * radial collage generator. example footage can be found in "_4_2_1_footage".
+ * radial collage generator. example footage can be found in "P_4_2_1_footage".
  * if you use your own footage, make sure to rename the files or adjust the prefixes:
  * see the parameters of generateCollageItems()
  *
@@ -98,7 +98,7 @@ function keyReleased() {
   if (key == '2') layer2Items = generateCollageItems(layer2Images, random(10, 25), 0, height * 0.15, PI * 5, 150, 0.1, random(0.3, 0.8), -PI / 6, PI / 6);
   if (key == '3') layer3Items = generateCollageItems(layer3Images, random(10, 25), 0, height * 0.66, PI * 5, height * 0.66, 0.1, random(0.2, 0.5), -0.05, 0.05);
 
-  background(255);
+  clear();
 
   drawCollageitems(layer1Items);
   drawCollageitems(layer2Items);

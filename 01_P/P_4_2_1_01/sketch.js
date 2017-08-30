@@ -1,4 +1,4 @@
-// P_4_2_1_01.pde
+// P_4_2_1_01
 //
 // Generative Gestaltung, ISBN: 978-3-87439-759-9
 // First Edition, Hermann Schmidt, Mainz, 2009
@@ -17,7 +17,7 @@
 // limitations under the License.
 
 /**
- * collage generator. example footage can be found in "_4_2_1_footage".
+ * collage generator. example footage can be found in "P_4_2_1_footage".
  * if you use your own footage, make sure to rename the files or adjust the prefixes:
  * see the parameters of generateCollageItems()
  *
