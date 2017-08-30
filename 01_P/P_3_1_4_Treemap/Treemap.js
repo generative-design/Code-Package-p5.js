@@ -138,7 +138,7 @@ function Treemap() {
   }
 
   // 
-  Treemap.prototype.init = function() {
+  Treemap.prototype.calculate = function() {
     // if it's the root node, sum up all counters recursively
     if (this == this.root) this.sumUpCounters();
     
@@ -249,7 +249,7 @@ function Treemap() {
             }
 
             // now that the position, width and height is set, it's possible to calculate the nested treemap.
-            this.items[j].init();
+            this.items[j].calculate();
             aPos += aPart;
           }
 

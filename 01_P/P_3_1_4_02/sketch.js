@@ -18,7 +18,8 @@
 
 /**
  * Counting the words of a text and display them in a treemap diagram.
- * All words with the same number of letters are stored in a nested treemap.
+ * All words with the same number of letters are grouped in a nested treemap.
+ * Only words with less than 10 letters are stored. 
  *
  * KEYS
  * r                   : toggle random mode
@@ -63,6 +64,7 @@ function setup() {
     ignore: []
   });
 
+  // make an array for the nested treemaps
   var subTreemaps = [];
 
   // count words
@@ -80,7 +82,7 @@ function setup() {
     }
   }
 
-  treemap.init();
+  treemap.calculate();
 }
 
 function draw() {
@@ -132,25 +134,25 @@ function keyTyped() {
   if (key == 'r' || key == 'R') {
     doSort = !doSort;
     treemap.options.sort = doSort;
-    treemap.init();
+    treemap.calculate();
     loop();
   }
   if (key == 'h' || key == 'H') {
     rowDirection = 'horizontal';
     treemap.options.direction = rowDirection;
-    treemap.init();
+    treemap.calculate();
     loop();
   }
   if (key == 'v' || key == 'V') {
     rowDirection = 'vertical';
     treemap.options.direction = rowDirection;
-    treemap.init();
+    treemap.calculate();
     loop();
   }
   if (key == 'b' || key == 'B') {
     rowDirection = 'both';
     treemap.options.direction = rowDirection;
-    treemap.init();
+    treemap.calculate();
     loop();
   }
 
@@ -166,12 +168,12 @@ function keyTyped() {
       // not found, so add to array
       treemap.options.ignore.push(num);
     }
-    treemap.init();
+    treemap.calculate();
     loop();
   }
   if (key == '0') {
     treemap.options.ignore = [];
-    treemap.init();
+    treemap.calculate();
     loop();
   }
 
