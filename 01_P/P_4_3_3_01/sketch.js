@@ -1,4 +1,4 @@
-// P_4_3_3_01.pde
+// P_4_3_3_01
 //
 // Generative Gestaltung, ISBN: 978-3-87439-759-9
 // First Edition, Hermann Schmidt, Mainz, 2009
@@ -28,6 +28,7 @@
  * arrow down          : number of curve points -
  * q                   : stop drawing
  * w                   : continue drawing
+ * DEL/BACKSPACE       : clear display
  * s                   : save png
  */
 
@@ -94,7 +95,7 @@ function draw() {
 }
 
 function keyReleased() {
-  if (key == ' ') background(360);
+  if (keyCode == DELETE || keyCode == BACKSPACE) clear();
   if (key == 's' || key == 'S') saveCanvas(gd.timestamp(), 'png');
   if (key == 'q' || key == 'Q') noLoop();
   if (key == 'w' || key == 'W') loop();
