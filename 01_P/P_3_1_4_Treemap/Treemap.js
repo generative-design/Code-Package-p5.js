@@ -1,103 +1,139 @@
 /**
- * Creates a new Treemap.
+ * Creates a new empty Treemap. Content may be added using addData() or addTreemap().
  *
+ * @class Treemap
+ * @constructor
  * @param  {Number} x         x position
  * @param  {Number} y         y position
  * @param  {Number} w         width
  * @param  {Number} h         height
- * @param  {Object} [option]  drawing and sorting options {sort:true or false, direction:"horizontal", "vertical" or "both"}
- * @return {Treemap}          the created Treemap 
+ * @param  {Object} [options] drawing and sorting options {sort:true or false, direction:"horizontal", "vertical" or "both"}
+ * @return {Treemap}          the created empty Treemap 
  */
 
 /**
  * Would be nice to have...
  * TODO: Alternative constructor
+ * @class Treemap
+ * @constructor
  * @param  {Array} data       data to store. A plain or nested array of numbers or objects. 
                               If the elements are numbers they are the counters. If objects, countkey names the key to use as a counter
  * @param  {String} countkey  Which key should be used as the count
- * @return {Treemap}          the created Treemap 
+ * @return {Treemap}          the created Treemap that holds all the data given
  */
 
 /**
- * Alternative constructor (mainly for internal use)
+ * @class Treemap
+ * @constructor (mainly for internal use)
  * @param  {Treemap} parent   the parent Treemap
- * @param  {Any} data         one data element to store. could be anything. 
+ * @param  {String|Number|Object|Array} data  one data element to store. could be anything. 
  * @param  {Number} count     initial count
  * @return {Treemap}          the created Treemap that represents one item
  */
 
 /**
- * Alternative constructor (mainly for internal use)
+ * @class Treemap
+ * @constructor (mainly for internal use)
  * @param  {Treemap} parent   the parent Treemap
- * @return {Treemap}          the created Treemap 
+ * @return {Treemap}          the created empty Treemap 
  */
 
 function Treemap() {
-  var parent;
-  var data;
-  var count = 0;
+  this.parent;
+  this.data;
+  this.count = 0;
+  this.items = [];
 
-  var x;
-  var y;
-  var w;
-  var h;
-  var options;
-
+  /**
+  * x position of the rectangle.
+  * @property x
+  * @type {Number}
+  */
+  this.x = 0;
+  /**
+  * y position of the rectangle.
+  * @property y
+  * @type {Number}
+  */
+  this.y = 0;
+  /**
+  * width of the rectangle.
+  * @property w
+  * @type {Number}
+  */
+  this.w = 0;
+  /**
+  * height of the rectangle.
+  * @property h
+  * @type {Number}
+  */
+  this.h = 0;
+  this.options;
 
   if (arguments.length >= 4) {
-    x = arguments[0];
-    y = arguments[1];
-    w = arguments[2];
-    h = arguments[3];
-    options = arguments[4];
+    this.x = arguments[0];
+    this.y = arguments[1];
+    this.w = arguments[2];
+    this.h = arguments[3];
+    this.options = arguments[4];
   } else {
-    parent = arguments[0];
-    data = arguments[1];
-    count = arguments[2] || 0;
+    this.parent = arguments[0];
+    this.data = arguments[1];
+    this.count = arguments[2] || 0;
   }
 
-  this.items = [];
-  this.data = data;
-  this.count = count;
+  this.x = this.x || 0;
+  this.y = this.y || 0;
+  this.w = this.w || 0;
+  this.h = this.h || 0;
+
   this.minCount = 0;  // not used internally, but could be nice for drawing
   this.maxCount = 0;  // not used internally, but could be nice for drawing
 
-  this.x = x || 0;
-  this.y = y || 0;
-  this.w = w || 0;
-  this.h = h || 0;
+  if (this.parent) this.level = parent.level + 1;
+  else this.level = 0;
 
-  this.parent = parent;
-  if (this.parent) {
-    this.level = parent.level + 1;
-  } else {
-    this.level = 0;
-  }
   this.index = 0;
 
   this.root = this;
-  if (this.parent) this.root = parent.root;
+  if (this.parent) this.root = this.parent.root;
+  this.options = this.options || this.root.options;
 
-  this.options = options || this.root.options;
   this.ignored = false;
 
-  // Adds one data element to the items array. 
-  // If there is already an item which has this as data, just increase the counter of that item.
-  // If not, create a new Treemap with that data and init the counter with 1
+  /**
+    * Adds one data element to the items array. 
+    * If there is already an item which has this as data, just increase the counter of that item.
+    * If not, create a new Treemap with that data and init the counter with 1
+    *
+    * @method addData
+    * @param {String|Number|Object|Array} data the data element (e.g. a String) 
+    * @return {Boolean} Returns true, if a new treemap was created
+  */
   Treemap.prototype.addData = function(data) {
     var i = this.items.findIndex(function(el) {
       return el.data == data
     });
     if (i >= 0) {
       this.items[i].count++;
+      return false;
     } else {
       this.items.push(new Treemap(this, data, 1));
     }
+    return true;
   }
 
-  // Adds an empty treemap to this treemap. If data is given, this could be used 
-  // to show and hide a complete sub-treemap from the diagram. There is no check,
-  // if there is already another treemap with that data.
+
+  /**
+    * Adds an empty treemap to this treemap. If data is given, this could be used 
+    * to show and hide a complete sub-treemap from the diagram. There is no check,
+    * if there is already another treemap with that data.
+    *
+    * @method addTreemap
+    * @param {String|Number|Object|Array} data the data element (e.g. a String) 
+    * @count {Number} [count] the initial counter 
+    * @return {Treemap} Returns the new Treemap
+  */
   Treemap.prototype.addTreemap = function(data, count) {
     var t = new Treemap(this, data, count);
     this.items.push(t);
@@ -105,7 +141,7 @@ function Treemap() {
   }
 
   // The size of the rectangle depends on the counter. So it's important to sum
-  // up all the counters recursively
+  // up all the counters recursively. Only called internally.
   Treemap.prototype.sumUpCounters = function() {
     // Adjust parameter this.ignore: if ignore option is defined and this.data is listed in that ignored=true
     if (this.options.ignore instanceof Array) {
@@ -137,13 +173,18 @@ function Treemap() {
     return this.count;
   }
 
-  // 
+  /**
+    * Calculates the rectangles of each item. While doing this, all counters 
+    * and ignore flags are updated.
+    *
+    * @method calculate
+  */
   Treemap.prototype.calculate = function() {
-    // if it's the root node, sum up all counters recursively
-    if (this == this.root) this.sumUpCounters();
-    
     // Stop immediately, if it's an empty array
     if (this.items.length == 0) return;
+
+    // if it's the root node, sum up all counters recursively
+    if (this == this.root) this.sumUpCounters();
 
     // If to ignore this element, adjust parameters and stop
     if (this.ignored) {
@@ -273,7 +314,11 @@ function Treemap() {
     }
   };
 
-  // A simple recursive drawing routine
+  /**
+    * A simple recursive drawing routine. Draws only the rectangles.
+    *
+    * @method draw
+  */
   Treemap.prototype.draw = function() {
     if (!this.ignored) {
       rect(this.x, this.y, this.w, this.h);
