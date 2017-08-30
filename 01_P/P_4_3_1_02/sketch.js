@@ -1,4 +1,4 @@
-// P_4_3_1_02.pde
+// P_4_3_1_02
 //
 // Generative Gestaltung, ISBN: 978-3-87439-759-9
 // First Edition, Hermann Schmidt, Mainz, 2009
@@ -19,7 +19,6 @@
 /**
  * pixel mapping. each pixel is translated into a new element (svg file).
  * take care to sort the svg file according to their greyscale value.
- * see also '_4_3_1_02_analyse_svg_grayscale.pde'
  *
  * KEYS
  * s                   : save png

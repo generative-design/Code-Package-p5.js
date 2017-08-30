@@ -1,4 +1,4 @@
-// P_4_3_1_01.pde
+// P_4_3_1_01
 //
 // Generative Gestaltung, ISBN: 978-3-87439-759-9
 // First Edition, Hermann Schmidt, Mainz, 2009
