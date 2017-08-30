@@ -1,4 +1,4 @@
-// P_3_1_4_01
+// P_3_1_4_02
 //
 // Generative Gestaltung, ISBN: 978-3-87439-759-9
 // First Edition, Hermann Schmidt, Mainz, 2009
@@ -17,13 +17,16 @@
 // limitations under the License.
 
 /**
- * counting the words of a text and display them in a treemap diagram.
+ * Counting the words of a text and display them in a treemap diagram.
+ * All words with the same number of letters are stored in a nested treemap.
  *
  * KEYS
  * r                   : toggle random mode
  * h                   : only horizontal rows
  * v                   : only vertical rows
  * b                   : both kind of rows
+ * 1-9                 : switch on and off words with this number of letters
+ * 0                   : show all words
  * s                   : save png
  */
 'use strict';
@@ -41,24 +44,38 @@ var rowDirection = 'both';
 
 function preload() {
   font = loadFont('data/miso-bold.ttf');
-  joinedText = loadStrings('data/pride_and_prejudice_short.txt');
+  joinedText = loadStrings('data/pride_and_prejudice.txt');
 }
 
 function setup() {
   createCanvas(windowWidth, windowHeight);
   //createCanvas(windowWidth, round(windowWidth*1.343));
+  //createCanvas(windowWidth*2, round(windowWidth*1.343)*2);
 
   joinedText = joinedText.join(' ');
   // If you want to get rid of all number chars too, just uncomment the following line
   // joinedText = joinedText.replace(/\d+/g, '');
   var words = joinedText.match(/\w+/g);
 
-  treemap = new Treemap(1, 1, width - 3, height - 3, {sort:doSort, direction:rowDirection});
+  // create the main treemap
+  treemap = new Treemap(1, 1, width - 3, height - 3, {
+    sort: doSort,
+    direction: rowDirection,
+    ignore: []
+  });
+
+  var subTreemaps = [];
 
   // count words
   for (var i = 0; i < words.length; i++) {
     var w = words[i].toLowerCase();
-    treemap.addData(w);
+    var index = w.length;
+    var t = subTreemaps[index];
+    if (t == undefined) {
+      t = treemap.addTreemap(index);
+      subTreemaps[index] = t;
+    }
+    t.addData(w);
   }
 
   treemap.init();
@@ -66,30 +83,42 @@ function setup() {
 
 function draw() {
   background(255);
+
   textAlign(CENTER, BASELINE);
 
+  colorMode(HSB, 360, 100, 100, 100);
   for (var i = 0; i < treemap.items.length; i++) {
-    var r = treemap.items[i];
+    var subTreemap = treemap.items[i];
+    if (!subTreemap.ignored) {
+      var h = map(i, 0, treemap.items.length, 0, 240);
 
-    fill(255);
-    stroke(0);
-    strokeWeight(1);
-    rect(r.x, r.y, r.w, r.h);
+      for (var j = 0; j < subTreemap.items.length; j++) {
+        var r = subTreemap.items[j];
+        var s = map(subTreemap.items[j].count, 0, subTreemap.maxCount, 25, 50);
 
-    var word = treemap.items[i].data;
-    textFont(font, 100);
-    var textW = textWidth(word);
-    var fontSize = 100 * (r.w * 0.9) / textW;
-    fontSize = min(fontSize, (r.h * 0.9));
-    textFont(font, fontSize);
+        fill(h, s, 100);
+        stroke(h, s + 20, 90);
+        strokeWeight(1);
+        rect(r.x, r.y, r.w, r.h);
 
-    fill(0);
-    noStroke();
-    text(word, r.x + r.w / 2, r.y + r.h * 0.8);
+        var word = subTreemap.items[j].data;
+        textFont(font, 100);
+        var textW = textWidth(word);
+        var fontSize = 100 * (r.w * 0.9) / textW;
+        fontSize = min(fontSize, (r.h * 0.9));
+        textFont(font, fontSize);
+
+        fill(0);
+        noStroke();
+        text(word, r.x + r.w / 2, r.y + r.h * 0.8);
+      }
+    }
   }
 
   noLoop();
 }
+
+
 
 function keyTyped() {
   // export png
@@ -119,6 +148,31 @@ function keyTyped() {
     treemap.init();
     loop();
   }
+
+  // number key 1 - 9
+  if (keyCode >= 49 && keyCode <= 57) {
+    var num = keyCode - 48
+      // search for the pressed number in the ignore array
+    var i = treemap.options.ignore.indexOf(num);
+    if (i >= 0) {
+      // found value, so remove it
+      treemap.options.ignore.splice(i, 1);
+    } else {
+      // not found, so add to array
+      treemap.options.ignore.push(num);
+    }
+    treemap.init();
+    loop();
+  }
+  if (key == '0') {
+    treemap.options.ignore = [];
+    treemap.init();
+    loop();
+  }
+
+
 }
 
-
+function keyPressed() {
+  //if (keyCode == RIGHT_ARROW);
+}
