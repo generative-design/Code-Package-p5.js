@@ -1,4 +1,4 @@
-// P_3_2_1_01.pde
+// P_3_2_1_01
 //
 // Generative Gestaltung, ISBN: 978-3-87439-759-9
 // First Edition, Hermann Schmidt, Mainz, 2009
@@ -16,6 +16,9 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
+// CREDITS
+// FreeSans.otf (GNU FreeFont), see the readme files in data folder.
+
 /**
  * typo outline displayed as dots and lines
  *
@@ -29,14 +32,13 @@ var textTyped = "Type ...!";
 
 var font;
 
-
 function setup() {
   createCanvas(windowWidth, windowHeight);
   noLoop();
 
   opentype.load('data/FreeSans.otf', function(err, f) {
     if (err) {
-      print(err);
+      console.log(err);
     } else {
       font = f;
       loop();
@@ -59,6 +61,7 @@ function draw() {
     // resample it with equidistant points
     path = g.resampleByLength(path, 11);
     // path = g.resampleByAmount(path, 500);
+
     // lines
     stroke(181, 157, 0);
     strokeWeight(1.0);
