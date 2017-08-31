@@ -1,6 +1,9 @@
 // P_2_3_7_02_TABLET
 /**
  * Simple drawing tool where mouse input gets mirrored over multiple axes
+ * works only with an external tablet device!
+ * browser support for the tablet driver seems to be fading out. 
+ * safari should work well. chrome doesn't support the tablet plugin.
  *
  * MOUSE
  * left click          : draw line

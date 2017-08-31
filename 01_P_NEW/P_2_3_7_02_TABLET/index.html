@@ -24,5 +24,15 @@
   </head>
   <body>
     <span id="help" data-tooltip-content="#help-content">?</span>
+
+    <!-- wacom tablet -->
+    <script type="text/javascript">
+      function pluginLoaded() {
+        console.info("Wacom tablet plugin loaded!")
+      }
+    </script>
+    <object id="wtPlugin" type="application/x-wacomtabletplugin" width="1" height="1" style="position:absolute; left:0px; top:0px">
+      <param name="onload" value="pluginLoaded" />
+    </object>
   </body>
 </html>
