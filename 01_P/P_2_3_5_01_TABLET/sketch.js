@@ -101,8 +101,8 @@ function draw() {
         break;
     }
 
-    pointsX = [];
-    pointsY = [];
+    var pointsX = [];
+    var pointsY = [];
 
     pointsX[0] = 0;
     pointsY[0] = 0;
