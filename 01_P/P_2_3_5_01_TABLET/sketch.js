@@ -19,6 +19,8 @@
 /**
  * draw tool. shows how to draw with dynamic elements.
  * works only with an external tablet device!
+ * browser support for the tablet driver seems to be fading out. 
+ * safari should work well. chrome doesn't support the tablet plugin.
  *
  * MOUSE
  * drag                : draw
