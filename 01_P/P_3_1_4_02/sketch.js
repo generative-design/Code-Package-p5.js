@@ -19,7 +19,7 @@
 /**
  * Counting the words of a text and display them in a treemap diagram.
  * All words with the same number of letters are grouped in a nested treemap.
- * Only words with less than 10 letters are stored. 
+ * Only words with less than 10 letters are stored.
  *
  * KEYS
  * r                   : toggle random mode
@@ -57,7 +57,7 @@ function setup() {
   var words = joinedText.match(/\w+/g);
 
   // create the main treemap
-  treemap = new Treemap(1, 1, width - 3, height - 3, {
+  treemap = new gd.Treemap(1, 1, width - 3, height - 3, {
     sort: doSort,
     direction: rowDirection,
     padding: 2,
