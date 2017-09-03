@@ -1,4 +1,4 @@
-// P_4_2_2_02.pde
+// P_4_2_2_02
 //
 // Generative Gestaltung, ISBN: 978-3-87439-759-9
 // First Edition, Hermann Schmidt, Mainz, 2009
@@ -20,13 +20,12 @@
  * simple timelapse camera, after each intervalTime a picture is saved.
  *
  */
-
 'use strict';
 
 var cam;
 
-// intervalTime in sec. here 5 min
-var intervalTime = 5 * 60;
+// intervalTime in sec., here 30 seconds
+var intervalTime = 30;
 
 var secondsSinceStart = 0;
 var startTime = gd.timestamp();
@@ -36,7 +35,7 @@ var streamReady = false;
 
 function setup() {
   createCanvas(640, 480);
-  cam = createCapture(VIDEO, function(){ streamReady = true });
+  cam = createCapture(VIDEO, function() { streamReady = true });
   cam.hide();
   noStroke();
 }
@@ -53,8 +52,7 @@ function draw() {
       saveCanvas(saveFileName, 'png');
       doSave = false;
       counter++;
-    }
-    else if (interval != 0) {
+    } else if (interval != 0) {
       doSave = true;
     }
 

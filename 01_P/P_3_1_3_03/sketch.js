@@ -1,4 +1,4 @@
-// P_3_1_3_03.pde
+// P_3_1_3_03
 //
 // Generative Gestaltung, ISBN: 978-3-87439-759-9
 // First Edition, Hermann Schmidt, Mainz, 2009
@@ -49,17 +49,17 @@ var drawEllipses = true;
 var drawText = false;
 
 function preload() {
-  joinedText = loadStrings("data/faust_short.txt");
+  joinedText = loadStrings('data/faust_short.txt');
 }
 
 function setup() {
   createCanvas(1400, windowHeight);
   colorMode(HSB, 360, 100, 100, 100);
 
-  textFont("monospace", 20);
+  textFont('monospace', 20);
   noStroke();
 
-  joinedText = joinedText.join(joinedText, " ");
+  joinedText = joinedText.join(joinedText, ' ');
   charSet = getUniqCharacters();
   for (var i = 0; i < charSet.length; i++) {
     counters[i] = 0;
@@ -84,7 +84,9 @@ function draw() {
 
     // calculate parameters
     var charAlpha = 100;
-    if (drawAlpha) charAlpha = counters[index];
+    if (drawAlpha) {
+      charAlpha = counters[index];
+    }
 
     var my = map(mouseY, 50, height - 50, 0, 1);
     my = constrain(my, 0, 1);
@@ -93,7 +95,7 @@ function draw() {
     var mx = map(mouseX, 50, width - 50, 0, 1);
     mx = constrain(mx, 0, 1);
     var lineLength = charSize;
-    var lineAngle = random(-PI,PI) * mx - HALF_PI;
+    var lineAngle = random(-PI, PI) * mx - HALF_PI;
     var newPosX = lineLength * cos(lineAngle);
     var newPosY = lineLength * sin(lineAngle);
 
@@ -101,10 +103,14 @@ function draw() {
     push();
     translate(posX, posY);
     stroke(273, 73, 51, charAlpha);
-    if (drawLines) line(0, 0, newPosX, newPosY);
+    if (drawLines) {
+      line(0, 0, newPosX, newPosY);
+    }
     noStroke();
     fill(52, 100, 71, charAlpha);
-    if (drawEllipses) ellipse(0, 0, charSize / 10, charSize / 10);
+    if (drawEllipses) {
+      ellipse(0, 0, charSize / 10, charSize / 10);
+    }
     if (drawText) {
       fill(0, charAlpha);
       text(joinedText.charAt(i), newPosX, newPosY);
@@ -122,7 +128,7 @@ function draw() {
 function getUniqCharacters() {
   var charsArray = joinedText.toUpperCase().split('');
   var uniqCharsArray = charsArray.filter(function(char, index) {
-    return charsArray.indexOf(char) === index;
+    return charsArray.indexOf(char) == index;
   }).sort();
   return uniqCharsArray.join('');
 }

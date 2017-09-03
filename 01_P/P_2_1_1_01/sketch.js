@@ -1,4 +1,4 @@
-// P_2_1_1_01.pde
+// P_2_1_1_01
 //
 // Generative Gestaltung, ISBN: 978-3-87439-759-9
 // First Edition, Hermann Schmidt, Mainz, 2009
@@ -35,10 +35,12 @@
 var tileCount = 20;
 var actRandomSeed = 0;
 
-var actStrokeCap = ROUND;
+var actStrokeCap;
 
 function setup() {
   createCanvas(600, 600);
+
+  actStrokeCap = ROUND;
 }
 
 function draw() {
@@ -55,11 +57,11 @@ function draw() {
 
       var toggle = int(random(0, 2));
 
-      if (toggle === 0) {
+      if (toggle == 0) {
         strokeWeight(mouseX / 20);
         line(posX, posY, posX + width / tileCount, posY + height / tileCount);
       }
-      if (toggle === 1) {
+      if (toggle == 1) {
         strokeWeight(mouseY / 20);
         line(posX, posY + width / tileCount, posX + height / tileCount, posY);
       }
@@ -67,12 +69,11 @@ function draw() {
   }
 }
 
-
 function mousePressed() {
   actRandomSeed = random(100000);
 }
 
-function keyReleased(){
+function keyReleased() {
   if (key == 's' || key == 'S') saveCanvas(gd.timestamp(), 'png');
 
   if (key == '1') actStrokeCap = ROUND;

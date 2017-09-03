@@ -105,8 +105,8 @@ var sketch = function( p ) {
     if (p.key == '2') freq++;
     freq = p.max(freq,1);
 
-    if (p.keyCode === p.LEFT_ARROW) phi -= 15;
-    if (p.keyCode === p.RIGHT_ARROW) phi += 15;
+    if (p.keyCode == p.LEFT_ARROW) phi -= 15;
+    if (p.keyCode == p.RIGHT_ARROW) phi += 15;
 
     if (p.key == '7') modFreq--;
     if (p.key == '8') modFreq++;

@@ -1,4 +1,4 @@
-// P_2_0_01.pde
+// P_2_0_01
 //
 // Generative Gestaltung, ISBN: 978-3-87439-759-9
 // First Edition, Hermann Schmidt, Mainz, 2009
@@ -36,22 +36,19 @@ function setup() {
 
 function draw() {
   background(255);
-  translate(width/2,height/2);
+  translate(width / 2, height / 2);
 
-  var circleResolution = map(mouseY, 0,height, 2,80);
-  var radius = mouseX-width/2 + 0.5;
-  var angle = TWO_PI/circleResolution;
+  var circleResolution = map(mouseY, 0, height, 2, 80);
+  var radius = mouseX - width / 2 + 0.5;
+  var angle = TAU / circleResolution;
 
-  strokeWeight(mouseY/20);
+  strokeWeight(mouseY / 20);
 
-  // beginShape();
-  for (var i=0; i<=circleResolution; i++){
-    var x = cos(angle*i) * radius;
-    var y = sin(angle*i) * radius;
+  for (var i = 0; i <= circleResolution; i++) {
+    var x = cos(angle * i) * radius;
+    var y = sin(angle * i) * radius;
     line(0, 0, x, y);
-    // vertex(x, y);
   }
-  // endShape(CLOSE);
 }
 
 function keyPressed() {

@@ -92,7 +92,7 @@ var sketch = function( p ) {
   }
 
   p.keyPressed = function() {
-    if (p.key === 's' || p.key === 'S') {
+    if (p.key == 's' || p.key == 'S') {
       p.saveCanvas(gd.timestamp(), 'png');
     }
   }

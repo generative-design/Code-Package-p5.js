@@ -1,4 +1,4 @@
-// P_2_3_1_01.pde
+// P_2_3_1_01
 //
 // Generative Gestaltung, ISBN: 978-3-87439-759-9
 // First Edition, Hermann Schmidt, Mainz, 2009
@@ -44,13 +44,13 @@ function setup() {
   createCanvas(windowWidth, windowHeight);
   background(255);
   cursor(CROSS);
-
-  c = color(181, 157, 0, 100);
   strokeWeight(1);
+
+  c = color(181, 157, 0);
 }
 
 function draw() {
-  if (mouseIsPressed) {
+  if (mouseIsPressed && mouseButton == LEFT) {
     push();
     translate(mouseX, mouseY);
     rotate(radians(angle));
@@ -68,15 +68,15 @@ function mousePressed() {
 }
 
 function keyPressed() {
-  if (keyCode === UP_ARROW) lineLength += 5;
-  if (keyCode === DOWN_ARROW) lineLength -= 5;
-  if (keyCode === LEFT_ARROW) angleSpeed -= 0.5;
-  if (keyCode === RIGHT_ARROW) angleSpeed += 0.5;
+  if (keyCode == UP_ARROW) lineLength += 5;
+  if (keyCode == DOWN_ARROW) lineLength -= 5;
+  if (keyCode == LEFT_ARROW) angleSpeed -= 0.5;
+  if (keyCode == RIGHT_ARROW) angleSpeed += 0.5;
 }
 
 function keyReleased() {
   if (key == 's' || key == 'S') saveCanvas(gd.timestamp(), 'png');
-  if (keyCode === DELETE || keyCode === BACKSPACE) background(255);
+  if (keyCode == DELETE || keyCode == BACKSPACE) background(255);
 
   // reverse direction and mirror angle
   if (key == 'd' || key == 'D') {
@@ -85,10 +85,10 @@ function keyReleased() {
   }
 
   // change color
-  if (key == ' ') c = color(random(255), random(255), random(255), random(80, 150));
+  if (key == ' ') c = color(random(255), random(255), random(255), random(80, 100));
   //default colors from 1 to 4
-  if (key == '1') c = color(181, 157, 0, 100);
-  if (key == '2') c = color(0, 130, 164, 100);
-  if (key == '3') c = color(87, 35, 129, 100);
-  if (key == '4') c = color(197, 0, 123, 100);
+  if (key == '1') c = color(181, 157, 0);
+  if (key == '2') c = color(0, 130, 164);
+  if (key == '3') c = color(87, 35, 129);
+  if (key == '4') c = color(197, 0, 123);
 }

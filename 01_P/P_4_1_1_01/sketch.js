@@ -51,7 +51,7 @@ function preload() {
 function setup() {
   createCanvas(800, 600);
 
-  image(img, 0, 0);
+  image(img);
   tileWidth = width / tileCountY;
   tileHeight = height / tileCountX;
 
@@ -82,7 +82,6 @@ function draw() {
 function cropTiles() {
   tileWidth  = width / tileCountY;
   tileHeight = height / tileCountX;
-  tileCount = tileCountX * tileCountY;
   imgTiles = [];
 
   for (var gridY = 0; gridY < tileCountY; gridY++) {
@@ -107,7 +106,7 @@ function mouseReleased() {
   cropTiles();
 }
 
-function keyReleased(){
+function keyReleased() {
   if (key == 's' || key == 'S') saveCanvas(gd.timestamp(), 'png');
 
   if (key == 'r' || key == 'R') {

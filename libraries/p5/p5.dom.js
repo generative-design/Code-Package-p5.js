@@ -1,4 +1,4 @@
-/*! p5.dom.js v0.3.3 May 10, 2017 */
+/*! p5.dom.js v0.3.4 Aug 11, 2017 */
 /**
  * <p>The web is much more than just canvas and p5.dom makes it easy to interact
  * with other HTML5 objects, including text, hyperlink, image, input, video,
@@ -239,7 +239,7 @@
    * appends to body.
    *
    * @method createDiv
-   * @param  {String} html inner HTML for element created
+   * @param  {String} [html] inner HTML for element created
    * @return {Object|p5.Element} pointer to p5.Element holding created node
    * @example
    * <div class='norender'><code>
@@ -257,7 +257,7 @@
    * appends to body.
    *
    * @method createP
-   * @param  {String} html inner HTML for element created
+   * @param  {String} [html] inner HTML for element created
    * @return {Object|p5.Element} pointer to p5.Element holding created node
    * @example
    * <div class='norender'><code>
@@ -274,7 +274,7 @@
    * appends to body.
    *
    * @method createSpan
-   * @param  {String} html inner HTML for element created
+   * @param  {String} [html] inner HTML for element created
    * @return {Object|p5.Element} pointer to p5.Element holding created node
    * @example
    * <div class='norender'><code>
@@ -456,7 +456,6 @@
   p5.prototype.createButton = function(label, value) {
     var elt = document.createElement('button');
     elt.innerHTML = label;
-    elt.value = value;
     if (value) elt.value = value;
     return addElement(elt, this);
   };
@@ -574,13 +573,39 @@
       self = addElement(elt, this);
     }
     self.option = function(name, value) {
-      var opt = document.createElement('option');
-      opt.innerHTML = name;
-      if (arguments.length > 1)
-        opt.value = value;
-      else
-        opt.value = name;
-      elt.appendChild(opt);
+      var index;
+      //see if there is already an option with this name
+      for (var i = 0; i < this.elt.length; i++) {
+        if(this.elt[i].innerHTML == name) {
+          index = i;
+          break;
+        }
+      }
+      //if there is an option with this name we will modify it
+      if(index !== undefined) {
+        //if the user passed in false then delete that option
+        if(value === false) {
+          this.elt.remove(index);
+        } else {
+          //otherwise if the name and value are the same then change both
+          if(this.elt[index].innerHTML == this.elt[index].value) {
+            this.elt[index].innerHTML = this.elt[index].value = value;
+          //otherwise just change the value
+          } else {
+            this.elt[index].value = value;
+          }
+        }
+      }
+      //if it doesn't exist make it
+      else {
+        var opt = document.createElement('option');
+        opt.innerHTML = name;
+        if (arguments.length > 1)
+            opt.value = value;
+        else
+            opt.value = name;
+        elt.appendChild(opt);
+      }
     };
     self.selected = function(value) {
       var arr = [];
@@ -903,7 +928,7 @@
    *                             enough data has been loaded to play the media
    *                             up to its end without having to stop for
    *                             further buffering of content
-   * @return {Object|p5.Element} pointer to video p5.Element
+   * @return {p5.MediaElement|p5.Element} pointer to video p5.Element
    */
   p5.prototype.createVideo = function(src, callback) {
     return createMedia(this, 'video', src, callback);
@@ -930,7 +955,7 @@
    *                             enough data has been loaded to play the media
    *                             up to its end without having to stop for
    *                             further buffering of content
-   * @return {Object|p5.Element} pointer to audio p5.Element
+   * @return {p5.MediaElement|p5.Element} pointer to audio p5.Element
    */
   p5.prototype.createAudio = function(src, callback) {
     return createMedia(this, 'audio', src, callback);
@@ -1433,7 +1458,20 @@
    * </code></div>
    */
   p5.Element.prototype.attribute = function(attr, value) {
-    if (typeof value === 'undefined') {
+    //handling for checkboxes and radios to ensure options get
+    //attributes not divs
+    if(this.elt.firstChild != null &&
+    (this.elt.firstChild.type === 'checkbox' ||
+    this.elt.firstChild.type === 'radio')) {
+      if(typeof value === 'undefined') {
+        return this.elt.firstChild.getAttribute(attr);
+      } else {
+        for(var i=0; i<this.elt.childNodes.length; i++) {
+          this.elt.childNodes[i].setAttribute(attr, value);
+        }
+      }
+    }
+    else if (typeof value === 'undefined') {
       return this.elt.getAttribute(attr);
     } else {
       this.elt.setAttribute(attr, value);
@@ -1474,6 +1512,13 @@
    * </code></div>
    */
   p5.Element.prototype.removeAttribute = function(attr) {
+    if(this.elt.firstChild != null &&
+    (this.elt.firstChild.type === 'checkbox' ||
+    this.elt.firstChild.type === 'radio')) {
+      for(var i=0; i<this.elt.childNodes.length; i++) {
+        this.elt.childNodes[i].removeAttribute(attr);
+      }
+    }
     this.elt.removeAttribute(attr);
     return this;
   };
@@ -1658,7 +1703,6 @@
    * @class p5.MediaElement
    * @constructor
    * @param {String} elt DOM node that is wrapped
-   * @param {Object} [pInst] pointer to p5 instance
    */
   p5.MediaElement = function(elt, pInst) {
     p5.Element.call(this, elt, pInst);
@@ -1937,7 +1981,7 @@
    *  This method is meant to be used with the p5.sound.js addon library.
    *
    *  @method  connect
-   *  @param  {AudioNode|p5.sound object} audioNode AudioNode from the Web Audio API,
+   *  @param  {AudioNode|Object} audioNode AudioNode from the Web Audio API,
    *  or an object from the p5.sound library
    */
   p5.MediaElement.prototype.connect = function(obj) {
@@ -2156,7 +2200,6 @@
    * @class p5.File
    * @constructor
    * @param {File} file File that is wrapped
-   * @param {Object} [pInst] pointer to p5 instance
    */
   p5.File = function(file, pInst) {
     /**

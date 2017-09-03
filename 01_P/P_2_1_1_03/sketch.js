@@ -1,4 +1,4 @@
-// P_2_1_1_03.pde
+// P_2_1_1_03
 //
 // Generative Gestaltung, ISBN: 978-3-87439-759-9
 // First Edition, Hermann Schmidt, Mainz, 2009
@@ -34,16 +34,15 @@
  */
 'use strict';
 
+var tileCount = 1;
+var actRandomSeed = 0;
+
 var colorLeft;
 var colorRight;
-
-var tileCount = 1;
-var transparentLeft = false;
-var transparentRight = false;
 var alphaLeft = 0;
 var alphaRight = 100;
-
-var actRandomSeed = 0;
+var transparentLeft = false;
+var transparentRight = false;
 
 function setup() {
   createCanvas(600, 600);
@@ -75,9 +74,9 @@ function draw() {
 
       colorRight = color(hue(colorRight), saturation(colorRight), brightness(colorRight), alphaRight);
 
-      var toggle = int(random(0,2));
+      var toggle = int(random(0, 2));
 
-      if (toggle === 0) {
+      if (toggle == 0) {
         stroke(colorLeft);
         line(posX, posY, posX + (width / tileCount) / 2, posY + height / tileCount);
         line(posX + (width / tileCount) / 2, posY, posX + (width / tileCount), posY + height / tileCount);
@@ -89,14 +88,13 @@ function draw() {
       }
     }
   }
-
 }
 
 function mousePressed() {
   actRandomSeed = random(100000);
 }
 
-function keyReleased(){
+function keyReleased() {
   if (key == 's' || key == 'S') saveCanvas(gd.timestamp(), 'png');
 
   if (key == '1') {
@@ -129,5 +127,5 @@ function keyReleased(){
 }
 
 function colorsEqual(col1, col2) {
-  return col1.toString() === col2.toString();
+  return col1.toString() == col2.toString();
 }

@@ -28,7 +28,7 @@
  */
 'use strict';
 
-var inputText = "Ihr naht euch wieder, schwankende Gestalten, Die früh sich einst dem trüben Blick gezeigt. Versuch ich wohl, euch diesmal festzuhalten? Fühl ich mein Herz noch jenem Wahn geneigt? Ihr drängt euch zu! nun gut, so mögt ihr walten, Wie ihr aus Dunst und Nebel um mich steigt; Mein Busen fühlt sich jugendlich erschüttert Vom Zauberhauch, der euren Zug umwittert. Ihr bringt mit euch die Bilder froher Tage, Und manche liebe Schatten steigen auf; Gleich einer alten, halbverklungnen Sage Kommt erste Lieb und Freundschaft mit herauf; Der Schmerz wird neu, es wiederholt die Klage.";
+var inputText = "All the world's a stage, And all the men and women merely players; They have their exits and their entrances; And one man in his time plays many parts, His acts being seven ages. At first the infant, Mewling and puking in the nurse's arms; Then the whining school-boy, with his satchel And shining morning face, creeping like snail Unwillingly to school. And then the lover, Sighing like furnace, with a woeful ballad Made to his mistress' eyebrow. Then a soldier, Full of strange oaths, and bearded like the pard, Jealous in honour, sudden and quick in quarrel, Seeking the bubble reputation Even in the cannon's mouth. And then the justice, In fair round belly with good capon lin'd, With eyes severe and beard of formal cut, Full of wise saws and modern instances; And so he plays his part. The sixth age shifts Into the lean and slipper'd pantaloon, With spectacles on nose and pouch on side, His youthful hose, well sav'd, a world too wide For his shrunk shank; and his big manly voice, Turning again toward childish treble, pipes And whistles in his sound. Last scene of all, That ends this strange eventful history, Is second childishness and mere oblivion; Sans teeth, sans eyes, sans taste, sans every thing.";
 var fontSizeMax = 20;
 var fontSizeMin = 10;
 var spacing = 12; // line height
@@ -40,15 +40,15 @@ var blackAndWhite = false;
 var img;
 
 function preload() {
-  img = loadImage("data/pic.png");
+  img = loadImage('data/pic.png');
 }
 
 function setup() {
   createCanvas(533, 796);
-  textFont("Times");
+  textFont('Times');
   textSize(10);
   textAlign(LEFT, CENTER);
-  print(img.width + " x " + img.height);
+  print(img.width + ' • ' + img.height);
 }
 
 function draw() {
@@ -58,14 +58,13 @@ function draw() {
   var y = 10;
   var counter = 0;
 
-  while(y < height) {
+  while (y < height) {
     // translate position (display) to position (image)
     img.loadPixels();
     // get current color
-    var c = color(img.get(
-      round(map(x, 0, width, 0, img.width)),
-      round(map(y, 0, height, 0, img.height))
-    ));
+    var imgX = round(map(x, 0, width, 0, img.width))
+    var imgY = round(map(y, 0, height, 0, img.height))
+    var c = color(img.get(imgX, imgY));
     var greyscale = round(red(c) * 0.222 + green(c) * 0.707 + blue(c) * 0.071);
 
     push();
@@ -73,15 +72,21 @@ function draw() {
 
     if (fontSizeStatic) {
       textSize(fontSizeMax);
-      if (blackAndWhite) fill(greyscale);
-      else fill(c);
+      if (blackAndWhite) {
+        fill(greyscale);
+      } else {
+        fill(c);
+      }
     } else {
       // greyscale to fontsize
       var fontSize = map(greyscale, 0, 255, fontSizeMax, fontSizeMin);
       fontSize = max(fontSize, 1);
       textSize(fontSize);
-      if (blackAndWhite) fill(0);
-      else fill(c);
+      if (blackAndWhite) {
+        fill(0);
+      } else {
+        fill(c);
+      }
     }
 
     var letter = inputText.charAt(counter);
@@ -103,6 +108,7 @@ function draw() {
       counter = 0;
     }
   }
+  noLoop();
 }
 
 function keyReleased() {
@@ -111,7 +117,8 @@ function keyReleased() {
   if (key == '1') fontSizeStatic = !fontSizeStatic;
   // change color style
   if (key == '2') blackAndWhite = !blackAndWhite;
-  print('fontSizeMin: ' + fontSizeMin + ' fontSizeMax: ' + fontSizeMax + ' fontSizeStatic: ' + fontSizeStatic + ' blackAndWhite: ' + blackAndWhite);
+  print('fontSizeMin: ' + fontSizeMin + ', fontSizeMax: ' + fontSizeMax + ', fontSizeStatic: ' + fontSizeStatic + ', blackAndWhite: ' + blackAndWhite);
+  loop();
 }
 
 function keyPressed() {
@@ -121,4 +128,5 @@ function keyPressed() {
   // change fontSizeMin with arrow keys left/right
   if (keyCode == RIGHT_ARROW) fontSizeMin += 2;
   if (keyCode == LEFT_ARROW) fontSizeMin -= 2;
+  loop();
 }

@@ -1,4 +1,4 @@
-// P_2_3_6_01.pde
+// P_2_3_6_01
 //
 // Generative Gestaltung, ISBN: 978-3-87439-759-9
 // First Edition, Hermann Schmidt, Mainz, 2009
@@ -45,12 +45,12 @@ var debugMode = false;
 function preload() {
   // load SVG modules
   for (var i = 0; i < 16; i++) {
-    modules[i] = loadImage("data/" + nf(i,2) + ".svg");
+    modules[i] = loadImage('data/' + nf(i, 2) + '.svg');
   }
 }
 
 function setup() {
-  // use full screen size
+  // use full window size
   createCanvas(windowWidth, windowHeight);
 
   cursor(CROSS);
@@ -58,18 +58,21 @@ function setup() {
   imageMode(CENTER);
   strokeWeight(0.15);
   textSize(8);
-  textAlign(CENTER,CENTER);
+  textAlign(CENTER, CENTER);
 
   gridResolutionX = round(width / tileSize) + 2;
   gridResolutionY = round(height / tileSize) + 2;
+
   initTiles();
 }
 
 function draw() {
   background(255);
 
-  if (mouseIsPressed && mouseButton == LEFT) setTile();
-  if (mouseIsPressed && mouseButton == RIGHT) unSetTile();
+  if (mouseIsPressed) {
+    if (mouseButton == LEFT) setTile();
+    if (mouseButton == RIGHT) unsetTile();
+  }
 
   if (doDrawGrid) drawGrid();
   drawModules();
@@ -140,17 +143,17 @@ function drawModules() {
 
         if (debugMode) {
           fill(150);
-          text(decimalResult + "\n" + binaryResult, posX, posY);
+          text(decimalResult + '\n' + binaryResult, posX, posY);
         }
       }
     }
   }
 }
 
-function keyPressed(){
+function keyPressed() {
   if (key == 's' || key == 'S') saveCanvas(gd.timestamp(), 'png');
 
-  if (keyCode === DELETE || keyCode === BACKSPACE) initTiles();
+  if (keyCode == DELETE || keyCode == BACKSPACE) initTiles();
   if (key == 'g' || key == 'G') doDrawGrid = !doDrawGrid;
   if (key == 'd' || key == 'D') debugMode = !debugMode;
 }

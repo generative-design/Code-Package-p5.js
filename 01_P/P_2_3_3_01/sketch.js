@@ -34,8 +34,8 @@ var x = 0;
 var y = 0;
 var stepSize = 5.0;
 
-var font = "Georgia";
-var letters = "Sie hören nicht die folgenden Gesänge, Die Seelen, denen ich die ersten sang, Zerstoben ist das freundliche Gedränge, Verklungen ach! der erste Wiederklang.";
+var font = 'Georgia';
+var letters = "All the world's a stage, and all the men and women merely players. They have their exits and their entrances.";
 var fontSizeMin = 3;
 var angleDistortion = 0.0;
 
@@ -56,7 +56,7 @@ function setup() {
 }
 
 function draw() {
-  if (mouseIsPressed) {
+  if (mouseIsPressed && mouseButton == LEFT) {
     var d = dist(x, y, mouseX, mouseY);
     textSize(fontSizeMin + d / 2);
     var newLetter = letters.charAt(counter);

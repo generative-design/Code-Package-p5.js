@@ -1,4 +1,4 @@
-// P_2_1_3_02.pde
+// P_2_1_3_02
 //
 // Generative Gestaltung, ISBN: 978-3-87439-759-9
 // First Edition, Hermann Schmidt, Mainz, 2009
@@ -30,11 +30,10 @@
 'use strict';
 
 var count = 10;
-var colorStep = 20;
 
+var colorStep = 20;
 var lineWeight = 0;
 var strokeColor = 0;
-
 var backgroundColor = 0;
 
 var drawMode = 1;
@@ -98,11 +97,11 @@ function draw() {
           // set colors depending on draw mode
           switch (drawMode) {
             case 1:
-              backgroundColor = 360;
+              backgroundColor = 255;
               stroke(0);
               break;
             case 2:
-              backgroundColor = 360;
+              backgroundColor = 255;
               stroke(0);
               strokeWeight(lineWeight);
               break;

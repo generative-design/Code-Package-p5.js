@@ -1,4 +1,4 @@
-// P_2_2_2_01.pde
+// P_2_2_2_01
 //
 // Generative Gestaltung, ISBN: 978-3-87439-759-9
 // First Edition, Hermann Schmidt, Mainz, 2009
@@ -23,7 +23,7 @@
  * position x          : composition speed of the picture
  *
  * KEYS
- * Delete/Backspace    : clear display
+ * DEL/BACKSPACE       : clear display
  * s                   : save png
  */
 'use strict';
@@ -48,8 +48,8 @@ var posYcross;
 
 function setup() {
   createCanvas(600, 600);
-  colorMode(HSB, 360, 100, 100);
-  background(360, 0, 100);
+  colorMode(HSB, 360, 100, 100, 100);
+  background(360);
 
   angle = getRandomAngle(direction);
   posX = floor(random(width));
@@ -60,7 +60,7 @@ function setup() {
 
 function draw() {
   var speed = int(map(mouseX, 0, width, 0, 20));
-  for (var i=0; i<=speed; i++) {
+  for (var i = 0; i <= speed; i++) {
 
     // ------ draw dot at current position ------
     strokeWeight(1);
@@ -92,20 +92,18 @@ function draw() {
     loadPixels();
     var currentPixel = get(floor(posX), floor(posY));
     if (
-      (
-        currentPixel[0] === 0 &&
-        currentPixel[1] === 0 &&
-        currentPixel[2] === 0
-      ) ||
-      reachedBorder
+      reachedBorder ||
+      (currentPixel[0] != 255 && currentPixel[1] != 255 && currentPixel[2] != 255)
     ) {
       angle = getRandomAngle(direction);
+
       var distance = dist(posX, posY, posXcross, posYcross);
       if (distance >= minLength) {
         strokeWeight(3);
         stroke(0, 0, 0);
         line(posX, posY, posXcross, posYcross);
       }
+
       posXcross = posX;
       posYcross = posY;
     }
@@ -114,15 +112,14 @@ function draw() {
 
 function keyReleased() {
   if (key == 's' || key == 'S') saveCanvas(gd.timestamp(), 'png');
-  if (keyCode === DELETE || keyCode === BACKSPACE) background(360);
-  if (key === ' ') noLoop();
+  if (keyCode == DELETE || keyCode == BACKSPACE) background(360);
 }
 
 function getRandomAngle(currentDirection) {
   var a = (floor(random(-angleCount, angleCount)) + 0.5) * 90 / angleCount;
-  if (currentDirection === NORTH) return a - 90;
-  if (currentDirection === EAST) return a;
-  if (currentDirection === SOUTH) return a + 90;
-  if (currentDirection === WEST) return a + 180;
+  if (currentDirection == NORTH) return a - 90;
+  if (currentDirection == EAST) return a;
+  if (currentDirection == SOUTH) return a + 90;
+  if (currentDirection == WEST) return a + 180;
   return 0;
 }

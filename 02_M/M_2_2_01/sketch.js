@@ -149,8 +149,8 @@ var sketch = function( p ) {
     if (p.key == '4') freqY++;
     freqY = p.max(freqY,1);
 
-    if (p.keyCode === p.LEFT_ARROW) phi -= 15;
-    if (p.keyCode === p.RIGHT_ARROW) phi += 15;
+    if (p.keyCode == p.LEFT_ARROW) phi -= 15;
+    if (p.keyCode == p.RIGHT_ARROW) phi += 15;
 
     console.log("freqX: " + freqX + ", freqY: " + freqY + ", phi: " + phi);
   };

@@ -1,4 +1,4 @@
-// P_4_3_3_02.pde
+// P_4_3_3_02
 //
 // Generative Gestaltung, ISBN: 978-3-87439-759-9
 // First Edition, Hermann Schmidt, Mainz, 2009
@@ -22,6 +22,7 @@
  * KEYS
  * q                   : stop drawing
  * w                   : continue drawing
+ * DEL/BACKSPACE       : clear display
  * s                   : save png
  */
 
@@ -37,11 +38,10 @@ var counter;
 var maxCounter = 100000;
 var streamReady = false;
 
-
 function setup() {
   createCanvas(640, 480);
   background(255);
-  video = createCapture(VIDEO, function(){ streamReady = true });
+  video = createCapture(VIDEO, function() { streamReady = true });
   video.size(width, height);
   video.hide();
 
@@ -54,16 +54,16 @@ function setup() {
 }
 
 function draw() {
-  if(streamReady) {
+  if (streamReady) {
     noFill();
 
     // get actual webcam image
     video.loadPixels();
 
     // first line
-    pixelIndex = int(((video.width - 1 - int(x1)) + int(y1) * video.width) * 4);
+    pixelIndex = ((video.width - 1 - int(x1)) + int(y1) * video.width) * 4;
     c = color(video.pixels[pixelIndex], video.pixels[pixelIndex + 1], video.pixels[pixelIndex + 2], video.pixels[pixelIndex + 3]);
-    //convert color c to HSV
+    // convert color c to HSV
     var cHSV = chroma(red(c), green(c), blue(c));
     var hueValue = cHSV.get('hsv.h');
     strokeWeight(hueValue / 50);
@@ -83,9 +83,9 @@ function draw() {
     y1 = curvePointY;
 
     // second line
-    pixelIndex = int(((video.width - 1 - int(x2)) + int(y2) * video.width) * 4);
+    pixelIndex = ((video.width - 1 - int(x2)) + int(y2) * video.width) * 4;
     c = color(video.pixels[pixelIndex], video.pixels[pixelIndex + 1], video.pixels[pixelIndex + 2], video.pixels[pixelIndex + 3]);
-    //convert color c to HSV
+    // convert color c to HSV
     var cHSV = chroma(red(c), green(c), blue(c));
     var saturationValue = cHSV.get('hsv.s');
     strokeWeight(saturationValue / 2);
@@ -105,9 +105,9 @@ function draw() {
     y2 = curvePointY;
 
     // third line
-    pixelIndex = int(((video.width - 1 - int(x3)) + int(y3) * video.width) * 4);
+    pixelIndex = ((video.width - 1 - int(x3)) + int(y3) * video.width) * 4;
     c = color(video.pixels[pixelIndex], video.pixels[pixelIndex + 1], video.pixels[pixelIndex + 2], video.pixels[pixelIndex + 3]);
-    //convert color c to HSV
+    // convert color c to HSV
     var cHSV = chroma(red(c), green(c), blue(c));
     var brightnessValue = cHSV.get('hsv.v');
     strokeWeight(brightnessValue / 100);
@@ -131,8 +131,8 @@ function draw() {
   }
 }
 
-function keyReleased(){
-  if (key == ' ') background(360);
+function keyReleased() {
+  if (keyCode == DELETE || keyCode == BACKSPACE) clear();
   if (key == 's' || key == 'S') saveCanvas(gd.timestamp(), 'png');
   if (key == 'q' || key == 'Q') noLoop();
   if (key == 'w' || key == 'W') loop();

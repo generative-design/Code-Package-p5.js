@@ -29,7 +29,7 @@
  */
 'use strict';
 
-var textTyped = "Type slow and fast!";
+var textTyped = 'Type slow and fast!';
 var fontSizes = [textTyped.length];
 var minFontSize = 15;
 var maxFontSize = 800;
@@ -42,21 +42,21 @@ var spacing = 2; // line height
 var tracking = 0; // between letters
 var font;
 
-
 function setup() {
   createCanvas(800, 600);
 
-  font = "Arial";
+  font = 'Arial';
 
   noCursor();
   noStroke();
 
   // init fontSizes
-  for (var i = 0; i < textTyped.length; i++) fontSizes[i] = minFontSize;
+  for (var i = 0; i < textTyped.length; i++) {
+    fontSizes[i] = minFontSize;
+  }
 
   pMillis = millis();
 }
-
 
 function draw() {
   background(255);
@@ -91,29 +91,26 @@ function draw() {
 
   // blinking cursor after text
   var timeDelta = millis() - pMillis;
-  newFontSize = map(timeDelta, 0,maxTimeDelta, minFontSize, maxFontSize);
+  newFontSize = map(timeDelta, 0, maxTimeDelta, minFontSize, maxFontSize);
   newFontSize = min(newFontSize, maxFontSize);
 
   fill(200, 30, 40);
-  if (frameCount / 10 % 2 === 0) fill(255);
+  if (int(frameCount / 10) % 2 == 0) fill(255);
   rect(x, y, newFontSize / 2, newFontSize / 20);
 }
 
-
 function keyReleased() {
   // export png
-  if (keyCode === CONTROL) saveCanvas(gd.timestamp(), 'png');
+  if (keyCode == CONTROL) saveCanvas(gd.timestamp(), 'png');
 }
-
 
 function keyPressed() {
   switch(keyCode) {
     case DELETE:
     case BACKSPACE:
       if (textTyped.length > 0) {
-        println(textTyped);
         textTyped = textTyped.substring(0, max(0, textTyped.length - 1));
-        fontSizes = shorten(fontSizes);
+        fontSizes.pop();
       }
       break;
   }
@@ -122,9 +119,9 @@ function keyPressed() {
   pMillis = millis();
 }
 
-function keyTyped(){
-  if(keyCode >= 32){
+function keyTyped() {
+  if (keyCode >= 32) {
     textTyped += key;
-    fontSizes = append(fontSizes, newFontSize);
+    fontSizes.push(newFontSize);
   }
 }

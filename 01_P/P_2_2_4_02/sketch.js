@@ -1,4 +1,4 @@
-// P_2_2_4_02.pde
+// P_2_2_4_02
 //
 // Generative Gestaltung, ISBN: 978-3-87439-759-9
 // First Edition, Hermann Schmidt, Mainz, 2009
@@ -25,13 +25,13 @@
  */
 'use strict';
 
-var maxCount = 5000; //max count of the cirlces
+var maxCount = 5000; // max count of the cirlces
 var currentCount = 1;
-var newx = [];
-var newy = [];
 var x = [];
 var y = [];
 var r = [];
+var x2 = [];
+var y2 = [];
 
 var drawGhosts = false;
 
@@ -44,7 +44,6 @@ function setup() {
   r[0] = 360;
 }
 
-
 function draw() {
   clear();
 
@@ -56,10 +55,10 @@ function draw() {
   var newX = random(newR, width - newR);
   var newY = random(newR, height - newR);
 
-  var closestDist = 100000000;
+  var closestDist = Number.MAX_VALUE;
   var closestIndex = 0;
   // which circle is the closest?
-  for(var i = 0; i < currentCount; i++) {
+  for (var i = 0; i < currentCount; i++) {
     var newDist = dist(newX, newY, x[i], y[i]);
     if (newDist < closestDist) {
       closestDist = newDist;
@@ -70,8 +69,8 @@ function draw() {
   // align it to the closest circle outline
   var angle = atan2(newY - y[closestIndex], newX - x[closestIndex]);
 
-  newx[currentCount] = newX;
-  newy[currentCount] = newY;
+  x2[currentCount] = newX;
+  y2[currentCount] = newY;
   x[currentCount] = x[closestIndex] + cos(angle) * (r[closestIndex] + newR);
   y[currentCount] = y[closestIndex] + sin(angle) * (r[closestIndex] + newR);
   r[currentCount] = newR;
@@ -81,13 +80,13 @@ function draw() {
   if (drawGhosts) {
     for (var i = 1; i < currentCount; i++) {
       fill(230);
-      ellipse(newx[i], newy[i], r[i] * 2, r[i] * 2);
-      line(newx[i], newy[i], x[i], y[i]);
+      ellipse(x2[i], y2[i], r[i] * 2, r[i] * 2);
+      line(x2[i], y2[i], x[i], y[i]);
     }
   }
 
   for (var i = 0; i < currentCount; i++) {
-    if (i === 0) {
+    if (i == 0) {
       noFill();
     } else {
       fill(50);
@@ -96,7 +95,6 @@ function draw() {
   }
 
   if (currentCount >= maxCount) noLoop();
-
 }
 
 function keyReleased() {

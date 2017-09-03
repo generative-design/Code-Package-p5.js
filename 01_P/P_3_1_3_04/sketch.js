@@ -1,4 +1,4 @@
-// P_3_1_3_04.pde
+// P_3_1_3_04
 //
 // Generative Gestaltung, ISBN: 978-3-87439-759-9
 // First Edition, Hermann Schmidt, Mainz, 2009
@@ -47,17 +47,17 @@ var drawColoredLines = true;
 var drawText = true;
 
 function preload() {
-  joinedText = loadStrings("data/faust_kurz.txt");
+  joinedText = loadStrings('data/faust_kurz.txt');
 }
 
 function setup() {
-  createCanvas(1200, 800);
+  createCanvas(1200, windowHeight);
   colorMode(HSB, 360, 100, 100, 100);
 
-  textFont("monospace", 18);
+  textFont('monospace', 18);
   fill(0);
 
-  joinedText = joinedText.join(" ");
+  joinedText = joinedText.join(' ');
   charSet = getUniqCharacters();
   for (var i = 0; i < charSet.length; i++) {
     counters[i] = 0;
@@ -76,6 +76,8 @@ function draw() {
 
   posX = 0;
   posY = 200;
+  var oldX = 0;
+  var oldY = 0;
   var sortPositionsX = [];
   var oldPositionsX = [];
   var oldPositionsY = [];
@@ -84,8 +86,6 @@ function draw() {
     oldPositionsX[i] = 0;
     oldPositionsY[i] = 0;
   }
-  var oldX = 0;
-  var oldY = 0;
 
   // draw counters
   if (mouseX >= width - 50) {
@@ -155,7 +155,7 @@ function draw() {
 function getUniqCharacters() {
   var charsArray = joinedText.toUpperCase().split('');
   var uniqCharsArray = charsArray.filter(function(char, index) {
-    return charsArray.indexOf(char) === index;
+    return charsArray.indexOf(char) == index;
   }).sort();
   return uniqCharsArray.join('');
 }
@@ -170,7 +170,7 @@ function countCharacters() {
 }
 
 function keyReleased() {
-  if (keyCode === CONTROL) saveCanvas(gd.timestamp(), 'png');
+  if (keyCode == CONTROL) saveCanvas(gd.timestamp(), 'png');
 
   if (key == '1') drawGreyLines = !drawGreyLines;
   if (key == '2') drawColoredLines = !drawColoredLines;

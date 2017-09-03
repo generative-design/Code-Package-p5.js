@@ -30,8 +30,8 @@
  */
 'use strict';
 
-var font = "Arial";
-var letter = "A";
+var font = 'sans-serif';
+var letter = 'A';
 
 function setup() {
   createCanvas(windowWidth, windowHeight);
@@ -54,7 +54,7 @@ function mouseDragged() {
 }
 
 function keyReleased() {
-  if (keyCode === CONTROL) saveCanvas(gd.timestamp(), 'png');
+  if (keyCode == CONTROL) saveCanvas(gd.timestamp(), 'png');
 }
 
 function keyTyped() {

@@ -32,9 +32,9 @@
  * alt                 : new random layout
  * ctrl                : save png
  */
-"use strict";
+'use strict';
 
-var textTyped = "";
+var textTyped = '';
 var font;
 
 var shapeSpace
@@ -54,14 +54,14 @@ var zoom;
 var actRandomSeed;
 
 function preload() {
-  font = loadFont("data/miso-bold.ttf");
-  shapeSpace = loadImage("data/space.svg");
-  shapeSpace2 = loadImage("data/space2.svg");
-  shapePeriod = loadImage("data/period.svg");
-  shapeComma = loadImage("data/comma.svg");
-  shapeExclamationmark = loadImage("data/exclamationmark.svg");
-  shapeQuestionmark = loadImage("data/questionmark.svg");
-  shapeReturn = loadImage("data/return.svg");
+  font = loadFont('data/miso-bold.ttf');
+  shapeSpace = loadImage('data/space.svg');
+  shapeSpace2 = loadImage('data/space2.svg');
+  shapePeriod = loadImage('data/period.svg');
+  shapeComma = loadImage('data/comma.svg');
+  shapeExclamationmark = loadImage('data/exclamationmark.svg');
+  shapeQuestionmark = loadImage('data/questionmark.svg');
+  shapeReturn = loadImage('data/return.svg');
 }
 
 function setup() {
@@ -98,7 +98,7 @@ function draw() {
   background(255);
   noStroke();
 
-  if (mouseIsPressed) {
+  if (mouseIsPressed && mouseButton == LEFT) {
     centerX = mouseX - offsetX;
     centerY = mouseY - offsetY;
   }
@@ -118,12 +118,12 @@ function draw() {
       case ' ': // space
         // 50% left, 50% right
         var dir = floor(random(0, 2));
-        if (dir === 0) {
+        if (dir == 0) {
           image(shapeSpace, 1, -15);
           translate(4, 1);
           rotate(QUARTER_PI);
         }
-        if (dir === 1) {
+        if (dir == 1) {
           image(shapeSpace2, 1, -15);
           translate(14, -5);
           rotate(-QUARTER_PI);
@@ -169,11 +169,11 @@ function draw() {
 
   // blink cursor after text
   fill(0);
-  if (frameCount / 6 % 2 === 0) rect(0, 0, 15, 2);
+  if (int(frameCount / 6) % 2 == 0) rect(0, 0, 15, 2);
 }
 
 
-function mousePressed(){
+function mousePressed() {
   offsetX = mouseX - centerX;
   offsetY = mouseY - centerY;
 }
@@ -181,9 +181,8 @@ function mousePressed(){
 
 function keyReleased() {
   // export png
-  if (keyCode === CONTROL) saveCanvas(gd.timestamp(), 'png');
-  if (keyCode === ALT) actRandomSeed++;
-  print(actRandomSeed);
+  if (keyCode == CONTROL) saveCanvas(gd.timestamp(), 'png');
+  if (keyCode == ALT) actRandomSeed++;
 }
 
 function keyPressed() {
@@ -210,7 +209,7 @@ function keyPressed() {
   }
 }
 
-function keyTyped(){
+function keyTyped() {
   if (keyCode >= 32) {
     textTyped += key;
   }

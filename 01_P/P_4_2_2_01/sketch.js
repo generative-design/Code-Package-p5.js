@@ -1,4 +1,4 @@
-// P_4_2_2_01.pde
+// P_4_2_2_01
 //
 // Generative Gestaltung, ISBN: 978-3-87439-759-9
 // First Edition, Hermann Schmidt, Mainz, 2009
@@ -27,8 +27,8 @@
 
 // horizontal and vertical grid count
 // take care of the aspect ratio ... here 4:3
-var tileCountX = 12;
-var tileCountY = 16;
+var tileCountX = 9;
+var tileCountY = 12;
 var tileWidth;
 var tileHeight;
 var imageCount = tileCountX * tileCountY;
@@ -49,16 +49,18 @@ function setup() {
 
   tileWidth = width / tileCountX;
   tileHeight = height / tileCountY;
-  print(movie.width +' x '+ movie.height);
+  print(movie.width + ' • ' + movie.height);
 }
 
 function draw() {
-  if(movie.elt.readyState === 4) {
+  if (movie.elt.readyState == 4) {
     var posX = tileWidth * gridX;
     var posY = tileHeight * gridY;
 
     // draw video
     image(movie, posX, posY, tileWidth, tileHeight);
+
+    currentImage++;
 
     // seek the video to next time
     var nextTime = map(currentImage, 0, imageCount, 0, movie.duration());
@@ -72,7 +74,6 @@ function draw() {
       gridY++;
     }
 
-    currentImage++;
     if (currentImage >= imageCount) noLoop();
   }
 }

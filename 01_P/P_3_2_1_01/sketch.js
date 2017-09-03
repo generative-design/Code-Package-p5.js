@@ -1,4 +1,4 @@
-// P_3_2_1_01.pde
+// P_3_2_1_01
 //
 // Generative Gestaltung, ISBN: 978-3-87439-759-9
 // First Edition, Hermann Schmidt, Mainz, 2009
@@ -16,6 +16,9 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
+// CREDITS
+// FreeSans.otf (GNU FreeFont), see the readme files in data folder.
+
 /**
  * typo outline displayed as dots and lines
  *
@@ -29,14 +32,13 @@ var textTyped = "Type ...!";
 
 var font;
 
-
 function setup() {
   createCanvas(windowWidth, windowHeight);
   noLoop();
 
   opentype.load('data/FreeSans.otf', function(err, f) {
     if (err) {
-      print('Font could not be loaded: ' + err);
+      console.log(err);
     } else {
       font = f;
       loop();
@@ -49,7 +51,7 @@ function draw() {
 
   background(255);
   // margin border
-  translate(20,220);
+  translate(20, 220);
 
   if (textTyped.length > 0) {
     // get a path from OpenType.js
@@ -65,8 +67,8 @@ function draw() {
     strokeWeight(1.0);
     var l = 5;
     for (var i = 0; i < path.commands.length; i++) {
-      var cmd = path.commands[i];
-      line(cmd.x-l, cmd.y-l, cmd.x+l, cmd.y+l);
+      var pnt = path.commands[i];
+      line(pnt.x - l, pnt.y - l, pnt.x + l, pnt.y + l);
     }
 
     // dots
@@ -74,10 +76,10 @@ function draw() {
     noStroke();
     var diameter = 7;
     for (var i = 0; i < path.commands.length; i++) {
-      var cmd = path.commands[i];
+      var pnt = path.commands[i];
       // on every 2nd point
-      if (i%2 === 0) {
-        ellipse(cmd.x, cmd.y, diameter, diameter);
+      if (i % 2 == 0) {
+        ellipse(pnt.x, pnt.y, diameter, diameter);
       }
     }
   }
@@ -87,31 +89,20 @@ function draw() {
 
 function keyReleased() {
   // export png
-  if (keyCode === CONTROL) saveCanvas(gd.timestamp(), 'png');
+  if (keyCode == CONTROL) saveCanvas(gd.timestamp(), 'png');
 }
 
 function keyPressed() {
-  switch(keyCode) {
-    case DELETE:
-    case BACKSPACE:
-      if (textTyped.length > 0) {
-        textTyped = textTyped.substring(0,max(0,textTyped.length-1));
-        loop();
-        return false; // prevent any default behavior
-      }
-      break;
-      // disable those keys
-    case TAB:
-    case ENTER:
-    case RETURN:
-    case ESCAPE:
-      break;
+  if (keyCode == DELETE || keyCode == BACKSPACE) {
+    if (textTyped.length > 0) {
+      textTyped = textTyped.substring(0, textTyped.length - 1);
+      loop();
+    }
   }
-
 }
 
 function keyTyped() {
-  if (keyCode >= 32){
+  if (keyCode >= 32) {
     textTyped += key;
     loop();
   }

@@ -1,4 +1,4 @@
-// P_2_2_1_01.pde
+// P_2_2_1_01
 //
 // Generative Gestaltung, ISBN: 978-3-87439-759-9
 // First Edition, Hermann Schmidt, Mainz, 2009
@@ -23,7 +23,7 @@
  * position x          : drawing speed
  *
  * KEYS
- * BACKSPACE           : delete display
+ * DEL/BACKSPACE       : clear display
  * s                   : save png
  */
 'use strict';
@@ -35,7 +35,7 @@ var SOUTHEAST = 3;
 var SOUTH = 4;
 var SOUTHWEST = 5;
 var WEST = 6;
-var NORTHWEST= 7;
+var NORTHWEST = 7;
 var direction;
 
 var stepSize = 1;
@@ -46,9 +46,9 @@ var posY;
 
 function setup() {
   createCanvas(windowWidth, windowHeight);
-  clear();
   noStroke();
   fill(0, 40);
+
   posX = width / 2;
   posY = height / 2;
 }
@@ -57,24 +57,24 @@ function draw() {
   for (var i = 0; i <= mouseX; i++) {
     direction = int(random(0, 8));
 
-    if (direction === NORTH) {
+    if (direction == NORTH) {
       posY -= stepSize;
-    } else if (direction === NORTHEAST) {
+    } else if (direction == NORTHEAST) {
       posX += stepSize;
       posY -= stepSize;
-    } else if (direction === EAST) {
+    } else if (direction == EAST) {
       posX += stepSize;
-    } else if (direction === SOUTHEAST) {
+    } else if (direction == SOUTHEAST) {
       posX += stepSize;
       posY += stepSize;
-    } else if (direction === SOUTH) {
+    } else if (direction == SOUTH) {
       posY += stepSize;
-    } else if (direction === SOUTHWEST) {
+    } else if (direction == SOUTHWEST) {
       posX -= stepSize;
       posY += stepSize;
-    } else if (direction === WEST) {
+    } else if (direction == WEST) {
       posX -= stepSize;
-    } else if (direction === NORTHWEST) {
+    } else if (direction == NORTHWEST) {
       posX -= stepSize;
       posY -= stepSize;
     }
@@ -90,5 +90,5 @@ function draw() {
 
 function keyReleased() {
   if (key == 's' || key == 'S') saveCanvas(gd.timestamp(), 'png');
-  if (keyCode === DELETE || keyCode === BACKSPACE) clear();
+  if (keyCode == DELETE || keyCode == BACKSPACE) clear();
 }

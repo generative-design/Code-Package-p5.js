@@ -1,4 +1,4 @@
-// P_2_1_3_01.pde
+// P_2_1_3_01
 //
 // Generative Gestaltung, ISBN: 978-3-87439-759-9
 // First Edition, Hermann Schmidt, Mainz, 2009
@@ -29,13 +29,14 @@
  */
 'use strict';
 
+var count = 0;
 var tileCountX = 10;
 var tileCountY = 10;
 var tileWidth  = 0;
 var tileHeight = 0;
 
-var count = 0;
 var colorStep = 15;
+
 var circleCount = 0;
 var endSize = 0;
 var endOffset = 0;
@@ -57,7 +58,7 @@ function draw() {
   translate(tileWidth / 2, tileHeight / 2);
 
   circleCount = mouseX / 30 + 1;
-  endSize = map(mouseX, 0, width, tileWidth / 2, 0);
+  endSize = map(mouseX, 0, max(width, mouseX), tileWidth / 2, 0);
   endOffset = map(mouseY, 0, max(height, mouseY), 0, (tileWidth - endSize) / 2);
 
   for (var gridY = 0; gridY <= tileCountY; gridY++) {
@@ -67,10 +68,10 @@ function draw() {
       scale(1, tileHeight / tileWidth);
 
       var toggle = int(random(0, 4));
-      if (toggle === 0) rotate(-HALF_PI);
-      if (toggle === 1) rotate(0);
-      if (toggle === 2) rotate(HALF_PI);
-      if (toggle === 3) rotate(PI);
+      if (toggle == 0) rotate(-HALF_PI);
+      if (toggle == 1) rotate(0);
+      if (toggle == 2) rotate(HALF_PI);
+      if (toggle == 3) rotate(PI);
 
       // draw module
       for (var i = 0; i < circleCount; i++) {

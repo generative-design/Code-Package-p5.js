@@ -1,4 +1,4 @@
-// P_2_1_3_03.pde
+// P_2_1_3_03
 //
 // Generative Gestaltung, ISBN: 978-3-87439-759-9
 // First Edition, Hermann Schmidt, Mainz, 2009
@@ -31,9 +31,9 @@
  */
 'use strict';
 
+var count = 0;
 var tileCountX = 6;
 var tileCountY = 6;
-var count = 0;
 
 var drawMode = 1;
 
@@ -41,7 +41,6 @@ function setup() {
   createCanvas(windowWidth, windowHeight);
   rectMode(CENTER);
   noFill();
-  stroke(0);
 }
 
 function draw() {
@@ -100,8 +99,8 @@ function keyReleased() {
   if (key == '1') drawMode = 1;
   if (key == '2') drawMode = 2;
   if (key == '3') drawMode = 3;
-  if (keyCode === DOWN_ARROW) tileCountY = max(tileCountY - 1, 1);
-  if (keyCode === UP_ARROW) tileCountY += 1;
-  if (keyCode === LEFT_ARROW) tileCountX = max(tileCountX - 1, 1);
-  if (keyCode === RIGHT_ARROW) tileCountX += 1;
+  if (keyCode == DOWN_ARROW) tileCountY = max(tileCountY - 1, 1);
+  if (keyCode == UP_ARROW) tileCountY += 1;
+  if (keyCode == LEFT_ARROW) tileCountX = max(tileCountX - 1, 1);
+  if (keyCode == RIGHT_ARROW) tileCountX += 1;
 }

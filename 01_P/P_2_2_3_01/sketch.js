@@ -1,4 +1,4 @@
-// P_2_2_3_01.pde
+// P_2_2_3_01
 //
 // Generative Gestaltung, ISBN: 978-3-87439-759-9
 // First Edition, Hermann Schmidt, Mainz, 2009
@@ -60,7 +60,6 @@ function setup() {
   background(255);
 }
 
-
 function draw() {
   // floating towards mouse position
   centerX += (mouseX - centerX) * 0.01;
@@ -70,6 +69,8 @@ function draw() {
   for (var i = 0; i < formResolution; i++) {
     x[i] += random(-stepSize, stepSize);
     y[i] += random(-stepSize, stepSize);
+    // uncomment the following line to show position of the agents
+    // ellipse(x[i] + centerX, y[i] + centerY, 5, 5);
   }
 
   if (filled) {
@@ -107,7 +108,7 @@ function mousePressed() {
 
 function keyReleased() {
   if (key == 's' || key == 'S') saveCanvas(gd.timestamp(), 'png');
-  if (keyCode === DELETE || keyCode === BACKSPACE) background(255);
+  if (keyCode == DELETE || keyCode == BACKSPACE) background(255);
   if (key == '1') filled = false;
   if (key == '2') filled = true;
 

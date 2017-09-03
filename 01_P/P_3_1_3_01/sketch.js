@@ -1,4 +1,4 @@
-// P_3_1_3_01.pde
+// P_3_1_3_01
 //
 // Generative Gestaltung, ISBN: 978-3-87439-759-9
 // First Edition, Hermann Schmidt, Mainz, 2009
@@ -30,7 +30,7 @@
 'use strict';
 
 var joinedText;
-var charSet;
+var alphabet = 'ABCDEFGHIJKLMNORSTUVWYZÄÖÜß,.;!? ';
 var counters = [];
 
 var posX;
@@ -38,21 +38,22 @@ var posY;
 
 var drawAlpha = true;
 
-
 function preload() {
-  joinedText = loadStrings("data/faust_kurz.txt");
+  joinedText = loadStrings('data/faust_kurz.txt');
 }
 
 function setup() {
   createCanvas(620, windowHeight);
 
   noStroke();
-  textFont("monospace", 18);
+  textFont('monospace', 18);
 
-  joinedText = joinedText.join(" ");
-  charSet = getUniqCharacters();
+  joinedText = joinedText.join(' ');
 
-  for (var i = 0; i < charSet.length; i++) {
+  // use the following command, to collect all characters in the text automatically
+  // alphabet = getUniqCharacters();
+
+  for (var i = 0; i < alphabet.length; i++) {
     counters[i] = 0;
   }
 
@@ -69,7 +70,7 @@ function draw() {
   for (var i = 0; i < joinedText.length; i++) {
     // again, find the index of the current letter in the character set
     var upperCaseChar = joinedText.charAt(i).toUpperCase();
-    var index = charSet.indexOf(upperCaseChar);
+    var index = alphabet.indexOf(upperCaseChar);
     if (index < 0) continue;
 
     if (drawAlpha) {
@@ -86,28 +87,30 @@ function draw() {
     text(joinedText.charAt(i), posX, interY);
 
     posX += textWidth(joinedText.charAt(i));
-    if (posX >= width - 200 && upperCaseChar == " ") {
+    if (posX >= width - 200 && upperCaseChar == ' ') {
       posY += 30;
       posX = 20;
     }
   }
 }
 
-function getUniqCharacters() {
-  var charsArray = joinedText.toUpperCase().split('');
-  var uniqCharsArray = charsArray.filter(function(char, index) {
-    return charsArray.indexOf(char) === index;
-  }).sort();
-  return uniqCharsArray.join('');
-}
-
 function countCharacters() {
   for (var i = 0; i < joinedText.length; i++) {
     // get one character from the text and turn it to uppercase
-    var index = charSet.indexOf(joinedText.charAt(i).toUpperCase());
-    // increacre the respective counter
+    var c = joinedText.charAt(i);
+    var upperCaseChar = c.toUpperCase();
+    var index = alphabet.indexOf(upperCaseChar);
+    // increase the respective counter
     if (index >= 0) counters[index]++;
   }
+}
+
+function getUniqCharacters() {
+  var charsArray = joinedText.toUpperCase().split('');
+  var uniqCharsArray = charsArray.filter(function(char, index) {
+    return charsArray.indexOf(char) == index;
+  }).sort();
+  return uniqCharsArray.join('');
 }
 
 function keyReleased() {
