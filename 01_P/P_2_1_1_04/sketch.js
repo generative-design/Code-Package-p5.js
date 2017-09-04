@@ -46,7 +46,7 @@ var shapes;
 var sizeMode = 0;
 
 function preload() {
-  shapes=[];
+  shapes = [];
   shapes.push(loadImage("data/module_1.svg"));
   shapes.push(loadImage("data/module_2.svg"));
   shapes.push(loadImage("data/module_3.svg"));
