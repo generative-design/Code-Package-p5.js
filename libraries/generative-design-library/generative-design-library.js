@@ -2,43 +2,37 @@
 'use strict';
 
 /**
- * Creates a new empty Treemap. Content may be added using addData() or addTreemap().
- *
+ * Creates a new empty Treemap with position (x, y), width and height. 
+ * To specify drawing a bit more, you can give drawing options. 'sort' is true or false. If false, the elements will be shuffeled.
+ * 'direction' is either "horizontal", "vertical" or "both". With 'ignore', you can easily switch on and off branches of the Treemap. 
+ * Content may be added using addData() or addTreemap().
+ * 
  * @class Treemap
  * @constructor
  * @param  {Number} x         x position
  * @param  {Number} y         y position
  * @param  {Number} w         width
  * @param  {Number} h         height
- * @param  {Object} [options] drawing and sorting options {sort:true or false, direction:"horizontal", "vertical" or "both"}
- * @return {Treemap}          the created empty Treemap
- */
-
-/**
- * Would be nice to have...
- * TODO: Alternative constructor
- * @class Treemap
- * @constructor
- * @param  {Array} data       data to store. A plain or nested array of numbers or objects.
-                              If the elements are numbers they are the counters. If objects, countkey names the key to use as a counter
- * @param  {String} countkey  Which key should be used as the count
- * @return {Treemap}          the created Treemap that holds all the data given
+ * @param  {Object} [options] drawing and sorting options {sort:true or false, direction:"horizontal", "vertical" or "both", ignore:["abc", "xyz"]}
+ * @return {Treemap}          the new empty Treemap 
  */
 
 /**
  * @class Treemap
+ * @ignore
  * @constructor (mainly for internal use)
  * @param  {Treemap} parent   the parent Treemap
- * @param  {String|Number|Object|Array} data  one data element to store. could be anything.
+ * @param  {String|Number|Object|Array} data  one data element to store. could be anything. 
  * @param  {Number} count     initial count
- * @return {Treemap}          the created Treemap that represents one item
+ * @return {Treemap}          the new Treemap that represents one item
  */
 
 /**
  * @class Treemap
+ * @ignore
  * @constructor (mainly for internal use)
  * @param  {Treemap} parent   the parent Treemap
- * @return {Treemap}          the created empty Treemap
+ * @return {Treemap}          the new empty Treemap 
  */
 
 function Treemap() {
@@ -90,52 +84,126 @@ function Treemap() {
   this.w = this.w || 0;
   this.h = this.h || 0;
 
-  this.minCount = 0;  // not used internally, but could be nice for drawing
-  this.maxCount = 0;  // not used internally, but could be nice for drawing
+  /**
+  * the minimum count value of the items in the items array
+  * @property minCount
+  * @type {Number}
+  */
+  this.minCount = 0; 
+  /**
+  * the maximum count value of the items in the items array
+  * @property maxCount
+  * @type {Number}
+  */
+  this.maxCount = 0; 
 
-  if (this.parent) this.level = parent.level + 1;
+  /**
+  * level of the item; the root node has level 0
+  * @property level
+  * @type {Number}
+  */
+  if (this.parent) this.level = this.parent.level + 1;
   else this.level = 0;
 
+  /**
+  * the depth of the branch; end nodes have depth 0
+  * @property depth
+  * @type {Number}
+  */
+  this.depth = 0;
+
+  /**
+  * the number of items in the complete branch
+  * @property itemCount
+  * @type {Number}
+  */
+  this.itemCount = 1;
+
+  /**
+  * index of the item in the sorted items array..
+  * @property index
+  * @type {Number}
+  */
   this.index = 0;
 
   this.root = this;
-  if (this.parent) this.root = this.parent.root;
+  this.isRoot = true;
+  if (this.parent) {
+    this.root = this.parent.root;
+    this.isRoot = false;
+  };
   this.options = this.options || this.root.options;
 
   this.ignored = false;
 
   /**
-    * Adds one data element to the items array.
-    * If there is already an item which has this as data, just increase the counter of that item.
-    * If not, create a new Treemap with that data and init the counter with 1
+    * Adds data to the Treemap. If you give just one parameter, this value will be added to the items array.
+    * If there is already an item which has this value as data, just increase the counter of that item.
+    * If not, create a new Treemap with that data and init the counter with 1.
+    * If you have a complex object or array of nested subitems, you can give a second parameter, 
+    * which defines what keys should be used to build the Treemap. This second parameter is in the form
+    * {children:"items", count:"size", data:"name"}. 
+    * The key 'children' defines, where to find the nested arrays. If you have a plain nested array, just leave this out. 
+    * The key 'count' defines, which value to map to the size of the rectangles of the Treemap.
+    * The key 'data' defines, which data to store. If omitted, the complete object or array branch is stored. 
+    * This might be the way to choose in most cases. That way you keep all the information accessible when drawing the treemap.
     *
     * @method addData
-    * @param {String|Number|Object|Array} data the data element (e.g. a String)
-    * @return {Boolean} Returns true, if a new treemap was created
+    * @param {String|Number|Object|Array} data   the data element (e.g. a String) 
+    * @param {Object} [keys]                     which keys should be used to build the Treemap: e.g. {children:"items", count:"size", data:"name"}. See the example for different ways how to use that. 
+    * @return {Boolean}                          returns true, if a new treemap was created
   */
-  Treemap.prototype.addData = function(data) {
-    var i = this.items.findIndex(function(el) {
-      return el.data == data
-    });
-    if (i >= 0) {
-      this.items[i].count++;
+
+  Treemap.prototype.addData = function(data, keys) {
+    if (keys) {
+      // store data. If a key is given, just store that part of the object, otherwise the whole branch.
+      if (keys.data) this.data = data[keys.data];
+      else this.data = data;
+
+      // store counter. if data is a number, just use that as a counter. if data is an object, store what's given at the key 'count'. 
+      if (typeof data === "number") this.count = data;
+      else this.count = data[keys.count] || 0;
+
+      // get children. if the key 'children' is defined use that. otherwise data might be just an array, so use it directly.
+      var children = data;
+      if (keys.children) children = data[keys.children];
+ 
+      if (children instanceof Array) {
+        children.forEach(function(child) {
+          var t = new Treemap(this);
+          this.items.push(t);
+          t.addData(child, keys);
+        }.bind(this));
+        return true;
+      }
       return false;
+    
     } else {
-      this.items.push(new Treemap(this, data, 1));
+      // data is a "simple" value (String, Number, small Object or Array) which should be counted. 
+      var i = this.items.findIndex(function(el) { return el.data == data; });
+      if (i >= 0) {
+        // the element is already in this Treemap, so just increase counter
+        this.items[i].count++;
+        return false;
+      } else {
+        // the element is not found, so create a new Treemap for it
+        this.items.push(new Treemap(this, data, 1));
+      }
+      return true;
     }
-    return true;
+    // There should have been reached one of the other returns. If not:
+    return false;
   }
 
-
   /**
-    * Adds an empty treemap to this treemap. If data is given, this could be used
+    * Adds an empty treemap to this treemap. If data is given, this could be used 
     * to show and hide a complete sub-treemap from the diagram. There is no check,
     * if there is already another treemap with that data.
     *
     * @method addTreemap
-    * @param {String|Number|Object|Array} data the data element (e.g. a String)
-    * @count {Number} [count] the initial counter
-    * @return {Treemap} Returns the new Treemap
+    * @param {String|Number|Object|Array} data the data element (e.g. a String) 
+    * @param {Number} [count]                  the initial counter 
+    * @return {Treemap}                        returns the new Treemap
   */
   Treemap.prototype.addTreemap = function(data, count) {
     var t = new Treemap(this, data, count);
@@ -143,7 +211,7 @@ function Treemap() {
     return t;
   }
 
-  // The size of the rectangle depends on the counter. So it's important to sum
+  // The size of a rectangle depends on the counter. So it's important to sum
   // up all the counters recursively. Only called internally.
   Treemap.prototype.sumUpCounters = function() {
     // Adjust parameter this.ignore: if ignore option is defined and this.data is listed in that ignored=true
@@ -162,6 +230,8 @@ function Treemap() {
     } else {
       this.minCount = Number.MAX_VALUE;
       this.maxCount = 0;
+      this.depth = 0;
+      this.itemCount = 1;
       this.count = 0;
 
       if (this.ignored) return 0;
@@ -171,13 +241,15 @@ function Treemap() {
         this.count += sum;
         this.minCount = min(this.minCount, sum);
         this.maxCount = max(this.maxCount, sum);
+        this.depth = max(this.depth, this.items[i].depth + 1);
+        this.itemCount += this.items[i].itemCount;
       }
     }
     return this.count;
   }
 
   /**
-    * Calculates the rectangles of each item. While doing this, all counters
+    * Calculates the rectangles of each item. While doing this, all counters 
     * and ignore flags are updated.
     *
     * @method calculate
@@ -291,6 +363,9 @@ function Treemap() {
               this.items[j].w = bLen;
               this.items[j].h = aPart;
             }
+            // negative width or height not allowed
+            this.items[j].w = max(this.items[j].w, 0);
+            this.items[j].h = max(this.items[j].h, 0);
 
             // now that the position, width and height is set, it's possible to calculate the nested treemap.
             this.items[j].calculate();
@@ -318,15 +393,29 @@ function Treemap() {
   };
 
   /**
-    * A simple recursive drawing routine. Draws only the rectangles.
+    * A simple recursive drawing routine. Draws only the rectangles. If you want to draw more of the
+    * content you can supply a function for drawing one item. This function gets the actual item 
+    * as a parameter and has access to all the fields of that item, most important x, y, w, and h.
+    * Example:         
+    * ``` 
+    * myTreemap.draw(function(item) { 
+    *   var r = min(item.w/4, item.h/4, 5);
+    *   rect(item.x, item.y, item.w, item.h, r); 
+    * }); 
+    * ```
     *
     * @method draw
+    * @param {Function} [drawItemFunction] a function that draws one item 
   */
-  Treemap.prototype.draw = function() {
+  Treemap.prototype.draw = function(drawItemFunction) {
     if (!this.ignored) {
-      rect(this.x, this.y, this.w, this.h);
+
+      // use the drawing function if given, otherwise draw a simple rect.
+      if (drawItemFunction) drawItemFunction(this);
+      else rect(this.x, this.y, this.w, this.h);
+
       for (var i = 0; i < this.items.length; i++) {
-        this.items[i].draw();
+        this.items[i].draw(drawItemFunction);
       }
     }
   };
@@ -336,6 +425,8 @@ function Treemap() {
 /**
  * Randomize array element order in-place.
  * Using Durstenfeld shuffle algorithm.
+ *
+ * @ignore
  */
 function shuffleArray(array) {
   for (var i = array.length - 1; i > 0; i--) {
@@ -347,13 +438,21 @@ function shuffleArray(array) {
 }
 
 module.exports = Treemap;
-
 },{}],2:[function(require,module,exports){
 'use strict';
 
 // http://www.wacomeng.com/web/
 // http://www.wacomeng.com/web/TestFBPluginTable.html
 
+/**
+ * Use a Wacom tablet in your browser. Currently works only in Safari. Support of the Wacom browser plugin seems to be fading out. You have to add this to your html:
+ *
+ * `<object id="wtPlugin" type="application/x-wacomtabletplugin"></object>`
+ *
+ * @see {@link http://www.wacomeng.com/web/}
+ * @class
+ * @constructor
+ */
 function WacomTablet() {
 	this.penValues = {
 		// wacom
@@ -434,6 +533,11 @@ WacomTablet.prototype._update = function() {
 	return this.penValues;
 };
 
+/**
+ * Get the current values a Wacom tablet
+ *
+ * @return {Object} with properties: isWacom, isEraser, pressure, sysX, sysY, tabX, tabY, rotationDeg, rotationRad, tiltX, tiltY, tangPressure, version, pointerType, tabletModel, azimuth, altitude
+ */
 WacomTablet.prototype.values = function() {
 	return this._update();
 };
@@ -446,13 +550,46 @@ module.exports = WacomTablet;
 
 var aseUtils = require('ase-utils');
 
+
+/**
+ * Color constant
+ * @property {String}
+ */
 var RED = "red";
+/**
+ * Color constant
+ * @property {String}
+ */
 var GREEN = "green";
+/**
+ * Color constant
+ * @property {String}
+ */
 var BLUE = "blue";
+/**
+ * Color constant
+ * @property {String}
+ */
 var HUE = "hue";
+/**
+ * Color constant
+ * @property {String}
+ */
 var SATURATION = "saturation";
+/**
+ * Color constant
+ * @property {String}
+ */
 var BRIGHTNESS = "brightness";
+/**
+ * Color constant
+ * @property {String}
+ */
 var GRAYSCALE = "grayscale";
+/**
+ * Color constant
+ * @property {String}
+ */
 var ALPHA = "alpha";
 
 
@@ -8475,14 +8612,15 @@ function hasOwnProperty(obj, prop) {
 },{"./support/isBuffer":17,"_process":15,"inherits":16}],19:[function(require,module,exports){
 module.exports={
   "name": "generative-design-library.js",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "Javascript library for the book Generative Design",
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "bundle": "browserify index.js --standalone gd -o dist/generative-design-library.js",
     "dist": "npm run bundle && browserify index.js --standalone gd | uglifyjs > dist/generative-design-library.min.js",
-    "watch": "watch 'npm run bundle' ."
+    "watch": "watch 'npm run bundle' .",
+    "documentation": "documentation readme index.js --section=API"
   },
   "repository": {
     "type": "git",
@@ -8506,6 +8644,7 @@ module.exports={
   },
   "devDependencies": {
     "browserify": "^14.4.0",
+    "documentation": "^5.2.2",
     "uglify-js": "^3.0.28",
     "watch": "^1.0.2"
   }
