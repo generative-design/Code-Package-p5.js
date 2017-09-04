@@ -1,4 +1,4 @@
-// P_2_3_6_02.pde
+// P_2_3_6_02
 //
 // Generative Gestaltung, ISBN: 978-3-87439-759-9
 // First Edition, Hermann Schmidt, Mainz, 2009
@@ -141,10 +141,9 @@ function drawGrid() {
       var posY = tileSize * gridY - tileSize / 2;
       fill(360);
       if (debugMode) {
-        if (tiles[gridX][gridY] == 1) fill(220);
+        if (tiles[gridX][gridY] == 1) fill(80);
       }
       stroke(0);
-      noFill();
       rect(posX, posY, tileSize, tileSize);
     }
   }
@@ -196,7 +195,7 @@ function drawModules() {
         image(modules[tileType[gridX][gridY]][decimalResult], posX, posY, tileSize, tileSize);
 
         if (debugMode) {
-          fill(150);
+          fill(60);
           text(currentTile + '\n' + decimalResult + '\n' + binaryResult, posX, posY);
         }
       }
