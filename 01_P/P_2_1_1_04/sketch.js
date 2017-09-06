@@ -41,23 +41,24 @@ var newShapeSize = shapeSize;
 var shapeAngle = 0.0;
 var maxDist;
 var currentShape;
-var shapes = [];
+var shapes;
 
 var sizeMode = 0;
 
 function preload() {
-  shapes.push(loadImage('data/module_1.svg'));
-  shapes.push(loadImage('data/module_2.svg'));
-  shapes.push(loadImage('data/module_3.svg'));
-  shapes.push(loadImage('data/module_4.svg'));
-  shapes.push(loadImage('data/module_5.svg'));
-  shapes.push(loadImage('data/module_6.svg'));
-  shapes.push(loadImage('data/module_7.svg'));
+  shapes = [];
+  shapes.push(loadImage("data/module_1.svg"));
+  shapes.push(loadImage("data/module_2.svg"));
+  shapes.push(loadImage("data/module_3.svg"));
+  shapes.push(loadImage("data/module_4.svg"));
+  shapes.push(loadImage("data/module_5.svg"));
+  shapes.push(loadImage("data/module_6.svg"));
+  shapes.push(loadImage("data/module_7.svg"));
 }
 
 function setup() {
   createCanvas(600, 600);
-
+  // set the current shape to the first in the array
   currentShape = shapes[0];
   tileWidth = width / tileCount;
   tileHeight = height / tileCount;

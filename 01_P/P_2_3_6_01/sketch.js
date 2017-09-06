@@ -32,7 +32,7 @@
  */
 'use strict';
 
-var modules = [];
+var modules;
 
 var tileSize = 30;
 var gridResolutionX;
@@ -44,6 +44,7 @@ var debugMode = false;
 
 function preload() {
   // load SVG modules
+  modules = [];
   for (var i = 0; i < 16; i++) {
     modules[i] = loadImage('data/' + nf(i, 2) + '.svg');
   }

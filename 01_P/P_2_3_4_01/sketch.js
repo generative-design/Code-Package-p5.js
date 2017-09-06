@@ -39,10 +39,11 @@ var stepSize = 5.0;
 var moduleSize = 25;
 
 var lineModule;
-var elements = [];
+var elements;
 
 function preload() {
   // preload svg for line module
+  elements = [];
   elements[0] = loadImage('data/01.svg');
   elements[1] = loadImage('data/02.svg');
   elements[2] = loadImage('data/03.svg');
