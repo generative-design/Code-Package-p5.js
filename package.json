@@ -5,7 +5,8 @@
   "scripts": {
     "start": "npm run watch",
     "watch": "budo --host localhost --dir . --open --live --watch-glob '**/*.{html,css,js}'",
-    "setup": "cd libraries && node setup.js"
+    "setup": "cd libraries && node setup.js",
+    "encapsulate": "cd libraries && node encapsulate.js"
   },
   "repository": {
     "type": "git",
@@ -33,7 +34,9 @@
     "jquery": "^3.2.1",
     "opentype.js": "^0.6.8",
     "p5": "^0.5.14",
-    "tooltipster": "^4.2.5"
+    "tooltipster": "^4.2.5",
+    "cheerio": "^1.0.0-rc.2",
+    "fs-extra": "^4.0.2"
   },
   "install": {
     "sources": {
