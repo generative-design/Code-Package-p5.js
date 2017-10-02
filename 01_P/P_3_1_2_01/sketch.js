@@ -1,4 +1,4 @@
-// P_3_1_2_01.pde
+// P_3_1_2_01
 //
 // Generative Gestaltung, ISBN: 978-3-87439-759-9
 // First Edition, Hermann Schmidt, Mainz, 2009
@@ -20,7 +20,7 @@
  * typewriter. uses input (text) as blueprint for a visual composition.
  *
  * MOUSE
- * drag                : move canvas
+ * click + drag        : move canvas
  *
  * KEYS
  * a-z                 : text input (keyboard)
@@ -82,12 +82,14 @@ function setup() {
   offsetX = 0;
   offsetY = 0;
   zoom = 0.75;
+
   actRandomSeed = 6;
 
   cursor(HAND);
   textFont(font, 25);
   textAlign(LEFT, BASELINE);
-  imageMode(CORNER);
+  noStroke();
+  fill(0);
 }
 
 function windowResized() {
@@ -96,7 +98,6 @@ function windowResized() {
 
 function draw() {
   background(255);
-  noStroke();
 
   if (mouseIsPressed && mouseButton == LEFT) {
     centerX = mouseX - offsetX;
@@ -161,15 +162,13 @@ function draw() {
         break;
 
       default: // all others
-        fill(0);
         text(letter, 0, 0);
         translate(letterWidth, 0);
     }
   }
 
   // blink cursor after text
-  fill(0);
-  if (int(frameCount / 6) % 2 == 0) rect(0, 0, 15, 2);
+  if (frameCount / 6 % 2 == 0) rect(0, 0, 15, 2);
 }
 
 
@@ -192,9 +191,6 @@ function keyPressed() {
       textTyped = textTyped.substring(0, max(0, textTyped.length - 1));
       print(textTyped);
       break;
-    case TAB:
-    case ESCAPE:
-      break;
     case ENTER:
     case RETURN:
       // enable linebreaks
@@ -212,5 +208,6 @@ function keyPressed() {
 function keyTyped() {
   if (keyCode >= 32) {
     textTyped += key;
+    print(textTyped);
   }
 }
