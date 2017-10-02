@@ -98,6 +98,7 @@ function setup() {
   offsetX = 0;
   offsetY = 0;
   zoom = 0.75;
+
   actRandomSeed = 6;
 
   cursor(HAND);
@@ -124,6 +125,8 @@ function draw() {
 
   translate(centerX, centerY);
   scale(zoom);
+
+  push();
 
   actColorIndex = 0;
   fill(palette[actColorIndex][0], palette[actColorIndex][1], palette[actColorIndex][2]);
@@ -180,7 +183,7 @@ function draw() {
         push();
         translate(random(-300, 300), random(-300, 300));
         rotate(floor(random(8))*QUARTER_PI);
-        actColorIndex = actColorIndex + 1;
+        actColorIndex = (actColorIndex + 1) % palette.length;
         fill(palette[actColorIndex][0], palette[actColorIndex][1], palette[actColorIndex][2]);
         rect(0, -25, 10, 35);
         break;
@@ -242,6 +245,8 @@ function draw() {
   // blink cursor after text
   fill(200, 30, 40);
   if (frameCount / 6 % 2 == 0) rect(0, 0, 15, 2);
+
+  pop();
 }
 
 function mousePressed() {
