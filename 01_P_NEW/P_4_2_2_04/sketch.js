@@ -5,6 +5,9 @@
  *
  * CONTRIBUTED BY
  * [Niels Poldervaart](http://NielsPoldervaart.nl)
+ *
+ * VIDEO CREDITS
+ * European Space Agency. (2016, December 23). The amazing adventures of Rosetta and Philae. Retrieved from http://m.esa.int/spaceinvideos/Videos/2016/12/The_amazing_adventures_of_Rosetta_and_Philae
  */
 'use strict';
 
