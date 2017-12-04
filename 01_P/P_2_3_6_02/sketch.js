@@ -36,7 +36,7 @@
  */
 'use strict';
 
-var modules = [];
+var modules;
 var moduleType = ['A', 'B', 'C', 'D', 'E', 'F', 'J', 'K'];
 var activeModuleSet = 'A';
 
@@ -53,6 +53,7 @@ var randomMode = false;
 var debugMode = false;
 
 function preload() {
+  modules = [];
   for (var i = 0; i < moduleType.length; i++) {
     modules[moduleType[i]] = [];
     for (var j = 0; j < 16; j++) {

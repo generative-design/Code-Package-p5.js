@@ -1,4 +1,4 @@
-// P_3_1_2_02.pde
+// P_3_1_2_02
 //
 // Generative Gestaltung, ISBN: 978-3-87439-759-9
 // First Edition, Hermann Schmidt, Mainz, 2009
@@ -24,28 +24,28 @@
 *
 * KEYS
 * a-z                 : text input (keyboard)
-* space               : random straight / small curve
 * ,.!?                : curves
+* space               : random straight / small curve
 * :+-xz               : icons
 * o                   : station with the last 7 typed letters as name
 * a u                 : stop
 * del, backspace      : remove last letter
 * arrow up            : zoom canvas +
 * arrow down          : zoom canvas -
+* alt                 : new random layout
 * ctrl                : save png
 */
 'use strict';
 
+var textTyped = 'Was hier folgt ist Tet! So asnt, und mag. Ich mag Tet sehr.';
 var font;
-var textTyped =  "Was hier folgt ist Tet! So asnt, und mag. Ich mag Tet sehr.";
 
 var shapeSpace;
 var shapeSpace2;
 var shapePeriod;
 var shapeComma;
-var shapeExclamationmark;
-
 var shapeQuestionmark;
+var shapeExclamationmark;
 var shapeReturn;
 var icon1;
 var icon2;
@@ -53,13 +53,14 @@ var icon3;
 var icon4;
 var icon5;
 
-var centerX = 0;
-var centerY = 0;
-var offsetX = 0;
-var offsetY = 0;
-var zoom = 0.75;
+var centerX;
+var centerY;
+var offsetX;
+var offsetY;
+var zoom;
 
-//new RGBColour(0, 130, 164);
+var actRandomSeed;
+
 var palette = [
   [253, 195, 0],
   [0, 0, 0],
@@ -92,17 +93,22 @@ function preload() {
 function setup() {
   createCanvas(windowWidth, windowHeight);
 
-  textFont(font, 25);
-  cursor(HAND);
-  noStroke();
-  fill(0);
-
   centerX = width / 2;
   centerY = height / 2;
+  offsetX = 0;
+  offsetY = 0;
+  zoom = 0.75;
+
+  actRandomSeed = 6;
+
+  cursor(HAND);
+  textFont(font, 25);
+  textAlign(LEFT, BASELINE);
+  noStroke();
+  fill(0);
 }
 
 function windowResized() {
-  // resize canvas when window is resized
   resizeCanvas(windowWidth, windowHeight);
 }
 
@@ -114,27 +120,25 @@ function draw() {
     centerY = mouseY - offsetY;
   }
 
+  // allways produce the same sequence of random numbers
+  randomSeed(actRandomSeed);
+
   translate(centerX, centerY);
   scale(zoom);
 
   push();
-
-  randomSeed(0);
 
   actColorIndex = 0;
   fill(palette[actColorIndex][0], palette[actColorIndex][1], palette[actColorIndex][2]);
   rect(0, -25, 10, 35);
 
   for (var i = 0; i < textTyped.length; i++) {
-    var fontSize = 25;
-    textFont(font, fontSize);
     var letter = textTyped.charAt(i);
     var letterWidth = textWidth(letter);
 
     // ------ letter rule table ------
     switch (letter) {
       case ' ': //space
-        //60% notrun, 20% left, 20% right
         var dir = floor(random(5));
         if (dir == 0) {
           image(shapeSpace, 0, -15);
@@ -147,26 +151,31 @@ function draw() {
           rotate(-QUARTER_PI);
         }
         break;
+
       case ',':
         image(shapeComma, 0, -15);
         translate(33, 15);
         rotate(QUARTER_PI);
         break;
+
       case '.':
         image(shapePeriod, 0, -56);
         translate(56, -56);
         rotate(-HALF_PI);
         break;
+
       case '!':
         image(shapeExclamationmark, 0, -30);
         translate(43, -18);
         rotate(-QUARTER_PI);
         break;
+
       case '?':
         image(shapeQuestionmark, 0, -30);
         translate(43, -18);
         rotate(-QUARTER_PI);
         break;
+
       case '\n':
         // start a new line at a random position near the center
         rect(0, -25, 10, 35);
@@ -174,10 +183,11 @@ function draw() {
         push();
         translate(random(-300, 300), random(-300, 300));
         rotate(floor(random(8))*QUARTER_PI);
-        actColorIndex = actColorIndex + 1;
+        actColorIndex = (actColorIndex + 1) % palette.length;
         fill(palette[actColorIndex][0], palette[actColorIndex][1], palette[actColorIndex][2]);
         rect(0, -25, 10, 35);
         break;
+
       case 'o': // Station big
         rect(0, -15, letterWidth + 1, 15);
         push();
@@ -193,31 +203,39 @@ function draw() {
         pop();
         translate(letterWidth, 0);
         break;
+
       case 'a': // Station small left
         rect(0, 0 - 15, letterWidth + 1, 25);
         rect(0, 0 - 15, letterWidth + 1, 15);
         translate(letterWidth, 0);
         break;
+
       case 'u':  // Station small right
         rect(0, 0 - 25, letterWidth + 1, 25);
         rect(0, 0 - 15, letterWidth + 1, 15);
         translate(letterWidth, 0);
         break;
+
       case ':': // icon
         image(icon1, 0, -60, 30, 30);
         break;
+
       case '+': // icon
         image(icon2, 0, -60, 35, 30);
         break;
+
       case '-': // icon
         image(icon3, 0, -60, 30, 30);
         break;
+
       case 'x': // icon
         image(icon4, 0, -60, 30, 30);
         break;
+
       case 'z': // icon
         image(icon5, 0, -60, 30, 30);
         break;
+
       default: // all others
         rect(0, -15, letterWidth + 1, 15);
         translate(letterWidth, 0);
@@ -238,6 +256,7 @@ function mousePressed() {
 
 function keyReleased() {
   if (keyCode == CONTROL) saveCanvas(gd.timestamp(), 'png');
+  if (keyCode == ALT) actRandomSeed++;
 }
 
 function keyPressed() {

@@ -25,12 +25,13 @@
  */
 'use strict';
 
-var shapes = [];
+var shapes;
 var img;
 
 function preload() {
   img = loadImage('data/pic.png');
 
+  shapes = [];
   shapes.push(loadImage('data/056.svg'));
   shapes.push(loadImage('data/076.svg'));
   shapes.push(loadImage('data/082.svg'));

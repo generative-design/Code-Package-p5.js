@@ -67,7 +67,8 @@ function draw() {
   var intersection = false;
   for (var newR = maxRadius; newR >= minRadius; newR--) {
     for (var i = 0; i < circles.length; i++) {
-      intersection = dist(newX, newY, circles[i].x, circles[i].y) < circles[i].r + newR;
+      var d = dist(newX, newY, circles[i].x, circles[i].y);
+      intersection = d < circles[i].r + newR;
       if (intersection) {
         break;
       }
@@ -83,7 +84,8 @@ function draw() {
       // Try to find an adjacent circle to the current one and draw a connecting line between the two
       var closestCircle;
       for (var j = 0; j < circles.length; j++) {
-        if (dist(circles[i].x, circles[i].y, circles[j].x, circles[j].y) <= circles[i].r + circles[j].r + 1) {
+        var d = dist(circles[i].x, circles[i].y, circles[j].x, circles[j].y);
+        if (d <= circles[i].r + circles[j].r + 1) {
           closestCircle = circles[j];
           break;
         }
