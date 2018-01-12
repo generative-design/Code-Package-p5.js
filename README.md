@@ -10,9 +10,9 @@ Hi! This GitHub repository contains all of the source code for the book [Generat
 **Authors**
 
 - [Benedikt Groß](http://benedikt-gross.de/)
-- Hartmut Bohnacker
+- [Hartmut Bohnacker](https://www.hartmut-bohnacker.de)
 - [Julia Laub](http://www.onformative.com/)
-- [Claudius Lazzeroni](http://www.lazzeroni.de/), editor
+- [Claudius Lazzeroni](http://www.lazzeroni.de/)
 
 **with contributions by**: [Joey Lee](http://jk-lee.com/) & [Niels Poldervaart](http://nielspoldervaart.nl/)
 
