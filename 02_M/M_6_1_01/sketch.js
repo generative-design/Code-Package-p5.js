@@ -51,7 +51,7 @@ var sketch = function( p ) {
       // Let all nodes repel each other
       nodes[i].attractNodes(nodes);
       // Apply velocity vector and update position
-      nodes[i].updateNode();
+      nodes[i].update();
       // Draw node
       p.ellipse(nodes[i].x, nodes[i].y, 10, 10);
     }

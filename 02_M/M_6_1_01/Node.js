@@ -1,10 +1,9 @@
 var Node = function(x, y, minX, maxX, minY, maxY) {
-  this.x = x;
-  this.y = y;
-  this.minX = minX;
-  this.maxX = maxX;
-  this.minY = minY;
-  this.maxY = maxY;
+  p5.Vector.call(this, x, y, 0);
+  this.minX = Number.MIN_VALUE || minX;
+  this.maxX = Number.MAX_VALUE || maxX;
+  this.minY = Number.MIN_VALUE || minY;
+  this.maxY = Number.MAX_VALUE || maxY;
   this.radius = 200; // Radius of impact
   this.ramp = 1; // Influences the shape of the function
   this.strength = -1; // Strength: positive value attracts, negative value repels
@@ -14,6 +13,8 @@ var Node = function(x, y, minX, maxX, minY, maxY) {
   this.maxVelocity = 10;
 }
 
+Node.prototype = Object.create(p5.Vector.prototype);
+
 Node.prototype.attractNodes = function(nodeArray) {
   for (var i = 0; i < nodeArray.length; i++) {
     var otherNode = nodeArray[i];
@@ -22,11 +23,11 @@ Node.prototype.attractNodes = function(nodeArray) {
     // Continue from the top when node is itself
     if (otherNode === this) continue;
 
-    this.attractNode(otherNode);
+    this.attract(otherNode);
   }
 }
 
-Node.prototype.attractNode = function(otherNode) {
+Node.prototype.attract = function(otherNode) {
   var thisNodeVector = myp5.createVector(this.x, this.y);
   var otherNodeVector = myp5.createVector(otherNode.x, otherNode.y);
   var d = thisNodeVector.dist(otherNodeVector);
@@ -42,7 +43,7 @@ Node.prototype.attractNode = function(otherNode) {
   }
 }
 
-Node.prototype.updateNode = function() {
+Node.prototype.update = function() {
   this.velocity.limit(this.maxVelocity);
 
   this.x += this.velocity.x;
@@ -68,3 +69,5 @@ Node.prototype.updateNode = function() {
 
   this.velocity.mult(1 - this.damping);
 }
+
+Node.prototype.constructor = Node;
