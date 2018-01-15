@@ -3,7 +3,7 @@
   $.get('sketch.js', function(data) {
     var helpText = getCommentBlock(data);
     if (helpText) createHelp(helpText);
-  });
+  }, 'text');
 
   function getCommentBlock(data) {
     // RegEx from https://github.com/yavorskiy/comment-parser/blob/master/parser.js
