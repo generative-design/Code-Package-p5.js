@@ -31,6 +31,8 @@
  */
 'use strict';
 
+p5.disableFriendlyErrors = true;
+
 var count = 0;
 var tileCountX = 6;
 var tileCountY = 6;
