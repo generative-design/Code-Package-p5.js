@@ -1,9 +1,9 @@
 # work in progress! plz ignore!
 
 
-Generative Design Code Package (for [P5.js](p5js.org/))
+Generative Design Code Package (for [P5.js](https://p5js.org/))
 ==================
-Hi! This GitHub repository contains all of the source code for the book [Generative Design: Creative Coding for the Web](http://www.generative-gestaltung.de) with JavaScript in [p5.js](p5js.org/). To get started, please follow the intructions in the sections: [Setup](#Setup) and [Running the Sketches](#Running-the-sketches). Enjoy!
+Hi! This GitHub repository contains all of the source code for the book [Generative Design: Creative Coding for the Web](http://www.generative-gestaltung.de) with JavaScript in [p5.js](https://p5js.org/). To get started, please follow the intructions in the sections: [Setup](#Setup) and [Running the Sketches](#Running-the-sketches). Enjoy!
 
 ***
 
@@ -26,7 +26,7 @@ Setup
  $ cd path/to/folder
  # e.g. cd /Users/GG/Documents/Code-Package-p5.js
  ```
- 
+
 3. Run:
 
   ```
@@ -46,5 +46,3 @@ Running the sketches
 
 
 <sup>1</sup>Some sketches work only as expected when the files are placed online, as the rely on "security" sensitive functionality like loading external files. If you try to view them locally without running a web server, you get some kind of "cross-origin" errors 😭 (see your browser's console). The solution is to serve the files using what's called a [local web server](https://github.com/processing/p5.js/wiki/Local-server). This is what happens when you run `npm start` as shown above.
-
-
