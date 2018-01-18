@@ -41,8 +41,8 @@
   "install": {
     "sources": {
       "p5": [
-        "node_modules/p5/lib/p5.js",
-        "node_modules/p5/lib/addons/p5.dom.js"
+        "node_modules/p5/lib/p5.min.js",
+        "node_modules/p5/lib/addons/p5.dom.min.js"
       ],
       "generative-design-library": [
         "node_modules/generative-design-library.js/dist/generative-design-library.js"
