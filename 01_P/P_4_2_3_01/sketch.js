@@ -10,10 +10,11 @@
  */
 'use strict';
 
-// Download video file from https://github.com/generative-design/Code-Package-Data/blob/master/P_supercut_media/video.mp4
-var videoSrc = '../../data/P_supercut_media/video.mp4';
+// You have to download the video file first
+// Please see https://github.com/generative-design/Code-Package-p5.js/tree/master/data
+var videoSrc = '../../data/P_4_2_3_supercut-media/video.mp4';
 var video;
-var subtitleSrc = '../../data/P_supercut_media/subs.vtt';
+var subtitleSrc = '../../data/P_4_2_3_supercut-media/subs.vtt';
 var subtitles;
 
 var searchQuery = '\\b(comet)\\b';
