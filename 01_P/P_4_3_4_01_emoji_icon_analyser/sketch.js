@@ -34,7 +34,7 @@ var emojisPath = "../../data/twemoji/";
 
 
 function preload() {
-  emojiNames = loadTable("emoji-names.csv", "csv", "header");
+  emojiNames = loadTable("data/emoji-names.csv", "csv", "header");
 }
 
 function setup() {

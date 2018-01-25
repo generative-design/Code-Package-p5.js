@@ -1,4 +1,4 @@
-// P_4_2_2_03
+// P_4_2_3_03
 //
 // Generative Gestaltung – Creative Coding im Web
 // ISBN: 978-3-87439-902-9, First Edition, Hermann Schmidt, Mainz, 2018
@@ -232,4 +232,8 @@ function setup() {
   createGUI();
 
   generateMontage(searchQuery);
+}
+
+function keyReleased() {
+  if (key == 's' || key == 'S') saveCanvas(gd.timestamp(), 'png');
 }

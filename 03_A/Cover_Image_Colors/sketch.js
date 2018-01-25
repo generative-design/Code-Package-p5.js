@@ -40,7 +40,9 @@ function preload() {
 }
 
 function setup() {
-  createCanvas(100, 100);
+  createCanvas(512, 512);
+  noStroke();
+
   primaryGreen = color(14, 232, 117);
 
   // create image samples
@@ -56,11 +58,15 @@ function setup() {
     imageColors.push({ r: int(red(c)), g: int(green(c)), b: int(blue(c)), a: int(alpha(c)) })
   }
 
-  console.log(imageColors.toSource());
+  console.log(imageColors);
 }
 
 function draw() {
-  noLoop();
+  var w = width / imageColors.length;
+  imageColors.forEach(function(imageColor, index) {
+    fill(imageColor.r, imageColor.g, imageColor.b);
+    rect(index * w, 0, w, height);
+  })
 }
 
 
