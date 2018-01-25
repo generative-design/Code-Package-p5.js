@@ -28,12 +28,12 @@ copyFolderContents(rootDirectory, copyPathDirectory)
 
 // then get the directories for the 01_P and 02_M sketches
 var pDirs = getDirectories(copyPathDirectory+"/01_P/").map(function(dir){return copyPathDirectory +"/01_P/" + dir});
-var pNewDirs = getDirectories(copyPathDirectory+"/01_P_NEW/").map(function(dir){return copyPathDirectory +"/01_P_NEW/" + dir});
+// var pNewDirs = getDirectories(copyPathDirectory+"/01_P_NEW/").map(function(dir){return copyPathDirectory +"/01_P_NEW/" + dir});
 var mDirs = getDirectories(copyPathDirectory+"/02_M/").map(function(dir){return copyPathDirectory +"/02_M/" + dir});
 
 // copy the libs and fix the paths
 make(copyPathDirectory, pDirs)
-make(copyPathDirectory, pNewDirs)
+// make(copyPathDirectory, pNewDirs)
 make(copyPathDirectory, mDirs)
 
 
