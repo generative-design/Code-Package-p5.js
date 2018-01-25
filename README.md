@@ -1,20 +1,20 @@
-# work in progress! plz ignore!
-
-
 Generative Design Code Package (for [P5.js](https://p5js.org/))
 ==================
 Hi! This GitHub repository contains all of the source code for the book [Generative Design: Creative Coding for the Web](http://www.generative-gestaltung.de) with JavaScript in [p5.js](https://p5js.org/). To get started, please follow the intructions in the sections: [Setup](#Setup) and [Running the Sketches](#Running-the-sketches). Enjoy!
 
 ***
 
-**Authors**
+**Authors:**
 
 - [Benedikt Groß](http://benedikt-gross.de/)
 - [Hartmut Bohnacker](https://www.hartmut-bohnacker.de)
 - [Julia Laub](http://www.onformative.com/)
 - [Claudius Lazzeroni](http://www.lazzeroni.de/)
 
-**with contributions by**: [Joey Lee](http://jk-lee.com/) & [Niels Poldervaart](http://nielspoldervaart.nl/)
+**with contributions by:**
+
+- [Joey Lee](http://jk-lee.com/)
+- [Niels Poldervaart](http://nielspoldervaart.nl/)
 
 
 Setup
@@ -33,7 +33,7 @@ Setup
   $ npm install
   ```
 
-Running the sketches
+Running the Sketches
 --------------------
 1. Start a local web server<sup>1</sup> (with live reload) by typing in your Terminal the command below. This will open the `index.html` file (list of all sketches) a new browser window.
 
