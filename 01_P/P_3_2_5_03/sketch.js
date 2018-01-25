@@ -1,3 +1,22 @@
+// P_3_2_5_03
+//
+// Generative Gestaltung – Creative Coding im Web
+// ISBN: 978-3-87439-902-9, First Edition, Hermann Schmidt, Mainz, 2018
+// Benedikt Groß, Hartmut Bohnacker, Julia Laub, Claudius Lazzeroni
+// with contributions by Joey Lee and Niels Poldervaart
+// Copyright 2018
+//
+// http://www.generative-gestaltung.de
+//
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at http://www.apache.org/licenses/LICENSE-2.0
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
+
 /**
  * Animated type exploring various drawing modes
  *
@@ -66,7 +85,7 @@ function draw() {
 
   // draw methods
   if(myAnimatedText.drawMode == 1){
-    myAnimatedText.animatedPoints("ellipse");  
+    myAnimatedText.animatedPoints("ellipse");
   }
   if(myAnimatedText.drawMode == 2){
     myAnimatedText.animatedPoints("rect");
@@ -90,7 +109,7 @@ function draw() {
     myAnimatedText.outwardLines();
   }
 
-  
+
 
 }
 
@@ -112,7 +131,7 @@ function animatedType(){
   that.drawMode = 8;
   that.style = 1;
 
-  /* 
+  /*
   Data Handling Methods
   */
 
@@ -130,13 +149,13 @@ function animatedType(){
   this.addText = function(_text){
     var textObject = {counter:0, text:_text}
     return textObject;
-  } 
+  }
 
   // get the path objects for each line typed
   this.getPaths = function(){
     // clear the paths each loop
     that.paths = [];
-  
+
     // go though each of the text objects
     that.textTyped.forEach(function(txt, lineNum){
       if(txt.text.length > 0){
@@ -155,7 +174,7 @@ function animatedType(){
             breaks: floor(path.commands.length / txt.text.length),
             ranges: []
           };
-          
+
           // get the start point of each letter
           for(var i = 0; i < pathData.len-1; i += pathData.breaks){
             pathData.ranges.push(floor(i));
@@ -164,7 +183,7 @@ function animatedType(){
           that.paths.push(pathData);
       }
     });
-  } 
+  }
 
   this.getIndividualPaths = function(){
     that.individualPaths = [];
@@ -213,7 +232,7 @@ function animatedType(){
       if(i == that.individualPaths.length-2){
         that.individualPaths[i+1].startX = that.startX;
       }
- 
+
     }
 
   }
@@ -225,20 +244,20 @@ function animatedType(){
 
     // for each of the letters
     that.paths.forEach(function(path, idx){
-                 
+
       path.data.commands.forEach(function(coord){
         if(coord.x != undefined && coord.y != undefined){
           var yOffset = path.lineNumber*fontSize;
           that.coordinates.push({x: coord.x, y: coord.y + yOffset})
         }
       })
-      
+
     });
-  } 
+  }
 
 
 
-  /* 
+  /*
   keyboard interaction Methods
   */
 
@@ -248,7 +267,7 @@ function animatedType(){
     // remove letters from each object
     if (textTypedCounter >= 0 && that.textTyped[0].text.length > 0){
      that.textTyped[textTypedCounter].text = that.textTyped[textTypedCounter].text.substring(0,max(0,that.textTyped[textTypedCounter].text.length-1));
-    } 
+    }
     // remove objects if there's no characters
     if(that.textTyped[textTypedCounter].text.length == 0){
         textTypedCounter--;
@@ -261,7 +280,7 @@ function animatedType(){
     }
   }
 
-  // add lines 
+  // add lines
   this.addLines = function(){
     that.textTyped.push(that.addText(""));
     that.lineCount++;
@@ -304,20 +323,20 @@ function animatedType(){
       stroke(that.colors[path.lineNumber])
       path.ranges.forEach(function(d){
         var cmd = path.data.commands[that.textTyped[idx].counter + d];
-        
+
         if(cmd != undefined ){
           if(that.textTyped[idx].counter < path.breaks){
             var yOffset = path.lineNumber*fontSize;
             if(_shape == "ellipse"){
-              ellipse(cmd.x, cmd.y + yOffset, fontSize*0.10, fontSize*0.10);  
+              ellipse(cmd.x, cmd.y + yOffset, fontSize*0.10, fontSize*0.10);
             }else if(_shape == "rect"){
               rect(cmd.x, cmd.y + yOffset, fontSize*0.10, fontSize*0.10);
-            }    
-            
+            }
+
             that.textTyped[idx].counter++;
           }else{
             that.textTyped[idx].counter = 0;
-          } 
+          }
         }
       });
     })
@@ -326,7 +345,7 @@ function animatedType(){
 
   // radial lines
   this.radialLines = function(){
-    
+
     stroke(that.colors[0])
     that.coordinates.forEach(function(coords){
         strokeWeight(1);
@@ -334,7 +353,7 @@ function animatedType(){
           var angle = radians(i);
           var radiusDistanceX = map(mouseX, 0, width, 0, random(20));
           var radiusDistanceY = map(mouseY, 0, width, 0, random(20));
-          
+
           var ptX = cos(angle) * radiusDistanceX + coords.x;
           var ptY = sin(angle) * radiusDistanceY + coords.y;
           line(ptX, ptY, coords.x, coords.y)
@@ -390,39 +409,39 @@ function animatedType(){
 
   // wobblyShapes
   this.wobblyShapes= function(_type){
-  
+
     that.individualPaths.forEach(function(path, idx){
       stroke(that.colors[path.lineNumber])
       fill(that.colors[path.lineNumber])
 
       that.angle +=0.01;
       if(idx %2){
-        var shifter = sin(that.angle) * 0.05 ;        
+        var shifter = sin(that.angle) * 0.05 ;
       } else{
-        var shifter = sin(that.angle) * -0.05 ;  
+        var shifter = sin(that.angle) * -0.05 ;
       }
 
       var yOffset = path.lineNumber*fontSize;
       var xOffset = path.startX;
-      
+
       push();
       translate(xOffset,yOffset);
       rotate(shifter);
-      
+
       // choose a beginShape mode
       if(_type == "TRIANGLES"){
-        beginShape(TRIANGLES);  
+        beginShape(TRIANGLES);
       }
       else if(_type == "TRIANGLE_STRIP"){
-        beginShape(TRIANGLE_STRIP);  
+        beginShape(TRIANGLE_STRIP);
       }
       else if(_type == "LINES"){
-        beginShape(LINES);  
+        beginShape(LINES);
       }
-      else if(_type == "TRIANGLE_FAN"){        
-        beginShape(TRIANGLE_FAN);  
+      else if(_type == "TRIANGLE_FAN"){
+        beginShape(TRIANGLE_FAN);
       } else{
-        beginShape(TRIANGLES);  
+        beginShape(TRIANGLES);
       }
 
       // add all those vertices to the shape
@@ -453,7 +472,7 @@ function animatedType(){
         // add all those vertices to the shape
         path.data.commands.forEach(function(d){
           line(cX, cY, d.x, d.y)
-          
+
         })
       pop();
     });
@@ -467,7 +486,7 @@ function keyPressed(){
 
   if (keyCode === DELETE || keyCode === BACKSPACE) {
     myAnimatedText.removeLetters();
-  } 
+  }
 
   if (keyCode === ENTER || keyCode === RETURN) {
     myAnimatedText.addLines();

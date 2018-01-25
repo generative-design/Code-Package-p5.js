@@ -1,9 +1,10 @@
 // P_2_3_5_01_TABLET
 //
-// Generative Gestaltung, ISBN: 978-3-87439-759-9
-// First Edition, Hermann Schmidt, Mainz, 2009
-// Hartmut Bohnacker, Benedikt Gross, Julia Laub, Claudius Lazzeroni
-// Copyright 2009 Hartmut Bohnacker, Benedikt Gross, Julia Laub, Claudius Lazzeroni
+// Generative Gestaltung – Creative Coding im Web
+// ISBN: 978-3-87439-902-9, First Edition, Hermann Schmidt, Mainz, 2018
+// Benedikt Groß, Hartmut Bohnacker, Julia Laub, Claudius Lazzeroni
+// with contributions by Joey Lee and Niels Poldervaart
+// Copyright 2018
 //
 // http://www.generative-gestaltung.de
 //
@@ -19,7 +20,7 @@
 /**
  * draw tool. shows how to draw with dynamic elements.
  * works only with an external tablet device!
- * browser support for the tablet driver seems to be fading out. 
+ * browser support for the tablet driver seems to be fading out.
  * safari should work well. chrome doesn't support the tablet plugin.
  *
  * MOUSE

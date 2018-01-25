@@ -1,9 +1,10 @@
-// P_1_0_01.pde
+// P_1_0_01
 //
-// Generative Gestaltung, ISBN: 978-3-87439-759-9
-// First Edition, Hermann Schmidt, Mainz, 2009
-// Hartmut Bohnacker, Benedikt Gross, Julia Laub, Claudius Lazzeroni
-// Copyright 2009 Hartmut Bohnacker, Benedikt Gross, Julia Laub, Claudius Lazzeroni
+// Generative Gestaltung – Creative Coding im Web
+// ISBN: 978-3-87439-902-9, First Edition, Hermann Schmidt, Mainz, 2018
+// Benedikt Groß, Hartmut Bohnacker, Julia Laub, Claudius Lazzeroni
+// with contributions by Joey Lee and Niels Poldervaart
+// Copyright 2018
 //
 // http://www.generative-gestaltung.de
 //
@@ -31,7 +32,7 @@
 function setup() {
   createCanvas(720, 720);
   noCursor();
-  
+
   colorMode(HSB, 360, 100, 100);
   rectMode(CENTER);
   noStroke();

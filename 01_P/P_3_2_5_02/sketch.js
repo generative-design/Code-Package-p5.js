@@ -1,3 +1,22 @@
+// P_3_2_5_02
+//
+// Generative Gestaltung – Creative Coding im Web
+// ISBN: 978-3-87439-902-9, First Edition, Hermann Schmidt, Mainz, 2018
+// Benedikt Groß, Hartmut Bohnacker, Julia Laub, Claudius Lazzeroni
+// with contributions by Joey Lee and Niels Poldervaart
+// Copyright 2018
+//
+// http://www.generative-gestaltung.de
+//
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at http://www.apache.org/licenses/LICENSE-2.0
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
+
 /**
  * Animated font created from simple geometries
  *
@@ -22,14 +41,14 @@ function setup() {
   strokeWeight(1);
   strokeCap(ROUND);
 
-  // adding your aniLetters object with 
+  // adding your aniLetters object with
   // the letter width and height
   aniLetters = new AniLetters(40, 100);
 
   // initialize with a message
   aniLetters.textTyped.push( aniLetters.addText("TYPE"))
   aniLetters.textTyped.push( aniLetters.addText("CODE"))
-  
+
 }
 
 function draw() {
@@ -109,7 +128,7 @@ function AniLetters(_lwidth, _lheight){
     // remove letters from each object
     if (textTypedCounter >= 0 && that.textTyped[0].text.length > 0){
      that.textTyped[textTypedCounter].text = that.textTyped[textTypedCounter].text.substring(0,max(0,that.textTyped[textTypedCounter].text.length-1));
-    } 
+    }
     // remove objects if there's no characters
     if(that.textTyped[textTypedCounter].text.length == 0){
         textTypedCounter--;
@@ -120,9 +139,9 @@ function AniLetters(_lwidth, _lheight){
           that.textTyped.pop();
         }
     }
-  }  
+  }
 
-  // add lines 
+  // add lines
   this.addLines = function(){
     that.textTyped.push(that.addText(""));
     that.lineCount++;
@@ -137,7 +156,7 @@ function AniLetters(_lwidth, _lheight){
     }
   }
 
-  
+
   /*
   Call functions in render
   */
@@ -832,8 +851,8 @@ function AniLetters(_lwidth, _lheight){
     } else{
       ellipse(posX, posY, 10, 10);
     }
-    
-  } 
+
+  }
 
   this.curveFromToInSteps = function(a1, a2, b1, b2, c1, c2, d1, d2,  stepCount){
     var points = [];
@@ -906,7 +925,7 @@ function AniLetters(_lwidth, _lheight){
 
 function keyPressed() {
   if (keyCode === CONTROL) saveCanvas(gd.timestamp(), 'png');
-  
+
   // change draw mode
   if (keyCode === LEFT_ARROW) {
     aniLetters.drawMode--;
@@ -928,7 +947,7 @@ function keyPressed() {
   // change between ellipses and rect
   if (key === "1") aniLetters.style = 1;
   if (key === "2") aniLetters.style = 2;
-  
+
   // on return
   if (keyCode == ENTER || keyCode == RETURN) {
     aniLetters.addLines();
@@ -938,7 +957,7 @@ function keyPressed() {
     // aniLetters.textTyped.pop();
     // aniLetters.cursorLocation.x -= aniLetters.letterWidth + aniLetters.letterPadding;
     aniLetters.removeLetters();
-  } 
+  }
 }
 
 
