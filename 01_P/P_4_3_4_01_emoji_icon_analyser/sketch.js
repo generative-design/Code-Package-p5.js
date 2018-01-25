@@ -8,6 +8,9 @@ var emojiNames;
 var counter = 0;
 var imgSize = 72;
 var results = {};
+
+// You will have to download the emoji files first
+// Please see https://github.com/generative-design/Code-Package-p5.js/tree/master/data
 var emojisPath = "../../data/twemoji/";
 
 
