@@ -20,7 +20,7 @@ for (var libName in sources) {
 // generate index.html file with links to all sketches
 var sketches = glob.sync('../0*/*_*/sketch.js');
 var html = '<head>\n';
-html += '\t<link href="https://fonts.googleapis.com/css?family=Poppins:600" rel="stylesheet">\n';
+html += '\t<link href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:600" rel="stylesheet">\n';
 html += '\t<link href="styles/list.css" rel="stylesheet" type="text/css">\n';
 html += '</head>\n<body>\n<section><nav>\n';
 var currentFolder = '';
