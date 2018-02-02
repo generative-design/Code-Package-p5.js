@@ -39,6 +39,7 @@ var slider;
 var cols = 40;
 var rows = 40;
 var boxes;
+var boxHolder;
 
 function preload(){
   video = createVideo('data/ball.mov');
@@ -47,6 +48,9 @@ function preload(){
 function setup() {
   noCanvas();
   pixelDensity(1);
+
+  boxHolder = createDiv();
+  boxHolder.id('mirror');
 
   boxes = [];
 
