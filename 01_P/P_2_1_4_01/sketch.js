@@ -47,6 +47,7 @@ var slider;
 var cols = 40;
 var rows = 40;
 var boxes;
+var boxHolder;
 
 // preload the images to be used for the checkboxes
 function preload(){
@@ -60,6 +61,8 @@ function setup() {
   noCanvas();
   // set pixel density to 1
   pixelDensity(1);
+  boxHolder = createDiv();
+  boxHolder.id('mirror');
 
   boxes = [];
 
