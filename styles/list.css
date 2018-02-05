@@ -31,13 +31,20 @@ nav {
 }
 .sketch__img {
 	background-color: #fff;
-	flex-grow: 1;
-	display: flex;
-	align-items: center;
+	width: 100%;
+	padding-top: 100%;
+	position: relative;
 }
 .sketch__img img {
+	position: absolute;
+	top: 0;
+	left: 0;
+	bottom: 0;
+	right: 0;
 	display: block;
 	max-width: 100%;
+	max-height: 100%;
+	margin: auto;
 }
 
 h3 {
