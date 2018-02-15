@@ -1,13 +1,21 @@
 Data
 ====
 
-Some of the sketches rely on loading data. Not all of the data is automatically included in this Code-Package-p5.js e.g. video or hundreds of emojis files. Please download the data and make sure to respect the proposed file structure below:
+Some of the sketches rely on loading data. Not all of the data are automatically included in this Code-Package-p5.js e.g. video or hundreds of emojis files. Please download the data using the links shown below and move the data to their respective folders in this directory (e.g. `/data/<🔠_#_#_#>`). 
+
+Make sure to respect the proposed file structure below. Don't forget to run the following so that all your data and sketches are served together:
+
+```
+cd path/to/your/Code-Package-p5.js 
+npm start
+```
+
 
 P_4_2_1_footage
 ---------------
 Sketches: P_4_2_1_01, P_4_2_1_02
 
-Already included, you have to do nothing :)
+Already included. No need to download anything :)
 
 ```
 data/P_4_2_1_footage/
