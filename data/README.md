@@ -6,7 +6,10 @@ Some of the sketches rely on loading data. Not all of the data are automatically
 Make sure to respect the proposed file structure below. Don't forget to run the following so that all your data and sketches are served together:
 
 ```
+# e.g. cd /Users/Julia/Documents/Code-Package-p5.js
 cd path/to/your/Code-Package-p5.js 
+
+# run the server
 npm start
 ```
 
