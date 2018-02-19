@@ -1,0 +1,6 @@
+GENERATIVE DESIGN CODE PACKAGE FOR P5.JS
+
+----------------------------------------------------------------
+Version 1.0.0 - 19 Feb 2018
+
+Initial release.
