@@ -4,6 +4,7 @@ Hi! This GitHub repository contains all of the source code for the book [Generat
 
 ***
 
+
 **Authors:**
 
 - [Benedikt Groß](http://benedikt-gross.de/)
@@ -22,16 +23,17 @@ Setup
 1. Install [node.js](https://nodejs.org) (go for the latest stable version)
 2. Open Terminal and navigate over to the `Code-Package-p5.js` folder that you downloaded onto your computer:
 
- ```
- $ cd path/to/folder
- # e.g. cd /Users/GG/Documents/Code-Package-p5.js
- ```
+  ```
+  $ cd path/to/folder
+  # e.g. cd /Users/GG/Documents/Code-Package-p5.js
+  ```
 
 3. Run:
 
   ```
   $ npm install
   ```
+
 
 Running the Sketches
 --------------------
@@ -46,3 +48,8 @@ Running the Sketches
 
 
 <sup>1</sup>Some sketches work only as expected when the files are placed online, as the rely on "security" sensitive functionality like loading external files. If you try to view them locally without running a web server, you get some kind of "cross-origin" errors 😭 (see your browser's console). The solution is to serve the files using what's called a [local web server](https://github.com/processing/p5.js/wiki/Local-server). This is what happens when you run `npm start` as shown above.
+
+
+License
+-------
+All of the book's source code is licensed under the [Apache License Version 2.0](http://www.apache.org/licenses/LICENSE-2.0)
