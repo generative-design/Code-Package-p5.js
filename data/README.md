@@ -1,13 +1,13 @@
 Data
 ====
 
-Some of the sketches rely on loading data. Not all of the data are automatically included in this Code-Package-p5.js e.g. video or hundreds of emojis files. Please download the data using the links shown below and move the data to their respective folders in this directory (e.g. `/data/<🔠_#_#_#>`). 
+Some of the sketches rely on loading data. Not all of the data are automatically included in this Code-Package-p5.js e.g. video or hundreds of emojis files. Please download the data using the links shown below and move the data to their respective folders in this directory (e.g. `/data/<🔠_#_#_#>`).
 
 Make sure to respect the proposed file structure below. Don't forget to run the following so that all your data and sketches are served together:
 
 ```
 # e.g. cd /Users/Julia/Documents/Code-Package-p5.js
-cd path/to/your/Code-Package-p5.js 
+cd path/to/your/Code-Package-p5.js
 
 # run the server
 npm start
@@ -28,7 +28,7 @@ P_4_2_3_supercut-media
 ----------------------
 Sketches: P_4_2_3_01, P_4_2_3_02, P_4_2_3_03, P_4_2_3_04
 
-⬇️ http://generative-gestaltung.de/downloads/P_4_2_3_supercut-media.zip
+⬇️ http://generative-gestaltung.de/2/downloads/P_4_2_3_supercut-media.zip
 
 ```
 data/P_4_2_3_supercut-media/subs.vtt
