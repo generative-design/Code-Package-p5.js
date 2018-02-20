@@ -37,7 +37,7 @@
 * [Dan Shiffman](http://shiffman.net/)
 */
 
-"use strict";
+'use strict';
 
 var img;
 var img1;
@@ -61,7 +61,7 @@ function setup() {
   noCanvas();
   // set pixel density to 1
   pixelDensity(1);
-  boxHolder = createDiv();
+  boxHolder = createDiv('');
   boxHolder.id('mirror');
 
   boxes = [];
@@ -106,7 +106,6 @@ function draw() {
   }
 }
 
-
 function keyPressed() {
   if (key == '1') img = img1;
   if (key == '2') img = img2;
@@ -115,4 +114,3 @@ function keyPressed() {
   img.resize(cols, rows);
   img.loadPixels();
 }
-

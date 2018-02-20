@@ -32,7 +32,7 @@
  * [Dan Shiffman](http://shiffman.net/)
  */
 
-"use strict";
+'use strict';
 
 var video;
 var slider;
@@ -49,7 +49,7 @@ function setup() {
   noCanvas();
   pixelDensity(1);
 
-  boxHolder = createDiv();
+  boxHolder = createDiv('');
   boxHolder.id('mirror');
 
   boxes = [];
