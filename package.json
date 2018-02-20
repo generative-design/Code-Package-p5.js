@@ -1,12 +1,14 @@
 {
-  "name": "Code-Package-p5-js",
-  "version": "0.0.0",
-  "description": "Code package of the book Generative Design for p5.js",
+  "name": "Generative-Design-Code-Package-p5-js",
+  "version": "1.0.0",
+  "description": "Code package of the book 'Generative Design: Visualize, Program, and Create with JavaScript in p5.js'",
   "scripts": {
     "start": "npm run watch",
     "watch": "budo --host localhost --dir . --open --live --watch-glob '**/*.{html,css,js}'",
-    "setup": "cd libraries && node setup.js"
+    "setup": "cd libraries && node setup.js",
+    "encapsulate": "cd libraries && node encapsulate.js"
   },
+  "license": "Apache-2.0",
   "repository": {
     "type": "git",
     "url": "https://github.com/generative-design/Code-Package-p5.js.git"
@@ -14,15 +16,21 @@
   "keywords": [
     "processing",
     "p5",
+    "p5.js",
     "generative",
     "computational",
     "design"
   ],
-  "author": "Benedikt Groß <bg@benedikt-gross.de>",
+  "contributors": [
+    "Benedikt Groß (http://benedikt-gross.de/)",
+    "Hartmut Bohnacker (https://www.hartmut-bohnacker.de/)",
+    "Joey Lee (http://jk-lee.com/projects/)",
+    "Niels Poldervaart (http://nielspoldervaart.nl/)"
+  ],
   "bugs": {
     "url": "https://github.com/generative-design/Code-Package-p5.js/issues"
   },
-  "homepage": "http://www.generative-gestaltung.de",
+  "homepage": "http://www.generative-gestaltung.de/2",
   "dependencies": {
     "budo": "^9.2.2",
     "chroma-js": "^1.3.4",
@@ -33,13 +41,15 @@
     "jquery": "^3.2.1",
     "opentype.js": "^0.6.8",
     "p5": "^0.5.14",
-    "tooltipster": "^4.2.5"
+    "tooltipster": "^4.2.5",
+    "cheerio": "^1.0.0-rc.2",
+    "fs-extra": "^4.0.2"
   },
   "install": {
     "sources": {
       "p5": [
-        "node_modules/p5/lib/p5.js",
-        "node_modules/p5/lib/addons/p5.dom.js"
+        "node_modules/p5/lib/p5.min.js",
+        "node_modules/p5/lib/addons/p5.dom.min.js"
       ],
       "generative-design-library": [
         "node_modules/generative-design-library.js/dist/generative-design-library.js"

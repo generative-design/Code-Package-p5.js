@@ -1,9 +1,10 @@
 // P_2_3_6_01
 //
-// Generative Gestaltung, ISBN: 978-3-87439-759-9
-// First Edition, Hermann Schmidt, Mainz, 2009
-// Hartmut Bohnacker, Benedikt Gross, Julia Laub, Claudius Lazzeroni
-// Copyright 2009 Hartmut Bohnacker, Benedikt Gross, Julia Laub, Claudius Lazzeroni
+// Generative Gestaltung – Creative Coding im Web
+// ISBN: 978-3-87439-902-9, First Edition, Hermann Schmidt, Mainz, 2018
+// Benedikt Groß, Hartmut Bohnacker, Julia Laub, Claudius Lazzeroni
+// with contributions by Joey Lee and Niels Poldervaart
+// Copyright 2018
 //
 // http://www.generative-gestaltung.de
 //
@@ -45,9 +46,30 @@ var debugMode = false;
 function preload() {
   // load SVG modules
   modules = [];
-  for (var i = 0; i < 16; i++) {
-    modules[i] = loadImage('data/' + nf(i, 2) + '.svg');
-  }
+
+  // METHOD 1: Looping through local files is efficient
+  // for (var i = 0; i < 16; i++) {
+  //   modules[i] = loadImage('data/' + nf(i, 2) + '.svg');
+  // }
+  
+  // METHOD 2: Read files one-by-one
+  modules[0] = loadImage('data/00.svg');
+  modules[1] = loadImage('data/01.svg');
+  modules[2] = loadImage('data/02.svg');
+  modules[3] = loadImage('data/03.svg');
+  modules[4] = loadImage('data/04.svg');
+  modules[5] = loadImage('data/05.svg');
+  modules[6] = loadImage('data/06.svg');
+  modules[7] = loadImage('data/07.svg');
+  modules[8] = loadImage('data/08.svg');
+  modules[9] = loadImage('data/09.svg');
+  modules[10] = loadImage('data/10.svg');
+  modules[11] = loadImage('data/11.svg');
+  modules[12] = loadImage('data/12.svg');
+  modules[13] = loadImage('data/13.svg');
+  modules[14] = loadImage('data/14.svg');
+  modules[15] = loadImage('data/15.svg');
+  
 }
 
 function setup() {

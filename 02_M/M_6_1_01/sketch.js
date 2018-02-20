@@ -1,10 +1,10 @@
-// M_6_1_01.pde
-// Node.pde
+// M_6_1_01
 //
-// Generative Gestaltung, ISBN: 978-3-87439-759-9
-// First Edition, Hermann Schmidt, Mainz, 2009
-// Hartmut Bohnacker, Benedikt Gross, Julia Laub, Claudius Lazzeroni
-// Copyright 2009 Hartmut Bohnacker, Benedikt Gross, Julia Laub, Claudius Lazzeroni
+// Generative Gestaltung – Creative Coding im Web
+// ISBN: 978-3-87439-902-9, First Edition, Hermann Schmidt, Mainz, 2018
+// Benedikt Groß, Hartmut Bohnacker, Julia Laub, Claudius Lazzeroni
+// with contributions by Joey Lee and Niels Poldervaart
+// Copyright 2018
 //
 // http://www.generative-gestaltung.de
 //
@@ -51,7 +51,7 @@ var sketch = function( p ) {
       // Let all nodes repel each other
       nodes[i].attractNodes(nodes);
       // Apply velocity vector and update position
-      nodes[i].updateNode();
+      nodes[i].update();
       // Draw node
       p.ellipse(nodes[i].x, nodes[i].y, 10, 10);
     }

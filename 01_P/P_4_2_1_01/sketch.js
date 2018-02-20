@@ -1,9 +1,10 @@
 // P_4_2_1_01
 //
-// Generative Gestaltung, ISBN: 978-3-87439-759-9
-// First Edition, Hermann Schmidt, Mainz, 2009
-// Hartmut Bohnacker, Benedikt Gross, Julia Laub, Claudius Lazzeroni
-// Copyright 2009 Hartmut Bohnacker, Benedikt Gross, Julia Laub, Claudius Lazzeroni
+// Generative Gestaltung – Creative Coding im Web
+// ISBN: 978-3-87439-902-9, First Edition, Hermann Schmidt, Mainz, 2018
+// Benedikt Groß, Hartmut Bohnacker, Julia Laub, Claudius Lazzeroni
+// with contributions by Joey Lee and Niels Poldervaart
+// Copyright 2018
 //
 // http://www.generative-gestaltung.de
 //
@@ -37,46 +38,46 @@ var layer3Items = [];
 
 
 function preload() {
-  layer1Images.push(loadImage('../P_4_2_1_footage/layer1_01.png'));
-  layer1Images.push(loadImage('../P_4_2_1_footage/layer1_02.png'));
-  layer1Images.push(loadImage('../P_4_2_1_footage/layer1_03.png'));
-  layer1Images.push(loadImage('../P_4_2_1_footage/layer1_04.png'));
-  layer1Images.push(loadImage('../P_4_2_1_footage/layer1_05.png'));
-  layer1Images.push(loadImage('../P_4_2_1_footage/layer1_06.png'));
-  layer1Images.push(loadImage('../P_4_2_1_footage/layer1_07.png'));
-  layer1Images.push(loadImage('../P_4_2_1_footage/layer1_08.png'));
-  layer1Images.push(loadImage('../P_4_2_1_footage/layer1_09.png'));
-  layer1Images.push(loadImage('../P_4_2_1_footage/layer1_10.png'));
-  layer1Images.push(loadImage('../P_4_2_1_footage/layer1_11.png'));
+  layer1Images.push(loadImage('../../data/P_4_2_1_footage/layer1_01.png'));
+  layer1Images.push(loadImage('../../data/P_4_2_1_footage/layer1_02.png'));
+  layer1Images.push(loadImage('../../data/P_4_2_1_footage/layer1_03.png'));
+  layer1Images.push(loadImage('../../data/P_4_2_1_footage/layer1_04.png'));
+  layer1Images.push(loadImage('../../data/P_4_2_1_footage/layer1_05.png'));
+  layer1Images.push(loadImage('../../data/P_4_2_1_footage/layer1_06.png'));
+  layer1Images.push(loadImage('../../data/P_4_2_1_footage/layer1_07.png'));
+  layer1Images.push(loadImage('../../data/P_4_2_1_footage/layer1_08.png'));
+  layer1Images.push(loadImage('../../data/P_4_2_1_footage/layer1_09.png'));
+  layer1Images.push(loadImage('../../data/P_4_2_1_footage/layer1_10.png'));
+  layer1Images.push(loadImage('../../data/P_4_2_1_footage/layer1_11.png'));
 
-  layer2Images.push(loadImage('../P_4_2_1_footage/layer2_01.png'));
-  layer2Images.push(loadImage('../P_4_2_1_footage/layer2_02.png'));
-  layer2Images.push(loadImage('../P_4_2_1_footage/layer2_03.png'));
-  layer2Images.push(loadImage('../P_4_2_1_footage/layer2_04.png'));
-  layer2Images.push(loadImage('../P_4_2_1_footage/layer2_05.png'));
+  layer2Images.push(loadImage('../../data/P_4_2_1_footage/layer2_01.png'));
+  layer2Images.push(loadImage('../../data/P_4_2_1_footage/layer2_02.png'));
+  layer2Images.push(loadImage('../../data/P_4_2_1_footage/layer2_03.png'));
+  layer2Images.push(loadImage('../../data/P_4_2_1_footage/layer2_04.png'));
+  layer2Images.push(loadImage('../../data/P_4_2_1_footage/layer2_05.png'));
 
-  layer3Images.push(loadImage('../P_4_2_1_footage/layer3_01.png'));
-  layer3Images.push(loadImage('../P_4_2_1_footage/layer3_02.png'));
-  layer3Images.push(loadImage('../P_4_2_1_footage/layer3_03.png'));
-  layer3Images.push(loadImage('../P_4_2_1_footage/layer3_04.png'));
-  layer3Images.push(loadImage('../P_4_2_1_footage/layer3_05.png'));
-  layer3Images.push(loadImage('../P_4_2_1_footage/layer3_06.png'));
-  layer3Images.push(loadImage('../P_4_2_1_footage/layer3_07.png'));
-  layer3Images.push(loadImage('../P_4_2_1_footage/layer3_08.png'));
-  layer3Images.push(loadImage('../P_4_2_1_footage/layer3_09.png'));
-  layer3Images.push(loadImage('../P_4_2_1_footage/layer3_10.png'));
-  layer3Images.push(loadImage('../P_4_2_1_footage/layer3_11.png'));
-  layer3Images.push(loadImage('../P_4_2_1_footage/layer3_12.png'));
-  layer3Images.push(loadImage('../P_4_2_1_footage/layer3_13.png'));
-  layer3Images.push(loadImage('../P_4_2_1_footage/layer3_14.png'));
-  layer3Images.push(loadImage('../P_4_2_1_footage/layer3_15.png'));
-  layer3Images.push(loadImage('../P_4_2_1_footage/layer3_16.png'));
-  layer3Images.push(loadImage('../P_4_2_1_footage/layer3_17.png'));
-  layer3Images.push(loadImage('../P_4_2_1_footage/layer3_18.png'));
-  layer3Images.push(loadImage('../P_4_2_1_footage/layer3_19.png'));
-  layer3Images.push(loadImage('../P_4_2_1_footage/layer3_20.png'));
-  layer3Images.push(loadImage('../P_4_2_1_footage/layer3_21.png'));
-  layer3Images.push(loadImage('../P_4_2_1_footage/layer3_22.png'));
+  layer3Images.push(loadImage('../../data/P_4_2_1_footage/layer3_01.png'));
+  layer3Images.push(loadImage('../../data/P_4_2_1_footage/layer3_02.png'));
+  layer3Images.push(loadImage('../../data/P_4_2_1_footage/layer3_03.png'));
+  layer3Images.push(loadImage('../../data/P_4_2_1_footage/layer3_04.png'));
+  layer3Images.push(loadImage('../../data/P_4_2_1_footage/layer3_05.png'));
+  layer3Images.push(loadImage('../../data/P_4_2_1_footage/layer3_06.png'));
+  layer3Images.push(loadImage('../../data/P_4_2_1_footage/layer3_07.png'));
+  layer3Images.push(loadImage('../../data/P_4_2_1_footage/layer3_08.png'));
+  layer3Images.push(loadImage('../../data/P_4_2_1_footage/layer3_09.png'));
+  layer3Images.push(loadImage('../../data/P_4_2_1_footage/layer3_10.png'));
+  layer3Images.push(loadImage('../../data/P_4_2_1_footage/layer3_11.png'));
+  layer3Images.push(loadImage('../../data/P_4_2_1_footage/layer3_12.png'));
+  layer3Images.push(loadImage('../../data/P_4_2_1_footage/layer3_13.png'));
+  layer3Images.push(loadImage('../../data/P_4_2_1_footage/layer3_14.png'));
+  layer3Images.push(loadImage('../../data/P_4_2_1_footage/layer3_15.png'));
+  layer3Images.push(loadImage('../../data/P_4_2_1_footage/layer3_16.png'));
+  layer3Images.push(loadImage('../../data/P_4_2_1_footage/layer3_17.png'));
+  layer3Images.push(loadImage('../../data/P_4_2_1_footage/layer3_18.png'));
+  layer3Images.push(loadImage('../../data/P_4_2_1_footage/layer3_19.png'));
+  layer3Images.push(loadImage('../../data/P_4_2_1_footage/layer3_20.png'));
+  layer3Images.push(loadImage('../../data/P_4_2_1_footage/layer3_21.png'));
+  layer3Images.push(loadImage('../../data/P_4_2_1_footage/layer3_22.png'));
 }
 
 function setup() {

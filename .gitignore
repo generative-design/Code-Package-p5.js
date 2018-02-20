@@ -1,3 +1,7 @@
 bower_components/
 node_modules/
-/data/
+/data/P_4_2_3_supercut-media/*
+!/data/P_4_2_3_supercut-media/.gitkeep
+/data/twemoji/*
+!/data/twemoji/.gitkeep
+.DS_Store

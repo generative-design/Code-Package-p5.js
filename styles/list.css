@@ -1,0 +1,75 @@
+* {
+	box-sizing: border-box;
+}
+
+html,
+body {
+	font-family: 'Source Sans Pro', sans-serif;
+	margin: 0;
+}
+
+section {
+  max-width: 1228px;
+  margin: 0 auto;
+  overflow: hidden;
+}
+
+nav {
+	display: flex;
+	flex-wrap: wrap;
+	width: calc(100% + 1em);
+}
+
+.sketch {
+	display: inline-flex;
+	flex-direction: column;
+	background-color: #EFFAEE;
+	flex-basis: calc(33.33% - 1em);
+	padding: 1em 1em 0 1em;
+	margin-bottom: 1em;
+	margin-right: 1em;
+}
+.sketch__img {
+	background-color: #fff;
+	width: 100%;
+	padding-top: 100%;
+	position: relative;
+}
+.sketch__img img {
+	position: absolute;
+	top: 0;
+	left: 0;
+	bottom: 0;
+	right: 0;
+	display: block;
+	max-width: 100%;
+	max-height: 100%;
+	margin: auto;
+}
+
+h3 {
+	background-color: #6BE582;
+	color: #fff;
+	margin-top: 0;
+	padding: 0 1em;
+	line-height: 1.8em;
+	font-size: 1em;
+}
+
+a {
+	text-decoration: none;
+	color: inherit;
+}
+
+.btn--link {
+	display: flex;
+	align-items: center;
+	font-weight: 600;
+	margin: 1em 0;
+	white-space: nowrap;
+}
+.btn--link::before {
+	content: url('arrow.svg');
+	width: 2em;
+	margin-right: 0.5em;
+}
