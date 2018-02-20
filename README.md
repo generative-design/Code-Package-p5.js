@@ -21,7 +21,7 @@ Hi! This GitHub repository contains all of the source code for the book [Generat
 Setup
 -----
 
-The setup allows you to download the dependencies related to *developing* the or contributing changes to the project (e.g. `generative-design-library.js`). It also allows you to run a local web server using node. If any of that sounds too foreign or is not of interest and you just want to run the sketches, jump down to [Running the Sketches](#Running-the-sketches). 
+The setup allows you to download the dependencies related to *contributing changes to the project* (e.g. `generative-design-library.js`). It also allows you to run a local web server using node. If any of that sounds too foreign or is not of interest and you just want to run the sketches, jump down to [Running the Sketches](#Running-the-sketches). 
 
 1. Install [node.js](https://nodejs.org) (go for the latest stable version)
 2. Open Terminal and navigate over to the `Code-Package-p5.js` folder that you downloaded onto your computer:
