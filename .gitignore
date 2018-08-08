@@ -5,3 +5,5 @@ node_modules/
 /data/twemoji/*
 !/data/twemoji/.gitkeep
 .DS_Store
+.vscode/
+.idea
