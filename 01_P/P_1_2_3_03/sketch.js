@@ -34,7 +34,7 @@ var hueValues = [];
 var saturationValues = [];
 var brightnessValues = [];
 var actRandomSeed = 0;
-var alphaValue = 27;
+var alphaValue = 75;
 
 function setup() {
   createCanvas(windowWidth, windowHeight);
