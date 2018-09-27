@@ -39,7 +39,7 @@ function draw() {
   translate(width / 2, height / 2);
 
   var circleResolution = int(map(mouseY, 0, height, 2, 80));
-  var radius = mouseX - width / 2 + 0.5;
+  var radius = mouseX - width / 2;
   var angle = TAU / circleResolution;
 
   strokeWeight(mouseY / 20);
