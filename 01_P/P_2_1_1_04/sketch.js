@@ -37,9 +37,9 @@ var tileCount = 10;
 
 var tileWidth;
 var tileHeight;
-var shapeSize = 50.0;
+var shapeSize = 50;
 var newShapeSize = shapeSize;
-var shapeAngle = 0.0;
+var shapeAngle = 0;
 var maxDist;
 var currentShape;
 var shapes;
@@ -59,6 +59,7 @@ function preload() {
 
 function setup() {
   createCanvas(600, 600);
+  imageMode(CENTER);
   // set the current shape to the first in the array
   currentShape = shapes[0];
   tileWidth = width / tileCount;
