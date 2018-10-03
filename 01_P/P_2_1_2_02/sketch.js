@@ -139,8 +139,8 @@ function keyReleased() {
   }
 
   if (key == '0') {
-    moduleRadiusBackground = 20;
-    moduleRadiusForeground = 10;
+    moduleRadiusBackground = 30;
+    moduleRadiusForeground = 15;
     moduleAlphaBackground = 100;
     moduleAlphaForeground = 100;
     moduleColorBackground = color(0, 0, 0, moduleAlphaBackground);
