@@ -29,7 +29,6 @@
 'use strict';
 
 var tileCount = 20;
-var actRandomSeed = 0;
 
 var moduleColor;
 var moduleAlpha = 180;
@@ -45,8 +44,6 @@ function setup() {
 function draw() {
   clear();
 
-  randomSeed(actRandomSeed);
-
   stroke(moduleColor);
 
   for (var gridY = 0; gridY < width; gridY += 25) {
@@ -59,10 +56,6 @@ function draw() {
       pop();
     }
   }
-}
-
-function mousePressed() {
-  actRandomSeed = random(100000);
 }
 
 function keyReleased() {
