@@ -46,7 +46,6 @@ function setup() {
 function draw() {
   clear();
   noFill();
-  stroke(0);
 
   count = mouseX / 10 + 10;
   var para = mouseY / height;
@@ -66,6 +65,7 @@ function draw() {
       // switch between modules
       switch (drawMode) {
         case 1:
+          stroke(0);
           for (var i = 0; i < count; i++) {
             rect(0, 0, tileWidth, tileHeight);
             scale(1 - 3 / count);
