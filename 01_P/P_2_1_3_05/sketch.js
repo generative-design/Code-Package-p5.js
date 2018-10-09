@@ -54,8 +54,8 @@ function draw() {
 
   randomSeed(actRandomSeed);
 
-  stepSize = mouseX / 10;
-  endSize = mouseY / 10;
+  stepSize = min(mouseX, width) / 10;
+  endSize = min(mouseY, height) / 10;
 
   for (var gridY = 0; gridY <= tileCountY; gridY++) {
     for (var gridX = 0; gridX <= tileCountX; gridX++) {
