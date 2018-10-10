@@ -56,8 +56,8 @@ function draw() {
   var a = map(mouseX, 0, width, -0.5, 0.5);
   var s = map(mouseY, 0, height, 0.7, 1);
 
-  if (drawMode == 2) translate(x, 0);
   if (drawMode == 1) rotate(a);
+  if (drawMode == 2) translate(x, 0);
   scale(s);
 
   strokeWeight(2);
@@ -72,8 +72,7 @@ function overlay() {
     for (var i = -w / 2; i < w / 2; i += 5) {
       line(i, -h / 2, i, h / 2);
     }
-  }
-  if (drawMode == 2) {
+  } else if (drawMode == 2) {
     for (var i = 0; i < w; i += 10) {
       ellipse(0, 0, i);
     }
