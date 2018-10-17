@@ -157,13 +157,13 @@ function keyPressed() {
   }
 
   if (key == '+') {
-    speedRelation++;
+    speedRelation += 0.5;
     if (speedRelation > 5) speedRelation = 5;
     shape.speedRelation = speedRelation;
     shape = new Shape(width / 2, height / 2, joints, lineLength, speedRelation);
   }
   if (key == '-') {
-    speedRelation--;
+    speedRelation -= 0.5;
     if (speedRelation < 2) speedRelation = 2;
     shape.speedRelation = speedRelation;
     shape = new Shape(width / 2, height / 2, joints, lineLength, speedRelation);

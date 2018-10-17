@@ -147,12 +147,12 @@ function keyPressed() {
   }
 
   if (key == '+') {
-    speedRelation++;
+    speedRelation += 0.5;
     if (speedRelation > 5) speedRelation = 5;
     startDrawing();
   }
   if (key == '-') {
-    speedRelation--;
+    speedRelation -= 0.5;
     if (speedRelation < 2) speedRelation = 2;
     startDrawing();
   }
