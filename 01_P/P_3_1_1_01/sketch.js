@@ -36,7 +36,7 @@ var minFontSize = 15;
 var maxFontSize = 800;
 var newFontSize = 0;
 
-var pMillis;
+var pMillis = 0;
 var maxTimeDelta = 5000.0;
 
 var spacing = 2; // line height
@@ -55,8 +55,6 @@ function setup() {
   for (var i = 0; i < textTyped.length; i++) {
     fontSizes[i] = minFontSize;
   }
-
-  pMillis = millis();
 }
 
 function draw() {
@@ -105,24 +103,16 @@ function keyReleased() {
   if (keyCode == CONTROL) saveCanvas(gd.timestamp(), 'png');
 }
 
-function keyPressed() {
-  switch(keyCode) {
-    case DELETE:
-    case BACKSPACE:
-      if (textTyped.length > 0) {
-        textTyped = textTyped.substring(0, max(0, textTyped.length - 1));
-        fontSizes.pop();
-      }
-      break;
-  }
-
-  // reset timer
-  pMillis = millis();
-}
-
 function keyTyped() {
   if (keyCode >= 32) {
     textTyped += key;
     fontSizes.push(newFontSize);
+  } else if (keyCode == BACKSPACE || keyCode == DELETE) {
+    if (textTyped.length > 0) {
+      textTyped = textTyped.substring(0, max(0, textTyped.length - 1));
+      fontSizes.pop();
+    }
   }
+  // reset timer
+  pMillis = millis();
 }
