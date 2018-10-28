@@ -52,7 +52,7 @@ function setup() {
   video = createCapture(VIDEO, function() {
     streamReady = true
   });
-  video.size(width, height);
+  video.size(width * pixelDensity(), height * pixelDensity());
   video.hide();
   noFill();
 }
@@ -60,12 +60,9 @@ function setup() {
 function draw() {
   if (streamReady) {
     for (var j = 0; j <= mouseX / 50; j++) {
-      // get actual web cam image
-      video.loadPixels();
 
-      // first line
-      var pixelIndex = ((video.width - 1 - x) + y * video.width) * 4;
-      var c = color(video.pixels[pixelIndex], video.pixels[pixelIndex + 1], video.pixels[pixelIndex + 2]);
+      // Retrieve color from capture device
+      var c = color(video.get(width - x, y));
 
       // convert color c to HSV
       var cHSV = chroma(red(c), green(c), blue(c));
