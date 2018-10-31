@@ -51,7 +51,7 @@ var activeTileColor;
 
 var doDrawGrid = true;
 var randomMode = false;
-var debugMode = false;
+var isDebugMode = false;
 
 function preload() {
   modules = [];
@@ -142,7 +142,7 @@ function drawGrid() {
       var posX = tileSize * gridX - tileSize / 2;
       var posY = tileSize * gridY - tileSize / 2;
       fill(360);
-      if (debugMode) {
+      if (isDebugMode) {
         if (tiles[gridX][gridY] == 1) fill(80);
       }
       stroke(0);
@@ -196,7 +196,7 @@ function drawModules() {
         // decimalResult is also the index for the shape array
         image(modules[tileType[gridX][gridY]][decimalResult], posX, posY, tileSize, tileSize);
 
-        if (debugMode) {
+        if (isDebugMode) {
           fill(60);
           text(currentTile + '\n' + decimalResult + '\n' + binaryResult, posX, posY);
         }
@@ -210,7 +210,7 @@ function keyPressed() {
 
   if (keyCode == DELETE || keyCode == BACKSPACE) initTiles();
   if (key == 'g' || key == 'G') doDrawGrid = !doDrawGrid;
-  if (key == 'd' || key == 'D') debugMode = !debugMode;
+  if (key == 'd' || key == 'D') isDebugMode = !isDebugMode;
   if (key == 'r' || key == 'R') randomMode = !randomMode;
 
   if (key == '1') activeModuleSet = 'A';

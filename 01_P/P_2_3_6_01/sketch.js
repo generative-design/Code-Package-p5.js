@@ -41,7 +41,7 @@ var gridResolutionY;
 var tiles = [];
 
 var doDrawGrid = true;
-var debugMode = false;
+var isDebugMode = false;
 
 function preload() {
   // load SVG modules
@@ -51,7 +51,7 @@ function preload() {
   // for (var i = 0; i < 16; i++) {
   //   modules[i] = loadImage('data/' + nf(i, 2) + '.svg');
   // }
-  
+
   // METHOD 2: Read files one-by-one
   modules[0] = loadImage('data/00.svg');
   modules[1] = loadImage('data/01.svg');
@@ -69,7 +69,7 @@ function preload() {
   modules[13] = loadImage('data/13.svg');
   modules[14] = loadImage('data/14.svg');
   modules[15] = loadImage('data/15.svg');
-  
+
 }
 
 function setup() {
@@ -133,7 +133,7 @@ function drawGrid() {
       var posX = tileSize * gridX - tileSize / 2;
       var posY = tileSize * gridY - tileSize / 2;
       fill(255);
-      if (debugMode) {
+      if (isDebugMode) {
         if (tiles[gridX][gridY] == 1) fill(220);
       }
       rect(posX, posY, tileSize, tileSize);
@@ -164,7 +164,7 @@ function drawModules() {
         // decimalResult is also the index for the shape array
         image(modules[decimalResult], posX, posY, tileSize, tileSize);
 
-        if (debugMode) {
+        if (isDebugMode) {
           fill(150);
           text(decimalResult + '\n' + binaryResult, posX, posY);
         }
@@ -178,5 +178,5 @@ function keyPressed() {
 
   if (keyCode == DELETE || keyCode == BACKSPACE) initTiles();
   if (key == 'g' || key == 'G') doDrawGrid = !doDrawGrid;
-  if (key == 'd' || key == 'D') debugMode = !debugMode;
+  if (key == 'd' || key == 'D') isDebugMode = !isDebugMode;
 }
