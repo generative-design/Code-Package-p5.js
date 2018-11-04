@@ -50,7 +50,7 @@ function setup() {
   x = width / 2;
   y = height / 2;
   video = createCapture(VIDEO, function() {
-    streamReady = true
+    streamReady = true;
   });
   video.size(width * pixelDensity(), height * pixelDensity());
   video.hide();

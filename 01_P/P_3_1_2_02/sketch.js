@@ -63,13 +63,13 @@ var zoom;
 var actRandomSeed;
 
 var palette = [
-  [253, 195, 0],
-  [0, 0, 0],
-  [0, 158, 224],
-  [99, 33, 129],
-  [121, 156, 19],
-  [226, 0, 26],
-  [224, 134, 178]
+  [253, 195, 0,],
+  [0, 0, 0,],
+  [0, 158, 224,],
+  [99, 33, 129,],
+  [121, 156, 19,],
+  [226, 0, 26,],
+  [224, 134, 178,],
 ];
 
 var actColorIndex = 0;
@@ -139,107 +139,107 @@ function draw() {
 
     // ------ letter rule table ------
     switch (letter) {
-      case ' ': //space
-        var dir = floor(random(5));
-        if (dir == 0) {
-          image(shapeSpace, 0, -15);
-          translate(2, 0);
-          rotate(QUARTER_PI);
-        }
-        if (dir == 1) {
-          image(shapeSpace2, 0, -15);
-          translate(13, -5);
-          rotate(-QUARTER_PI);
-        }
-        break;
-
-      case ',':
-        image(shapeComma, 0, -15);
-        translate(33, 15);
+    case ' ': // space
+      var dir = floor(random(5));
+      if (dir == 0) {
+        image(shapeSpace, 0, -15);
+        translate(2, 0);
         rotate(QUARTER_PI);
-        break;
-
-      case '.':
-        image(shapePeriod, 0, -56);
-        translate(56, -56);
-        rotate(-HALF_PI);
-        break;
-
-      case '!':
-        image(shapeExclamationmark, 0, -30);
-        translate(43, -18);
+      }
+      if (dir == 1) {
+        image(shapeSpace2, 0, -15);
+        translate(13, -5);
         rotate(-QUARTER_PI);
-        break;
+      }
+      break;
 
-      case '?':
-        image(shapeQuestionmark, 0, -30);
-        translate(43, -18);
-        rotate(-QUARTER_PI);
-        break;
+    case ',':
+      image(shapeComma, 0, -15);
+      translate(33, 15);
+      rotate(QUARTER_PI);
+      break;
 
-      case '\n':
-        // start a new line at a random position near the center
-        rect(0, -25, 10, 35);
-        pop();
-        push();
-        translate(random(-300, 300), random(-300, 300));
-        rotate(floor(random(8))*QUARTER_PI);
-        actColorIndex = (actColorIndex + 1) % palette.length;
-        fill(palette[actColorIndex][0], palette[actColorIndex][1], palette[actColorIndex][2]);
-        rect(0, -25, 10, 35);
-        break;
+    case '.':
+      image(shapePeriod, 0, -56);
+      translate(56, -56);
+      rotate(-HALF_PI);
+      break;
 
-      case 'o': // Station big
-        rect(0, -15, letterWidth + 1, 15);
-        push();
-        fill(0);
-        var station = textTyped.substring(i - 10, i - 1);
-        station = station.toLowerCase();
-        station = station.replace(/\s+/g, '');
-        station = station.substring(0, 1).toUpperCase() + station.substring(1, station.length - 1);
-        text(station, -10, 40);
-        ellipse(-5, -7, 33, 33);
-        fill(255);
-        ellipse(-5, -7, 25, 25);
-        pop();
-        translate(letterWidth, 0);
-        break;
+    case '!':
+      image(shapeExclamationmark, 0, -30);
+      translate(43, -18);
+      rotate(-QUARTER_PI);
+      break;
 
-      case 'a': // Station small left
-        rect(0, 0 - 15, letterWidth + 1, 25);
-        rect(0, 0 - 15, letterWidth + 1, 15);
-        translate(letterWidth, 0);
-        break;
+    case '?':
+      image(shapeQuestionmark, 0, -30);
+      translate(43, -18);
+      rotate(-QUARTER_PI);
+      break;
 
-      case 'u':  // Station small right
-        rect(0, 0 - 25, letterWidth + 1, 25);
-        rect(0, 0 - 15, letterWidth + 1, 15);
-        translate(letterWidth, 0);
-        break;
+    case '\n':
+      // start a new line at a random position near the center
+      rect(0, -25, 10, 35);
+      pop();
+      push();
+      translate(random(-300, 300), random(-300, 300));
+      rotate(floor(random(8)) * QUARTER_PI);
+      actColorIndex = (actColorIndex + 1) % palette.length;
+      fill(palette[actColorIndex][0], palette[actColorIndex][1], palette[actColorIndex][2]);
+      rect(0, -25, 10, 35);
+      break;
 
-      case ':': // icon
-        image(icon1, 0, -60, 30, 30);
-        break;
+    case 'o': // Station big
+      rect(0, -15, letterWidth + 1, 15);
+      push();
+      fill(0);
+      var station = textTyped.substring(i - 10, i - 1);
+      station = station.toLowerCase();
+      station = station.replace(/\s+/g, '');
+      station = station.substring(0, 1).toUpperCase() + station.substring(1, station.length - 1);
+      text(station, -10, 40);
+      ellipse(-5, -7, 33, 33);
+      fill(255);
+      ellipse(-5, -7, 25, 25);
+      pop();
+      translate(letterWidth, 0);
+      break;
 
-      case '+': // icon
-        image(icon2, 0, -60, 35, 30);
-        break;
+    case 'a': // Station small left
+      rect(0, 0 - 15, letterWidth + 1, 25);
+      rect(0, 0 - 15, letterWidth + 1, 15);
+      translate(letterWidth, 0);
+      break;
 
-      case '-': // icon
-        image(icon3, 0, -60, 30, 30);
-        break;
+    case 'u': // Station small right
+      rect(0, 0 - 25, letterWidth + 1, 25);
+      rect(0, 0 - 15, letterWidth + 1, 15);
+      translate(letterWidth, 0);
+      break;
 
-      case 'x': // icon
-        image(icon4, 0, -60, 30, 30);
-        break;
+    case ':': // icon
+      image(icon1, 0, -60, 30, 30);
+      break;
 
-      case 'z': // icon
-        image(icon5, 0, -60, 30, 30);
-        break;
+    case '+': // icon
+      image(icon2, 0, -60, 35, 30);
+      break;
 
-      default: // all others
-        rect(0, -15, letterWidth + 1, 15);
-        translate(letterWidth, 0);
+    case '-': // icon
+      image(icon3, 0, -60, 30, 30);
+      break;
+
+    case 'x': // icon
+      image(icon4, 0, -60, 30, 30);
+      break;
+
+    case 'z': // icon
+      image(icon5, 0, -60, 30, 30);
+      break;
+
+    default: // all others
+      rect(0, -15, letterWidth + 1, 15);
+      translate(letterWidth, 0);
     }
   }
 
@@ -262,21 +262,21 @@ function keyReleased() {
 
 function keyPressed() {
   switch (keyCode) {
-    case DELETE:
-    case BACKSPACE:
-      textTyped = textTyped.substring(0, textTyped.length - 1);
-      print(textTyped);
-      break;
-    case ENTER:
-    case RETURN:
-      textTyped += '\n';
-      break;
-    case UP_ARROW:
-      zoom += 0.05;
-      break;
-    case DOWN_ARROW:
-      zoom -= 0.05;
-      break;
+  case DELETE:
+  case BACKSPACE:
+    textTyped = textTyped.substring(0, textTyped.length - 1);
+    print(textTyped);
+    break;
+  case ENTER:
+  case RETURN:
+    textTyped += '\n';
+    break;
+  case UP_ARROW:
+    zoom += 0.05;
+    break;
+  case DOWN_ARROW:
+    zoom -= 0.05;
+    break;
   }
 }
 

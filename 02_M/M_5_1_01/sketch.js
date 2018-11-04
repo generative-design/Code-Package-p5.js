@@ -43,7 +43,7 @@ var sketch = function(p) {
     p.noFill();
     p.strokeCap('PROJECT');
 
-    p.translate(width/2, height/2);
+    p.translate(width / 2, height / 2);
     drawBranch(0, 0, startRadius, recursionLevel);
   };
 
@@ -65,24 +65,24 @@ var sketch = function(p) {
 
   // ------ recursive function ------
   var drawBranch = function(x, y, radius, level){
-  		// draw arc
-  		p.strokeWeight(level*2);
-  		p.stroke(0, 130, 164, 100);
-  		p.noFill();
-  		p.arc(x, y, radius*2, radius*2, -(Math.PI), 0);
+    // draw arc
+    p.strokeWeight(level * 2);
+    p.stroke(0, 130, 164, 100);
+    p.noFill();
+    p.arc(x, y, radius * 2, radius * 2, -(Math.PI), 0);
 
-  		//draw center dot
-  		p.fill(0);
-  		p.noStroke();
-  		p.ellipse(x,y, level*1.5,level*1.5);
+    // draw center dot
+    p.fill(0);
+    p.noStroke();
+    p.ellipse(x,y, level * 1.5,level * 1.5);
 
-  		// as long as level is greater than zero, draw sub-branches
-  		if(level > 0){
-  			// left branch
-  			drawBranch(x-radius, y+radius/2, radius/2, level-1);
-  			// reight branch
-  			drawBranch(x+radius, y+radius/2, radius/2, level-1);
-  		}
+    // as long as level is greater than zero, draw sub-branches
+    if (level > 0){
+      // left branch
+      drawBranch(x - radius, y + radius / 2, radius / 2, level - 1);
+      // reight branch
+      drawBranch(x + radius, y + radius / 2, radius / 2, level - 1);
+    }
   };
 };
 

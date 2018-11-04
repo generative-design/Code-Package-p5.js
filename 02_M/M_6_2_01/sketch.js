@@ -22,21 +22,20 @@
  * and prints them to the console
  */
 
-
 'use strict';
 
 var sketch = function(p) {
 
   p.setup = function() {
-    getLinks("Superegg", function(links) {
-      console.log("This is what you get:");
+    getLinks('Superegg', function(links) {
+      console.log('This is what you get:');
 
       links.forEach(function(el) {
         console.log(el);
       });
 
     });
-  }
+  };
 
   // Helping function that makes the queries to Wikipedia.
   function getLinks(title, callback, plcontinue, links) {
@@ -50,9 +49,9 @@ var sketch = function(p) {
         pllimit: 'max',
         plcontinue: plcontinue,
         titles: title,
-        format: 'json'
+        format: 'json',
       },
-      headers: { 'Api-User-Agent': 'M_6_2_01 (http://www.generative-gestaltung.de/; info@generative-gestaltung.de)' },
+      headers: { 'Api-User-Agent': 'M_6_2_01 (http://www.generative-gestaltung.de/; info@generative-gestaltung.de)', },
       dataType: 'jsonp',
       success: function(data) {
         var ids = Object.keys(data.query.pages);
@@ -68,12 +67,10 @@ var sketch = function(p) {
           // If all is collected, deliver the results to the callback function
           callback(links);
         }
-      }
+      },
     });
   }
 
-
-
-}
+};
 
 var myp5 = new p5(sketch);

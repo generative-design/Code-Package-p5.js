@@ -24,8 +24,6 @@
  * left click          : starts loading the xml
  */
 
-
-
 'use strict';
 
 var sketch = function(p) {
@@ -40,7 +38,7 @@ var sketch = function(p) {
     p.createCanvas(200, 200);
 
     p.strokeWeight(4);
-  }
+  };
 
   p.draw = function() {
     // some animation
@@ -52,29 +50,29 @@ var sketch = function(p) {
 
     // Has loading already started?
     if (linksLoading) {
-      console.log("not loaded yet");
+      console.log('not loaded yet');
     }
 
     // Are the links already loaded?
     if (linksLoaded) {
       links.forEach(function(el, i) {
-        console.log("Link " + i + ": " + el.title);
+        console.log('Link ' + i + ': ' + el.title);
       });
 
       linksLoaded = false;
     }
-  }
+  };
 
   p.mouseReleased = function() {
-    console.log("Starting to load links");
+    console.log('Starting to load links');
     linksLoading = true;
 
-    getLinks("Superegg", function(result) {
+    getLinks('Superegg', function(result) {
       linksLoaded = true;
       linksLoading = false;
       links = result;
     });
-  }
+  };
 
   // Helping function that makes the queries to Wikipedia.
   function getLinks(title, callback, plcontinue, links) {
@@ -88,9 +86,9 @@ var sketch = function(p) {
         pllimit: 'max',
         plcontinue: plcontinue,
         titles: title,
-        format: 'json'
+        format: 'json',
       },
-      headers: { 'Api-User-Agent': 'M_6_2_01 (http://www.generative-gestaltung.de/; info@generative-gestaltung.de)' },
+      headers: { 'Api-User-Agent': 'M_6_2_01 (http://www.generative-gestaltung.de/; info@generative-gestaltung.de)', },
       dataType: 'jsonp',
       success: function(data) {
         var ids = Object.keys(data.query.pages);
@@ -106,12 +104,10 @@ var sketch = function(p) {
           // If all is collected, deliver the results to the callback function
           callback(links);
         }
-      }
+      },
     });
   }
 
-
-
-}
+};
 
 var myp5 = new p5(sketch);

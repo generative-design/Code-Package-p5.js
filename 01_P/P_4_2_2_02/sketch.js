@@ -36,7 +36,9 @@ var streamReady = false;
 
 function setup() {
   createCanvas(640, 480);
-  cam = createCapture(VIDEO, function() { streamReady = true });
+  cam = createCapture(VIDEO, function() {
+    streamReady = true;
+  });
   cam.hide();
   noStroke();
 }

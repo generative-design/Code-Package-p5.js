@@ -81,7 +81,7 @@ function mousePressed() {
   x = mouseX;
   y = mouseY;
   col = color(random(255), random(255), random(255), random(100));
-  //lineLength = random(15, 50);
+  // lineLength = random(15, 50);
 }
 
 function keyReleased() {

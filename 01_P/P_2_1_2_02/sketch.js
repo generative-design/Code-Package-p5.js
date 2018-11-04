@@ -71,8 +71,8 @@ function draw() {
       var posX = width / tileCount * gridX;
       var posY = height / tileCount * gridY;
 
-      var shiftX =  random(-1, 1) * mouseX / 20;
-      var shiftY =  random(-1, 1) * mouseY / 20;
+      var shiftX = random(-1, 1) * mouseX / 20;
+      var shiftY = random(-1, 1) * mouseY / 20;
 
       fill(moduleColorBackground);
       ellipse(posX + shiftX, posY + shiftY, moduleRadiusBackground, moduleRadiusBackground);

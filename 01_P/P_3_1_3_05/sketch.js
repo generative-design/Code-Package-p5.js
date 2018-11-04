@@ -80,7 +80,7 @@ var allPOSTags = [
   'wdt',
   'wp',
   'wp$',
-  'wrb'
+  'wrb',
 ];
 var allPOSTagsFull = [
   'Coordinating conjunction',
@@ -118,7 +118,7 @@ var allPOSTagsFull = [
   'Wh-determiner',
   'Wh-pronoun',
   'Possessive wh-pronoun',
-  'Wh-adverb'
+  'Wh-adverb',
 ];
 
 var counters = [];
@@ -138,14 +138,14 @@ function setup() {
   createCanvas(windowWidth, windowHeight);
   colorMode(HSB, 360, 100, 100, 100);
 
-  textFont("monospace", 18);
+  textFont('monospace', 18);
   fill(0);
 
   for (var i = 0; i < allPOSTags.length; i++) {
     counters.push(0);
   }
 
-  joinedText = joinedText.join(" ");
+  joinedText = joinedText.join(' ');
   joinedText = joinedText.split(/\s+/);
   for (var i = 0; i < joinedText.length; i++) {
 

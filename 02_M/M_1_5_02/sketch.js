@@ -29,7 +29,7 @@
 
 'use strict';
 
-var sketch = function( p ) {
+var sketch = function(p) {
   var agents = [];
   var agentCount = 4000;
   var noiseScale = 300;
@@ -42,10 +42,10 @@ var sketch = function( p ) {
   p.setup = function() {
     p.createCanvas(p.windowWidth, p.windowHeight);
 
-    for(var i = 0; i < agentCount; i++) {
+    for (var i = 0; i < agentCount; i++) {
       agents[i] = new Agent();
     }
-  }
+  };
 
   p.draw = function() {
     p.fill(255, overlayAlpha);
@@ -58,7 +58,7 @@ var sketch = function( p ) {
       if (drawMode == 1) agents[i].update1(noiseScale, noiseStrength, strokeWidth);
       else agents[i].update2(noiseScale, noiseStrength, strokeWidth);
     }
-  }
+  };
 
   p.keyReleased = function() {
     if (p.key == 's' || p.key == 'S') p.saveCanvas(gd.timestamp(), 'png');
@@ -69,7 +69,7 @@ var sketch = function( p ) {
       p.noiseSeed(newNoiseSeed);
     }
     if (p.keyCode == p.DELETE || p.keyCode == p.BACKSPACE) p.background(255);
-  }
+  };
 };
 
 var myp5 = new p5(sketch);

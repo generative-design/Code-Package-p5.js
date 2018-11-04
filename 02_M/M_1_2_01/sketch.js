@@ -29,7 +29,7 @@
  */
 'use strict';
 
-var sketch = function( p ) {
+var sketch = function(p) {
 
   var actRandomSeed = 0;
   var count = 150;
@@ -47,13 +47,13 @@ var sketch = function( p ) {
     var faderX = p.mouseX / p.width;
 
     p.randomSeed(actRandomSeed);
-    var angle = p.radians(360/count);
+    var angle = p.radians(360 / count);
     for (var i = 0; i < count; i++) {
       // positions
       var randomX = p.random(0,p.width);
       var randomY = p.random(0,p.height);
-      var circleX = p.width/2+p.cos(angle*i)*300;
-      var circleY = p.height/2+p.sin(angle*i)*300;
+      var circleX = p.width / 2 + p.cos(angle * i) * 300;
+      var circleY = p.height / 2 + p.sin(angle * i) * 300;
 
       var x = p.lerp(randomX,circleX,faderX);
       var y = p.lerp(randomY,circleY,faderX);
@@ -64,11 +64,11 @@ var sketch = function( p ) {
 
   p.mousePressed = function() {
     actRandomSeed = p.random(100000);
-  }
+  };
 
   p.keyReleased = function(){
     if (p.key == 's' || p.key == 'S') p.saveCanvas(gd.timestamp(), 'png');
-  }
+  };
 
 };
 

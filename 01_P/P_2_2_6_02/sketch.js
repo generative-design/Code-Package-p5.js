@@ -179,7 +179,7 @@ function keyPressed() {
     joints = max(1, joints);
   }
   if (keyCode == RIGHT_ARROW) {
-    joints++
+    joints++;
     joints = max(1, joints);
   };
 

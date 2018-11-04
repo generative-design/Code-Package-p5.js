@@ -90,7 +90,7 @@ function Shape(h, c) {
   };
 
   Shape.prototype.draw = function() {
-    stroke(this.c)
+    stroke(this.c);
     for (var i = -this.h / 2; i < this.h / 2; i += density) {
       beginShape();
       this.shapePath.forEach(function(pos, index, shapePath) {

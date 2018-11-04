@@ -55,7 +55,7 @@ function setup() {
 
   for (var i = 0; i < imageSamples.length; i++) {
     var c = imageSamples[i].sampleColor;
-    imageColors.push({ r: int(red(c)), g: int(green(c)), b: int(blue(c)), a: int(alpha(c)) })
+    imageColors.push({ r: int(red(c)), g: int(green(c)), b: int(blue(c)), a: int(alpha(c)), });
   }
 
   console.log(imageColors);
@@ -66,9 +66,8 @@ function draw() {
   imageColors.forEach(function(imageColor, index) {
     fill(imageColor.r, imageColor.g, imageColor.b);
     rect(index * w, 0, w, height);
-  })
+  });
 }
-
 
 function ImageSample(img, index, y, h) {
   this.index = index;
@@ -85,7 +84,7 @@ function ImageSample(img, index, y, h) {
     a = this.img.pixels[offset + 3];
     if (a >= 125) {
       if (!(r > 250 && g > 250 && 250)) {
-        sampledPixels.push([r, g, b]);
+        sampledPixels.push([r, g, b,]);
       }
     }
   }
@@ -122,7 +121,7 @@ function getMostSaturatedColorNotGreen(arr) {
   for (var i = 0; i < arr.length; i++) {
     var cc = arr[i];
     if (abs(hue(cc) - hue(primaryGreen)) < 30) {
-      //console.log("similar");
+      // console.log("similar");
       continue;
     }
     var sat = saturation(cc) + brightness(cc);

@@ -64,45 +64,45 @@ function draw() {
 
       // switch between modules
       switch (drawMode) {
-        case 1:
-          stroke(0);
-          for (var i = 0; i < count; i++) {
-            rect(0, 0, tileWidth, tileHeight);
-            scale(1 - 3 / count);
-            rotate(para * 0.1);
-          }
-          break;
-        case 2:
-          noStroke();
-          for (var i = 0; i < count; i++) {
-            var gradient = lerpColor(color(0, 0), color(166, 141, 5), i / count);
-            fill(gradient, i / count * 200);
-            rotate(QUARTER_PI);
-            rect(0, 0, tileWidth, tileHeight);
-            scale(1 - 3 / count);
-            rotate(para * 1.5);
-          }
-          break;
-        case 3:
-          noStroke();
-          for (var i = 0; i < count; i++) {
-            var gradient = lerpColor(color(0, 130, 164), color(255), i / count);
-            fill(gradient, 170);
+      case 1:
+        stroke(0);
+        for (var i = 0; i < count; i++) {
+          rect(0, 0, tileWidth, tileHeight);
+          scale(1 - 3 / count);
+          rotate(para * 0.1);
+        }
+        break;
+      case 2:
+        noStroke();
+        for (var i = 0; i < count; i++) {
+          var gradient = lerpColor(color(0, 0), color(166, 141, 5), i / count);
+          fill(gradient, i / count * 200);
+          rotate(QUARTER_PI);
+          rect(0, 0, tileWidth, tileHeight);
+          scale(1 - 3 / count);
+          rotate(para * 1.5);
+        }
+        break;
+      case 3:
+        noStroke();
+        for (var i = 0; i < count; i++) {
+          var gradient = lerpColor(color(0, 130, 164), color(255), i / count);
+          fill(gradient, 170);
 
-            push();
-            translate(4 * i, 0);
-            ellipse(0, 0, tileWidth / 4, tileHeight / 4);
-            pop();
+          push();
+          translate(4 * i, 0);
+          ellipse(0, 0, tileWidth / 4, tileHeight / 4);
+          pop();
 
-            push();
-            translate(-4 * i, 0);
-            ellipse(0, 0, tileWidth / 4, tileHeight / 4);
-            pop();
+          push();
+          translate(-4 * i, 0);
+          ellipse(0, 0, tileWidth / 4, tileHeight / 4);
+          pop();
 
-            scale(1 - 1.5 / count);
-            rotate(para * 1.5);
-          }
-          break;
+          scale(1 - 1.5 / count);
+          rotate(para * 1.5);
+        }
+        break;
       }
 
       pop();

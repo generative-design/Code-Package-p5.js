@@ -4,7 +4,7 @@ var Agent = function() {
   this.stepSize = myp5.random(1, 5);
   this.isOutside = false;
   this.angle;
-}
+};
 
 Agent.prototype.update = function(strokeWidth) {
   this.vector.x += myp5.cos(this.angle) * this.stepSize;
@@ -18,15 +18,15 @@ Agent.prototype.update = function(strokeWidth) {
   myp5.line(this.vectorOld.x, this.vectorOld.y, this.vector.x, this.vector.y);
   this.vectorOld = this.vector.copy();
   this.isOutside = false;
-}
+};
 
 Agent.prototype.update1 = function(noiseScale, noiseStrength, strokeWidth) {
   this.angle = myp5.noise(this.vector.x / noiseScale, this.vector.y / noiseScale) * noiseStrength;
   this.update(strokeWidth);
-}
+};
 
 Agent.prototype.update2 = function(noiseScale, noiseStrength, strokeWidth) {
   this.angle = myp5.noise(this.vector.x / noiseScale, this.vector.y / noiseScale) * 24;
   this.angle = (this.angle - myp5.floor(this.angle)) * noiseStrength;
   this.update(strokeWidth);
-}
+};

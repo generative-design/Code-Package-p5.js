@@ -121,8 +121,8 @@ function gradient(x, y, w, h, c1, c2) {
   var grd = ctx.createLinearGradient(x, y, x, y + h);
   grd.addColorStop(0, c1.toString());
   grd.addColorStop(1, c2.toString());
-	ctx.fillStyle = grd;
-	ctx.fillRect(x, y, w, h);
+  ctx.fillStyle = grd;
+  ctx.fillRect(x, y, w, h);
 }
 
 function mouseReleased() {
@@ -138,6 +138,6 @@ function keyPressed() {
     for (var i = 0; i < hueValues.length; i++) {
       colors.push(color(hueValues[i], saturationValues[i], brightnessValues[i]));
     }
-    writeFile([gd.ase.encode(colors)], gd.timestamp(), 'ase');
+    writeFile([gd.ase.encode(colors),], gd.timestamp(), 'ase');
   }
 }

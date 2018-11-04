@@ -69,10 +69,10 @@ function draw() {
         var diameter = map(i, 0, stepSize, tileWidth, endSize);
         fill(255 - i * colorStep);
         switch (heading) {
-          case 0: ellipse(posX + i, posY, diameter, diameter); break;
-          case 1: ellipse(posX, posY + i, diameter, diameter); break;
-          case 2: ellipse(posX - i, posY, diameter, diameter); break;
-          case 3: ellipse(posX, posY - i, diameter, diameter); break;
+        case 0: ellipse(posX + i, posY, diameter, diameter); break;
+        case 1: ellipse(posX, posY + i, diameter, diameter); break;
+        case 2: ellipse(posX - i, posY, diameter, diameter); break;
+        case 3: ellipse(posX, posY - i, diameter, diameter); break;
         }
       }
     }

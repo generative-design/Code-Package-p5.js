@@ -52,7 +52,7 @@ function draw() {
       diameter = diameter / maxDistance * 40;
       push();
       translate(gridX, gridY, diameter * 5);
-      rect(0, 0, diameter, diameter);    // also nice: ellipse(...)
+      rect(0, 0, diameter, diameter); // also nice: ellipse(...)
       pop();
     }
   }

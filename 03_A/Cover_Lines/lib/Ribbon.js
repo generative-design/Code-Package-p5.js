@@ -1,4 +1,3 @@
-
 function Ribbon(colorPoints, additionalN, options) {
 
   this.colorPoints = [];
@@ -26,7 +25,7 @@ function Ribbon(colorPoints, additionalN, options) {
       var t = map(i, 0, this.colorPoints.length - 1, 0, 1);
       this.colorPoints[i].draw(t, options);
     }
-  }
+  };
 }
 
 function ColorPoint(col) {
@@ -35,7 +34,7 @@ function ColorPoint(col) {
   this.alphaIndex = 0;
 
   ColorPoint.prototype.draw = function(t, opt) {
-    //strokeCap(SQUARE);
+    // strokeCap(SQUARE);
     strokeWeight(0.3);
     stroke(this.col);
     noFill();
@@ -68,9 +67,9 @@ function ColorPoint(col) {
       var y2 = lerp(y2o, y2u, t);
 
       var afac = 1 - 2 * abs(t - 0.5);
-      //var afac = 1 - pow(2 * (t - 0.5), 2);
+      // var afac = 1 - pow(2 * (t - 0.5), 2);
       var alph = a * afac;
-      alph = pow(alph / 255, 0.75) * 255; 
+      alph = pow(alph / 255, 0.75) * 255;
 
       stroke(r, g, b, alph);
       line(x1, y1, x2, y2);
@@ -81,10 +80,8 @@ function ColorPoint(col) {
     penA = newA;
     penW = newW;
 
-  }
+  };
 }
-
-
 
 function angleDifference(theAngle1, theAngle2) {
   var a1 = (theAngle1 % TWO_PI + TWO_PI) % TWO_PI;

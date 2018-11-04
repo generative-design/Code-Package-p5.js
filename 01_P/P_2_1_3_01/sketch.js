@@ -33,7 +33,7 @@
 var count = 0;
 var tileCountX = 10;
 var tileCountY = 10;
-var tileWidth  = 0;
+var tileWidth = 0;
 var tileHeight = 0;
 
 var colorStep = 15;

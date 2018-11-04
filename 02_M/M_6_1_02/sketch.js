@@ -28,7 +28,6 @@
  * s             : save png
  */
 
-
 'use strict';
 
 var sketch = function(p) {
@@ -51,7 +50,7 @@ var sketch = function(p) {
     spring.length = 100;
     spring.stiffness = 0.6;
     spring.damping = 0.3;
-  }
+  };
 
   p.draw = function() {
     p.background(255);
@@ -78,12 +77,12 @@ var sketch = function(p) {
     p.fill(0);
     p.ellipse(nodeA.x, nodeA.y, 20, 20);
     p.ellipse(nodeB.x, nodeB.y, 20, 20);
-  }
+  };
 
   p.keyPressed = function() {
     if (p.key == 's' || p.key == 'S') p.saveCanvas(gd.timestamp(), 'png');
-  }
+  };
 
-}
+};
 
 var myp5 = new p5(sketch);

@@ -123,7 +123,7 @@ function keyReleased() {
 
   // change color
   if (key == ' ') c = color(random(255), random(255), random(255), random(80, 100));
-  //default colors from 1 to 4
+  // default colors from 1 to 4
   if (key == '1') c = color(181, 157, 0);
   if (key == '2') c = color(0, 130, 164);
   if (key == '3') c = color(87, 35, 129);

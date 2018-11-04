@@ -5,8 +5,7 @@ var Spring = function(fromNode, toNode, length, stiffness, damping) {
   this.length = length || 100;
   this.stiffness = stiffness || 0.6;
   this.damping = damping || 0.9;
-}
-
+};
 
 // ------ apply forces on spring and attached nodes ------
 Spring.prototype.update = function() {
@@ -25,4 +24,4 @@ Spring.prototype.update = function() {
 
   this.toNode.velocity.add(force);
   this.fromNode.velocity.add(p5.Vector.mult(force, -1));
-}
+};

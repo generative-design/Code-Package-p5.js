@@ -82,7 +82,7 @@ function Shape(x1, y1, x2, y2, h, c) {
     push();
     translate(this.x1, this.y1);
     rotate(a);
-    translate(0, - this.h / 2);
+    translate(0, -this.h / 2);
     for (var i = 0; i < this.h; i += density) {
       line(0, i, w, i);
     }

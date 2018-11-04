@@ -58,7 +58,7 @@ var showPendulum = true;
 var showPendulumPath = true;
 
 var font = 'Georgia';
-var letters = "Sie hören nicht die folgenden Gesänge, Die Seelen, denen ich die ersten sang, Zerstoben ist das freundliche Gedränge, Verklungen ach! der erste Wiederklang.";
+var letters = 'Sie hören nicht die folgenden Gesänge, Die Seelen, denen ich die ersten sang, Zerstoben ist das freundliche Gedränge, Verklungen ach! der erste Wiederklang.';
 var fontSizeMin = 6;
 
 function setup() {
@@ -204,7 +204,7 @@ function Pendulum(size, hierarchy) {
   Pendulum.prototype.getTrail = function(offset, end) {
     if (this.pendulumArm) {
       if (end) {
-        end.add(this.end)
+        end.add(this.end);
       } else {
         end = this.end.copy();
       }

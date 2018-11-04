@@ -28,7 +28,7 @@
  */
 'use strict';
 
-var sketch = function( p ) {
+var sketch = function(p) {
 
   var pointCount;
   var freq = 1;
@@ -114,7 +114,7 @@ var sketch = function( p ) {
     p.ellipse(phiX, phiY, 8, 8);
 
     // dot on curve
-    p.ellipse(t*pointCount, y, 10, 10);
+    p.ellipse(t * pointCount, y, 10, 10);
 
     // dot on circle
     p.ellipse(x, y, 10, 10);

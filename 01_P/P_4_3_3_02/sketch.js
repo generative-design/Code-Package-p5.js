@@ -42,7 +42,7 @@ function setup() {
   createCanvas(640, 480);
   background(255);
   video = createCapture(VIDEO, function() {
-    streamReady = true
+    streamReady = true;
   });
   video.size(width * pixelDensity(), height * pixelDensity());
   video.hide();

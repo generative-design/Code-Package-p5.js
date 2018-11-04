@@ -49,8 +49,8 @@ function preload() {
 
 function setup() {
   createCanvas(windowWidth, windowHeight);
-  //createCanvas(windowWidth, round(windowWidth*1.343));
-  //createCanvas(windowWidth*2, round(windowWidth*1.343)*2);
+  // createCanvas(windowWidth, round(windowWidth*1.343));
+  // createCanvas(windowWidth*2, round(windowWidth*1.343)*2);
 
   joinedText = joinedText.join(' ');
   // If you want to get rid of all number chars too, just uncomment the following line
@@ -62,7 +62,7 @@ function setup() {
     sort: doSort,
     direction: rowDirection,
     padding: 2,
-    ignore: []
+    ignore: [],
   });
 
   // make an array for the nested treemaps
@@ -126,8 +126,6 @@ function draw() {
   noLoop();
 }
 
-
-
 function keyTyped() {
   // export png
   if (key == 's' || key == 'S') saveCanvas(gd.timestamp(), 'png');
@@ -159,8 +157,8 @@ function keyTyped() {
 
   // number key 1 - 9
   if (keyCode >= 49 && keyCode <= 57) {
-    var num = keyCode - 48
-      // search for the pressed number in the ignore array
+    var num = keyCode - 48;
+    // search for the pressed number in the ignore array
     var i = treemap.options.ignore.indexOf(num);
     if (i >= 0) {
       // found value, so remove it
@@ -178,9 +176,8 @@ function keyTyped() {
     loop();
   }
 
-
 }
 
 function keyPressed() {
-  //if (keyCode == RIGHT_ARROW);
+  // if (keyCode == RIGHT_ARROW);
 }

@@ -28,7 +28,7 @@
  */
 'use strict';
 
-var sketch = function( p ) {
+var sketch = function(p) {
 
   var actRandomSeed = 42;
 
@@ -47,7 +47,7 @@ var sketch = function( p ) {
 
     p.randomSeed(actRandomSeed);
     p.beginShape();
-    for (var x = 0; x < p.width; x+=10) {
+    for (var x = 0; x < p.width; x += 10) {
       var y = p.random(0,p.height);
       p.vertex(x,y);
     }
@@ -58,7 +58,7 @@ var sketch = function( p ) {
     p.fill(0);
 
     p.randomSeed(actRandomSeed);
-    for (var x = 0; x < p.width; x+=10) {
+    for (var x = 0; x < p.width; x += 10) {
       var y = p.random(0,p.height);
       p.ellipse(x,y,3,3);
     }
@@ -66,11 +66,11 @@ var sketch = function( p ) {
 
   p.mousePressed = function() {
     actRandomSeed = p.random(100000);
-  }
+  };
 
   p.keyReleased = function(){
     if (p.key == 's' || p.key == 'S') p.saveCanvas(gd.timestamp(), 'png');
-  }
+  };
 
 };
 

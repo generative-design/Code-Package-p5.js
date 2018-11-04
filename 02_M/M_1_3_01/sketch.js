@@ -29,13 +29,13 @@
  */
 'use strict';
 
-var sketch = function( p ) {
+var sketch = function(p) {
 
   p.setup = function() {
     p.createCanvas(1024,256);
     p.strokeWeight(1);
     p.strokeJoin(p.ROUND);
-  }
+  };
 
   p.draw = function() {
     p.background(255);
@@ -64,15 +64,15 @@ var sketch = function( p ) {
       var y = p.noise(noiseX) * p.height;
       p.ellipse(x,y,3,3);
     }
-  }
+  };
 
   p.mousePressed = function() {
     p.noiseSeed(p.random(100000));
-  }
+  };
 
   p.keyReleased = function(){
     if (p.key == 's' || p.key == 'S') p.saveCanvas(gd.timestamp(), 'png');
-  }
+  };
 
 };
 

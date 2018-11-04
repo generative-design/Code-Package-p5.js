@@ -119,7 +119,7 @@ function Circle(x, y, r) {
     stroke(0);
     strokeWeight(1.5);
     ellipse(this.x, this.y, this.r);
-  }
+  };
 }
 
 function keyPressed() {

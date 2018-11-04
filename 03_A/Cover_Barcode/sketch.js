@@ -35,8 +35,7 @@ var mmToPx = 3;
 var coverWidth = 400;
 var coverHeight = 400;
 
-var barcodeNumbers = [9, 9, 7, 8, 3, 8, 7, 4, 3, 9, 9, 0, 2, 9];
-
+var barcodeNumbers = [9, 9, 7, 8, 3, 8, 7, 4, 3, 9, 9, 0, 2, 9,];
 
 function setup() {
   createCanvas(coverWidth * mmToPx, coverHeight * mmToPx);
@@ -54,14 +53,13 @@ function setup() {
   }
 
   // Barcode
-  ribbon = new Ribbon(colorPoints, 150, { n: barcodeInfo.length - 1, step: 0.15, damp: 0.02, minW: 10, maxW: 50 });
-
+  ribbon = new Ribbon(colorPoints, 150, { n: barcodeInfo.length - 1, step: 0.15, damp: 0.02, minW: 10, maxW: 50, });
 
 }
 
 function draw() {
-  //background(255);
-  translate(150*mmToPx, 50*mmToPx);
+  // background(255);
+  translate(150 * mmToPx, 50 * mmToPx);
   rotate(radians(180));
   scale(mmToPx);
 
@@ -69,8 +67,6 @@ function draw() {
 
   noLoop();
 }
-
-
 
 function keyReleased() {
   if (key == 's' || key == 'S') saveCanvas(gd.timestamp(), 'png');

@@ -113,7 +113,7 @@ function draw() {
     }
 
     if (recording) {
-      gif.addFrame(canvasElement.canvas, {delay: 1, copy: true});
+      gif.addFrame(canvasElement.canvas, {delay: 1, copy: true,});
     }
   }
 
@@ -143,10 +143,10 @@ function draw() {
     // draw pen
     fill(lineColor);
     noStroke();
-    ellipse(mouseX, mouseY, lineWidth + 2, lineWidth + 2)
+    ellipse(mouseX, mouseY, lineWidth + 2, lineWidth + 2);
     stroke(0, 50);
     noFill();
-    ellipse(mouseX, mouseY, lineWidth + 1, lineWidth + 1)
+    ellipse(mouseX, mouseY, lineWidth + 1, lineWidth + 1);
   }
 }
 
@@ -187,7 +187,7 @@ function setupGIF() {
     workers: 16,
     quality: 10000,
     debug: true,
-    workerScript: '../../libraries/gif.js/gif.worker.js'
+    workerScript: '../../libraries/gif.js/gif.worker.js',
   });
   gif.on('finished', function(blob) {
     saveAs(blob, gd.timestamp() + '.gif');

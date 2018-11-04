@@ -28,7 +28,7 @@
  */
 'use strict';
 
-var sketch = function( p ) {
+var sketch = function(p) {
 
   var agents = [];
   var agentCount = 4000;
@@ -44,10 +44,10 @@ var sketch = function( p ) {
   p.setup = function() {
     p.createCanvas(p.windowWidth, p.windowHeight);
 
-    for(var i = 0; i < agentCount; i++) {
+    for (var i = 0; i < agentCount; i++) {
       agents[i] = new Agent(noiseZRange);
     }
-  }
+  };
 
   p.draw = function() {
     p.fill(255, overlayAlpha);
@@ -63,7 +63,7 @@ var sketch = function( p ) {
         agents[i].update2(strokeWidth, noiseScale, noiseStrength, noiseZVelocity);
       }
     }
-  }
+  };
 
   p.keyReleased = function() {
     if (p.key == 's' || p.key == 'S') p.saveCanvas(gd.timestamp(), 'png');
@@ -75,7 +75,7 @@ var sketch = function( p ) {
       p.noiseSeed(newNoiseSeed);
     }
     if (p.keyCode == p.DELETE || p.keyCode == p.BACKSPACE) p.background(255);
-  }
+  };
 
 };
 

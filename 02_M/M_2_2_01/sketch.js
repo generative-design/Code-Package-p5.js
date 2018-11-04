@@ -29,7 +29,7 @@
  */
 'use strict';
 
-var sketch = function( p ) {
+var sketch = function(p) {
 
   var pointCount = 600;
   var freqX = 1;
@@ -134,7 +134,7 @@ var sketch = function( p ) {
 
     p.ellipse(x, y, 10, 10);
 
-    p.pop()
+    p.pop();
   }
 
   p.keyPressed = function() {
@@ -153,7 +153,7 @@ var sketch = function( p ) {
     if (p.keyCode == p.LEFT_ARROW) phi -= 15;
     if (p.keyCode == p.RIGHT_ARROW) phi += 15;
 
-    console.log("freqX: " + freqX + ", freqY: " + freqY + ", phi: " + phi);
+    console.log('freqX: ' + freqX + ', freqY: ' + freqY + ', phi: ' + phi);
   };
 
 };

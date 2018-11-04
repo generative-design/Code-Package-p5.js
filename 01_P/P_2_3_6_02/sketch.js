@@ -38,7 +38,7 @@
 'use strict';
 
 var modules;
-var moduleType = ['A', 'B', 'C', 'D', 'E', 'F', 'J', 'K'];
+var moduleType = ['A', 'B', 'C', 'D', 'E', 'F', 'J', 'K',];
 var activeModuleSet = 'A';
 
 var tileSize = 30;
@@ -156,7 +156,7 @@ function drawModules() {
     for (var gridY = 1; gridY < gridResolutionY - 1; gridY++) {
       // use only active tiles
       var currentTile = tiles[gridX][gridY];
-      if (tiles[gridX][gridY]  != 0) {
+      if (tiles[gridX][gridY] != 0) {
         var binaryResult = '';
         // check the four neightbours, each can be true or false
         // create a binary result out of it, eg. 1011
