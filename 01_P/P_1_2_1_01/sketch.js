@@ -97,7 +97,7 @@ function mouseReleased() {
 }
 
 function keyPressed() {
-  if (key == 'c' || key == 'C') writeFile([gd.ase.encode(colors),], gd.timestamp(), 'ase');
+  if (key == 'c' || key == 'C') writeFile([gd.ase.encode(colors)], gd.timestamp(), 'ase');
   if (key == 's' || key == 'S') saveCanvas(gd.timestamp(), 'png');
   if (key == '1') interpolateShortest = true;
   if (key == '2') interpolateShortest = false;

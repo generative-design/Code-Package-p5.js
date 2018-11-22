@@ -125,6 +125,6 @@ function keyPressed() {
     for (var i = 0; i < hueValues.length; i++) {
       colors.push(color(hueValues[i], saturationValues[i], brightnessValues[i]));
     }
-    writeFile([gd.ase.encode(colors),], gd.timestamp(), 'ase');
+    writeFile([gd.ase.encode(colors)], gd.timestamp(), 'ase');
   }
 }

@@ -80,7 +80,7 @@ var allPOSTags = [
   'wdt',
   'wp',
   'wp$',
-  'wrb',
+  'wrb'
 ];
 var allPOSTagsFull = [
   'Coordinating conjunction',
@@ -118,7 +118,7 @@ var allPOSTagsFull = [
   'Wh-determiner',
   'Wh-pronoun',
   'Possessive wh-pronoun',
-  'Wh-adverb',
+  'Wh-adverb'
 ];
 
 var counters = [];

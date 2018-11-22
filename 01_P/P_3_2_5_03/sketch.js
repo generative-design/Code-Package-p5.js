@@ -118,7 +118,7 @@ function animatedType(){
   that.letterCoordinates = [];
   that.pointDensity = 2;
   that.startX = 0;
-  that.colors = [color(65, 105, 185), color(245, 95, 80), color(15, 233, 118), color(233, 15, 130), color(118, 15, 233), color(15, 233, 118),];
+  that.colors = [color(65, 105, 185), color(245, 95, 80), color(15, 233, 118), color(233, 15, 130), color(118, 15, 233), color(15, 233, 118)];
   that.angle = 0;
 
   that.drawMode = 8;
@@ -140,7 +140,7 @@ function animatedType(){
   // create a text object to hold each line of text
   // usage: this.textTyped.push(this.addText("hello"))
   this.addText = function(_text){
-    var textObject = {counter: 0, text: _text,};
+    var textObject = {counter: 0, text: _text};
     return textObject;
   };
 
@@ -165,7 +165,7 @@ function animatedType(){
           lineNumber: lineNum,
           len: path.commands.length,
           breaks: floor(path.commands.length / txt.text.length),
-          ranges: [],
+          ranges: []
         };
 
         // get the start point of each letter
@@ -198,7 +198,7 @@ function animatedType(){
             len: path.commands.length,
             bbox: fontPath.getBoundingBox(),
             distX: 0,
-            startX: 0,
+            startX: 0
           };
 
           // console.log(pathData.bbox.x1)
@@ -241,7 +241,7 @@ function animatedType(){
       path.data.commands.forEach(function(coord){
         if (coord.x != undefined && coord.y != undefined){
           var yOffset = path.lineNumber * fontSize;
-          that.coordinates.push({x: coord.x, y: coord.y + yOffset,});
+          that.coordinates.push({x: coord.x, y: coord.y + yOffset});
         }
       });
 

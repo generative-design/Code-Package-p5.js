@@ -38,7 +38,7 @@
 'use strict';
 
 var modules;
-var moduleType = ['A', 'B', 'C', 'D', 'E', 'F', 'J', 'K',];
+var moduleType = ['A', 'B', 'C', 'D', 'E', 'F', 'J', 'K'];
 var activeModuleSet = 'A';
 
 var tileSize = 30;

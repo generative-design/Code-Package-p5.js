@@ -96,7 +96,7 @@ function Letter(char, x, y) {
   this.y = y;
 
   Letter.prototype.draw = function() {
-    var path = font.textToPoints(this.char, this.x, this.y, fontSize, {sampleFactor: pathSampleFactor,});
+    var path = font.textToPoints(this.char, this.x, this.y, fontSize, {sampleFactor: pathSampleFactor});
     stroke(shapeColor);
 
     for (var d = 0; d < ribbonWidth; d += density) {

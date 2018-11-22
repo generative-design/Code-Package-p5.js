@@ -46,7 +46,7 @@ function setup() {
   scale(mmToPx);
 
   // E Einleitung
-  ribbon = new Ribbon(colorPoints.slice(0, 41), 300, { n: 30, step: 0.15, damp: 0.02, minW: 20, maxW: 100, });
+  ribbon = new Ribbon(colorPoints.slice(0, 41), 300, { n: 30, step: 0.15, damp: 0.02, minW: 20, maxW: 100 });
   ribbon.draw(250, 200);
 
   // P.0 p5.js-Einführung

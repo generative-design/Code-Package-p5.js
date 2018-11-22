@@ -60,7 +60,7 @@ function setup(){
   var distance = function(a, b){
     return Math.pow(a.r - b.r, 2) + Math.pow(a.g - b.g, 2) + Math.pow(a.b - b.b, 2);
   };
-  tree = new kdTree(colors, distance, ['r', 'g', 'b',]);
+  tree = new kdTree(colors, distance, ['r', 'g', 'b']);
 
   // setup camera
   cam = createCapture(VIDEO);
@@ -84,7 +84,7 @@ function draw(){
       // get current color
       var rgba = cam.get(min(gridX,cam.width - 1), gridY);
       // find emoji with 'nearest' color
-      var nearest = tree.nearest({r: rgba[0], g: rgba[1], b: rgba[2],}, 1)[0][0];
+      var nearest = tree.nearest({r: rgba[0], g: rgba[1], b: rgba[2]}, 1)[0][0];
       // console.log(nearest);
       image(icons[nearest.emoji], posX, posY, titleWidth, titleHeight);
       // fill(rgba);

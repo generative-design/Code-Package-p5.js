@@ -74,7 +74,7 @@ function AniLetters(_lwidth, _lheight){
   that.lineCount = 0;
   that.aniSteps = 20;
   that.drawMode = 3;
-  that.cursorLocation = {x: 50, y: 50,};
+  that.cursorLocation = {x: 50, y: 50};
   that.letterPadding = 60;
   that.style = 1;
 
@@ -101,7 +101,7 @@ function AniLetters(_lwidth, _lheight){
         var pathData = {
           letter: d.toUpperCase(),
           x: that.cursorLocation.x + (that.letterWidth + that.letterPadding * i),
-          y: that.cursorLocation.y + (that.letterHeight * idx),
+          y: that.cursorLocation.y + (that.letterHeight * idx)
         };
 
         that.paths.push(pathData);
@@ -112,7 +112,7 @@ function AniLetters(_lwidth, _lheight){
 
   // add a text object for each line
   this.addText = function(_text){
-    var textObject = {counter: 0, text: _text,};
+    var textObject = {counter: 0, text: _text};
     return textObject;
   };
 
@@ -854,7 +854,7 @@ function AniLetters(_lwidth, _lheight){
       var t = i / stepCount;
       var cx = curvePoint(a1, b1, c1, d1, t);
       var cy = curvePoint(a2, b2, c2, d2, t);
-      points.push({x: cx, y: cy,});
+      points.push({x: cx, y: cy});
     }
     var aniIndex = frameCount % (stepCount);
     var ratio = aniIndex / stepCount;
@@ -878,7 +878,7 @@ function AniLetters(_lwidth, _lheight){
       var t = i / stepCount;
       var cx = bezierPoint(a1, b1, c1, d1, t);
       var cy = bezierPoint(a2, b2, c2, d2, t);
-      points.push({x: cx, y: cy,});
+      points.push({x: cx, y: cy});
     }
     var aniIndex = frameCount % (stepCount);
     var ratio = aniIndex / stepCount;

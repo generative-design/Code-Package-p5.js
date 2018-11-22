@@ -62,7 +62,7 @@ function setup() {
     sort: doSort,
     direction: rowDirection,
     padding: 2,
-    ignore: [],
+    ignore: []
   });
 
   // make an array for the nested treemaps

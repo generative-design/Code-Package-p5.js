@@ -56,7 +56,7 @@ function draw() {
     clear();
     image(img, 0, 0);
     loadPixels();
-    var rgb = {r: 0, g: 0, b: 0,};
+    var rgb = {r: 0, g: 0, b: 0};
     var pixCounter = 0;
     for (var i = 0; i < pixels.length; i += 4) {
       if (pixels[i + 3] === 0) continue; // skip if alpha == 0

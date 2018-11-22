@@ -86,9 +86,9 @@ var sketch = function(p) {
         pllimit: 'max',
         plcontinue: plcontinue,
         titles: title,
-        format: 'json',
+        format: 'json'
       },
-      headers: { 'Api-User-Agent': 'M_6_2_01 (http://www.generative-gestaltung.de/; info@generative-gestaltung.de)', },
+      headers: { 'Api-User-Agent': 'M_6_2_01 (http://www.generative-gestaltung.de/; info@generative-gestaltung.de)' },
       dataType: 'jsonp',
       success: function(data) {
         var ids = Object.keys(data.query.pages);
@@ -104,7 +104,7 @@ var sketch = function(p) {
           // If all is collected, deliver the results to the callback function
           callback(links);
         }
-      },
+      }
     });
   }
 

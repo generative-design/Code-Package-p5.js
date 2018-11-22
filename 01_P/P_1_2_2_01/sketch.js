@@ -79,7 +79,7 @@ function draw() {
 }
 
 function keyReleased() {
-  if (key == 'c' || key == 'C') writeFile([gd.ase.encode(colors),], gd.timestamp(), 'ase');
+  if (key == 'c' || key == 'C') writeFile([gd.ase.encode(colors)], gd.timestamp(), 'ase');
   if (key == 's' || key == 'S') saveCanvas(gd.timestamp(), 'png');
 
   if (key == '1') loadImage('data/pic1.jpg', setImage);

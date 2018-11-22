@@ -47,7 +47,7 @@
         "eol-last": "error",
         "comma-dangle": [
             "error",
-            "always"
+            "never"
         ],
         "func-call-spacing": "error",
         "key-spacing": "error",
