@@ -64,29 +64,29 @@ function draw() {
 
       // switch between modules
       switch (drawMode) {
-        case 1:
-          translate(-tileWidth / 2, -tileHeight / 2);
-          for (var i = 0; i < count; i++) {
-            line(0, (para + 0.5) * tileHeight, tileWidth, i * tileHeight / count);
-            line(0, i * tileHeight / count, tileWidth, tileHeight - (para + 0.5) * tileHeight);
-          }
-          break;
-        case 2:
-          for (var i = 0; i <= count; i++) {
-            line(para * tileWidth, para * tileHeight, tileWidth / 2, (i / count - 0.5) * tileHeight);
-            line(para * tileWidth, para * tileHeight, -tileWidth / 2, (i / count - 0.5) * tileHeight);
-            line(para * tileWidth, para * tileHeight, (i / count - 0.5) * tileWidth, tileHeight / 2);
-            line(para * tileWidth, para * tileHeight, (i / count - 0.5) * tileWidth, -tileHeight / 2);
-          }
-          break;
-        case 3:
-          for (var i = 0; i <= count; i++) {
-            line(0, para * tileHeight, tileWidth / 2, (i / count - 0.5) * tileHeight);
-            line(0, para * tileHeight, -tileWidth / 2, (i / count - 0.5) * tileHeight);
-            line(0, para * tileHeight, (i / count - 0.5) * tileWidth, tileHeight / 2);
-            line(0, para * tileHeight, (i / count - 0.5) * tileWidth, -tileHeight / 2);
-          }
-          break;
+      case 1:
+        translate(-tileWidth / 2, -tileHeight / 2);
+        for (var i = 0; i < count; i++) {
+          line(0, (para + 0.5) * tileHeight, tileWidth, i * tileHeight / count);
+          line(0, i * tileHeight / count, tileWidth, tileHeight - (para + 0.5) * tileHeight);
+        }
+        break;
+      case 2:
+        for (var i = 0; i <= count; i++) {
+          line(para * tileWidth, para * tileHeight, tileWidth / 2, (i / count - 0.5) * tileHeight);
+          line(para * tileWidth, para * tileHeight, -tileWidth / 2, (i / count - 0.5) * tileHeight);
+          line(para * tileWidth, para * tileHeight, (i / count - 0.5) * tileWidth, tileHeight / 2);
+          line(para * tileWidth, para * tileHeight, (i / count - 0.5) * tileWidth, -tileHeight / 2);
+        }
+        break;
+      case 3:
+        for (var i = 0; i <= count; i++) {
+          line(0, para * tileHeight, tileWidth / 2, (i / count - 0.5) * tileHeight);
+          line(0, para * tileHeight, -tileWidth / 2, (i / count - 0.5) * tileHeight);
+          line(0, para * tileHeight, (i / count - 0.5) * tileWidth, tileHeight / 2);
+          line(0, para * tileHeight, (i / count - 0.5) * tileWidth, -tileHeight / 2);
+        }
+        break;
       }
 
       pop();

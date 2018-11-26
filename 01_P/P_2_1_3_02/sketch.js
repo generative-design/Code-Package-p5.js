@@ -48,7 +48,7 @@ function draw() {
 
   var tileCountX = mouseX / 30 + 1;
   var tileCountY = mouseY / 30 + 1;
-  var tileWidth  = width / tileCountX;
+  var tileWidth = width / tileCountX;
   var tileHeight = height / tileCountY;
 
   for (var gridY = 0; gridY <= tileCountY; gridY++) {
@@ -68,22 +68,22 @@ function draw() {
         for (var i = 0; i < count; i++) {
           // move end point around the four sides of the tile
           switch (side) {
-            case 0:
-              x2 += tileWidth / count;
-              y2 = 0;
-              break;
-            case 1:
-              x2 = tileWidth;
-              y2 += tileHeight / count;
-              break;
-            case 2:
-              x2 -= tileWidth / count;
-              y2 = tileHeight;
-              break;
-            case 3:
-              x2 = 0;
-              y2 -= tileHeight / count;
-              break;
+          case 0:
+            x2 += tileWidth / count;
+            y2 = 0;
+            break;
+          case 1:
+            x2 = tileWidth;
+            y2 += tileHeight / count;
+            break;
+          case 2:
+            x2 -= tileWidth / count;
+            y2 = tileHeight;
+            break;
+          case 3:
+            x2 = 0;
+            y2 -= tileHeight / count;
+            break;
           }
 
           // adjust weight and color of the line
@@ -97,20 +97,20 @@ function draw() {
 
           // set colors depending on draw mode
           switch (drawMode) {
-            case 1:
-              backgroundColor = 255;
-              stroke(0);
-              break;
-            case 2:
-              backgroundColor = 255;
-              stroke(0);
-              strokeWeight(lineWeight);
-              break;
-            case 3:
-              backgroundColor = 0;
-              stroke(strokeColor);
-              strokeWeight(mouseX / 100);
-              break;
+          case 1:
+            backgroundColor = 255;
+            stroke(0);
+            break;
+          case 2:
+            backgroundColor = 255;
+            stroke(0);
+            strokeWeight(lineWeight);
+            break;
+          case 3:
+            backgroundColor = 0;
+            stroke(strokeColor);
+            strokeWeight(mouseX / 100);
+            break;
           }
 
           // draw the line

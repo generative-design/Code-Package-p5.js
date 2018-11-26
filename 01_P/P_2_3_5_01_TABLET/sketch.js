@@ -59,7 +59,7 @@ function setup() {
   frameRate(30);
 
   tablet = new gd.WacomTablet();
-  //console.log(tablet.values());
+  // console.log(tablet.values());
 }
 
 function draw() {
@@ -80,28 +80,28 @@ function draw() {
     var h2 = (-10 + random(10)) * (1.2 + penLength);
 
     switch (drawMode) {
-      case 1:
-        stroke(255);
-        strokeWeight(0.5);
-        fill(0);
-        break;
-      case 2:
-        stroke(255);
-        strokeWeight(0.5);
-        //noStroke();
-        var white = color(255, 20);
-        var interColor = lerpColor(fromColor, toColor, random(0, 1));
-        fill(lerpColor(white, interColor, pressure));
-        break;
-      case 3:
-        var julia = int(map(pressure, 0, 1, 0, 255));
-        fill(0, julia);
-        stroke(255);
-        strokeWeight(0.5);
-        elementLength = penLength * 50;
-        h1 = random(5) + elementLength/2;
-        h2 = (random(5) + elementLength/2) * -1;
-        break;
+    case 1:
+      stroke(255);
+      strokeWeight(0.5);
+      fill(0);
+      break;
+    case 2:
+      stroke(255);
+      strokeWeight(0.5);
+      // noStroke();
+      var white = color(255, 20);
+      var interColor = lerpColor(fromColor, toColor, random(0, 1));
+      fill(lerpColor(white, interColor, pressure));
+      break;
+    case 3:
+      var julia = int(map(pressure, 0, 1, 0, 255));
+      fill(0, julia);
+      stroke(255);
+      strokeWeight(0.5);
+      elementLength = penLength * 50;
+      h1 = random(5) + elementLength / 2;
+      h2 = (random(5) + elementLength / 2) * -1;
+      break;
     }
 
     var pointsX = [];

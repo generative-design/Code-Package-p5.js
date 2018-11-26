@@ -38,12 +38,11 @@ var y = 0;
 var stepSize = 5.0;
 
 var font = 'Georgia';
-var letters = "All the world's a stage, and all the men and women merely players. They have their exits and their entrances.";
+var letters = 'All the world\'s a stage, and all the men and women merely players. They have their exits and their entrances.';
 var fontSizeMin = 3;
 var angleDistortion = 0.0;
 
 var counter = 0;
-
 
 function setup() {
   // use full screen size

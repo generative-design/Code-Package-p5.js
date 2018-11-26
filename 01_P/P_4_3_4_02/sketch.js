@@ -35,21 +35,20 @@ var icons;
 
 // You will have to download the emoji files first
 // Please see https://github.com/generative-design/Code-Package-p5.js/tree/master/data
-var emojisPath = "../../data/twemoji/";
+var emojisPath = '../../data/twemoji/';
 var tree;
 
 var recording = false;
 
-
 function preload() {
   icons = {};
   for (var name in emojis) {
-    icons[name] = loadImage(emojisPath + "16x16/" + name + ".png");
+    icons[name] = loadImage(emojisPath + '16x16/' + name + '.png');
   }
 }
 
 function setup(){
-  createCanvas(80*16, 60*16);
+  createCanvas(80 * 16, 60 * 16);
 
   // setup kdTree to find neareast color in a speedy way
   var colors = [];
@@ -60,8 +59,8 @@ function setup(){
   }
   var distance = function(a, b){
     return Math.pow(a.r - b.r, 2) + Math.pow(a.g - b.g, 2) + Math.pow(a.b - b.b, 2);
-  }
-  tree = new kdTree(colors, distance, ["r", "g", "b"]);
+  };
+  tree = new kdTree(colors, distance, ['r', 'g', 'b']);
 
   // setup camera
   cam = createCapture(VIDEO);
@@ -78,18 +77,18 @@ function draw(){
   var titleHeight = height / cam.height;
   // console.log("tile size: "+titleWidth+" x "+titleHeight);
   for (var gridX = 0; gridX < cam.width; gridX++){
-    for(var gridY = 0; gridY < cam.height; gridY++){
+    for (var gridY = 0; gridY < cam.height; gridY++){
       // grid position
-      var posX = titleWidth*gridX;
-      var posY = titleHeight*gridY;
+      var posX = titleWidth * gridX;
+      var posY = titleHeight * gridY;
       // get current color
-      var rgba = cam.get(min(gridX,cam.width-1), gridY);
+      var rgba = cam.get(min(gridX,cam.width - 1), gridY);
       // find emoji with 'nearest' color
       var nearest = tree.nearest({r: rgba[0], g: rgba[1], b: rgba[2]}, 1)[0][0];
-      //console.log(nearest);
+      // console.log(nearest);
       image(icons[nearest.emoji], posX, posY, titleWidth, titleHeight);
-      //fill(rgba);
-      //ellipse(posX, posY, titleWidth, titleHeight);
+      // fill(rgba);
+      // ellipse(posX, posY, titleWidth, titleHeight);
     }
   }
 

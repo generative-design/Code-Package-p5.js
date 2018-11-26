@@ -143,10 +143,10 @@ function draw() {
     // draw pen
     fill(lineColor);
     noStroke();
-    ellipse(mouseX, mouseY, lineWidth + 2, lineWidth + 2)
+    ellipse(mouseX, mouseY, lineWidth + 2, lineWidth + 2);
     stroke(0, 50);
     noFill();
-    ellipse(mouseX, mouseY, lineWidth + 1, lineWidth + 1)
+    ellipse(mouseX, mouseY, lineWidth + 1, lineWidth + 1);
   }
 }
 

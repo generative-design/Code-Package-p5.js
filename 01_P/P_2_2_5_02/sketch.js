@@ -137,7 +137,7 @@ function Circle(x, y, r) {
       strokeWeight(1.5);
       ellipse(this.x, this.y, this.r);
     }
-  }
+  };
 }
 
 function keyPressed() {

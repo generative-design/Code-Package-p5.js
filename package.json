@@ -33,17 +33,20 @@
   "homepage": "http://www.generative-gestaltung.de/2",
   "dependencies": {
     "budo": "^9.2.2",
+    "cheerio": "^1.0.0-rc.2",
     "chroma-js": "^1.3.4",
+    "fs-extra": "^4.0.2",
     "fs-sync": "^1.0.4",
     "g.js": "^0.1.2",
     "generative-design-library.js": "^0.1.2",
     "glob": "^7.1.1",
     "jquery": "^3.2.1",
     "opentype.js": "^0.6.8",
-    "p5": "^0.5.14",
-    "tooltipster": "^4.2.5",
-    "cheerio": "^1.0.0-rc.2",
-    "fs-extra": "^4.0.2"
+    "p5": "^0.7.2",
+    "source-map-concat": "^1.0.1",
+    "source-map-dummy": "^1.0.0",
+    "source-map-resolve": "^0.5.2",
+    "tooltipster": "^4.2.5"
   },
   "install": {
     "sources": {

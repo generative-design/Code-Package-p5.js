@@ -45,8 +45,8 @@ function preload() {
 
 function setup() {
   createCanvas(windowWidth, windowHeight);
-  //createCanvas(windowWidth, round(windowWidth*1.343));
-  //createCanvas(windowWidth*2, round(windowWidth*1.343)*2);
+  // createCanvas(windowWidth, round(windowWidth*1.343));
+  // createCanvas(windowWidth*2, round(windowWidth*1.343)*2);
 
   joinedText = joinedText.join(' ');
 
@@ -54,7 +54,7 @@ function setup() {
   // joinedText = joinedText.replace(/\d+/g, '');
   var words = joinedText.match(/\w+/g);
 
-  treemap = new gd.Treemap(1, 1, width - 3, height - 3, {sort:doSort, direction:rowDirection});
+  treemap = new gd.Treemap(1, 1, width - 3, height - 3, {sort: doSort, direction: rowDirection});
 
   // count words
   for (var i = 0; i < words.length; i++) {
@@ -121,5 +121,4 @@ function keyTyped() {
     loop();
   }
 }
-
 

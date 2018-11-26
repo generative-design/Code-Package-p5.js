@@ -71,8 +71,8 @@ function draw() {
       var posX = width / tileCount * gridX;
       var posY = height / tileCount * gridY;
 
-      var shiftX =  random(-1, 1) * mouseX / 20;
-      var shiftY =  random(-1, 1) * mouseY / 20;
+      var shiftX = random(-1, 1) * mouseX / 20;
+      var shiftY = random(-1, 1) * mouseY / 20;
 
       fill(moduleColorBackground);
       ellipse(posX + shiftX, posY + shiftY, moduleRadiusBackground, moduleRadiusBackground);
@@ -139,8 +139,8 @@ function keyReleased() {
   }
 
   if (key == '0') {
-    moduleRadiusBackground = 20;
-    moduleRadiusForeground = 10;
+    moduleRadiusBackground = 30;
+    moduleRadiusForeground = 15;
     moduleAlphaBackground = 100;
     moduleAlphaForeground = 100;
     moduleColorBackground = color(0, 0, 0, moduleAlphaBackground);

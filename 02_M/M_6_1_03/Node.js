@@ -11,7 +11,7 @@ var Node = function(x, y, minX, maxX, minY, maxY) {
   this.velocity = myp5.createVector();
   this.pVelocity = myp5.createVector();
   this.maxVelocity = 10;
-}
+};
 
 Node.prototype = Object.create(p5.Vector.prototype);
 
@@ -25,7 +25,7 @@ Node.prototype.attractNodes = function(nodeArray) {
 
     this.attract(otherNode);
   }
-}
+};
 
 Node.prototype.attract = function(otherNode) {
   var thisNodeVector = myp5.createVector(this.x, this.y);
@@ -41,7 +41,7 @@ Node.prototype.attract = function(otherNode) {
     otherNode.velocity.x += df.x;
     otherNode.velocity.y += df.y;
   }
-}
+};
 
 Node.prototype.update = function() {
   this.velocity.limit(this.maxVelocity);
@@ -68,6 +68,6 @@ Node.prototype.update = function() {
   }
 
   this.velocity.mult(1 - this.damping);
-}
+};
 
 Node.prototype.constructor = Node;

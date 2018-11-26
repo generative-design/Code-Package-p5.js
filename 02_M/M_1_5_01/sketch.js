@@ -34,7 +34,7 @@
  */
 'use strict';
 
-var sketch = function( p ) {
+var sketch = function(p) {
 
   var octaves = 4;
   var falloff = 0.5;
@@ -47,8 +47,8 @@ var sketch = function( p ) {
 
   p.preload = function() {
     // preload svg
-    arrow = p.loadImage("data/arrow.svg");
-  }
+    arrow = p.loadImage('data/arrow.svg');
+  };
 
   p.setup = function() {
     p.createCanvas(800,800);
@@ -56,7 +56,7 @@ var sketch = function( p ) {
     gridResolutionX = p.round(p.width / tileSize);
     gridResolutionY = p.round(p.height / tileSize);
     p.strokeCap(p.SQUARE);
-  }
+  };
 
   p.draw = function() {
     p.background(255);
@@ -105,17 +105,17 @@ var sketch = function( p ) {
       }
     }
 
-    console.log("octaves: " + octaves + " falloff: " + falloff + " noiseXRange: 0-" + noiseXRange + " noiseYRange: 0-" + noiseYRange);
-  }
+    console.log('octaves: ' + octaves + ' falloff: ' + falloff + ' noiseXRange: 0-' + noiseXRange + ' noiseYRange: 0-' + noiseYRange);
+  };
 
   p.keyReleased = function() {
     if (p.key == 's' || p.key == 'S') p.saveCanvas(gd.timestamp(), 'png');
     if (p.key == 'd' || p.key == 'D') debugMode = !debugMode;
     if (p.key == ' ') p.noiseSeed(p.random(100000));
-  }
+  };
 
   p.keyPressed = function() {
-    if (p.keyCode == p.UP_ARROW)   falloff += 0.05;
+    if (p.keyCode == p.UP_ARROW) falloff += 0.05;
     if (p.keyCode == p.DOWN_ARROW) falloff -= 0.05;
     if (falloff > 1) falloff = 1;
     if (falloff < 0) falloff = 0;
@@ -123,7 +123,7 @@ var sketch = function( p ) {
     if (p.keyCode == p.LEFT_ARROW) octaves--;
     if (p.keyCode == p.RIGHT_ARROW) octaves++;
     if (octaves < 0) octaves = 0;
-  }
+  };
 
 };
 

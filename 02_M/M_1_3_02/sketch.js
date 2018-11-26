@@ -28,13 +28,13 @@
  */
 'use strict';
 
-var sketch = function( p ) {
+var sketch = function(p) {
 
   var actRandomSeed = 0;
 
   p.setup = function() {
     p.createCanvas(512,512);
-  }
+  };
 
   p.draw = function() {
     p.background(0);
@@ -47,15 +47,15 @@ var sketch = function( p ) {
       }
     }
     p.updatePixels();
-  }
+  };
 
   p.mousePressed = function() {
     actRandomSeed = p.random(100000);
-  }
+  };
 
   p.keyReleased = function() {
     if (p.key == 's' || p.key == 'S') p.saveCanvas(gd.timestamp(), 'png');
-  }
+  };
 
 };
 

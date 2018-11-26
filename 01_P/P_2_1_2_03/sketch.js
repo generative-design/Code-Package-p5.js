@@ -29,7 +29,6 @@
 'use strict';
 
 var tileCount = 20;
-var actRandomSeed = 0;
 
 var moduleColor;
 var moduleAlpha = 180;
@@ -45,8 +44,6 @@ function setup() {
 function draw() {
   clear();
 
-  randomSeed(actRandomSeed);
-
   stroke(moduleColor);
 
   for (var gridY = 0; gridY < width; gridY += 25) {
@@ -55,14 +52,10 @@ function draw() {
       diameter = diameter / maxDistance * 40;
       push();
       translate(gridX, gridY, diameter * 5);
-      rect(0, 0, diameter, diameter);    // also nice: ellipse(...)
+      rect(0, 0, diameter, diameter); // also nice: ellipse(...)
       pop();
     }
   }
-}
-
-function mousePressed() {
-  actRandomSeed = random(100000);
 }
 
 function keyReleased() {

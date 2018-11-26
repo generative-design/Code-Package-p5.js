@@ -38,7 +38,7 @@ function setup() {
   sliders = [];
   createCanvas(windowWidth, windowHeight);
   // init canvas with slider rose to the middle
-  sliders.push(new SliderRose(width/2, height/2));
+  sliders.push(new SliderRose(width / 2, height / 2));
 }
 
 function draw() {
@@ -69,15 +69,15 @@ function SliderRose(_x, _y){
   // define how many degrees to skip from 360
   var skip = 20;
   // create sliders around a circle
-  for(var i =0; i < 360; i+=skip){
+  for (var i = 0; i < 360; i += skip){
     var sliderAngle = radians(i);
-    var x2 = cos(sliderAngle)*roseRadius;
-    var y2 = sin(sliderAngle)*roseRadius;
+    var x2 = cos(sliderAngle) * roseRadius;
+    var y2 = sin(sliderAngle) * roseRadius;
     // create the slider, position, and rotate
-    sliders[counter] = createSlider(0, 255, 50)
+    sliders[counter] = createSlider(0, 255, 50);
     sliders[counter].position(this.x1 + x2, this.y1 + y2);
-    sliders[counter].style('width', roseRadius +'px')
-    sliders[counter].style('transform', 'rotate('+i+'deg)');
+    sliders[counter].style('width', roseRadius + 'px');
+    sliders[counter].style('transform', 'rotate(' + i + 'deg)');
     counter++;
 
   }
@@ -86,15 +86,14 @@ function SliderRose(_x, _y){
   // update the sliders according to a sin wave
   this.update = function(){
     var offset = 0;
-    for(var i = 0; i < sliders.length; i++){
+    for (var i = 0; i < sliders.length; i++){
       // map the value along the sine wave to the slider values
       var x = map(sin(sinAngle + offset), -1, 1, 0, 255);
       sliders[i].value(x);
       offset += 0.050;
     }
     sinAngle += 0.1;
-  }
+  };
 
 }
-
 

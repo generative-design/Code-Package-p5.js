@@ -36,7 +36,6 @@ var layer1Items = [];
 var layer2Items = [];
 var layer3Items = [];
 
-
 function preload() {
   layer1Images.push(loadImage('../../data/P_4_2_1_footage/layer1_01.png'));
   layer1Images.push(loadImage('../../data/P_4_2_1_footage/layer1_02.png'));

@@ -33,7 +33,7 @@
  */
 'use strict';
 
-var sketch = function( p ) {
+var sketch = function(p) {
 
   var octaves = 4;
   var falloff = 0.5;
@@ -43,7 +43,7 @@ var sketch = function( p ) {
   p.setup = function() {
     p.createCanvas(512,512);
     p.cursor(p.CROSS);
-  }
+  };
 
   p.draw = function() {
     p.background(0);
@@ -71,18 +71,18 @@ var sketch = function( p ) {
     }
     p.updatePixels();
 
-    console.log("octaves: " + octaves + " falloff: " + falloff + " noiseXRange: 0-" + noiseXRange + " noiseYRange: 0-" + noiseYRange);
-  }
+    console.log('octaves: ' + octaves + ' falloff: ' + falloff + ' noiseXRange: 0-' + noiseXRange + ' noiseYRange: 0-' + noiseYRange);
+  };
 
   p.keyReleased = function() {
     if (p.key == 's' || p.key == 'S') p.saveCanvas(gd.timestamp(), 'png');
     if (p.key == ' ') p.noiseSeed(p.random(100000));
     if (p.key == '1') noiseMode = 1;
     if (p.key == '2') noiseMode = 2;
-  }
+  };
 
   p.keyPressed = function() {
-    if (p.keyCode == p.UP_ARROW)   falloff += 0.05;
+    if (p.keyCode == p.UP_ARROW) falloff += 0.05;
     if (p.keyCode == p.DOWN_ARROW) falloff -= 0.05;
     if (falloff > 1) falloff = 1;
     if (falloff < 0) falloff = 0;
@@ -90,7 +90,7 @@ var sketch = function( p ) {
     if (p.keyCode == p.LEFT_ARROW) octaves--;
     if (p.keyCode == p.RIGHT_ARROW) octaves++;
     if (octaves < 0) octaves = 0;
-  }
+  };
 
 };
 

@@ -34,7 +34,7 @@ var hueValues = [];
 var saturationValues = [];
 var brightnessValues = [];
 var actRandomSeed = 0;
-var alphaValue = 27;
+var alphaValue = 75;
 
 function setup() {
   createCanvas(windowWidth, windowHeight);
@@ -121,8 +121,8 @@ function gradient(x, y, w, h, c1, c2) {
   var grd = ctx.createLinearGradient(x, y, x, y + h);
   grd.addColorStop(0, c1.toString());
   grd.addColorStop(1, c2.toString());
-	ctx.fillStyle = grd;
-	ctx.fillRect(x, y, w, h);
+  ctx.fillStyle = grd;
+  ctx.fillRect(x, y, w, h);
 }
 
 function mouseReleased() {

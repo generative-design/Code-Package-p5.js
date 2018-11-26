@@ -52,13 +52,17 @@ function setup() {
   colorMode(HSB, 360, 100, 100, 100);
   noFill();
   strokeWeight(1);
-  shape = new Shape(width / 2, height / 2, joints, lineLength, speedRelation);
+  startDrawing();
 }
 
 function draw() {
   background(0, 0, 100);
 
   shape.draw();
+}
+
+function startDrawing() {
+  shape = new Shape(width / 2, height / 2, joints, lineLength, speedRelation);
 }
 
 function Shape(x, y, joints, lineLength, speedRelation, speed) {
@@ -130,43 +134,37 @@ function keyPressed() {
   if (key == 's' || key == 'S') saveCanvas(gd.timestamp(), 'png');
 
   if (keyCode == DELETE || keyCode == BACKSPACE) {
-    shape = new Shape(width / 2, height / 2, joints, lineLength);
+    startDrawing();
   }
 
   if (keyCode == UP_ARROW) {
     lineLength += 2;
-    shape.lineLength = lineLength;
-    shape = new Shape(width / 2, height / 2, joints, lineLength, speedRelation);
+    startDrawing();
   }
   if (keyCode == DOWN_ARROW) {
     lineLength -= 2;
-    shape.lineLength = lineLength;
-    shape = new Shape(width / 2, height / 2, joints, lineLength, speedRelation);
+    startDrawing();
   }
   if (keyCode == LEFT_ARROW) {
     joints--;
     if (joints < 1) joints = 1;
-    shape.joints = joints;
-    shape = new Shape(width / 2, height / 2, joints, lineLength, speedRelation);
+    startDrawing();
   }
   if (keyCode == RIGHT_ARROW) {
     joints++;
     if (joints > 10) joints = 10;
-    shape.joints = joints;
-    shape = new Shape(width / 2, height / 2, joints, lineLength, speedRelation);
+    startDrawing();
   }
 
   if (key == '+') {
-    speedRelation++;
+    speedRelation += 0.5;
     if (speedRelation > 5) speedRelation = 5;
-    shape.speedRelation = speedRelation;
-    shape = new Shape(width / 2, height / 2, joints, lineLength, speedRelation);
+    startDrawing();
   }
   if (key == '-') {
-    speedRelation--;
+    speedRelation -= 0.5;
     if (speedRelation < 2) speedRelation = 2;
-    shape.speedRelation = speedRelation;
-    shape = new Shape(width / 2, height / 2, joints, lineLength, speedRelation);
+    startDrawing();
   }
 
   if (key == '1') showPendulum = !showPendulum;

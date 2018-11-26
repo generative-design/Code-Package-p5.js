@@ -1,0 +1,56 @@
+{
+    "env": {
+        "browser": true
+    },
+    "rules": {
+        "semi": "error",
+        "no-eval": "error",
+        "indent": [
+            "error",
+            2
+        ],
+        "quotes": [
+            "error",
+            "single"
+        ],
+        "no-multiple-empty-lines": [
+            "error",
+            {
+                "max": 1,
+                "maxEOF": 1,
+                "maxBOF": 0
+            }
+        ],
+        "no-mixed-spaces-and-tabs": "error",
+        "no-tabs": "error",
+        "no-trailing-spaces": "error",
+        "semi-style": [
+            "error",
+            "last"
+        ],
+        "spaced-comment": "error",
+        "switch-colon-spacing": [
+            "error",
+            {
+                "after": true,
+                "before": false
+            }
+        ],
+        "space-infix-ops": "error",
+        "no-multi-spaces": "error",
+        "space-in-parens": [
+            "error",
+            "never"
+        ],
+        "space-unary-ops": "error",
+        "brace-style": "error",
+        "eol-last": "error",
+        "comma-dangle": [
+            "error",
+            "never"
+        ],
+        "func-call-spacing": "error",
+        "key-spacing": "error",
+        "keyword-spacing": "error"
+    }
+}

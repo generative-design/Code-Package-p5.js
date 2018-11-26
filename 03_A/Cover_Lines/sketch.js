@@ -34,7 +34,6 @@ var mmToPx = 2;
 var coverWidth = 800;
 var coverHeight = 600;
 
-
 function setup() {
   createCanvas(coverWidth * mmToPx, coverHeight * mmToPx);
 
@@ -77,8 +76,6 @@ function setup() {
   noLoop();
 
 }
-
-
 
 function keyReleased() {
   if (key == 's' || key == 'S') saveCanvas(gd.timestamp(), 'png');

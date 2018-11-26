@@ -123,7 +123,7 @@ function getPoints() {
   path = g.resampleByLength(path, 25);
   textW = path.bounds().width;
   // remove all commands without a coordinate
-  for (var i = path.commands.length-1; i >= 0 ; i--) {
+  for (var i = path.commands.length - 1; i >= 0 ; i--) {
     if (path.commands[i].x == undefined) {
       path.commands.splice(i, 1);
     }
@@ -147,23 +147,23 @@ function keyReleased() {
 
 function keyPressed() {
   switch (keyCode) {
-    case ENTER:
-    case RETURN:
-      typedKey = '';
-      pnts = getPoints(typedKey);
-      letterY += lineSpacing;
-      letterX = 50;
-      break;
-    case BACKSPACE:
-    case DELETE:
-      background(255);
-      typedKey = '';
-      pnts = getPoints(typedKey);
-      letterX = 50;
-      letterY = lineSpacing;
-      freeze = false;
-      loop();
-      break;
+  case ENTER:
+  case RETURN:
+    typedKey = '';
+    pnts = getPoints(typedKey);
+    letterY += lineSpacing;
+    letterX = 50;
+    break;
+  case BACKSPACE:
+  case DELETE:
+    background(255);
+    typedKey = '';
+    pnts = getPoints(typedKey);
+    letterX = 50;
+    letterY = lineSpacing;
+    freeze = false;
+    loop();
+    break;
   }
 }
 

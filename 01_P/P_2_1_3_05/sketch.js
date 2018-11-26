@@ -54,8 +54,8 @@ function draw() {
 
   randomSeed(actRandomSeed);
 
-  stepSize = mouseX / 10;
-  endSize = mouseY / 10;
+  stepSize = min(mouseX, width) / 10;
+  endSize = min(mouseY, height) / 10;
 
   for (var gridY = 0; gridY <= tileCountY; gridY++) {
     for (var gridX = 0; gridX <= tileCountX; gridX++) {
@@ -69,10 +69,10 @@ function draw() {
         var diameter = map(i, 0, stepSize, tileWidth, endSize);
         fill(255 - i * colorStep);
         switch (heading) {
-          case 0: ellipse(posX + i, posY, diameter, diameter); break;
-          case 1: ellipse(posX, posY + i, diameter, diameter); break;
-          case 2: ellipse(posX - i, posY, diameter, diameter); break;
-          case 3: ellipse(posX, posY - i, diameter, diameter); break;
+        case 0: ellipse(posX + i, posY, diameter, diameter); break;
+        case 1: ellipse(posX, posY + i, diameter, diameter); break;
+        case 2: ellipse(posX - i, posY, diameter, diameter); break;
+        case 3: ellipse(posX, posY - i, diameter, diameter); break;
         }
       }
     }

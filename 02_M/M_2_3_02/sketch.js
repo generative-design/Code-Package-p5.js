@@ -34,7 +34,7 @@
  */
 'use strict';
 
-var sketch = function( p ) {
+var sketch = function(p) {
 
   var pointCount = 500;
   var freqX = 1;
@@ -133,7 +133,7 @@ var sketch = function( p ) {
     if (p.key == '0') modFreqY++;
     modFreqY = p.max(modFreqY,1);
 
-    console.log("freqX: " + freqX + ", freqY: " + freqY + ", phi: " + phi + ", modFreqX: " + modFreqX + ", modFreqY: " + modFreqY);
+    console.log('freqX: ' + freqX + ', freqY: ' + freqY + ', phi: ' + phi + ', modFreqX: ' + modFreqX + ', modFreqY: ' + modFreqY);
   };
 
 };

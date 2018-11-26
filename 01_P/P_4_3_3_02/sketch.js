@@ -30,7 +30,6 @@
 'use strict';
 
 var video;
-var pixelIndex;
 var c;
 var x1, x2, x3, y1, y2, y3;
 var curvePointX = 0;
@@ -42,9 +41,12 @@ var streamReady = false;
 function setup() {
   createCanvas(640, 480);
   background(255);
-  video = createCapture(VIDEO, function() { streamReady = true });
-  video.size(width, height);
+  video = createCapture(VIDEO, function() {
+    streamReady = true;
+  });
+  video.size(width * pixelDensity(), height * pixelDensity());
   video.hide();
+  noFill();
 
   x1 = 0;
   y1 = height / 2;
@@ -56,14 +58,10 @@ function setup() {
 
 function draw() {
   if (streamReady) {
-    noFill();
-
-    // get actual webcam image
-    video.loadPixels();
 
     // first line
-    pixelIndex = ((video.width - 1 - int(x1)) + int(y1) * video.width) * 4;
-    c = color(video.pixels[pixelIndex], video.pixels[pixelIndex + 1], video.pixels[pixelIndex + 2], video.pixels[pixelIndex + 3]);
+    // Retrieve color from capture device
+    c = color(video.get(x1, y1));
     // convert color c to HSV
     var cHSV = chroma(red(c), green(c), blue(c));
     var hueValue = cHSV.get('hsv.h');
@@ -84,8 +82,8 @@ function draw() {
     y1 = curvePointY;
 
     // second line
-    pixelIndex = ((video.width - 1 - int(x2)) + int(y2) * video.width) * 4;
-    c = color(video.pixels[pixelIndex], video.pixels[pixelIndex + 1], video.pixels[pixelIndex + 2], video.pixels[pixelIndex + 3]);
+    // Retrieve color from capture device
+    c = color(video.get(x2, y2));
     // convert color c to HSV
     var cHSV = chroma(red(c), green(c), blue(c));
     var saturationValue = cHSV.get('hsv.s');
@@ -106,8 +104,8 @@ function draw() {
     y2 = curvePointY;
 
     // third line
-    pixelIndex = ((video.width - 1 - int(x3)) + int(y3) * video.width) * 4;
-    c = color(video.pixels[pixelIndex], video.pixels[pixelIndex + 1], video.pixels[pixelIndex + 2], video.pixels[pixelIndex + 3]);
+    // Retrieve color from capture device
+    c = color(video.get(x3, y3));
     // convert color c to HSV
     var cHSV = chroma(red(c), green(c), blue(c));
     var brightnessValue = cHSV.get('hsv.v');

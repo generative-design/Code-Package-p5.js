@@ -36,7 +36,7 @@
 
 var doSave = false;
 
-var textTyped = "Type...!";
+var textTyped = 'Type...!';
 
 var font;
 
@@ -44,8 +44,8 @@ var shapeSet = 0;
 var module1, module2;
 
 function preload() {
-  module1 = loadImage("data/A_01.svg");
-  module2 = loadImage("data/A_02.svg");
+  module1 = loadImage('data/A_01.svg');
+  module2 = loadImage('data/A_02.svg');
 }
 
 function setup() {
@@ -140,22 +140,22 @@ function keyPressed() {
   if (keyCode == ALT) {
     shapeSet = (shapeSet + 1) % 4;
     switch (shapeSet) {
-      case 0:
-        module1 = loadImage("data/A_01.svg");
-        module2 = loadImage("data/A_02.svg");
-        break;
-      case 1:
-        module1 = loadImage("data/B_01.svg");
-        module2 = loadImage("data/B_02.svg");
-        break;
-      case 2:
-        module1 = loadImage("data/C_01.svg");
-        module2 = loadImage("data/C_02.svg");
-        break;
-      case 3:
-        module1 = loadImage("data/D_01.svg");
-        module2 = loadImage("data/D_02.svg");
-        break;
+    case 0:
+      module1 = loadImage('data/A_01.svg');
+      module2 = loadImage('data/A_02.svg');
+      break;
+    case 1:
+      module1 = loadImage('data/B_01.svg');
+      module2 = loadImage('data/B_02.svg');
+      break;
+    case 2:
+      module1 = loadImage('data/C_01.svg');
+      module2 = loadImage('data/C_02.svg');
+      break;
+    case 3:
+      module1 = loadImage('data/D_01.svg');
+      module2 = loadImage('data/D_02.svg');
+      break;
     }
   }
 }

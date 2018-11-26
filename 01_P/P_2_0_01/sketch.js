@@ -32,15 +32,14 @@
 function setup() {
   createCanvas(550, 550);
   strokeCap(SQUARE);
-  noFill();
 }
 
 function draw() {
   background(255);
   translate(width / 2, height / 2);
 
-  var circleResolution = map(mouseY, 0, height, 2, 80);
-  var radius = mouseX - width / 2 + 0.5;
+  var circleResolution = int(map(mouseY, 0, height, 2, 80));
+  var radius = mouseX - width / 2;
   var angle = TAU / circleResolution;
 
   strokeWeight(mouseY / 20);

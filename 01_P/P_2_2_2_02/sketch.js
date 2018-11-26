@@ -106,11 +106,11 @@ function draw() {
 
       var distance = dist(posX, posY, posXcross, posYcross);
       if (distance >= minLength) {
-          strokeWeight(distance / dWeight);
-          if (drawMode == 1) stroke(0);
-          if (drawMode == 2) stroke(52, 100, distance / dStroke);
-          if (drawMode == 3) stroke(192, 100, 64, distance / dStroke);
-          line(posX, posY, posXcross, posYcross);
+        strokeWeight(distance / dWeight);
+        if (drawMode == 1) stroke(0);
+        if (drawMode == 2) stroke(52, 100, distance / dStroke);
+        if (drawMode == 3) stroke(192, 100, 64, distance / dStroke);
+        line(posX, posY, posXcross, posYcross);
       }
 
       posXcross = posX;

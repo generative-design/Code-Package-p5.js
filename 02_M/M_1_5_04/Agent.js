@@ -12,7 +12,7 @@ var Agent = function(noiseStickingRange, agentAlpha, noiseScale, noiseStrength, 
   this.agentWidthMin = agentWidthMin;
   this.agentWidthMax = agentWidthMax;
   this.zNoiseVelocity = zNoiseVelocity;
-}
+};
 
 Agent.prototype.updateStart = function() {
   this.angle = myp5.noise(this.vector.x / this.noiseScale, this.vector.y / this.noiseScale, this.noiseZ) * this.noiseStrength;
@@ -22,15 +22,15 @@ Agent.prototype.updateStart = function() {
 
   if (this.vector.x < -10) this.vector.x = this.vectorOld.x = myp5.width + 10;
   if (this.vector.x > myp5.width + 10) this.vector.x = this.vectorOld.x = -10;
-  if (this.vector.y < - 10) this.vector.y = this.vectorOld.y = myp5.height + 10;
+  if (this.vector.y < -10) this.vector.y = this.vectorOld.y = myp5.height + 10;
   if (this.vector.y > myp5.height + 10) this.vector.y = this.vectorOld.y = -10;
-}
+};
 
 Agent.prototype.updateEnd = function() {
-    this.vectorOld = this.vector.copy();
+  this.vectorOld = this.vector.copy();
 
-    this.noiseZ += this.zNoiseVelocity;
-}
+  this.noiseZ += this.zNoiseVelocity;
+};
 
 Agent.prototype.update1 = function() {
   this.updateStart();
@@ -47,7 +47,7 @@ Agent.prototype.update1 = function() {
   myp5.pop();
 
   this.updateEnd();
-}
+};
 
 Agent.prototype.update2 = function() {
   this.updateStart();
@@ -58,4 +58,4 @@ Agent.prototype.update2 = function() {
   myp5.ellipse(this.vectorOld.x, this.vectorOld.y, agentWidth, agentWidth);
 
   this.updateEnd();
-}
+};

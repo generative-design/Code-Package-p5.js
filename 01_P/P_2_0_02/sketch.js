@@ -45,7 +45,7 @@ function draw() {
     translate(width / 2, height / 2);
 
     var circleResolution = int(map(mouseY + 100, 0, height, 2, 10));
-    var radius = mouseX - width / 2 + 0.5;
+    var radius = mouseX - width / 2;
     var angle = TAU / circleResolution;
 
     beginShape();
@@ -55,6 +55,7 @@ function draw() {
       vertex(x, y);
     }
     endShape();
+
     pop();
   }
 }

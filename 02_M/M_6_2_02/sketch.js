@@ -24,8 +24,6 @@
  * left click          : starts loading the xml
  */
 
-
-
 'use strict';
 
 var sketch = function(p) {
@@ -40,7 +38,7 @@ var sketch = function(p) {
     p.createCanvas(200, 200);
 
     p.strokeWeight(4);
-  }
+  };
 
   p.draw = function() {
     // some animation
@@ -52,29 +50,29 @@ var sketch = function(p) {
 
     // Has loading already started?
     if (linksLoading) {
-      console.log("not loaded yet");
+      console.log('not loaded yet');
     }
 
     // Are the links already loaded?
     if (linksLoaded) {
       links.forEach(function(el, i) {
-        console.log("Link " + i + ": " + el.title);
+        console.log('Link ' + i + ': ' + el.title);
       });
 
       linksLoaded = false;
     }
-  }
+  };
 
   p.mouseReleased = function() {
-    console.log("Starting to load links");
+    console.log('Starting to load links');
     linksLoading = true;
 
-    getLinks("Superegg", function(result) {
+    getLinks('Superegg', function(result) {
       linksLoaded = true;
       linksLoading = false;
       links = result;
     });
-  }
+  };
 
   // Helping function that makes the queries to Wikipedia.
   function getLinks(title, callback, plcontinue, links) {
@@ -110,8 +108,6 @@ var sketch = function(p) {
     });
   }
 
-
-
-}
+};
 
 var myp5 = new p5(sketch);

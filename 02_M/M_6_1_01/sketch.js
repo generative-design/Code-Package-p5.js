@@ -27,7 +27,7 @@
 
 'use strict';
 
-var sketch = function( p ) {
+var sketch = function(p) {
 
   // An array with nodes
   var nodes = [];
@@ -40,7 +40,7 @@ var sketch = function( p ) {
 
     // Create nodes
     createNodes();
-  }
+  };
 
   p.draw = function() {
     p.fill(255, 20);
@@ -55,15 +55,15 @@ var sketch = function( p ) {
       // Draw node
       p.ellipse(nodes[i].x, nodes[i].y, 10, 10);
     }
-  }
+  };
 
   p.keyPressed = function() {
     if (p.key == 's' || p.key == 'S') p.saveCanvas(gd.timestamp(), 'png');
-    if (p.key =='r' || p.key =='R') {
+    if (p.key == 'r' || p.key == 'R') {
       p.background(255);
       createNodes();
     }
-  }
+  };
 
   function createNodes() {
     nodes = [];
@@ -79,6 +79,6 @@ var sketch = function( p ) {
     }
   }
 
-}
+};
 
 var myp5 = new p5(sketch);

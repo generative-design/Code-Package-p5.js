@@ -30,7 +30,7 @@
  */
 'use strict';
 
-var sketch = function( p ) {
+var sketch = function(p) {
 
   var pointCount = 600;
   var freq = 2;
@@ -86,12 +86,12 @@ var sketch = function( p ) {
     p.strokeWeight(2);
     p.beginShape();
     for (var i = 0; i <= pointCount; i++) {
-       angle = p.map(i, 0, pointCount, 0, p.TAU);
-       var info = p.sin(angle * freq + p.radians(phi));
-       var carrier = p.cos(angle * modFreq);
-       y = info * carrier;
-       y *= p.height / 4;
-       p.vertex(i,y);
+      angle = p.map(i, 0, pointCount, 0, p.TAU);
+      var info = p.sin(angle * freq + p.radians(phi));
+      var carrier = p.cos(angle * modFreq);
+      y = info * carrier;
+      y *= p.height / 4;
+      p.vertex(i,y);
     }
     p.endShape();
   };
@@ -113,7 +113,7 @@ var sketch = function( p ) {
     if (p.key == '8') modFreq++;
     modFreq = p.max(modFreq,1);
 
-    console.log("freq: " + freq + ", phi: " + phi + ", modFreq: " + modFreq);
+    console.log('freq: ' + freq + ', phi: ' + phi + ', modFreq: ' + modFreq);
   };
 
 };

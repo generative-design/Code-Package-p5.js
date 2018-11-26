@@ -26,7 +26,7 @@
 
 'use strict';
 
-var sketch = function( p ) {
+var sketch = function(p) {
   var pointCount = 1500;
   var pointIndex = 0;
   var lissajousPoints = [];
@@ -68,7 +68,7 @@ var sketch = function( p ) {
     p.background(backgroundColor);
 
     calculateLissajousPoints();
-  }
+  };
 
   p.draw = function() {
     if (!connectAllPoints) {
@@ -89,13 +89,13 @@ var sketch = function( p ) {
     if (pointIndex >= pointCount - 1) {
       p.noLoop();
     }
-  }
+  };
 
   p.keyPressed = function() {
     if (p.key == 's' || p.key == 'S') {
       p.saveCanvas(gd.timestamp(), 'png');
     }
-  }
+  };
 
   var calculateLissajousPoints = function() {
     p.randomSeed(0);
@@ -117,7 +117,7 @@ var sketch = function( p ) {
 
       lissajousPoints[i] = p.createVector(x, y);
     }
-  }
+  };
 
   var drawLine = function(vector1, vector2) {
     var distance = p5.Vector.dist(vector1, vector2);
@@ -132,7 +132,7 @@ var sketch = function( p ) {
         angle * lineAlpha + (pointIndex % 2 * 2));
       p.line(vector1.x, vector1.y, vector2.x, vector2.y);
     }
-  }
+  };
 };
 
 var myp5 = new p5(sketch);

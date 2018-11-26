@@ -29,7 +29,7 @@
  * ctrl                 : save png
  */
 
-var textTyped = "Type ...!";
+var textTyped = 'Type ...!';
 
 var font;
 

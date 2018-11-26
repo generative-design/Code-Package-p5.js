@@ -1,4 +1,3 @@
-
 function Ribbon(colorPoints, additionalN, options) {
 
   this.colorPoints = [];
@@ -33,7 +32,7 @@ function Ribbon(colorPoints, additionalN, options) {
     fill(255);
     noStroke();
     rect(-30, -2, 60, 10);
-  }
+  };
 }
 
 function ColorPoint(num, col, fitT) {
@@ -44,7 +43,7 @@ function ColorPoint(num, col, fitT) {
   this.alphaIndex = 0;
 
   ColorPoint.prototype.draw = function(tAll, opt) {
-    //strokeCap(SQUARE);
+    // strokeCap(SQUARE);
     strokeWeight(0.3);
     stroke(0);
     noFill();
@@ -81,7 +80,7 @@ function ColorPoint(num, col, fitT) {
       var y2 = lerp(y2o, y2u, t);
 
       var afac = 1 - 2 * abs(t - 0.5);
-      //var afac = 1 - pow(2 * (t - 0.5), 2);
+      // var afac = 1 - pow(2 * (t - 0.5), 2);
       var alph = a * afac;
       alph = pow(alph / 255, 0.75) * 255;
 
@@ -92,7 +91,7 @@ function ColorPoint(num, col, fitT) {
       var by2 = lerp(y2o, y2u, t);
       var bsw = barcodeInfo[i].width * bs / bw * 14 * map(tAll, 0, 1, 1, 0.3);
       var balph = lerp(a, alph, tAll);
-      // var bcol = 
+      // var bcol =
 
       var fitx1 = lerp(bx1, x1, newFit);
       var fity1 = lerp(by1, y1, newFit);
@@ -113,9 +112,8 @@ function ColorPoint(num, col, fitT) {
     penW = newW;
     penFit = newFit;
 
-  }
+  };
 }
-
 
 function angleDifference(theAngle1, theAngle2) {
   var a1 = (theAngle1 % TWO_PI + TWO_PI) % TWO_PI;

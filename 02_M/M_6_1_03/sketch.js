@@ -46,7 +46,7 @@ var sketch = function(p) {
     p.noStroke();
 
     initNodesAndSprings();
-  }
+  };
 
   p.draw = function() {
 
@@ -85,8 +85,7 @@ var sketch = function(p) {
       p.ellipse(nodes[i].x, nodes[i].y, nodeDiameter - 4, nodeDiameter - 4);
     }
 
-  }
-
+  };
 
   var initNodesAndSprings = function() {
     // init nodes
@@ -118,8 +117,7 @@ var sketch = function(p) {
       }
     }
 
-  }
-
+  };
 
   p.mousePressed = function() {
     // Ignore anything greater than this distance
@@ -132,14 +130,13 @@ var sketch = function(p) {
         maxDist = d;
       }
     }
-  }
+  };
 
   p.mouseReleased = function() {
     if (selectedNode != null) {
       selectedNode = null;
     }
-  }
-
+  };
 
   p.keyPressed = function() {
     if (p.key == 's' || p.key == 'S') p.saveCanvas(gd.timestamp(), 'png');
@@ -148,9 +145,8 @@ var sketch = function(p) {
       p.background(255);
       initNodesAndSprings();
     }
-  }
+  };
 
-
-}
+};
 
 var myp5 = new p5(sketch);

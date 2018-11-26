@@ -30,7 +30,7 @@
  */
 'use strict';
 
-var sketch = function( p ) {
+var sketch = function(p) {
 
   var pointCount = 1000;
   var lissajousPoints = [];
@@ -121,7 +121,7 @@ var sketch = function( p ) {
     calculateLissajousPoints();
     drawLissajous();
 
-    console.log("freqX: " + freqX + ", freqY: " + freqY + ", phi: " + phi + ", modFreqX: " + modFreqX + ", modFreqY: " + modFreqY);
+    console.log('freqX: ' + freqX + ', freqY: ' + freqY + ', phi: ' + phi + ', modFreqX: ' + modFreqX + ', modFreqY: ' + modFreqY);
   };
 
 };

@@ -40,7 +40,7 @@ var colors = [];
 var sortMode = null;
 
 function preload() {
-  img = loadImage('data/pic1.jpg');
+  loadImage('data/pic1.jpg', setImage);
 }
 
 function setup() {
@@ -82,14 +82,18 @@ function keyReleased() {
   if (key == 'c' || key == 'C') writeFile([gd.ase.encode(colors)], gd.timestamp(), 'ase');
   if (key == 's' || key == 'S') saveCanvas(gd.timestamp(), 'png');
 
-  if (key == '1') img = loadImage('data/pic1.jpg');
-  if (key == '2') img = loadImage('data/pic2.jpg');
-  if (key == '3') img = loadImage('data/pic3.jpg');
-  if (key == '4') img = loadImage('data/pic4.jpg');
+  if (key == '1') loadImage('data/pic1.jpg', setImage);
+  if (key == '2') loadImage('data/pic2.jpg', setImage);
+  if (key == '3') loadImage('data/pic3.jpg', setImage);
+  if (key == '4') loadImage('data/pic4.jpg', setImage);
 
   if (key == '5') sortMode = null;
   if (key == '6') sortMode = gd.HUE;
   if (key == '7') sortMode = gd.SATURATION;
   if (key == '8') sortMode = gd.BRIGHTNESS;
   if (key == '9') sortMode = gd.GRAYSCALE;
+}
+
+function setImage(loadedImageFile) {
+  img = loadedImageFile;
 }

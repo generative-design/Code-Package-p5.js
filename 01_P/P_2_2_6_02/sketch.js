@@ -179,7 +179,7 @@ function keyPressed() {
     joints = max(1, joints);
   }
   if (keyCode == RIGHT_ARROW) {
-    joints++
+    joints++;
     joints = max(1, joints);
   };
 
@@ -187,6 +187,6 @@ function keyPressed() {
   if (key == '2') showPendulum = !showPendulum;
   if (key == '3') showPendulumPath = !showPendulumPath;
 
-  if (key == '+') speed++;
-  if (key == '-') speed--;
+  if (key == '+') speed += 0.5;
+  if (key == '-') speed -= 0.5;
 }

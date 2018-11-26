@@ -176,7 +176,7 @@ function Pendulum(size, hierarchy) {
   Pendulum.prototype.getTrail = function(offset, end) {
     if (this.pendulumArm) {
       if (end) {
-        end.add(this.end)
+        end.add(this.end);
       } else {
         end = this.end.copy();
       }

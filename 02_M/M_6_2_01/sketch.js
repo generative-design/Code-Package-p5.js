@@ -22,21 +22,20 @@
  * and prints them to the console
  */
 
-
 'use strict';
 
 var sketch = function(p) {
 
   p.setup = function() {
-    getLinks("Superegg", function(links) {
-      console.log("This is what you get:");
+    getLinks('Superegg', function(links) {
+      console.log('This is what you get:');
 
       links.forEach(function(el) {
         console.log(el);
       });
 
     });
-  }
+  };
 
   // Helping function that makes the queries to Wikipedia.
   function getLinks(title, callback, plcontinue, links) {
@@ -72,8 +71,6 @@ var sketch = function(p) {
     });
   }
 
-
-
-}
+};
 
 var myp5 = new p5(sketch);

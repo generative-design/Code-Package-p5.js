@@ -81,7 +81,7 @@ function draw() {
 }
 
 function cropTiles() {
-  tileWidth  = width / tileCountY;
+  tileWidth = width / tileCountY;
   tileHeight = height / tileCountX;
   imgTiles = [];
 

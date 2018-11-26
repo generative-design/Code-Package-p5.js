@@ -120,7 +120,7 @@ function Letter(char, x, y) {
 
       endShape(CLOSE);
     }
-  }
+  };
 }
 
 function keyReleased() {
