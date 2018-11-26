@@ -1,6 +1,16 @@
 GENERATIVE DESIGN CODE PACKAGE FOR P5.JS
 
 ----------------------------------------------------------------
+Version 1.1.0 - 26 Nov 2018
+
+Maintenance release:
+
+* Upgrading p5.js from 0.5.14 to 0.7.2
+* Small tweaks to adapt sketches to p5 0.7.2
+* Introduced + enforced code style rules using ESLint
+
+
+----------------------------------------------------------------
 Version 1.0.0 - 20 Feb 2018
 
 Initial release.
