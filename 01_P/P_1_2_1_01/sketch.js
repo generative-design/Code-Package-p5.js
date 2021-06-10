@@ -49,8 +49,8 @@ function setup() {
 }
 
 function draw() {
-  tileCountX = int(map(mouseX, 0, width, 2, 100));
-  tileCountY = int(map(mouseY, 0, height, 2, 10));
+  tileCountX = int(map(constrain(mouseX, 0, width), 0, width, 2, 100));
+  tileCountY = int(map(constrain(mouseY, 0, height), 0, height, 2, 10));
   var tileWidth = width / tileCountX;
   var tileHeight = height / tileCountY;
   var interCol;
