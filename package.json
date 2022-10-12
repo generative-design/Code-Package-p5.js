@@ -37,7 +37,7 @@
     "chroma-js": "^2.4.2",
     "fs-extra": "^9.1.0",
     "fs-sync": "^1.0.6",
-    "g.js": "^0.1.17",
+    "g.js": "^0.3.0",
     "generative-design-library.js": "^0.1.2",
     "glob": "^7.2.3",
     "jquery": "^3.6.0",
