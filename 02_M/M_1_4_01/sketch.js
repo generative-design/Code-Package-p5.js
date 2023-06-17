@@ -49,7 +49,6 @@ var falloff;
 var midColor;
 var topColor;
 var bottomColor;
-var strokeColor;
 var threshold;
 
 // ------ mouse interaction ------
@@ -84,7 +83,6 @@ function setup() {
   topColor = color(0, 0, 100);
   midColor = color(191, 99, 63);
   bottomColor = color(0, 0, 0);
-  strokeColor = color(180, 100, 100);
   threshold = 0.30;
 
   // ------ mouse interaction ------
@@ -101,7 +99,6 @@ function setup() {
 
 function draw() {
   background(0, 0, 100);
-  ambientLight(150);
 
   // ------ set view ------
   push();
@@ -115,7 +112,7 @@ function draw() {
   }
   rotationX += (targetRotationX - rotationX) * 0.25;
   rotationZ += (targetRotationZ - rotationZ) * 0.25;
-  rotateX(-rotationX);
+  rotateX(rotationX);
   rotateZ(-rotationZ);
 
   // ------ mesh noise ------
@@ -154,8 +151,6 @@ function draw() {
         interColor = lerpColor(midColor, topColor, amount);
       }
       fill(interColor);
-      stroke(strokeColor);
-      strokeWeight(1);
       vertex(x, y, z1 * zScale);
       vertex(x, y + tileSizeY, z2 * zScale);
     }
