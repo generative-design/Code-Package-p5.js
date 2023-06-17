@@ -60,7 +60,7 @@ function setup() {
   textFont('monospace', 20);
   noStroke();
 
-  joinedText = joinedText.join(joinedText, ' ');
+  joinedText = joinedText.join(' ');
   charSet = getUniqCharacters();
   for (var i = 0; i < charSet.length; i++) {
     counters[i] = 0;
