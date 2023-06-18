@@ -1,6 +1,26 @@
 GENERATIVE DESIGN CODE PACKAGE FOR P5.JS
 
 ----------------------------------------------------------------
+Version 1.4.0 - 18 Jun 2023
+
+* Upgraded from p5.js 1.4.1 to 1.6.0
+* Upgraded various other dependencies
+  * Resolves #182
+* Fix text lines being joined incorrectly in sketch P_3_1_3_03
+* Fix shading and camera controls in sketch M_1_4_01
+* Fix sketch M_1_5_04
+
+
+----------------------------------------------------------------
+Version 1.3.4 - 27 Jun 2022
+
+🛠 Maintenance release:
+
+* Upgraded from p5.js 1.4.0 to 1.4.1
+* Upgraded various other dependencies
+
+
+----------------------------------------------------------------
 Version 1.3.2 - 29 Sep 2021
 
 🛠 Maintenance release:
