@@ -3,8 +3,8 @@ var Agent = function(noiseStickingRange, agentAlpha, noiseScale, noiseStrength, 
   this.vectorOld = this.vector.copy();
   this.randomizer = myp5.random();
   this.stepSize = 1 + this.randomizer * 4;
-  this.zNoise = myp5.random(noiseStickingRange);
-  this.angle;
+  this.noiseZ = myp5.random(noiseStickingRange);
+  this.angle = 0
   this.color = this.randomizer < 0.5 ? myp5.color(myp5.random(170, 190), 70, myp5.random(100), agentAlpha) : myp5.color(myp5.random(40, 60), 70, myp5.random(100), agentAlpha);
   this.noiseScale = noiseScale;
   this.noiseStrength = noiseStrength;
@@ -39,7 +39,7 @@ Agent.prototype.update1 = function() {
   myp5.strokeWeight(this.strokeWidth);
   myp5.line(this.vectorOld.x, this.vectorOld.y, this.vector.x, this.vector.y);
 
-  var agentWidth = myp5.lerp(this.agentWidthMin, this.agentWidthMax, this.randomizer);
+  var agentWidth = myp5.map(this.randomizer, 0.1, 1, this.agentWidthMin, this.agentWidthMax);
   myp5.push();
   myp5.translate(this.vectorOld.x, this.vectorOld.y);
   myp5.rotate(myp5.atan2(this.vector.y - this.vectorOld.y, this.vector.x - this.vectorOld.x));
@@ -54,7 +54,7 @@ Agent.prototype.update2 = function() {
 
   myp5.stroke(this.color);
   myp5.strokeWeight(2);
-  var agentWidth = myp5.lerp(this.agentWidthMin, this.agentWidthMax, this.randomizer) * 2;
+  var agentWidth = myp5.map(this.randomizer, 0.1, 1, this.agentWidthMin, this.agentWidthMax) * 2;
   myp5.ellipse(this.vectorOld.x, this.vectorOld.y, agentWidth, agentWidth);
 
   this.updateEnd();

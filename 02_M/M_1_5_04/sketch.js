@@ -48,7 +48,7 @@ var sketch = function(p) {
     p.colorMode(p.HSB, 360, 100, 100, 100);
 
     for (var i = 0; i < agentCount; i++) {
-      agents[i] = new Agent(noiseStickingRange, agentAlpha, noiseScale, noiseStrength, strokeWidth, agentWidthMin, agentWidthMax, zNoiseVelocity);
+      agents.push(new Agent(noiseStickingRange, agentAlpha, noiseScale, noiseStrength, strokeWidth, agentWidthMin, agentWidthMax, zNoiseVelocity));
     }
   };
 
