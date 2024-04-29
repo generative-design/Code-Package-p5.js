@@ -1,6 +1,6 @@
 {
   "name": "Generative-Design-Code-Package-p5-js",
-  "version": "1.4.0",
+  "version": "1.4.1",
   "description": "Code package of the book 'Generative Design: Visualize, Program, and Create with JavaScript in p5.js'",
   "scripts": {
     "start": "npm run watch",

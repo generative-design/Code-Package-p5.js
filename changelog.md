@@ -1,6 +1,14 @@
 GENERATIVE DESIGN CODE PACKAGE FOR P5.JS
 
 ----------------------------------------------------------------
+Version 1.4.1 - 29 Apr 2024
+
+* Fix circle not remaining in circle in sketch M_2_1_01
+  * Resolves #187
+* Upgraded jQuery dependency
+
+
+----------------------------------------------------------------
 Version 1.4.0 - 18 Jun 2023
 
 * Upgraded from p5.js 1.4.1 to 1.6.0
