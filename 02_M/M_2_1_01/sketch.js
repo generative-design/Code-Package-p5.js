@@ -78,7 +78,7 @@ var sketch = function(p) {
     var t = (p.frameCount / pointCount) % 1;
     angle = p.map(t,0,1,0,p.TAU);
     var x = p.cos(angle * freq + p.radians(phi));
-    x *= 100 - 125;
+    x = x * 100 - 125;
     y = p.sin(angle * freq + p.radians(phi));
     y = y * 100;
 
