@@ -1,6 +1,15 @@
 GENERATIVE DESIGN CODE PACKAGE FOR P5.JS
 
 ----------------------------------------------------------------
+Version 1.4.2 - 22 Nov 2024
+
+🛠 Maintenance release:
+
+* Upgraded various dependencies
+* Use "full standards mode" for HTML
+
+
+----------------------------------------------------------------
 Version 1.4.1 - 29 Apr 2024
 
 * Fix circle not remaining in circle in sketch M_2_1_01
