@@ -1,6 +1,6 @@
 {
   "name": "Generative-Design-Code-Package-p5-js",
-  "version": "1.4.1",
+  "version": "1.4.2",
   "description": "Code package of the book 'Generative Design: Visualize, Program, and Create with JavaScript in p5.js'",
   "scripts": {
     "start": "npm run watch",
@@ -33,7 +33,7 @@
   "homepage": "http://www.generative-gestaltung.de/2",
   "dependencies": {
     "budo": "^11.8.4",
-    "cheerio": "^1.0.0-rc.12",
+    "cheerio": "^1.0.0",
     "chroma-js": "^2.4.2",
     "fs-extra": "^9.1.0",
     "fs-sync": "^1.0.6",
