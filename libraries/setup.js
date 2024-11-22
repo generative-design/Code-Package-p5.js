@@ -19,7 +19,7 @@ for (var libName in sources) {
 
 // generate index.html file with links to all sketches
 var sketches = glob.sync('../0*/*_*/sketch.js');
-var html = '<head>\n';
+var html = '<!DOCTYPE html>\n<head>\n';
 html += '\t<link href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:600" rel="stylesheet">\n';
 html += '\t<link href="styles/list.css" rel="stylesheet" type="text/css">\n';
 html += '</head>\n<body>\n<section><nav>\n';
@@ -39,5 +39,5 @@ sketches.forEach(function(sketchPath) {
   html += '\t<span class="btn--link">' + name + '</span>\n';
   html += '</a>\n';
 });
-html += '</nav></section>\n</body>';
+html += '</nav></section>\n</body>\n';
 fs.write('../index.html', html);
