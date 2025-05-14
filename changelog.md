@@ -1,6 +1,15 @@
 GENERATIVE DESIGN CODE PACKAGE FOR P5.JS
 
 ----------------------------------------------------------------
+Version 1.4.3 - 14 May 2025
+
+🛠 Maintenance release:
+
+* Upgraded from p5.js from version 1.6.0 to 1.11.7
+* Upgraded various dependencies
+
+
+----------------------------------------------------------------
 Version 1.4.2 - 22 Nov 2024
 
 🛠 Maintenance release:
