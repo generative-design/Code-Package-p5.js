@@ -53,7 +53,7 @@ One method is to to use the local webserver of your choice (e.g. [simple python 
 $ cd path/to/folder
 # e.g. cd /Users/GG/Documents/Code-Package-p5.js
 
-$ python -m SimpleHTTPServer
+$ python -m http.server
 # check localhost:8000
 ```
 
@@ -73,7 +73,7 @@ If you've already followed the instructions in the [Setup](#Setup) section and y
 3. Interact, create, save, and share your work! 🌈`#GenerativeGestaltung #generativedesign #p5js`
 
 
-<sup>1</sup>The default port is `8000`, but you can change the port number by specifying the number after the command `e.g. python -m SimpleHTTPServer 5000`
+<sup>1</sup>The default port is `8000`, but you can change the port number by specifying the number after the command `e.g. python -m http.server 5000`
 
 <sup>2</sup>Some sketches work only as expected when the files are placed online, as the rely on "security" sensitive functionality like loading external files. If you try to view them locally without running a web server, you get some kind of "cross-origin" errors 😭 (see your browser's console). The solution is to serve the files using what's called a [local web server](https://github.com/processing/p5.js/wiki/Local-server). This is what happens when you run `npm start` as shown above or when you run your own local server.
 
