@@ -141,8 +141,7 @@ var sketch = function(p) {
   p.keyPressed = function() {
     if (p.key == 's' || p.key == 'S') p.saveCanvas(gd.timestamp(), 'png');
 
-    if (key == 'r' || key == 'R') {
-      p.background(255);
+    if (p.key == 'r' || p.key == 'R') {
       initNodesAndSprings();
     }
   };
