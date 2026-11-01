@@ -1,4 +1,4 @@
-var fs = require('fs-extra');
+var fs = require('fs');
 var path = require('path');
 var cheerio = require('cheerio');
 
@@ -16,7 +16,7 @@ console.log(copyPathDirectory)
 // NOTE: any changes to that dir will be removed!
 // So be sure to always write changes to the main repo
 if(fs.existsSync(copyPathDirectory)){
-    fs.removeSync(copyPathDirectory)
+    fs.rmSync(copyPathDirectory, {recursive: true, force: true})
 }
 
 /*
@@ -130,7 +130,8 @@ copy the folder contents
 function copyFolderContents(fromFolder, toFolder){
   // Sync:
   try {
-    fs.copySync(fromFolder, toFolder, {overwrite: true})
+    // verbatimSymlinks keeps relative symlinks (e.g. node_modules/.bin) relative
+    fs.cpSync(fromFolder, toFolder, {recursive: true, force: true, verbatimSymlinks: true})
     // console.log('success!')
   } catch (err) {
     console.error(err)
