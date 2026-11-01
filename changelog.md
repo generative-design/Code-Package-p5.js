@@ -1,4 +1,12 @@
 GENERATIVE DESIGN CODE PACKAGE FOR P5.JS
+----------------------------------------------------------------
+Version 1.5.0 - 1 Nov 2026
+
+* Fix R key feature of M_6_1_03
+* Upgraded p5.js from version 1.11.7 to 1.11.13
+* Upgraded various dependencies
+* Removed some dependencies in favour of NodeJS built-ins
+* Modernise ESLint config
 
 ----------------------------------------------------------------
 Version 1.4.3 - 14 May 2025
